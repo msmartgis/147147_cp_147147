@@ -186,7 +186,7 @@
             'border-radius': o.railBorderRadius,
             background: o.railColor,
             opacity: o.railOpacity,
-            zIndex: 90
+            zIndex: 1
           });
 
         // create scrollbar
@@ -203,7 +203,7 @@
             BorderRadius: o.borderRadius,
             MozBorderRadius: o.borderRadius,
             WebkitBorderRadius: o.borderRadius,
-            zIndex: 99
+            zIndex: 1
           });
 
         // set position
