@@ -23,7 +23,7 @@ Route::get('projets', function () {
 });
 
 //demandes
-Route::get('/demandes', function () {
+Route::get('demandes', function () {
     return view('demandes.demandes');
 })->name('demandes');
 

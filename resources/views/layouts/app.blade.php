@@ -95,7 +95,7 @@
   <div class="content-wrapper">
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content m-content">
 			@yield('content')
 	        
 	</section>

@@ -15,7 +15,7 @@
     </li>
 
     <li  class="{{ Request::is('demandes') ? 'nav-item active' : '' }}">
-        <a class="nav-link" href="/demandes"
+        <a class="nav-link" href="demandes"
             ><span class="active-item-here"></span
             ><i class="fa fa-dashboard mr-5"></i> <span>DEMANDES</span></a
         >
