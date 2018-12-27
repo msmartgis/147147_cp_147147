@@ -316,30 +316,21 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table id="mainTable" class="table editable-table table-bordered mb-0">
+                                    <table id="table" class="table editable-table table-bordered mb-0">
                                         <thead style="text-align: center">
                                             <tr>
-
-                                                <th style="width : 20%">Partenaire</th>
+                                                <th >#</th>
+                                                <th >Partenaire</th>
                                                 <th>Montant</th>
                                                 <th>Pourcentage</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="mainTable_body">
+                                        <tbody id="tableBody">
                                             <tr>
-                                                <td>
-                                                    <select class="form-control select2" style="width: 100%;">
-                                                        <option selected="selected">Conseil provinciale</option>
-                                                        <option>Commune</option>
-                                                        <option>ANDZOA</option>
-                                                        <option>Association</option>
-                                                        <option>INDH</option>
-                                                        <option>Région</option>
-                                                        <option>Autre</option>
-                                                    </select>
-                                                </td>
-                                                <td class="mnt" id="montant"><input type="text" value="" style="outline: none;"></td>
-                                                <td id="pourcent" data-editable="false">0</td>
+                                                <td>1</td>
+                                                <td>p1</td>
+                                                <td>m1</td>
+                                                <td>pourcent1</td>
                                             </tr>
                                         </tbody>
 
@@ -422,17 +413,8 @@
 <!-- map -->
 <script src="{{asset('js/demande.js')}}"></script>
 
-<!-- Editable -->
-<script src="{{asset('vendor_components/tiny-editable/mindmup-editabletable.js')}}"></script>
-<script src="{{asset('vendor_components/tiny-editable/numeric-input-example.js')}}"></script>
-<script>
-    $('#mainTable').editableTableWidget().numericInputExample().find('td:first').focus();
-    $('#example1').editableTableWidget().numericInputExample().find('td:first').focus();
 
-
-    $('.mnt').changeMnt();
-
-</script>
+<script src="{{asset('js/jquery.tabledit.js')}}"></script>
 
 
 <!-- Form validator JavaScript -->

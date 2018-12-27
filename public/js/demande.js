@@ -107,43 +107,27 @@ $(function () {
 });
 
 //keyup for montage fincanciere calcul de pourcentage automatique
-
-$.fn.changeMnt = function () {
-    var element = $(this);
-    var footer = element.find('tfoot tr');
-    var dataRows = element.find('tbody tr');
-    element.find('td').on('change', function (evt) {
-        alert('sfsf');
-        // var cell = $(this),
-        //     column = cell.index(),
-        //     total = 0;
-        // if (column === 0) {
-        //     return;
-        // }
-        // element.find('tbody tr').each(function () {
-        //     var row = $(this);
-        //     total += parseFloat(row.children().eq(column).text());
-        // });
-        // if (column === 1 && total > 5000000000000) {
-        //     $('.alert').show();
-        //     return false; // changes can be rejected
-        // } else {
-        //     $('.alert').hide();
-        //     footer.children().eq(column).text(total);
-        // }
-    });
-
-};
-
-// var element = $(this),
-//     footer = element.find('tfoot tr'),
-//     dataRows = element.find('tbody tr'),
-
+$('#add_partenaire').click(function () {
+    var table = $('#table');
+    var body = $('#tableBody');
+    var nextId = body.find('tr').length + 1;
+    table.append($('<tr><td>' + nextId + '</td><td>Sue</td><td>0</td><td>0</td></tr>'));
+    table.data('Tabledit').reload();
+});
 
 $(document).ready(function () {
-    $("#add_partenaire").click(function () {
-        $("#mainTable_body").append("<tr><td data-editable='true'><select class='form-control select2' style='width: 100%;'><option selected='selected'>Conseil provinciale</option><option>Commune</option><option>ANDZOA</option><option>Association</option><option>INDH</option><option>Région</option><option>Autre</option></select></td><td data-editable='true'>0</td><td data-editable='true'>0</td></tr>");
-        $('#mainTable').editableTableWidget();
+    $('#table').Tabledit({
+        columns: {
+            identifier: [0, 'id'],
+            editable: [
+                [1, 'partenaire',
+                    '{"1": "Commune", "2": "INDH", "3": "ANDZOA","4": "Autre"}'
+                ],
+                [2, 'montant'],
+                [3, 'pourcentage']
+            ],
+        },
+        hideIdentifier: true,
+        restoreButton: false
     });
-
 });

@@ -2,7 +2,7 @@
 	<script src="{{asset('vendor_components/jquery-3.3.1/jquery-3.3.1.js')}}"></script>
 	
 	<!-- jQuery UI 1.11.4 -->
-	<script src="{{asset('vendor_components/jquery-ui/jquery-ui.js')}}"></script>
+	{{-- <script src="{{asset('vendor_components/jquery-ui/jquery-ui.js')}}"></script> --}}
 	
 	<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 	<script>
