@@ -107,13 +107,18 @@ $(function () {
 });
 
 //keyup for montage fincanciere calcul de pourcentage automatique
-$('#add_partenaire').click(function () {
-    var table = $('#table');
-    var body = $('#tableBody');
-    var nextId = body.find('tr').length + 1;
-    table.append($('<tr><td>' + nextId + '</td><td>Sue</td><td>0</td><td>0</td></tr>'));
-    table.data('Tabledit').reload();
+
+$(document).ready(function () {
+    $('#add_partenaire').click(function () {
+        var table = $('#table');
+        var body = $('#tableBody');
+        var nextId = body.find('tr').length + 1;
+        table.append($('<tr><td>' + nextId + '</td><td>Commune</td><td>0</td><td>0</td></tr>'));
+        table.data('Tabledit').reload();
+    });
+
 });
+
 
 $(document).ready(function () {
     $('#table').Tabledit({

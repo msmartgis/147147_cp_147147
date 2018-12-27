@@ -319,8 +319,9 @@
                                     <table id="table" class="table editable-table table-bordered mb-0">
                                         <thead style="text-align: center">
                                             <tr>
-                                                <th >#</th>
-                                                <th >Partenaire</th>
+
+                                                <th>#</th>
+                                                <th>Partenaire</th>
                                                 <th>Montant</th>
                                                 <th>Pourcentage</th>
                                             </tr>
@@ -357,17 +358,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group">
-                            <label for="decisions1">Comments</label>
-                            <textarea name="decisions" id="decisions1" rows="4" class="form-control"></textarea>
+                            <textarea id="editor1" name="editor1" rows="10" cols="80">
+
+                            </textarea>
                         </div>
-                        <div class="form-group">
-                            <div class="c-inputs-stacked">
-                                <input type="checkbox" id="checkbox_1" />
-                                <label for="checkbox_1" class="block">Click here to indicate that you have read
-                                    and agree to the terms presented in the
-                                    Terms and Conditions agreement</label>
-                            </div>
-                        </div>
+
+
                     </div>
                 </div>
             </section>
@@ -415,6 +411,16 @@
 
 
 <script src="{{asset('js/jquery.tabledit.js')}}"></script>
+
+
+<!-- CK Editor -->
+<script src="{{asset('vendor_components/ckeditor/ckeditor.js')}}"></script>
+
+<!-- Bootstrap WYSIHTML5 -->
+<script src="{{asset('vendor_plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js')}}"></script>
+
+<!-- Fab Admin for editor -->
+<script src="{{asset('js/editor.js')}}"></script>
 
 
 <!-- Form validator JavaScript -->

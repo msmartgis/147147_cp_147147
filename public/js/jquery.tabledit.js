@@ -172,7 +172,7 @@ if (typeof jQuery === 'undefined') {
 
                         // Add toolbar column header if not exists.
                         if ($table.find('th.tabledit-toolbar-column').length === 0) {
-                            $table.find('tr:first').append('<th class="tabledit-toolbar-column"></th>');
+                            $table.find('tr:first').append('<th class="tabledit-toolbar-column">Actions</th>');
                         }
 
                         // Create edit button.
@@ -196,7 +196,7 @@ if (typeof jQuery === 'undefined') {
                             restoreButton = '<button type="button" class="tabledit-restore-button ' + settings.buttons.restore.class + '" style="display: none; float: none;">' + settings.buttons.restore.html + '</button>';
                         }
 
-                        var toolbar = '<div class="tabledit-toolbar ' + settings.toolbarClass + '" style="text-align: left;">\n\
+                        var toolbar = '<div class="tabledit-toolbar ' + settings.toolbarClass + '" style="text-align: center;display : block !important">\n\
                                            <div class="' + settings.groupClass + '" style="float: none;">' + editButton + deleteButton + '</div>\n\
                                            ' + saveButton + '\n\
                                            ' + confirmButton + '\n\
@@ -204,7 +204,7 @@ if (typeof jQuery === 'undefined') {
                                        </div></div>';
 
                         // Add toolbar column cells.
-                        $table.find('tr:gt(0):not([data-tabledit-done])').append('<td style="white-space: nowrap; width: 1%;">' + toolbar + '</td>').attr('data-tabledit-done', 1);
+                        $table.find('tr:gt(0):not([data-tabledit-done])').append('<td style="white-space: nowrap; width: 15%;text-align : center">' + toolbar + '</td>').attr('data-tabledit-done', 1);
                     }
                 }
             }
@@ -344,6 +344,7 @@ if (typeof jQuery === 'undefined') {
                 $lastDeletedRow = $(td).parent('tr');
             },
             confirm: function (td) {
+
                 // Reset all cells in edit mode.
                 $table.find('td.tabledit-edit-mode').each(function () {
                     Edit.reset(this);
@@ -352,6 +353,7 @@ if (typeof jQuery === 'undefined') {
                 $(td).find('.tabledit-delete-button').addClass('active');
                 // Show confirm button.
                 $(td).find('.tabledit-confirm-button').show();
+                $(td).parents("tr").remove();
             },
             restore: function (td) {
                 // Enable identifier hidden input.
