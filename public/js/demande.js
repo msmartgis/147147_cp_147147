@@ -107,15 +107,43 @@ $(function () {
 });
 
 //keyup for montage fincanciere calcul de pourcentage automatique
-$(document).on('keyup change', '#mainTable tr:not(.totalCol) input:text', function () {
 
-    var $table = $(this).closest('table');
-    var total = 0;
-    var thisNumber = $(this).attr('class').match(/(\d+)/)[1];
-    console.log(thisNumber);
-    $table.find('tr:not(.totalCol) .sum' + thisNumber).each(function () {
-        total += parseInt(this.value);
+$.fn.changeMnt = function () {
+    var element = $(this);
+    var footer = element.find('tfoot tr');
+    var dataRows = element.find('tbody tr');
+    element.find('td').on('change', function (evt) {
+        alert('sfsf');
+        // var cell = $(this),
+        //     column = cell.index(),
+        //     total = 0;
+        // if (column === 0) {
+        //     return;
+        // }
+        // element.find('tbody tr').each(function () {
+        //     var row = $(this);
+        //     total += parseFloat(row.children().eq(column).text());
+        // });
+        // if (column === 1 && total > 5000000000000) {
+        //     $('.alert').show();
+        //     return false; // changes can be rejected
+        // } else {
+        //     $('.alert').hide();
+        //     footer.children().eq(column).text(total);
+        // }
     });
 
-    $table.find('.totalCol td:nth-child(' + thisNumber + ')').html(total);
+};
+
+// var element = $(this),
+//     footer = element.find('tfoot tr'),
+//     dataRows = element.find('tbody tr'),
+
+
+$(document).ready(function () {
+    $("#add_partenaire").click(function () {
+        $("#mainTable_body").append("<tr><td data-editable='true'><select class='form-control select2' style='width: 100%;'><option selected='selected'>Conseil provinciale</option><option>Commune</option><option>ANDZOA</option><option>Association</option><option>INDH</option><option>Région</option><option>Autre</option></select></td><td data-editable='true'>0</td><td data-editable='true'>0</td></tr>");
+        $('#mainTable').editableTableWidget();
+    });
+
 });

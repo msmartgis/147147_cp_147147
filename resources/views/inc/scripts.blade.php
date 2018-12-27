@@ -27,4 +27,6 @@
 	<!-- Fab Admin App -->
 	<script src="{{asset('js/template.js')}}"></script>
 
+	<script src="https://unpkg.com/ionicons@4.5.0/dist/ionicons.js"></script>
+
     @yield('added_scripts')

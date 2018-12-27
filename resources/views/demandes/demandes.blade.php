@@ -304,7 +304,7 @@
                                 data-validation-containsnumber-message="Veuillez saisir des numeros seulement" />
                         </div>
 
-                        <button type="button" class="btn btn-secondary ">
+                        <button type="button" class="btn btn-secondary " id="add_partenaire">
                             <i class="fa fa-plus"></i>
                             ajouter partenaire
                         </button>
@@ -319,12 +319,13 @@
                                     <table id="mainTable" class="table editable-table table-bordered mb-0">
                                         <thead style="text-align: center">
                                             <tr>
+
                                                 <th style="width : 20%">Partenaire</th>
                                                 <th>Montant</th>
                                                 <th>Pourcentage</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="mainTable_body">
                                             <tr>
                                                 <td>
                                                     <select class="form-control select2" style="width: 100%;">
@@ -337,19 +338,21 @@
                                                         <option>Autre</option>
                                                     </select>
                                                 </td>
-                                                <td id="montant"><input type="text" value="0" class="mnt1"></td>
-                                                <td id="pourcent"></td>
+                                                <td class="mnt" id="montant"><input type="text" value="" style="outline: none;"></td>
+                                                <td id="pourcent" data-editable="false">0</td>
                                             </tr>
                                         </tbody>
 
-                                        <tfoot>
+                                        <!-- 
+                                            we can add tfoot when fix the problem of calculation
+                                            <tfoot>
                                             <tr class="total-col  totalCol">
                                                 <th><strong>TOTAL</strong></th>
                                                 <th class="total">0</th>
                                                 <th></th>
 
                                             </tr>
-                                        </tfoot>
+                                        </tfoot> -->
 
                                     </table>
                                 </div>
@@ -425,6 +428,9 @@
 <script>
     $('#mainTable').editableTableWidget().numericInputExample().find('td:first').focus();
     $('#example1').editableTableWidget().numericInputExample().find('td:first').focus();
+
+
+    $('.mnt').changeMnt();
 
 </script>
 

@@ -32,7 +32,7 @@ Project:	Fab Admin - Responsive Admin Template
     transform-origin: left 0px;
 }
 
-.show > .scale-up {
+.show>.scale-up {
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     transform: scale(1);
@@ -41,7 +41,7 @@ Project:	Fab Admin - Responsive Admin Template
     transform-origin: right 0px;
 }
 
-.show > .scale-up-left {
+.show>.scale-up-left {
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     transform: scale(1);
@@ -49,6 +49,7 @@ Project:	Fab Admin - Responsive Admin Template
     -ms-transform-origin: left 0px;
     transform-origin: left 0px;
 }
+
 .scale-down {
     -webkit-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
@@ -75,7 +76,7 @@ Project:	Fab Admin - Responsive Admin Template
     transform-origin: top 0px;
 }
 
-.show > .scale-down {
+.show>.scale-down {
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     transform: scale(1);
@@ -84,7 +85,7 @@ Project:	Fab Admin - Responsive Admin Template
     transform-origin: bottom 0px;
 }
 
-.show > .scale-up-down {
+.show>.scale-up-down {
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     transform: scale(1);
@@ -97,7 +98,7 @@ Project:	Fab Admin - Responsive Admin Template
     position: initial;
 }
 
-.layout-top-nav .mega-dropdown > a.nav-link.dropdown-toggle {
+.layout-top-nav .mega-dropdown>a.nav-link.dropdown-toggle {
     color: #fff;
     padding: 0px 10px;
     vertical-align: middle;
@@ -105,10 +106,12 @@ Project:	Fab Admin - Responsive Admin Template
     display: block;
     font-size: 1.2rem;
 }
-.mega-dropdown > a.nav-link.dropdown-toggle:focus {
+
+.mega-dropdown>a.nav-link.dropdown-toggle:focus {
     background-color: transparent;
 }
-.layout-top-nav .top-navbar > .navbar-nav {
+
+.layout-top-nav .top-navbar>.navbar-nav {
     line-height: 34px;
     width: 65px;
     text-align: center;
@@ -152,14 +155,14 @@ Project:	Fab Admin - Responsive Admin Template
     display: inline-block;
 }
 
-.topbar .top-navbar .navbar-nav > .nav-item > .nav-link {
+.topbar .top-navbar .navbar-nav>.nav-item>.nav-link {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
     font-size: 19px;
     line-height: 50px;
 }
 
-.topbar .top-navbar .navbar-nav > .nav-item.show {
+.topbar .top-navbar .navbar-nav>.nav-item.show {
     background: rgba(0, 0, 0, 0.05);
 }
 
@@ -294,6 +297,7 @@ Project:	Fab Admin - Responsive Admin Template
         position: fixed;
         width: 100%;
     }
+
     .topbar .top-navbar {
         padding-right: 15px;
         padding-left: 10px;
@@ -307,6 +311,7 @@ Project:	Fab Admin - Responsive Admin Template
         flex-wrap: nowrap;
         -webkit-align-items: center;
     }
+
     .topbar .top-navbar .navbar-collapse {
         display: -webkit-box;
         display: -webkit-flex;
@@ -314,6 +319,7 @@ Project:	Fab Admin - Responsive Admin Template
         display: flex;
         width: 100%;
     }
+
     .topbar .top-navbar .navbar-nav {
         -webkit-box-orient: horizontal;
         -webkit-box-direction: normal;
@@ -321,64 +327,72 @@ Project:	Fab Admin - Responsive Admin Template
         -ms-flex-direction: row;
         flex-direction: row;
     }
-    .topbar .top-navbar .navbar-nav > .nav-item.show {
+
+    .topbar .top-navbar .navbar-nav>.nav-item.show {
         position: static;
     }
-    .topbar .top-navbar .navbar-nav > .nav-item.show .dropdown-menu {
+
+    .topbar .top-navbar .navbar-nav>.nav-item.show .dropdown-menu {
         width: 100%;
         margin-top: 0px;
     }
-    .topbar .top-navbar .navbar-nav > .nav-item > .nav-link {
+
+    .topbar .top-navbar .navbar-nav>.nav-item>.nav-link {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
     }
+
     .mega-dropdown .dropdown-menu {
         height: 480px;
         overflow: auto;
     }
+
     .topbar .top-navbar .navbar-nav .dropdown-menu {
         position: absolute;
     }
+
     .main-header .navbar .dropdown-menu li a {
         color: #fff;
     }
-    .layout-top-nav .mega-dropdown > a.nav-link.dropdown-toggle {
+
+    .layout-top-nav .mega-dropdown>a.nav-link.dropdown-toggle {
         display: block;
         width: 100%;
     }
+
     .layout-top-nav .top-navbar .navbar-nav .dropdown-menu {
         position: absolute;
     }
-    .layout-top-nav .top-navbar > .navbar-nav {
+
+    .layout-top-nav .top-navbar>.navbar-nav {
         display: inline-block;
         margin: 0;
     }
+
     .layout-top-nav .top-navbar {
         display: block;
     }
+
     .layout-top-nav .main-header .logo {
         width: auto;
         float: left;
     }
+
     .layout-top-nav .main-header .logo .logo-mini {
         display: block;
     }
+
     .layout-top-nav .main-header .logo .logo-lg {
         display: none;
     }
-    .layout-top-nav
-        .main-header
-        .navbar
-        .dropdown-menu
-        .mega-dropdown-menu
-        li
-        a {
+
+    .layout-top-nav .main-header .navbar .dropdown-menu .mega-dropdown-menu li a {
         color: #333;
     }
 }
 
 @media (max-width: 360px) {
-    .layout-top-nav .navbar-custom-menu .navbar-nav li > a.dropdown-toggle {
+    .layout-top-nav .navbar-custom-menu .navbar-nav li>a.dropdown-toggle {
         padding: 0px 10px;
     }
 }
@@ -401,11 +415,11 @@ Project:	Fab Admin - Responsive Admin Template
     visibility: visible;
 }
 
-.horizontal-menu .sidebar-menu > li {
+.horizontal-menu .sidebar-menu>li {
     display: inline-block;
 }
 
-.horizontal-menu .sidebar-menu > .treeview > .treeview-menu {
+.horizontal-menu .sidebar-menu>.treeview>.treeview-menu {
     position: absolute;
     padding: 15px;
     width: 260px;
@@ -418,28 +432,34 @@ Project:	Fab Admin - Responsive Admin Template
     overflow: visible;
 }
 
-.horizontal-menu .sidebar-menu > li > a > .pull-right-container {
+.horizontal-menu .sidebar-menu>li>a>.pull-right-container {
     display: none;
 }
+
 @media (max-width: 1100px) {
-    .horizontal-menu .layout-top-nav .sidebar-menu > li > a {
+    .horizontal-menu .layout-top-nav .sidebar-menu>li>a {
         font-size: 0.75rem;
         font-weight: 400;
     }
 }
+
 @media (max-width: 767px) {
     .layout-top-nav .navbar-nav {
         margin: 0;
     }
+
     .layout-top-nav .main-header .navbar {
         max-height: 60px;
     }
 }
+
 @media (max-width: 990px) {
-    .layout-top-nav .navbar-custom-menu > .navbar-nav > li.tasks-menu,
-    .layout-top-nav .navbar-custom-menu > .navbar-nav > li.search-box {
+
+    .layout-top-nav .navbar-custom-menu>.navbar-nav>li.tasks-menu,
+    .layout-top-nav .navbar-custom-menu>.navbar-nav>li.search-box {
         display: none;
     }
+
     .layout-top-nav .main-sidebar {
         padding-top: 60px;
         -webkit-transform: translate(-230px, 0);
@@ -447,9 +467,11 @@ Project:	Fab Admin - Responsive Admin Template
         -o-transform: translate(-230px, 0);
         transform: translate(-230px, 0);
     }
+
     .layout-top-nav .control-sidebar {
         padding-top: 60px;
     }
+
     .layout-top-nav.sidebar-collapse .main-sidebar,
     .layout-top-nav.sidebar-open .main-sidebar {
         -webkit-transform: translate(0, 0);
@@ -457,11 +479,13 @@ Project:	Fab Admin - Responsive Admin Template
         -o-transform: translate(0, 0);
         transform: translate(0, 0);
     }
+
     .main-sidebar {
         visibility: visible;
         z-index: 810;
     }
-    .layout-top-nav .sidebar-menu li > a > .pull-right-container {
+
+    .layout-top-nav .sidebar-menu li>a>.pull-right-container {
         position: relative;
         right: 0;
         top: 2px;
@@ -472,12 +496,14 @@ Project:	Fab Admin - Responsive Admin Template
 }
 
 @media (max-width: 1200px) {
-    .horizontal-menu .sidebar-menu > li > a > .fa,
-    .horizontal-menu .sidebar-menu > li > a > .glyphicon,
-    .horizontal-menu .sidebar-menu > li > a > .ion {
+
+    .horizontal-menu .sidebar-menu>li>a>.fa,
+    .horizontal-menu .sidebar-menu>li>a>.glyphicon,
+    .horizontal-menu .sidebar-menu>li>a>.ion {
         display: none;
     }
-    .horizontal-menu .sidebar-menu > li > a {
+
+    .horizontal-menu .sidebar-menu>li>a {
         padding: 10px;
     }
 }
@@ -486,7 +512,8 @@ Project:	Fab Admin - Responsive Admin Template
     .layout-top-nav .main-header .logo {
         padding: 0 5px;
     }
-    .layout-top-nav .top-navbar > .navbar-nav {
+
+    .layout-top-nav .top-navbar>.navbar-nav {
         width: 40px;
     }
 }
@@ -505,45 +532,51 @@ Project:	Fab Admin - Responsive Admin Template
     }
 }
 
-.horizontal-menu .sidebar-menu .treeview > .treeview-menu {
+.horizontal-menu .sidebar-menu .treeview>.treeview-menu {
     display: none;
 }
 
-.horizontal-menu .sidebar-menu .active:hover > .treeview-menu,
-.horizontal-menu .sidebar-menu .treeview:hover > .treeview-menu {
+.horizontal-menu .sidebar-menu .active:hover>.treeview-menu,
+.horizontal-menu .sidebar-menu .treeview:hover>.treeview-menu {
     display: block;
 }
 
-.horizontal-menu .layout-top-nav .sidebar-menu > li > a {
+.horizontal-menu .layout-top-nav .sidebar-menu>li>a {
     padding: 12px 10px 12px 10px;
 }
 
-.horizontal-menu .layout-top-nav .sidebar-menu > li.menu-open > a {
+.horizontal-menu .layout-top-nav .sidebar-menu>li.menu-open>a {
     background: #fff;
     color: #333;
     box-shadow: none;
 }
+
 .horizontal-menu .layout-boxed .main-sidebar {
     position: relative;
     padding-top: 0px;
 }
+
 .layout-top-nav.layout-boxed .main-header {
     position: relative;
 }
+
 .layout-top-nav.layout-boxed .content-wrapper {
     margin-top: 0px !important;
 }
 
 @media (min-width: 992px) {
+
     .layout-top-nav .main-header .inside-header,
     .layout-top-nav .main-sidebar .sidebar,
     .layout-top-nav .content-wrapper,
     .layout-top-nav .main-footer {
         margin: 0 auto;
     }
+
     .layout-top-nav .main-header .inside-header {
         position: relative;
     }
+
     .main-header,
     .wrapper,
     .main-sidebar,
@@ -553,15 +586,19 @@ Project:	Fab Admin - Responsive Admin Template
         -webkit-box-shadow: none !important;
         box-shadow: none !important;
     }
+
     .main-sidebar {
         background-color: #28373e !important;
     }
+
     .wrapper {
         background-color: #f4f4f4 !important;
     }
+
     .layout-top-nav .sidebar {
         border-top: 0px;
     }
+
     .mega-dropdown .dropdown-menu {
         width: 100%;
         max-width: 1250px;
@@ -569,19 +606,22 @@ Project:	Fab Admin - Responsive Admin Template
         margin: 0px auto;
         position: absolute;
     }
+
     .layout-top-nav .main-footer {
         border-top: none;
     }
 }
 
 @media (min-width: 992px) {
+
     .layout-top-nav .main-header .inside-header,
-    .main-nav > .navbar,
+    .main-nav>.navbar,
     .layout-top-nav .content-wrapper,
     .layout-top-nav .main-footer {
         /* max-width: 1250px; */
         margin: 0 auto;
     }
+
     .main-nav {
         position: fixed;
         width: 100%;
@@ -591,14 +631,17 @@ Project:	Fab Admin - Responsive Admin Template
         -moz-box-shadow: 0 1px 3px 1px rgba(81, 77, 92, 0.5);
         box-shadow: 0 1px 3px 1px rgba(81, 77, 92, 0.5);
     }
+
     .layout-top-nav .content-wrapper {
         margin-top: 126px;
     }
-    .main-nav > li.dropdown:hover > .menu-mega {
+
+    .main-nav>li.dropdown:hover>.menu-mega {
         opacity: 1;
         visibility: visible;
         top: 100%;
     }
+
     .menu-mega {
         position: absolute;
         max-width: 1250px;
@@ -607,16 +650,19 @@ Project:	Fab Admin - Responsive Admin Template
         right: 15px;
         z-index: 99;
     }
+
     .menu-mega,
     .menu-mega .dropdown-menu {
         -webkit-box-shadow: 0 0 15px 1px rgba(81, 77, 92, 0.2);
         -moz-box-shadow: 0 0 15px 1px rgba(81, 77, 92, 0.2);
         box-shadow: 0 0 15px 1px rgba(81, 77, 92, 0.2);
     }
+
     .menu-mega ul.menu-mega-child {
         position: relative;
         height: 100%;
     }
+
     .one-half {
         width: 50%;
         float: left;
@@ -626,42 +672,52 @@ Project:	Fab Admin - Responsive Admin Template
         width: 33.33%;
         float: left;
     }
+
     .one-four {
         width: 25%;
         float: left;
     }
+
     .one-over-five {
         width: 20%;
         float: left;
         padding-left: 15px;
         padding-right: 15px;
     }
+
     .two-third {
         width: 66.6666%;
         float: left;
     }
+
     .m-menu {
         display: contents;
     }
+
     .mega-menu-auto {
         width: 600px;
     }
+
     .m-fix {
         display: block;
     }
+
     .main-nav .nav-link:focus,
     .main-nav .nav-link:hover {
         background-color: transparent;
     }
+
     .main-nav .navbar-nav .nav-item .nav-link {
         line-height: inherit;
         padding-right: 1rem;
         padding-left: 1rem;
     }
+
     .main-nav .dropdown .dropdown-menu.multilevel {
         width: max-content;
         width: -moz-max-content;
     }
+
     .main-nav .active-item-here {
         line-height: 0;
         display: inline-block;
@@ -675,24 +731,31 @@ Project:	Fab Admin - Responsive Admin Template
         z-index: 1;
         color: #708895;
     }
+
     .skin-blue-light .main-nav .active-item-here {
         color: #1e88e5;
     }
+
     .skin-black-light .main-nav .active-item-here {
         color: #28373e;
     }
+
     .skin-green-light .main-nav .active-item-here {
         color: #00acc1;
     }
+
     .skin-purple-light .main-nav .active-item-here {
         color: #7460ee;
     }
+
     .skin-red-light .main-nav .active-item-here {
         color: #ff002e;
     }
+
     .skin-yellow-light .main-nav .active-item-here {
         color: #e9ab2e;
     }
+
     .main-nav .active-item-here:before {
         display: inline-block;
         font-family: icomoon;
@@ -708,13 +771,15 @@ Project:	Fab Admin - Responsive Admin Template
         font-smoothing: antialiased;
         content: "\e900";
     }
+
     .main-nav .active-item-here:before {
         position: relative;
         top: 100%;
         margin-top: -11px;
         font-size: 60px;
     }
-    .main-nav .nav-item.active > .nav-link {
+
+    .main-nav .nav-item.active>.nav-link {
         overflow: visible;
     }
 }
@@ -722,33 +787,41 @@ Project:	Fab Admin - Responsive Admin Template
 .main-nav a {
     color: #666666;
 }
+
 .main-nav .menu-mega a {
     color: #67757c;
 }
+
 .main-nav {
     margin-top: 50px !important;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
 }
+
 .dropdown-menu .dropdown .dropdown-menu {
     top: 0;
     left: 100%;
     margin-left: 0.1rem;
     margin-right: 0.1rem;
 }
-.dropdown-menu > .dropdown:hover > .dropdown-menu,
-.dropdown-menu > .dropdown:hover > .dropdown-menu {
+
+.dropdown-menu>.dropdown:hover>.dropdown-menu,
+.dropdown-menu>.dropdown:hover>.dropdown-menu {
     display: block;
 }
+
 .menu-mega-child {
     padding: 1.5rem 2rem;
 }
+
 .main-nav .navbar {
     box-shadow: none;
 }
+
 .main-nav {
     background-color: #ffffff;
 }
+
 .skin-blue-light .main-nav,
 .skin-black-light .main-nav,
 .skin-green-light .main-nav,
@@ -757,46 +830,53 @@ Project:	Fab Admin - Responsive Admin Template
 .skin-yellow-light .main-nav {
     background-color: #ffffff;
 }
-.main-nav .navbar-nav > .nav-link:focus,
-.main-nav .navbar-nav > .nav-item > .nav-link:hover,
-.main-nav .nav-item.active > .nav-link,
-.main-nav .navbar-nav > .nav-item.show > .nav-link:focus {
+
+.main-nav .navbar-nav>.nav-link:focus,
+.main-nav .navbar-nav>.nav-item>.nav-link:hover,
+.main-nav .nav-item.active>.nav-link,
+.main-nav .navbar-nav>.nav-item.show>.nav-link:focus {
     color: #708895;
 }
-.skin-blue-light .main-nav .navbar-nav > .nav-link:focus,
-.skin-blue-light .main-nav .navbar-nav > .nav-item > .nav-link:hover,
-.skin-blue-light .main-nav .nav-item.active > .nav-link,
-.skin-blue-light .main-nav .navbar-nav > .nav-item.show > .nav-link:focus {
+
+.skin-blue-light .main-nav .navbar-nav>.nav-link:focus,
+.skin-blue-light .main-nav .navbar-nav>.nav-item>.nav-link:hover,
+.skin-blue-light .main-nav .nav-item.active>.nav-link,
+.skin-blue-light .main-nav .navbar-nav>.nav-item.show>.nav-link:focus {
     color: #1e88e5;
 }
-.skin-black-light .main-nav .navbar-nav > .nav-link:focus,
-.skin-black-light .main-nav .navbar-nav > .nav-item > .nav-link:hover,
-.skin-black-light .main-nav .nav-item.active > .nav-link,
-.skin-black-light .main-nav .navbar-nav > .nav-item.show > .nav-link:focus {
+
+.skin-black-light .main-nav .navbar-nav>.nav-link:focus,
+.skin-black-light .main-nav .navbar-nav>.nav-item>.nav-link:hover,
+.skin-black-light .main-nav .nav-item.active>.nav-link,
+.skin-black-light .main-nav .navbar-nav>.nav-item.show>.nav-link:focus {
     color: #28373e;
 }
-.skin-purple-light .main-nav .navbar-nav > .nav-link:focus,
-.skin-purple-light .main-nav .navbar-nav > .nav-item > .nav-link:hover,
-.skin-purple-light .main-nav .nav-item.active > .nav-link,
-.skin-purple-light .main-nav .navbar-nav > .nav-item.show > .nav-link:focus {
+
+.skin-purple-light .main-nav .navbar-nav>.nav-link:focus,
+.skin-purple-light .main-nav .navbar-nav>.nav-item>.nav-link:hover,
+.skin-purple-light .main-nav .nav-item.active>.nav-link,
+.skin-purple-light .main-nav .navbar-nav>.nav-item.show>.nav-link:focus {
     color: #7460ee;
 }
-.skin-green-light .main-nav .navbar-nav > .nav-link:focus,
-.skin-green-light .main-nav .navbar-nav > .nav-item > .nav-link:hover,
-.skin-green-light .main-nav .nav-item.active > .nav-link,
-.skin-green-light .main-nav .navbar-nav > .nav-item.show > .nav-link:focus {
+
+.skin-green-light .main-nav .navbar-nav>.nav-link:focus,
+.skin-green-light .main-nav .navbar-nav>.nav-item>.nav-link:hover,
+.skin-green-light .main-nav .nav-item.active>.nav-link,
+.skin-green-light .main-nav .navbar-nav>.nav-item.show>.nav-link:focus {
     color: #00acc1;
 }
-.skin-red-light .main-nav .navbar-nav > .nav-link:focus,
-.skin-red-light .main-nav .navbar-nav > .nav-item > .nav-link:hover,
-.skin-red-light .main-nav .nav-item.active > .nav-link,
-.skin-red-light .main-nav .navbar-nav > .nav-item.show > .nav-link:focus {
+
+.skin-red-light .main-nav .navbar-nav>.nav-link:focus,
+.skin-red-light .main-nav .navbar-nav>.nav-item>.nav-link:hover,
+.skin-red-light .main-nav .nav-item.active>.nav-link,
+.skin-red-light .main-nav .navbar-nav>.nav-item.show>.nav-link:focus {
     color: #ff002e;
 }
-.skin-yellow-light .main-nav .navbar-nav > .nav-link:focus,
-.skin-yellow-light .main-nav .navbar-nav > .nav-item > .nav-link:hover,
-.skin-yellow-light .main-nav .nav-item.active > .nav-link,
-.skin-yellow-light .main-nav .navbar-nav > .nav-item.show > .nav-link:focus {
+
+.skin-yellow-light .main-nav .navbar-nav>.nav-link:focus,
+.skin-yellow-light .main-nav .navbar-nav>.nav-item>.nav-link:hover,
+.skin-yellow-light .main-nav .nav-item.active>.nav-link,
+.skin-yellow-light .main-nav .navbar-nav>.nav-item.show>.nav-link:focus {
     color: #e9ab2e;
 }
 
@@ -807,6 +887,7 @@ Project:	Fab Admin - Responsive Admin Template
         position: absolute;
         bottom: 0px;
     }
+
     .main-nav nav {
         width: 230px;
         min-height: 100%;
@@ -823,6 +904,7 @@ Project:	Fab Admin - Responsive Admin Template
         -o-transition: -o-transform 0.3s ease-in-out, width 0.3s ease-in-out;
         transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
     }
+
     .sidebar-open .main-nav nav,
     .sidebar-collapse .main-nav nav {
         -webkit-transform: translate(0, 0);
@@ -830,49 +912,60 @@ Project:	Fab Admin - Responsive Admin Template
         -o-transform: translate(0, 0);
         transform: translate(0, 0);
     }
-    .main-nav .navbar-nav > .nav-item > .nav-link {
+
+    .main-nav .navbar-nav>.nav-item>.nav-link {
         padding-top: 1rem;
         padding-bottom: 1rem;
     }
+
     .main-nav .navbar-collapse {
         padding-left: 0;
         padding-right: 0;
     }
-    .main-nav .navbar-nav > .nav-item > .nav-link {
+
+    .main-nav .navbar-nav>.nav-item>.nav-link {
         padding: 0.75rem 2rem;
         width: 100%;
         display: inline-block;
     }
+
     .main-nav .navbar-nav .dropdown-menu .nav-item .nav-link {
         padding: 0.5rem 2rem;
     }
+
     .main-nav .navbar-nav,
-    .main-nav .navbar-nav > .nav-item {
+    .main-nav .navbar-nav>.nav-item {
         width: 100%;
         display: inline-block;
     }
-    .main-nav .navbar-nav > .nav-item > .dropdown-menu {
+
+    .main-nav .navbar-nav>.nav-item>.dropdown-menu {
         display: none;
     }
-    .main-nav .navbar-nav > .nav-item > .dropdown-menu.show {
+
+    .main-nav .navbar-nav>.nav-item>.dropdown-menu.show {
         display: block;
         max-width: 230px;
     }
+
     .menu-mega-child {
         padding: 0rem 2rem;
     }
+
     .menu-mega {
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
     }
-    .main-nav > .navbar .navbar-nav > .dropdown.show > .nav-link:focus,
-    .main-nav > .navbar .navbar-nav > .dropdown.show > .nav-link:hover,
-    .main-nav > .navbar .navbar-nav > .dropdown.show > .nav-link {
+
+    .main-nav>.navbar .navbar-nav>.dropdown.show>.nav-link:focus,
+    .main-nav>.navbar .navbar-nav>.dropdown.show>.nav-link:hover,
+    .main-nav>.navbar .navbar-nav>.dropdown.show>.nav-link {
         background-color: #1a292f;
         color: #ffffff;
     }
-    .main-nav > .navbar .navbar-nav > .dropdown > .nav-link:focus,
-    .main-nav > .navbar .navbar-nav > .nav-item > .nav-link:focus {
+
+    .main-nav>.navbar .navbar-nav>.dropdown>.nav-link:focus,
+    .main-nav>.navbar .navbar-nav>.nav-item>.nav-link:focus {
         background-color: transparent;
     }
 
