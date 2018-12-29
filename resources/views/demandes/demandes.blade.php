@@ -17,6 +17,8 @@
 <style>
     #map {
         height: 75vh;
+        margin-top : 8px;
+        margin-bottom: 8px
     }
 
     .hidden {
@@ -147,7 +149,7 @@
             <section>
                 <div class="row">
 
-                    <div class="col-12">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="box">
                             <div class="box-header with-border" style="background-color: #cedce3;">
                                 <div class="row">
@@ -155,7 +157,7 @@
                                         <h4 class="box-title pull-left">Points désservis</h4>
                                     </div>
                                     <div class="col-6">
-                                        <button type="button" class="btn btn-success pull-right" style="padding: 0.4rem 1rem;">
+                                        <button type="button" class="btn btn-success pull-right" id="add_point" style="padding: 0.4rem 1rem;">
                                             <i class="fa fa-plus"></i> Ajouter point
                                         </button>
                                     </div>
@@ -165,53 +167,35 @@
                             <!-- /.box-header -->
                             <div class="box-body no-padding">
                                 <div class="table-responsive">
-                                    <table class="table ">
+                                    <table class="table table-points">
                                         <tr style="text-align: center;">
                                             <th>Type</th>
                                             <th>Nom</th>
                                         </tr>
-
-                                        <tr>
-                                            <td style="width: 40%">
-                                                <div class="form-group">
-                                                    <select class="form-control " id="type_point">
-                                                        <option value="localite" selected="selected">Localité</option>
-                                                        <option value="etablissement_scol">Etablissement Scolaire</option>
-                                                        <option value="etablissemnt_sante"><i class="fa fa-dollar"></i>Etablissement
-                                                            de santé </option>
-                                                        <option value="autre"><i class="fa fa-dollar"></i>Autre</option>
-                                                    </select>
-                                                </div>
-                                            </td>
-                                            <td style="width: 60%">
-                                                <div class="form-group point-desservis" id="localite">
-                                                    <select class="form-control select2" style="width: 100%;">
-                                                        <option selected="selected">Douar 1</option>
-                                                        <option>Douar 2</option>
-                                                        <option>Douar 3</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group hidden point-desservis" id="etablissement_scol">
-                                                    <select class="form-control " style="width: 100%;">
-                                                        <option selected="selected">Etablissement Scol 1</option>
-                                                        <option>Etablissement Scol 2</option>
-                                                        <option>Etablissement Scol 3</option>
-                                                        <option>Etablissement Scol 4</option>
-                                                        <option>Etablissement Scol 5</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group hidden point-desservis" id="etablissemnt_sante">
-                                                    <select class="form-control " style="width: 100%;">
-                                                        <option selected="selected">Etablissement Sante 1</option>
-                                                        <option>Etablissement Sante 2</option>
-                                                        <option>Etablissement Sante 3</option>
-                                                        <option>Etablissement Sante 4</option>
-                                                        <option>Etablissement Sante 5</option>
-                                                    </select>
-                                                </div>
-                                            </td>
-
-                                        </tr>
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 40%">
+                                                    <div class="form-group">
+                                                        <select class="form-control type_point">
+                                                            <option value="localite" selected="selected">Localité</option>
+                                                            <option value="etablissement_scol">Etablissement Scolaire</option>
+                                                            <option value="etablissemnt_sante"><i class="fa fa-dollar"></i>Etablissement
+                                                                de santé </option>
+                                                            <option value="autre"><i class="fa fa-dollar"></i>Autre</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 60%">
+                                                    <div class="form-group ">
+                                                        <select class="form-control select2 point-desservis" style="width: 100%;">
+                                                            <option selected="selected">Douar 1</option>
+                                                            <option>Douar 2</option>
+                                                            <option>Douar 3</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -221,7 +205,7 @@
                     </div>
 
 
-                    <div class="col-12">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="box">
                             <div class="box-header with-border" style="background-color: #cedce3;">
                                 <div class="row">
@@ -229,7 +213,7 @@
                                         <h4 class="box-title pull-left">Pièces </h4>
                                     </div>
                                     <div class="col-6">
-                                        <button type="button" class="btn btn-success pull-right" style="padding: 0.4rem 1rem;">
+                                        <button type="button" class="btn btn-success pull-right" id="add_piece" style="padding: 0.4rem 1rem;">
                                             <i class="fa fa-plus"></i> Ajouter pièce
                                         </button>
                                     </div>
@@ -239,49 +223,43 @@
                             <!-- /.box-header -->
                             <div class="box-body no-padding">
                                 <div class="table-responsive">
-                                    <table class="table ">
+                                    <table class="table table-piece">
                                         <tr style="text-align: center;">
                                             <th>Type</th>
                                             <th>Nom</th>
                                             <th>Upload</th>
                                         </tr>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <select class="form-control document" style="width: 100%;">
+                                                            <option value="etude" selected="selected">Etude </option>
+                                                            <option value="fiche_technique"> Fiche technique</option>
 
-                                        <tr>
-                                            <td>
-                                                <div class="form-group">
-                                                    <select class="form-control " style="width: 100%;" id="document">
-                                                        <option value="etude" selected="selected">Etude </option>
-                                                        <option value="fiche_technique"> Fiche technique</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group ">
+                                                        <select class="form-control etat" style="width: 100%;">
+                                                            <option selected="selected">Approuvée </option>
+                                                            <option>Disponible</option>
+                                                            <option>En cours d'approbation</option>
+                                                        </select>
+                                                    </div>
 
-                                                    </select>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-group etat" id="etude">
-                                                    <select class="form-control " style="width: 100%;">
-                                                        <option selected="selected">Approuvée </option>
-                                                        <option>Disponible</option>
-                                                        <option>En cours d'approbation</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group hidden etat" id="fiche_technique">
-                                                    <select class="form-control " style="width: 100%;">
-                                                        <option selected="selected">Sce concérné</option>
-                                                        <option>DE Province</option>
-                                                        <option>Sce technique.com</option>
-                                                        <option>BET</option>
-                                                    </select>
-                                                </div>
+                                                </td>
 
-                                            </td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="file" class="form-control" />
+                                                    </div>
+                                                </td>
 
-                                            <td>
-                                                <button type="button" class="btn btn-secondary ">
-                                                    <i class="fa fa-plus"></i> Choisir document
-                                                </button>
-                                            </td>
+                                            </tr>
+                                        </tbody>
 
-                                        </tr>
                                     </table>
                                 </div>
                             </div>
@@ -335,7 +313,7 @@
                                             </tr>
                                         </tbody>
 
-                                        <!-- 
+                                        <!--
                                             we can add tfoot when fix the problem of calculation
                                             <tfoot>
                                             <tr class="total-col  totalCol">
@@ -411,6 +389,9 @@
 
 
 <script src="{{asset('js/jquery.tabledit.js')}}"></script>
+
+<!-- functions js -->
+<script src="{{asset('js/functions.js')}}"></script>
 
 
 <!-- CK Editor -->
