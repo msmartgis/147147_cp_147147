@@ -15,10 +15,11 @@ class CreatePistesTable extends Migration
     {
         Schema::create('pistes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('realise_par', 500);
-            $table->double('longueur', 8, 2);
-            $table->geometry('coordonnees');
+            $table->bigInteger('demande_id')->nullable();
+            // $table->string('realise_par', 500)->nullable(); don't know yet what it means
+            $table->double('longueur', 8, 2)->nullable();
             $table->timestamps();
+            $table->foreign('demande_id')->references('id')->on('demandes');
         });
     }
 

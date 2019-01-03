@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePorteurProjetProjetTable extends Migration
+class CreatePointdesserviDemandeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePorteurProjetProjetTable extends Migration
      */
     public function up()
     {
-        Schema::create('projet_porteurProjet', function (Blueprint $table) {
+        Schema::create('pointdesservi_demande', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_projet');
-            $table->integer('id_porteurProjet');
+            $table->integer('point_desservi_id');
+            $table->integer('demande_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreatePorteurProjetProjetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('projet_porteurProjet');
+        Schema::dropIfExists('pointdesservi_demande');
     }
 }

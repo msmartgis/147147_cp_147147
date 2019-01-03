@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="{{asset('images/favicon.ico')}}">
 
-    <title>Fab Admin - Dashboard</title>
+ <title>{{config('app.name')}}</title>
     
 		@include('inc.css_links')	
 
@@ -96,6 +96,7 @@
 
     <!-- Main content -->
     <section class="content m-content">
+			@include('inc.messages')
 			@yield('content')
 	        
 	</section>

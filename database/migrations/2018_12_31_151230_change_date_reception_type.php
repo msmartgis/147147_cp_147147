@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCommuneProjetTable extends Migration
+class ChangeDateReceptionType extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateCommuneProjetTable extends Migration
      */
     public function up()
     {
-        Schema::create('commune_demande', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('commune_id');
-            $table->integer('demande_id');
-            $table->timestamps();
+        Schema::table('projects', function ($table) {
+            $table->string('date_reception', 50)->nullable()->change();
         });
     }
 
@@ -28,6 +25,6 @@ class CreateCommuneProjetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('commune_demande');
+        //
     }
 }

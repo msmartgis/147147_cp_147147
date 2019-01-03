@@ -125,8 +125,8 @@ $('.table-piece tbody').on('change', '.document', function () {
 //point desservis
 $('.table-points tbody').on('change', '.type_point', function () {
     var currow = $(this).closest('tr');
-    var col1 = currow.find('td:eq(1)').text();
-    console.log(col1);
+    //var col1 = currow.find('td:eq(1)').text();
+
 
     currow.find('td .point-desservis').html('');
 

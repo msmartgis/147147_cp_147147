@@ -11,45 +11,11 @@
 |
  */
 
-//home page
-Route::get('/', function () {
-    return view('index');
-})->name('home');
+ //index
+Route::get('/', 'PagesController@index');
 
 
-//projets
-Route::get('projets', function () {
-    return view('projets');
-});
 
-//demandes
-Route::get('demandes', function () {
-    return view('demandes.demandes');
-})->name('demandes');
-
-//conventions
-Route::get('conventions', function () {
-    return view('conventions');
-});
-
-//appels_offres
-Route::get('appels_offres', function () {
-    return view('appels_offres');
-});
-
-//suivi_versements
-Route::get('suivi_versements', function () {
-    return view('suivi_versements');
-});
-
-
-//statistiques
-Route::get('statistiques', function () {
-    return view('statistiques');
-});
-
-//cartographie
-Route::get('cartographie', function () {
-    return view('cartographie');
-});
+//resources for demande controller
+Route::resource('demandes', 'DemandesController');
 

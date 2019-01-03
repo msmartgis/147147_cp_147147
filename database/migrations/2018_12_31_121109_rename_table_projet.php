@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCommuneProjetTable extends Migration
+class RenameTableProjet extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,7 @@ class CreateCommuneProjetTable extends Migration
      */
     public function up()
     {
-        Schema::create('commune_demande', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('commune_id');
-            $table->integer('demande_id');
-            $table->timestamps();
-        });
+        Schema::rename('projets', 'projects');
     }
 
     /**
@@ -28,6 +23,7 @@ class CreateCommuneProjetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('commune_demande');
+        Schema::drop('projects');
+        Schema::dropIfExists('projects');
     }
 }

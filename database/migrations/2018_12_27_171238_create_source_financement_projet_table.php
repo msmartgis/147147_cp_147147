@@ -13,7 +13,7 @@ class CreateSourceFinancementProjetTable extends Migration
      */
     public function up()
     {
-        Schema::create('sourceFinancement_projet', function (Blueprint $table) {
+        Schema::create('sourcefinancement_convention', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_sourceFinancement');
             $table->integer('id_projet');
@@ -28,6 +28,6 @@ class CreateSourceFinancementProjetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sourceFinancement_projet');
+        Schema::dropIfExists('sourcefinancement_convention');
     }
 }

@@ -13,7 +13,7 @@ class CreateMaitresOuvragesTable extends Migration
      */
     public function up()
     {
-        Schema::create('maitresOuvrages', function (Blueprint $table) {
+        Schema::create('moas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nom_fr', 500);
             $table->string('nom_ar', 500);
@@ -28,6 +28,6 @@ class CreateMaitresOuvragesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('maitresOuvrages');
+        Schema::dropIfExists('moas');
     }
 }

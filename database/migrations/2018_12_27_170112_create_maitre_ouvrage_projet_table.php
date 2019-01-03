@@ -13,10 +13,10 @@ class CreateMaitreOuvrageProjetTable extends Migration
      */
     public function up()
     {
-        Schema::create('maitreOuvrage_projet', function (Blueprint $table) {
+        Schema::create('moa_convention', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_projet');
-            $table->integer('id_maitreOuvrage');
+            $table->integer('convention_id');
+            $table->integer('moa_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateMaitreOuvrageProjetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('maitreOuvrage_projet');
+        Schema::dropIfExists('moa_convention');
     }
 }

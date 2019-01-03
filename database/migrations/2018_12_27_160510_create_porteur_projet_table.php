@@ -15,10 +15,12 @@ class CreatePorteurProjetTable extends Migration
     {
         Schema::create('porteursProjets', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('demande_id');
             $table->string('type', 100);
             $table->string('nom_porteur_fr', 500);
             $table->string('nom_porteur_ar', 500);
             $table->timestamps();
+            $table->foreign('demande_id')->references('id')->on('demandes');
         });
     }
 

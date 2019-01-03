@@ -13,12 +13,12 @@ class CreateCommunePointsDesservisTable extends Migration
      */
     public function up()
     {
-        Schema::create('pointsDesservis', function (Blueprint $table) {
+        Schema::create('point_desservis', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type_point', 500);
             $table->string('nom_ar', 500);
             $table->string('nom_fr', 500);
-            $table->geometry('coordonnees');
+
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateCommunePointsDesservisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pointsDesservis');
+        Schema::dropIfExists('point_desservis');
     }
 }

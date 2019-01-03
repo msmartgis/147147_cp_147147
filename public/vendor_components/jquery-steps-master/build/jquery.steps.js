@@ -3,45 +3,45 @@
  * Copyright (c) 2014 Rafael Staib (http://www.jquery-steps.com)
  * Licensed under MIT http://www.opensource.org/licenses/MIT
  */
-(function($, undefined) {
+(function ($, undefined) {
     $.fn.extend({
-        _aria: function(name, value) {
+        _aria: function (name, value) {
             return this.attr("aria-" + name, value);
         },
 
-        _removeAria: function(name) {
+        _removeAria: function (name) {
             return this.removeAttr("aria-" + name);
         },
 
-        _enableAria: function(enable) {
-            return enable == null || enable
-                ? this.removeClass("disabled")._aria("disabled", "false")
-                : this.addClass("disabled")._aria("disabled", "true");
+        _enableAria: function (enable) {
+            return enable == null || enable ?
+                this.removeClass("disabled")._aria("disabled", "false") :
+                this.addClass("disabled")._aria("disabled", "true");
         },
 
-        _showAria: function(show) {
-            return show == null || show
-                ? this.show()._aria("hidden", "false")
-                : this.hide()._aria("hidden", "true");
+        _showAria: function (show) {
+            return show == null || show ?
+                this.show()._aria("hidden", "false") :
+                this.hide()._aria("hidden", "true");
         },
 
-        _selectAria: function(select) {
-            return select == null || select
-                ? this.addClass("current")._aria("selected", "true")
-                : this.removeClass("current")._aria("selected", "false");
+        _selectAria: function (select) {
+            return select == null || select ?
+                this.addClass("current")._aria("selected", "true") :
+                this.removeClass("current")._aria("selected", "false");
         },
 
-        _id: function(id) {
+        _id: function (id) {
             return id ? this.attr("id", id) : this.attr("id");
         }
     });
 
     if (!String.prototype.format) {
-        String.prototype.format = function() {
+        String.prototype.format = function () {
             var args =
-                arguments.length === 1 && $.isArray(arguments[0])
-                    ? arguments[0]
-                    : arguments;
+                arguments.length === 1 && $.isArray(arguments[0]) ?
+                arguments[0] :
+                arguments;
             var formattedString = this;
             for (var i = 0; i < args.length; i++) {
                 var pattern = new RegExp("\\{" + i + "\\}", "gm");
@@ -165,26 +165,26 @@
 
         state.currentIndex = startIndex;
 
-        stepTitles.each(function(index) {
+        stepTitles.each(function (index) {
             var item = $(this), // item == header
                 content = stepContents.eq(index),
                 modeData = content.data("mode"),
                 mode =
-                    modeData == null
-                        ? contentMode.html
-                        : getValidEnumValue(
-                              contentMode,
-                              /^\s*$/.test(modeData) || isNaN(modeData)
-                                  ? modeData
-                                  : parseInt(modeData, 0)
-                          ),
+                modeData == null ?
+                contentMode.html :
+                getValidEnumValue(
+                    contentMode,
+                    /^\s*$/.test(modeData) || isNaN(modeData) ?
+                    modeData :
+                    parseInt(modeData, 0)
+                ),
                 contentUrl =
-                    mode === contentMode.html ||
-                    content.data("url") === undefined
-                        ? ""
-                        : content.data("url"),
+                mode === contentMode.html ||
+                content.data("url") === undefined ?
+                "" :
+                content.data("url"),
                 contentLoaded =
-                    mode !== contentMode.html && content.data("loaded") === "1",
+                mode !== contentMode.html && content.data("loaded") === "1",
                 step = $.extend({}, stepModel, {
                     title: item.html(),
                     content: mode === contentMode.html ? content.html() : "",
@@ -514,7 +514,7 @@
                 state,
                 index,
                 oldIndex,
-                function() {
+                function () {
                     wizard.triggerHandler("stepChanged", [index, oldIndex]);
                 }
             );
@@ -544,7 +544,7 @@
         /*jshint -W040 */
         var opts = $.extend(true, {}, defaults, options);
 
-        return this.each(function() {
+        return this.each(function () {
             var wizard = $(this);
             var state = {
                 currentIndex: opts.startIndex,
@@ -672,7 +672,10 @@
             return false;
         }
 
-        var keyCodes = { left: 37, right: 39 };
+        var keyCodes = {
+            left: 37,
+            right: 39
+        };
         if (event.keyCode === keyCodes.left) {
             event.preventDefault();
             goToPreviousStep(wizard, options, state);
@@ -708,17 +711,17 @@
                             .empty()
                             .html(
                                 '<iframe src="' +
-                                    currentStep.contentUrl +
-                                    '" frameborder="0" scrolling="no" />'
+                                currentStep.contentUrl +
+                                '" frameborder="0" scrolling="no" />'
                             )
                             .data("loaded", "1");
                         break;
 
                     case contentMode.async:
                         var currentStepContent = getStepPanel(
-                            wizard,
-                            currentIndex
-                        )
+                                wizard,
+                                currentIndex
+                            )
                             ._aria("busy", "true")
                             .empty()
                             .append(
@@ -730,7 +733,7 @@
                         $.ajax({
                             url: currentStep.contentUrl,
                             cache: false
-                        }).done(function(data) {
+                        }).done(function (data) {
                             currentStepContent
                                 .empty()
                                 .html(data)
@@ -800,10 +803,10 @@
 
         var anchor = $(this),
             wizard = anchor
-                .parent()
-                .parent()
-                .parent()
-                .parent(),
+            .parent()
+            .parent()
+            .parent()
+            .parent(),
             options = getOptions(wizard),
             state = getState(wizard),
             href = anchor.attr("href");
@@ -853,19 +856,19 @@
                 finish._enableAria(state.stepCount > 0);
                 next._enableAria(
                     state.stepCount > 1 &&
-                        state.stepCount > state.currentIndex + 1
+                    state.stepCount > state.currentIndex + 1
                 );
             } else {
                 finish._showAria(
                     options.enableFinishButton &&
-                        state.stepCount === state.currentIndex + 1
+                    state.stepCount === state.currentIndex + 1
                 );
                 next._showAria(
                     state.stepCount === 0 ||
-                        state.stepCount > state.currentIndex + 1
+                    state.stepCount > state.currentIndex + 1
                 )._enableAria(
                     state.stepCount > state.currentIndex + 1 ||
-                        !options.enableFinishButton
+                    !options.enableFinishButton
                 );
             }
         }
@@ -886,8 +889,8 @@
         var currentOrNewStepAnchor = getStepAnchor(wizard, state.currentIndex),
             currentInfo = $(
                 '<span class="current-info audible">' +
-                    options.labels.current +
-                    " </span>"
+                options.labels.current +
+                " </span>"
             ),
             stepTitles = wizard.find(".content > .title");
 
@@ -939,9 +942,9 @@
                 uniqueBodyId = uniqueId + _tabpanelSuffix + i,
                 uniqueHeaderId = uniqueId + _titleSuffix + i,
                 title = wizard
-                    .find(".title")
-                    .eq(i)
-                    ._id(uniqueHeaderId);
+                .find(".title")
+                .eq(i)
+                ._id(uniqueHeaderId);
 
             wizard
                 .find(".steps a")
@@ -1063,7 +1066,7 @@
                 options.stepsOrientation
             ),
             verticalCssClass =
-                orientation === stepsOrientation.vertical ? " vertical" : "",
+            orientation === stepsOrientation.vertical ? " vertical" : "",
             contentWrapper = $(
                 wrapperTemplate.format(
                     options.contentContainerTag,
@@ -1089,17 +1092,17 @@
             .append(contentWrapper)
             .addClass(
                 options.cssClass +
-                    " " +
-                    options.clearFixCssClass +
-                    verticalCssClass
+                " " +
+                options.clearFixCssClass +
+                verticalCssClass
             );
 
         // Add WIA-ARIA support
-        stepContents.each(function(index) {
+        stepContents.each(function (index) {
             renderBody(wizard, state, $(this), index);
         });
 
-        stepTitles.each(function(index) {
+        stepTitles.each(function (index) {
             renderTitle(wizard, options, state, $(this), index);
         });
 
@@ -1142,9 +1145,9 @@
     function renderPagination(wizard, options, state) {
         if (options.enablePagination) {
             var pagination =
-                    '<{0} class="actions {1}"><ul role="menu" aria-label="{2}">{3}</ul></{0}>',
+                '<{0} class="actions {1}"><ul role="menu" aria-label="{2}">{3}</ul></{0}>',
                 buttonTemplate =
-                    '<li><a href="#{0}" role="menuitem">{1}</a></li>',
+                '<li><a href="#{0}" role="menuitem">{1}</a></li>',
                 buttons = "";
 
             if (!options.forceMoveForward) {
@@ -1238,14 +1241,14 @@
             }),
             stepItem = $(
                 '<li role="tab"><a id="' +
-                    uniqueStepId +
-                    '" href="#' +
-                    uniqueHeaderId +
-                    '" aria-controls="' +
-                    uniqueBodyId +
-                    '">' +
-                    title +
-                    "</a></li>"
+                uniqueStepId +
+                '" href="#' +
+                uniqueHeaderId +
+                '" aria-controls="' +
+                uniqueBodyId +
+                '">' +
+                title +
+                "</a></li>"
             );
 
         stepItem._enableAria(
@@ -1331,26 +1334,26 @@
             case transitionEffect.fade:
             case transitionEffect.slide:
                 var hide =
-                        effect === transitionEffect.fade
-                            ? "fadeOut"
-                            : "slideUp",
+                    effect === transitionEffect.fade ?
+                    "fadeOut" :
+                    "slideUp",
                     show =
-                        effect === transitionEffect.fade
-                            ? "fadeIn"
-                            : "slideDown";
+                    effect === transitionEffect.fade ?
+                    "fadeIn" :
+                    "slideDown";
 
                 state.transitionElement = newStep;
-                currentStep[hide](effectSpeed, function() {
+                currentStep[hide](effectSpeed, function () {
                     var wizard = $(this)
-                            ._showAria(false)
-                            .parent()
-                            .parent(),
+                        ._showAria(false)
+                        .parent()
+                        .parent(),
                         state = getState(wizard);
 
                     if (state.transitionElement) {
-                        state.transitionElement[show](effectSpeed, function() {
-                            $(this)._showAria();
-                        })
+                        state.transitionElement[show](effectSpeed, function () {
+                                $(this)._showAria();
+                            })
                             .promise()
                             .done(doneCallback);
                         state.transitionElement = null;
@@ -1364,17 +1367,20 @@
                     posFadeIn = index > oldIndex ? outerWidth : -outerWidth;
 
                 $.when(
-                    currentStep.animate(
-                        { left: posFadeOut },
+                    currentStep.animate({
+                            left: posFadeOut
+                        },
                         effectSpeed,
-                        function() {
+                        function () {
                             $(this)._showAria(false);
                         }
                     ),
                     newStep
-                        .css("left", posFadeIn + "px")
-                        ._showAria()
-                        .animate({ left: 0 }, effectSpeed)
+                    .css("left", posFadeIn + "px")
+                    ._showAria()
+                    .animate({
+                        left: 0
+                    }, effectSpeed)
                 ).done(doneCallback);
                 break;
 
@@ -1399,10 +1405,10 @@
 
         var anchor = $(this),
             wizard = anchor
-                .parent()
-                .parent()
-                .parent()
-                .parent(),
+            .parent()
+            .parent()
+            .parent()
+            .parent(),
             options = getOptions(wizard),
             state = getState(wizard),
             oldIndex = state.currentIndex;
@@ -1459,7 +1465,7 @@
      * @param [params=]* {Array} Additional arguments for a method call
      * @chainable
      **/
-    $.fn.steps = function(method) {
+    $.fn.steps = function (method) {
         if ($.fn.steps[method]) {
             return $.fn.steps[method].apply(
                 this,
@@ -1479,7 +1485,7 @@
      * @param step {Object} The step object to add
      * @chainable
      **/
-    $.fn.steps.add = function(step) {
+    $.fn.steps.add = function (step) {
         var state = getState(this);
         return insertStep(this, getOptions(this), state, state.stepCount, step);
     };
@@ -1490,7 +1496,7 @@
      * @method destroy
      * @chainable
      **/
-    $.fn.steps.destroy = function() {
+    $.fn.steps.destroy = function () {
         return destroy(this, getOptions(this));
     };
 
@@ -1499,7 +1505,7 @@
      *
      * @method finish
      **/
-    $.fn.steps.finish = function() {
+    $.fn.steps.finish = function () {
         finishStep(this, getState(this));
     };
 
@@ -1510,7 +1516,7 @@
      * @return {Integer} The actual step index (zero-based)
      * @for steps
      **/
-    $.fn.steps.getCurrentIndex = function() {
+    $.fn.steps.getCurrentIndex = function () {
         return getState(this).currentIndex;
     };
 
@@ -1520,7 +1526,7 @@
      * @method getCurrentStep
      * @return {Object} The actual step object
      **/
-    $.fn.steps.getCurrentStep = function() {
+    $.fn.steps.getCurrentStep = function () {
         return getStep(this, getState(this).currentIndex);
     };
 
@@ -1531,7 +1537,7 @@
      * @param index {Integer} An integer that belongs to the position of a step
      * @return {Object} A specific step object
      **/
-    $.fn.steps.getStep = function(index) {
+    $.fn.steps.getStep = function (index) {
         return getStep(this, index);
     };
 
@@ -1550,7 +1556,7 @@
      *     });
      * @chainable
      **/
-    $.fn.steps.insert = function(index, step) {
+    $.fn.steps.insert = function (index, step) {
         return insertStep(this, getOptions(this), getState(this), index, step);
     };
 
@@ -1560,7 +1566,7 @@
      * @method next
      * @return {Boolean} Indicates whether the action executed
      **/
-    $.fn.steps.next = function() {
+    $.fn.steps.next = function () {
         return goToNextStep(this, getOptions(this), getState(this));
     };
 
@@ -1570,7 +1576,7 @@
      * @method previous
      * @return {Boolean} Indicates whether the action executed
      **/
-    $.fn.steps.previous = function() {
+    $.fn.steps.previous = function () {
         return goToPreviousStep(this, getOptions(this), getState(this));
     };
 
@@ -1581,7 +1587,7 @@
      * @param index {Integer} The position (zero-based) of the step to remove
      * @return Indecates whether the item is removed.
      **/
-    $.fn.steps.remove = function(index) {
+    $.fn.steps.remove = function (index) {
         return removeStep(this, getOptions(this), getState(this), index);
     };
 
@@ -1592,7 +1598,7 @@
      * @param index {Integer} An integer that belongs to the position of a step
      * @param step {Object} The step object to change
      **/
-    $.fn.steps.setStep = function(index, step) {
+    $.fn.steps.setStep = function (index, step) {
         throw new Error("Not yet implemented!");
     };
 
@@ -1603,7 +1609,7 @@
      * @param count {Integer} The amount of steps that should be skipped
      * @return {Boolean} Indicates whether the action executed
      **/
-    $.fn.steps.skip = function(count) {
+    $.fn.steps.skip = function (count) {
         throw new Error("Not yet implemented!");
     };
 
@@ -2028,7 +2034,7 @@
          * @default function (event, currentIndex, newIndex) { return true; }
          * @for defaults
          **/
-        onStepChanging: function(event, currentIndex, newIndex) {
+        onStepChanging: function (event, currentIndex, newIndex) {
             return true;
         },
 
@@ -2040,7 +2046,7 @@
          * @default function (event, currentIndex, priorIndex) { }
          * @for defaults
          **/
-        onStepChanged: function(event, currentIndex, priorIndex) {},
+        onStepChanged: function (event, currentIndex, priorIndex) {},
 
         /**
          * Fires after cancelation.
@@ -2050,7 +2056,7 @@
          * @default function (event) { }
          * @for defaults
          **/
-        onCanceled: function(event) {},
+        onCanceled: function (event) {},
 
         /**
          * Fires before finishing and can be used to prevent completion by returning `false`.
@@ -2061,7 +2067,7 @@
          * @default function (event, currentIndex) { return true; }
          * @for defaults
          **/
-        onFinishing: function(event, currentIndex) {
+        onFinishing: function (event, currentIndex) {
             return true;
         },
 
@@ -2073,7 +2079,7 @@
          * @default function (event, currentIndex) { }
          * @for defaults
          **/
-        onFinished: function(event, currentIndex) {},
+        onFinished: function (event, currentIndex) {},
 
         /**
          * Fires after async content is loaded.
@@ -2083,7 +2089,7 @@
          * @default function (event, index) { }
          * @for defaults
          **/
-        onContentLoaded: function(event, currentIndex) {},
+        onContentLoaded: function (event, currentIndex) {},
 
         /**
          * Fires when the wizard is initialized.
@@ -2093,7 +2099,7 @@
          * @default function (event) { }
          * @for defaults
          **/
-        onInit: function(event, currentIndex) {},
+        onInit: function (event, currentIndex) {},
 
         /**
          * Contains all labels.
@@ -2153,7 +2159,7 @@
              * @default "Next"
              * @for defaults
              **/
-            next: "Next",
+            next: "Suivant",
 
             /**
              * Label for the previous button.
@@ -2163,7 +2169,7 @@
              * @default "Previous"
              * @for defaults
              **/
-            previous: "Previous",
+            previous: "Précédent",
 
             /**
              * Label for the loading animation.
