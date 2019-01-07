@@ -7,11 +7,17 @@ use App\Commune;
 use App\Piste;
 use App\Porteur;
 use App\PointDesservi;
+use App\Partenaire;
+use App\Piece;
+use Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
+
 
 class DemandesController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -30,13 +36,14 @@ class DemandesController extends Controller
     public function create()
     {
 
+
         //communes list
         $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
         
          //point desservis
-        $localites = PointDesservi::where('type_point', 'localite')
-            ->orderBy('nom_fr')
-            ->pluck('nom_fr', 'id');
+        $localites = PointDesservi::all()->where('type_point', '=', 'localite');
+        $etablissement_scols = PointDesservi::all()->where('type_point', '=', 'etablissement_scol');
+      
 
         //find the max numero ordre and increment 
         $max_num_ordre = Demande::max('num_ordre');
@@ -46,6 +53,7 @@ class DemandesController extends Controller
                 'current_numero_ordre' => $current_numero_ordre,
                 'communes' => $communes,
                 'localites' => $localites,
+                'etablissement_scols' => $etablissement_scols,
             ]
         );
     }
@@ -61,7 +69,10 @@ class DemandesController extends Controller
         $this->validate($request, ['num_ordre' => 'required']);   
         
         //find the communes for this demande and put them in an array
-        $communes = $request->input('communes');        
+        $communes = $request->input('communes');   
+        
+        //get the localites
+        $localites = $request->input('localites');
         
         //get the last id of demandes
         $id_demande = Demande::max('id');
@@ -75,22 +86,60 @@ class DemandesController extends Controller
         $demande->montant_global = $request->input('montant_global');
         $demande->observation = $request->input('observation');
         $demande->etat = $request->input('etat');
-
-
-
         $demande->save();
+
+        //save data in partenaire
+        $partenaire = new Partenaire;
+        return $request->input('partenaire') . $request->input('montant') . ' ' . $request->input('pourcentage') . "hello";
+        $partenaire->type = $request->input('partenaire');
+        $partenaire->montant = $request->input('montant');
+        $partenaire->pourcentage = $request->input('pourcentage');
+        $partenaire->save();
         //insert in pivot table 
         if ($demande->save()) {
             $commune_ids = Input::get('communes');
             $demande->communes()->sync($commune_ids);
 
+            //insert localite id and demande id in pivot table 
+            $point_desservi = Input::get('localites');
+            $demande->point_desservi()->sync($point_desservi);
+
+            //pivot table between partenaire and demande
+            $partenaire_ids = Input::get('partenaire');
+            $demande->partenaire()->sync($partenaire_ids);
+
         }
 
-        //save date in piste
+        
+        //save data in piste
         $piste = new Piste;
         $piste->longueur = $request->input('longueur');
         $piste->demande_id = $actu_id_demande;
         $piste->save();
+
+        //save data for piece
+        // Handle File Upload
+        if ($request->hasFile('piece_upload')) {
+            // Get filename with the extension
+            $filenameWithExt = $request->file('piece_upload')->getClientOriginalName();
+            // Get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            // Get just ext
+            $extension = $request->file('piece_upload')->getClientOriginalExtension();
+            // Filename to store
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+            // Upload Image
+            $path = $request->file('piece_upload')->storeAs('local/uploaded_files/demandes', $fileNameToStore);
+        } else {
+            $fileNameToStore = 'noimage.jpg';
+        }
+
+        $piece = new Piece;
+        $piece->type = $request->input('piece_type');
+        $piece->nom = $request->input('piece_nom');
+        $piece->path = $fileNameToStore;
+        $piece->demande_id = $actu_id_demande;
+        $piece->save();
 
         //save data in porteur de demande
         $porteur = new Porteur;

@@ -96,7 +96,7 @@ $("#none_btn").click(function () {
 $('.table-piece tbody').on('change', '.document', function () {
     var currow = $(this).closest('tr');
     var col1 = currow.find('td:eq(1)').text();
-    console.log(col1);
+    //console.log(col1);
 
     currow.find('td .etat').html('');
 
@@ -122,50 +122,42 @@ $('.table-piece tbody').on('change', '.document', function () {
 });
 
 
-//point desservis
-$('.table-points tbody').on('change', '.type_point', function () {
-    var currow = $(this).closest('tr');
-    //var col1 = currow.find('td:eq(1)').text();
+$(document).ready(function () {
 
+    $('.table-points tbody').on('change', '.type_point', function () {
+        var currow = $(this).closest('tr');
+        var point_type = currow.find('td .type_point').val();
+        //var col1 = currow.find('td:eq(1)').text();
+        currow.find('td .point-desservis').html('');
+        switch (point_type) {
+            case 'localite':
+                currow.find('td .point-desservis').append('<option selected="selected">Douar 1</option>');
+                currow.find('td .point-desservis').append('<option>Douar 2</option>');
+                currow.find('td .point-desservis').append('<option>Douar 3</option>');
 
-    currow.find('td .point-desservis').html('');
+                break;
+            case 'etablissement_scol':
+                currow.find('td .point-desservis').append('<option selected="selected">Etablissement Scol 1</option>');
+                currow.find('td .point-desservis').append('<option>Etablissement Scol 2</option>');
+                currow.find('td .point-desservis').append('<option>Etablissement Scol 3</option>');
+                currow.find('td .point-desservis').append('<option>Etablissement Scol 4</option>');
+                break;
 
-    switch (currow.find('td .type_point').val()) {
-        case 'localite':
-            currow.find('td .point-desservis').append('<option selected="selected">Douar 1</option>');
-            currow.find('td .point-desservis').append('<option>Douar 2</option>');
-            currow.find('td .point-desservis').append('<option>Douar 3</option>');
+            case 'etablissemnt_sante':
+                currow.find('td .point-desservis').append('<option selected="selected">Etablissement sante 1</option>');
+                currow.find('td .point-desservis').append('<option>Etablissement sante 2</option>');
+                currow.find('td .point-desservis').append('<option>Etablissement sante 3</option>');
+                currow.find('td .point-desservis').append('<option>Etablissement sante 4</option>');
+                break;
+            case 'autre':
+                currow.find('td .point-desservis').append('<option selected="selected">autre</option>');
 
-            break;
-        case 'etablissement_scol':
-            currow.find('td .point-desservis').append('<option selected="selected">Etablissement Scol 1</option>');
-            currow.find('td .point-desservis').append('<option>Etablissement Scol 2</option>');
-            currow.find('td .point-desservis').append('<option>Etablissement Scol 3</option>');
-            currow.find('td .point-desservis').append('<option>Etablissement Scol 4</option>');
-            break;
-
-        case 'etablissemnt_sante':
-            currow.find('td .point-desservis').append('<option selected="selected">Etablissement sante 1</option>');
-            currow.find('td .point-desservis').append('<option>Etablissement sante 2</option>');
-            currow.find('td .point-desservis').append('<option>Etablissement sante 3</option>');
-            currow.find('td .point-desservis').append('<option>Etablissement sante 4</option>');
-            break;
-        case 'autre':
-            currow.find('td .point-desservis').append('<option selected="selected">autre</option>');
-
-            break;
-        default:
-            currow.find('td .point-desservis').append('<option selected="selected">Douar 1</option>');
-            currow.find('td .point-desservis').append('<option>Douar 2</option>');
-            currow.find('td .point-desservis').append('<option>Douar 3</option>');
-    }
-});
-
-$(function () {
-
-    $(".type_point").change(function () {
-        //console.log($('.type_point').val())
-
+                break;
+            default:
+                currow.find('td .point-desservis').append('<option selected="selected">Douar 1</option>');
+                currow.find('td .point-desservis').append('<option>Douar 2</option>');
+                currow.find('td .point-desservis').append('<option>Douar 3</option>');
+        }
     });
 });
 
@@ -176,7 +168,7 @@ $(document).ready(function () {
         var table = $('#table');
         var body = $('#tableBody');
         var nextId = body.find('tr').length + 1;
-        table.append($('<tr><td>' + nextId + '</td><td>Commune</td><td>0</td><td>0</td></tr>'));
+        table.append($('<tr><td>' + nextId + '</td><td></td><td>0</td><td>0</td></tr>'));
         table.data('Tabledit').reload();
     });
 
@@ -186,16 +178,17 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('#table').Tabledit({
         columns: {
+            url: "{!! demande.store !!}",
             identifier: [0, 'id'],
             editable: [
                 [1, 'partenaire',
-                    '{"1": "Commune", "2": "INDH", "3": "ANDZOA","4": "Autre"}'
+                    '{"commune": "Commune", "INDH": "INDH", "ANDZOA": "ANDZOA","Autre": "Autre"}'
                 ],
                 [2, 'montant'],
                 [3, 'pourcentage']
             ],
         },
-        hideIdentifier: true,
+        hideIdentifier: false,
         restoreButton: false
     });
 });

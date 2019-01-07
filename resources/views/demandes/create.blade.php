@@ -42,7 +42,8 @@
     <div class="box-body wizard-content">
             
             {!! Form::open(['action' => 'DemandesController@store','method'=>'POST','class'=>'tab-wizard
-            wizard-circle create-demande']) !!}          
+            wizard-circle create-demande','enctype' => 'multipart/form-data']) !!}  
+             
         <!-- Step 1 -->
         <h6>Information Général</h6>
         <section>
@@ -199,16 +200,13 @@
                                             </td>
                                             <td style="width: 60%">
                                                 <div class="form-group ">
-
-                                                    {{Form::select('localites',$localites,null, 
-                                                                     [
-                                                                         'data-placeholder' => 'localités',
-                                                                         'class'=>'form-control select2 point-desservis',
-                                                                         'name'=>'localites',
-                                                                         'style'=>'width : 100%'
-                                                                     ]
-                                                                )
-                                                    }} 
+                                                    <select class="form-control select2 point-desservis" name="localites" style="width : 100%">
+                                                        @foreach($localites as $localite)
+                                                        <option value="{{ $localite->id}}">{{ $localite->nom_fr}}</option>
+                                                        @endforeach
+                                                    
+                                                    </select>
+                                           
                                                   
                                                 </div>
                                             </td>
@@ -250,10 +248,9 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <div class="form-group">
-                                                  
+                                                <div class="form-group">                                                 
 
-                                                    {{Form::select('point_desservis',
+                                                    {{Form::select('piece_type',
                                                                      [
                                                                           'etude' => 'Etude',
                                                                           'fiche_technique' => 'Fiche technique'
@@ -271,7 +268,7 @@
                                             <td>
                                                 <div class="form-group ">
                                                    
-                                                     {{Form::select('point_desservis',
+                                                     {{Form::select('piece_nom',
                                                                      [
                                                                           'approuve' => 'Approuvée',
                                                                           'disponible' => 'Disponible',
@@ -281,7 +278,8 @@
                                                                      [
                                                                          'data-placeholder' => 'Document',
                                                                          'class'=>'form-control  etat',
-                                                                         'style'=>'width : 100%'
+                                                                         'style'=>'width : 100%',
+                                                                       
                                                                      ]
                                                                 )
                                                     }} 
@@ -291,7 +289,7 @@
 
                                             <td>
                                                 <div class="form-group">
-                                                    <input type="file" class="form-control" />
+                                                    {{Form::file('piece_upload')}}
                                                 </div>
                                             </td>
 
@@ -345,7 +343,6 @@
                                 <table id="table" class="table editable-table table-bordered mb-0">
                                     <thead style="text-align: center">
                                         <tr>
-
                                             <th>#</th>
                                             <th>Partenaire</th>
                                             <th>Montant</th>
@@ -353,11 +350,11 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tableBody">
-                                        <tr>
-                                            <td>1</td>
-                                            <td>p1</td>
-                                            <td>m1</td>
-                                            <td>pourcent1</td>
+                                        <tr>  
+                                            <td>1</td>                                          
+                                            <td></td>
+                                            <td>0</td>
+                                            <td>0</td>
                                         </tr>
                                     </tbody>
                                     <!--

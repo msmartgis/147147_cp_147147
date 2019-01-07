@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\PointDesservi;
+use App\Partenaire;
 use Illuminate\Http\Request;
 
-class PointDesserviController extends Controller
+class PartenaireController extends Controller
 {
-
-
     /**
      * Display a listing of the resource.
      *
@@ -43,10 +41,10 @@ class PointDesserviController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\PointDesservi  $pointDesservi
+     * @param  \App\Partenaire  $partenaire
      * @return \Illuminate\Http\Response
      */
-    public function show(PointDesservi $pointDesservi)
+    public function show(Partenaire $partenaire)
     {
         //
     }
@@ -54,10 +52,10 @@ class PointDesserviController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\PointDesservi  $pointDesservi
+     * @param  \App\Partenaire  $partenaire
      * @return \Illuminate\Http\Response
      */
-    public function edit(PointDesservi $pointDesservi)
+    public function edit(Partenaire $partenaire)
     {
         //
     }
@@ -66,10 +64,10 @@ class PointDesserviController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\PointDesservi  $pointDesservi
+     * @param  \App\Partenaire  $partenaire
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PointDesservi $pointDesservi)
+    public function update(Request $request, Partenaire $partenaire)
     {
         //
     }
@@ -77,10 +75,10 @@ class PointDesserviController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\PointDesservi  $pointDesservi
+     * @param  \App\Partenaire  $partenaire
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PointDesservi $pointDesservi)
+    public function destroy(Partenaire $partenaire)
     {
         //
     }

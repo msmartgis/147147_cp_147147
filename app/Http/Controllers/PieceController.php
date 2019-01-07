@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\PointDesservi;
+use App\Piece;
 use Illuminate\Http\Request;
 
-class PointDesserviController extends Controller
+class PieceController extends Controller
 {
-
-
     /**
      * Display a listing of the resource.
      *
@@ -43,10 +41,10 @@ class PointDesserviController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\PointDesservi  $pointDesservi
+     * @param  \App\Piece  $piece
      * @return \Illuminate\Http\Response
      */
-    public function show(PointDesservi $pointDesservi)
+    public function show(Piece $piece)
     {
         //
     }
@@ -54,10 +52,10 @@ class PointDesserviController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\PointDesservi  $pointDesservi
+     * @param  \App\Piece  $piece
      * @return \Illuminate\Http\Response
      */
-    public function edit(PointDesservi $pointDesservi)
+    public function edit(Piece $piece)
     {
         //
     }
@@ -66,10 +64,10 @@ class PointDesserviController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\PointDesservi  $pointDesservi
+     * @param  \App\Piece  $piece
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PointDesservi $pointDesservi)
+    public function update(Request $request, Piece $piece)
     {
         //
     }
@@ -77,10 +75,10 @@ class PointDesserviController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\PointDesservi  $pointDesservi
+     * @param  \App\Piece  $piece
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PointDesservi $pointDesservi)
+    public function destroy(Piece $piece)
     {
         //
     }

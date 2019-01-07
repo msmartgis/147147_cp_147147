@@ -15,11 +15,12 @@ class CreatePiecesTable extends Migration
     {
         Schema::create('pieces', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('document', 500);
-            $table->string('etat', 500);
+            $table->string('type', 500);
+            $table->string('nom', 500);
             $table->string('path', 500);
             $table->integer('id_projet');
             $table->timestamps();
+            $table->foreign('demande_id')->references('id')->on('demandes');
         });
     }
 

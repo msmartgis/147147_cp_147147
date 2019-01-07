@@ -15,8 +15,8 @@ class CreatePartenaireProjetTable extends Migration
     {
         Schema::create('partenaire_projet', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_partenaire');
-            $table->integer('id_projet');
+            $table->integer('partenaire_id');
+            $table->integer('projet_id');
             $table->timestamps();
         });
     }

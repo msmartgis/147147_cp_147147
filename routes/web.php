@@ -18,4 +18,7 @@ Route::get('/', 'PagesController@index');
 
 //resources for demande controller
 Route::resource('demandes', 'DemandesController');
+Route::resource('points_desservis', 'PointDesserviController');
 
+//Route::post('/load_points_desservis', 'LoadPointsDesservis@load_points_desservis')->name('load_point');
+Route::get('load_points', 'LoadPointsDesservis@load_points_desservis');
