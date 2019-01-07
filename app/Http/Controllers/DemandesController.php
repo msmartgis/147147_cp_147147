@@ -90,7 +90,7 @@ class DemandesController extends Controller
 
         //save data in partenaire
         $partenaire = new Partenaire;
-        return $request->input('partenaire') . $request->input('montant') . ' ' . $request->input('pourcentage') . "hello";
+        //return $request->input('partenaire') . $request->input('montant') . ' ' . $request->input('pourcentage') . "hello";
         $partenaire->type = $request->input('partenaire');
         $partenaire->montant = $request->input('montant');
         $partenaire->pourcentage = $request->input('pourcentage');

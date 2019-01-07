@@ -161,39 +161,44 @@ $(document).ready(function () {
     });
 });
 
-//keyup for montage fincanciere calcul de pourcentage automatique
+//add new parentaire
+$(document).ready(function(){
+    var item = 1;
+    $("#add_partner_to_list").click(function () {
+        var partenair_type = $("#partenaire_type").val();
+        var montant_partnenaire = $("#montant_partnenaire").val();
+        //console.log(montant_partnenaire);
+        var markup = '<tr>\
+                        <td style=\'text-align:center\'>\
+                        <div class=\"form-group\">\
+                            <div class=\"checkbox\">\
+                                <input type=\"checkbox\" id=\"row_'+ item +'\" name=\"record\">\
+                                <label for="row_'+ item +'"></label>\
+                            </div>\
+                        </div>\
+                        </td>\
+                        <td style=\'text-align:center\'><input type="hidden" name="partnenaire_type_'+ item +'" vlaue="' + partenair_type + '">' + partenair_type + '</td>\
+                        <td style=\'text-align:center\'><input type="hidden" name="montant_'+ item +'" vlaue="' + montant_partnenaire + '">' + montant_partnenaire + '</td><td style=\'text-align:center\'></td>\
+                    </tr>';
+        $("#table_body_partner").append(markup);       
+        $("#montant_partnenaire").val('');
+        $("#m-add-partenaire").modal('toggle');
+        item += 1; 
+    });
 
-$(document).ready(function () {
-    $('#add_partenaire').click(function () {
-        var table = $('#table');
-        var body = $('#tableBody');
-        var nextId = body.find('tr').length + 1;
-        table.append($('<tr><td>' + nextId + '</td><td></td><td>0</td><td>0</td></tr>'));
-        table.data('Tabledit').reload();
+    $(".delete-row").click(function(){
+        $("#table_body_partner").find('input[name="record"]').each(function(){
+            if($(this).is(":checked")){
+                $(this).parents("tr").remove();
+            }
+        });
     });
 
 });
 
 
-$(document).ready(function () {
-    $('#table').Tabledit({
-        columns: {
-            url: "{!! demande.store !!}",
-            identifier: [0, 'id'],
-            editable: [
-                [1, 'partenaire',
-                    '{"commune": "Commune", "INDH": "INDH", "ANDZOA": "ANDZOA","Autre": "Autre"}'
-                ],
-                [2, 'montant'],
-                [3, 'pourcentage']
-            ],
-        },
-        hideIdentifier: false,
-        restoreButton: false
-    });
-});
 
-
+//add point
 $(document).ready(function () {
     $('#add_point').click(function () {
         var markup = '<tr>\

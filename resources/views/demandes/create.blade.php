@@ -15,9 +15,9 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
 
 
-   
-    <!-- toast CSS -->
-    <link href="{{asset('vendor_components/jquery-toast-plugin-master/src/jquery.toast.css')}}" rel="stylesheet">	
+
+<!-- toast CSS -->
+<link href="{{asset('vendor_components/jquery-toast-plugin-master/src/jquery.toast.css')}}" rel="stylesheet">
 
 <style>
     #map {
@@ -40,61 +40,63 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body wizard-content">
-            
-            {!! Form::open(['action' => 'DemandesController@store','method'=>'POST','class'=>'tab-wizard
-            wizard-circle create-demande','enctype' => 'multipart/form-data']) !!}  
-             
+
+        {!! Form::open(['action' => 'DemandesController@store','method'=>'POST','class'=>'tab-wizard
+        wizard-circle create-demande','enctype' => 'multipart/form-data']) !!}
+
         <!-- Step 1 -->
         <h6>Information Général</h6>
         <section>
-            <div class="row">               
+            <div class="row">
                 <div class="col-3">
                     <div class="form-group">
-                    {{Form::label('','N° d\'ordre :')}}
-                    {{Form::text('num_ordre',$current_numero_ordre,['class'=>'form-control'])}}
-                </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                    {{Form::label('','Date de récéption:')}}
-                    <div class="input-group date">
-                        <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                        </div>
-                        {{Form::text('date_reception','',['class'=>'form-control pull-right','id'=>'datepicker'])}}
+                        {{Form::label('','N° d\'ordre :')}}
+                        {{Form::text('num_ordre',$current_numero_ordre,['class'=>'form-control'])}}
                     </div>
-                    <!-- /.input group -->
                 </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        {{Form::label('','Date de récéption:')}}
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            {{Form::text('date_reception','',['class'=>'form-control pull-right','id'=>'datepicker'])}}
+                        </div>
+                        <!-- /.input group -->
+                    </div>
                 </div>
 
                 <div class="col-6">
-                    <div class="form-group">                        
-                        {{Form::label('','Commune:')}}                        
-                            {{Form::select('communes', $communes, null,
-                             [
-                                 'data-placeholder' => 'Selectionner commune(s)',
-                                 'class'=>'form-control select2',
-                                 'multiple'=>'multiple',
-                                 'name'=>'communes[]'
-                            ]
-                            )}}
-                        
+                    <div class="form-group">
+                        {{Form::label('','Commune:')}}
+                        {{Form::select('communes', $communes, null,
+                        [
+                        'data-placeholder' => 'Selectionner commune(s)',
+                        'class'=>'form-control select2',
+                        'multiple'=>'multiple',
+                        'name'=>'communes[]'
+                        ]
+                        )}}
+
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                       
-                        {{Form::label('','Etat du projet :')}}  
-                        {{Form::select('etat_projet', ['realise' => 'Réalisée dans d\'autre programme', 'programme' => 'Programmée dans d\'autre programme'], null, ['data-placeholder' => 'Etat du projet','class'=>'form-control'])}}
-                     
+
+                        {{Form::label('','Etat du projet :')}}
+                        {{Form::select('etat_projet', ['realise' => 'Réalisée dans d\'autre programme', 'programme' =>
+                        'Programmée dans d\'autre programme'], null, ['data-placeholder' => 'Etat du
+                        projet','class'=>'form-control'])}}
+
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="form-group">                       
+                    <div class="form-group">
                         {{Form::label('','Longueur :')}}
-                        {{Form::text('longueur','',['class'=>'form-control'])}}                        
+                        {{Form::text('longueur','',['class'=>'form-control'])}}
                     </div>
                 </div>
                 <div class="col-12">
@@ -121,7 +123,7 @@
                     <div class="form-group">
                         <h6>Objet (fr)</h6>
                         <div class="controls">
-                            {{Form::textarea('objet_fr','',['class'=>'form-control','placeholder'=>'saisir l\'objet en francais','rows'=>'2'])}}                           
+                            {{Form::textarea('objet_fr','',['class'=>'form-control','placeholder'=>'saisir l\'objet en francais','rows'=>'2'])}}
                         </div>
                     </div>
                 </div>
@@ -138,14 +140,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         {{Form::label('','Porteur de projet(fr) :')}}
-                        {{Form::text('nom_porteur_fr','',['class'=>'form-control'])}}     
-                        
+                        {{Form::text('nom_porteur_fr','',['class'=>'form-control'])}}
+
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group">                  
+                    <div class="form-group">
                         {{Form::label('','Porteur de projet(ar) :')}}
-                        {{Form::text('nom_porteur_ar','',['class'=>'form-control'])}}   
+                        {{Form::text('nom_porteur_ar','',['class'=>'form-control'])}}
                     </div>
                 </div>
             </div>
@@ -183,31 +185,32 @@
                                             <td style="width: 40%">
                                                 <div class="form-group">
                                                     {{Form::select('type_point_desservis',
-                                                                     [
-                                                                         'localite' => 'Localité',
-                                                                          'etablissement_scol' => 'Etablissement Scolaire',
-                                                                          'etablissemnt_sante' => 'Etablissement de santé ',
-                                                                          'autre' => 'Autre'
-                                                                     ], 
-                                                                     'localite', 
-                                                                     [
-                                                                         'data-placeholder' => 'Etat du projet',
-                                                                         'class'=>'form-control type_point'
-                                                                     ]
-                                                                )
-                                                    }}                                                    
+                                                    [
+                                                    'localite' => 'Localité',
+                                                    'etablissement_scol' => 'Etablissement Scolaire',
+                                                    'etablissemnt_sante' => 'Etablissement de santé ',
+                                                    'autre' => 'Autre'
+                                                    ],
+                                                    'localite',
+                                                    [
+                                                    'data-placeholder' => 'Etat du projet',
+                                                    'class'=>'form-control type_point'
+                                                    ]
+                                                    )
+                                                    }}
                                                 </div>
                                             </td>
                                             <td style="width: 60%">
                                                 <div class="form-group ">
-                                                    <select class="form-control select2 point-desservis" name="localites" style="width : 100%">
+                                                    <select class="form-control select2 point-desservis" name="localites"
+                                                        style="width : 100%">
                                                         @foreach($localites as $localite)
                                                         <option value="{{ $localite->id}}">{{ $localite->nom_fr}}</option>
                                                         @endforeach
-                                                    
+
                                                     </select>
-                                           
-                                                  
+
+
                                                 </div>
                                             </td>
                                         </tr>
@@ -248,41 +251,41 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <div class="form-group">                                                 
+                                                <div class="form-group">
 
                                                     {{Form::select('piece_type',
-                                                                     [
-                                                                          'etude' => 'Etude',
-                                                                          'fiche_technique' => 'Fiche technique'
-                                                                     ], 
-                                                                     'etude', 
-                                                                     [
-                                                                         'data-placeholder' => 'Document',
-                                                                         'class'=>'form-control  document',
-                                                                         'style'=>'width : 100%'
-                                                                     ]
-                                                                )
-                                                    }} 
+                                                    [
+                                                    'etude' => 'Etude',
+                                                    'fiche_technique' => 'Fiche technique'
+                                                    ],
+                                                    'etude',
+                                                    [
+                                                    'data-placeholder' => 'Document',
+                                                    'class'=>'form-control document',
+                                                    'style'=>'width : 100%'
+                                                    ]
+                                                    )
+                                                    }}
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-group ">
-                                                   
-                                                     {{Form::select('piece_nom',
-                                                                     [
-                                                                          'approuve' => 'Approuvée',
-                                                                          'disponible' => 'Disponible',
-                                                                          'en_cours_approbation' => 'En cours d\'approbation'
-                                                                     ], 
-                                                                     'approuve', 
-                                                                     [
-                                                                         'data-placeholder' => 'Document',
-                                                                         'class'=>'form-control  etat',
-                                                                         'style'=>'width : 100%',
-                                                                       
-                                                                     ]
-                                                                )
-                                                    }} 
+
+                                                    {{Form::select('piece_nom',
+                                                    [
+                                                    'approuve' => 'Approuvée',
+                                                    'disponible' => 'Disponible',
+                                                    'en_cours_approbation' => 'En cours d\'approbation'
+                                                    ],
+                                                    'approuve',
+                                                    [
+                                                    'data-placeholder' => 'Document',
+                                                    'class'=>'form-control etat',
+                                                    'style'=>'width : 100%',
+
+                                                    ]
+                                                    )
+                                                    }}
                                                 </div>
 
                                             </td>
@@ -313,22 +316,22 @@
             <div class="row">
                 <div class="col-2">
                     <div class="form-group">
-                        
+
                         {{Form::label('','Montant global TTC (DH) :')}}
 
-                            {{Form::text(
-                                'montant_global',
-                                '',
-                                [
-                                'class'=>'form-control',
-                                'id'=>'montant_g',
-                                'data-validation-containsnumber-regex'=>'(\d)+',
-                                'data-validation-containsnumber-message'=>'Veuillez saisir des numeros seulement'
-                                ]
-                                )}} 
+                        {{Form::text(
+                        'montant_global',
+                        '',
+                        [
+                        'class'=>'form-control',
+                        'id'=>'montant_g',
+                        'data-validation-containsnumber-regex'=>'(\d)+',
+                        'data-validation-containsnumber-message'=>'Veuillez saisir des numeros seulement'
+                        ]
+                        )}}
                     </div>
 
-                    <button type="button" class="btn btn-secondary " id="add_partenaire">
+                    <button type="button" class="btn btn-secondary " data-toggle="modal" data-target="#m-add-partenaire">
                         <i class="fa fa-plus"></i>
                         ajouter partenaire
                     </button>
@@ -340,36 +343,38 @@
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table id="table" class="table editable-table table-bordered mb-0">
+                                <table class="table table-hover">
                                     <thead style="text-align: center">
                                         <tr>
                                             <th>#</th>
                                             <th>Partenaire</th>
                                             <th>Montant</th>
                                             <th>Pourcentage</th>
+                                           
                                         </tr>
                                     </thead>
-                                    <tbody id="tableBody">
-                                        <tr>  
-                                            <td>1</td>                                          
-                                            <td></td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
+                                    <tbody id="table_body_partner">
+
                                     </tbody>
-                                    <!--
-                                            we can add tfoot when fix the problem of calculation
-                                            <tfoot>
-                                            <tr class="total-col  totalCol">
-                                                <th><strong>TOTAL</strong></th>
-                                                <th class="total">0</th>
-                                                <th></th>
-                                            </tr>
-                                        </tfoot> -->
+
+                                    <!-- <tfoot>
+                                        <tr class="total-col  totalCol">
+                                            <th></th>
+                                            <th><strong>TOTAL</strong></th>
+                                            <th class="total">0</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>  -->
                                 </table>
                             </div>
+                           
                         </div>
                     </div>
+                    <button type="button" class="btn btn-secondary delete-row">
+                            <i class="fa fa-times"></i>
+                            supprimer partenaire
+                        </button>
                 </div>
         </section>
         <!-- Step 4 -->
@@ -378,7 +383,8 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        {{Form::textarea('observation','',['id'=>'editor1','placeholder'=>'saisir vos obsérvations','rows'=>'10','cols'=>'80'])}}                     
+                        {{Form::textarea('observation','',['id'=>'editor1','placeholder'=>'saisir vos
+                        obsérvations','rows'=>'10','cols'=>'80'])}}
                     </div>
                 </div>
             </div>
@@ -387,6 +393,52 @@
         {!! Form::close() !!}
     </div>
     <!-- /.box-body -->
+
+    <!-- modals -->
+    <div class="modal fade" id="m-add-partenaire">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Nouveau partenaire</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Partenaire</label>
+                                <select class="form-control select2" style="width: 100%;" id="partenaire_type">
+                                    <option selected="selected">Commune</option>
+                                    <option>INDH</option>
+                                    <option>ANZOA</option>
+                                    <option>Autre</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="example_input_full_name">Montant:</label>
+                                <input type="text" class="form-control" id="montant_partnenaire">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-success float-right" id="add_partner_to_list">Ajouter à la
+                        liste</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+    <!-- modals -->
 </div>
 <!-- /.box -->
 @endsection @section('added_scripts')
@@ -427,8 +479,6 @@
 <script src="{{asset('js/demande.js')}}"></script>
 
 
-<script src="{{asset('js/jquery.tabledit.js')}}"></script>
-
 <!-- functions js -->
 <script src="{{asset('js/functions.js')}}"></script>
 
@@ -447,7 +497,7 @@
 
 <!-- Form validator JavaScript -->
 <script src="{{asset('js/validation.js')}}"></script>
-	<!-- toast -->
+<!-- toast -->
 <script src="{{asset('vendor_components/jquery-toast-plugin-master/src/jquery.toast.js')}}"></script>
 <script src="{{asset('js/toastr.js')}}"></script>
 
@@ -457,9 +507,8 @@
         $("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
     }(window, document, jQuery);
 
-
 </script>
 
-	
+
 
 @endsection
