@@ -162,9 +162,20 @@ $(document).ready(function () {
 });
 
 //add new parentaire
-$(document).ready(function(){
-    var item = 1;
+$(document).ready(function () {
+    var item = 0;
+    $("#add_partner").click(function (event) {
+        if ($('#montant_g').val() == "") {
+            event.stopPropagation();
+        } else {
+            $('#m-add-partenaire').modal("show");
+        }
+    });
+
+    //item to make id checkbox unique
+
     $("#add_partner_to_list").click(function () {
+        var montant_g = $('#montant_g').val();
         var partenair_type = $("#partenaire_type").val();
         var montant_partnenaire = $("#montant_partnenaire").val();
         //console.log(montant_partnenaire);
@@ -172,23 +183,25 @@ $(document).ready(function(){
                         <td style=\'text-align:center\'>\
                         <div class=\"form-group\">\
                             <div class=\"checkbox\">\
-                                <input type=\"checkbox\" id=\"row_'+ item +'\" name=\"record\">\
-                                <label for="row_'+ item +'"></label>\
+                                <input type=\"checkbox\" id=\"row_' + item + '\" name=\"record\">\
+                                <label for="row_' + item + '"></label>\
                             </div>\
                         </div>\
                         </td>\
-                        <td style=\'text-align:center\'><input type="hidden" name="partnenaire_type_'+ item +'" vlaue="' + partenair_type + '">' + partenair_type + '</td>\
-                        <td style=\'text-align:center\'><input type="hidden" name="montant_'+ item +'" vlaue="' + montant_partnenaire + '">' + montant_partnenaire + '</td><td style=\'text-align:center\'></td>\
+                        <td style=\'text-align:center\'><input type="hidden" name="partnenaire_type[]" value="' + partenair_type + '">' + partenair_type + '</td>\
+                        <td style=\'text-align:center\'><input type="hidden" name="montant[]" value="' + montant_partnenaire + '">' + montant_partnenaire + '</td>\
+                        <td style=\'text-align:center\'><input type="hidden" name="pourcentage[]" value="' + (montant_partnenaire / montant_g) * 100 + '">' + (montant_partnenaire / montant_g) * 100 + '</td>\
                     </tr>';
-        $("#table_body_partner").append(markup);       
+        $("#table_body_partner").append(markup);
         $("#montant_partnenaire").val('');
         $("#m-add-partenaire").modal('toggle');
-        item += 1; 
+        item++;
+
     });
 
-    $(".delete-row").click(function(){
-        $("#table_body_partner").find('input[name="record"]').each(function(){
-            if($(this).is(":checked")){
+    $(".delete-row").click(function () {
+        $("#table_body_partner").find('input[name="record"]').each(function () {
+            if ($(this).is(":checked")) {
                 $(this).parents("tr").remove();
             }
         });
@@ -204,7 +217,7 @@ $(document).ready(function () {
         var markup = '<tr>\
         <td style=\"width: 40%\">\
             <div class=\"form-group\">\
-                <select class=\"form-control type_point\">\
+                <select class=\"form-control type_point\" name="type_point[]" >\
                     <option value=\"localite\" selected=\"selected\">Localité</option>\
                     <option value=\"etablissement_scol\">Etablissement Scolaire</option>\
                     <option value=\"etablissemnt_sante\"><i class=\"fa fa-dollar\"></i>Etablissement de santé</option>\
@@ -214,7 +227,7 @@ $(document).ready(function () {
         </td>\
         <td style=\"width: 60%\">\
             <div class=\"form-group\">\
-                <select class=\"form-control select2 point-desservis\" style=\"width: 100%;\">\
+                <select class=\"form-control select2 point-desservis\" name="point_nom_fr[]" style=\"width: 100%;\">\
                     <option selected=\"selected\">Douar 1</option>\
                     <option>Douar 2</option>\
                     <option>Douar 3</option>\
@@ -231,7 +244,7 @@ $(document).ready(function () {
         var markup = '<tr>\
         <td>\
             <div class=\"form-group\">\
-                <select class=\"form-control document\" style=\"width: 100%;\">\
+                <select class = \"form-control document\" name="pieces_types[]" style=\"width: 100%;\">\
                     <option value=\"etude\" selected=\"selected\">Etude </option>\
                     <option value=\"fiche_technique\"> Fiche technique</option>\
                 </select>\
@@ -239,7 +252,7 @@ $(document).ready(function () {
         </td>\
         <td>\
             <div class=\"form-group \">\
-                <select class=\"form-control etat\" style=\"width: 100%;\">\
+                <select class = \"form-control etat\" name="pieces_noms[]" style=\"width: 100%;\">\
                     <option selected=\"selected\">Approuvée </option>\
                     <option>Disponible</option>\
                     <option>En cours d\'approbation</option>\
@@ -248,12 +261,10 @@ $(document).ready(function () {
         </td>\
         <td>\
             <div class=\"form-group\">\
-                <input type=\"file\" class=\"form-control\" />\
+                <input type=\"file\" name="pieces_uploads[]"class=\"form-control\" />\
             </div>\
         </td>\
     </tr>';
-
         $(".table-piece tr:last").after(markup);
     });
-
 });

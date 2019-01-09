@@ -194,7 +194,8 @@
                                                     'localite',
                                                     [
                                                     'data-placeholder' => 'Etat du projet',
-                                                    'class'=>'form-control type_point'
+                                                    'class'=>'form-control type_point',
+                                                    'name'=>'type_point[]',
                                                     ]
                                                     )
                                                     }}
@@ -202,15 +203,12 @@
                                             </td>
                                             <td style="width: 60%">
                                                 <div class="form-group ">
-                                                    <select class="form-control select2 point-desservis" name="localites"
+                                                    <select class="form-control select2 point-desservis" name="point_nom_fr[]" 
                                                         style="width : 100%">
                                                         @foreach($localites as $localite)
                                                         <option value="{{ $localite->id}}">{{ $localite->nom_fr}}</option>
                                                         @endforeach
-
                                                     </select>
-
-
                                                 </div>
                                             </td>
                                         </tr>
@@ -262,7 +260,8 @@
                                                     [
                                                     'data-placeholder' => 'Document',
                                                     'class'=>'form-control document',
-                                                    'style'=>'width : 100%'
+                                                    'style'=>'width : 100%',
+                                                    'name'=>'pieces_types[]'
                                                     ]
                                                     )
                                                     }}
@@ -282,6 +281,7 @@
                                                     'data-placeholder' => 'Document',
                                                     'class'=>'form-control etat',
                                                     'style'=>'width : 100%',
+                                                    'name'=>'pieces_noms[]',
 
                                                     ]
                                                     )
@@ -292,7 +292,7 @@
 
                                             <td>
                                                 <div class="form-group">
-                                                    {{Form::file('piece_upload')}}
+                                                    {{Form::file('piece_upload',['name'=>'pieces_uploads[]'])}}
                                                 </div>
                                             </td>
 
@@ -331,7 +331,7 @@
                         )}}
                     </div>
 
-                    <button type="button" class="btn btn-secondary " data-toggle="modal" data-target="#m-add-partenaire">
+                    <button type="button" class="btn btn-secondary " id="add_partner" data-toggle="modal" data-target="#m-add-partenaire">
                         <i class="fa fa-plus"></i>
                         ajouter partenaire
                     </button>
