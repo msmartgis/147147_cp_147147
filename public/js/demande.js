@@ -121,9 +121,80 @@ $('.table-piece tbody').on('change', '.document', function () {
     }
 });
 
+//add point
+$(document).ready(function () {
+    $('#add_point').click(function () {
+        var type_point = "localite";
+        $.ajax({
+            type: 'get',
+            url: "{{route('getlocalite')}}",
+            dataType: 'html',
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "type": type_point
+            },
+            success: function (data) {
+                console.log("success");
+                //console.log(data);
+            }
+        });
+        var markup = '<tr>\
+        <td style=\"width: 40%\">\
+            <div class=\"form-group\">\
+                <select class=\"form-control type_point\" name="type_point[]" >\
+                    <option value=\"localite\" selected=\"selected\">Localité</option>\
+                    <option value=\"etablissement_scol\">Etablissement Scolaire</option>\
+                    <option value=\"etablissemnt_sante\"><i class=\"fa fa-dollar\"></i>Etablissement de santé</option>\
+                    <option value=\"autre\"><i class=\"fa fa-dollar\"></i>Autre</option>\
+                </select>\
+            </div>\
+        </td>\
+        <td style=\"width: 60%\">\
+            <div class=\"form-group\">\
+                <select class=\"form-control select2 point-desservis\" name="point_nom_fr[]" style=\"width: 100%;\">\
+                    <option selected=\"selected\">Douar 1</option>\
+                    <option>Douar 2</option>\
+                    <option>Douar 3</option>\
+                </select>\
+            </div>\
+        </td>\
+    </tr>';
+
+        $(".table-points tr:last").after(markup);
+    });
+
+
+    $('#add_piece').click(function () {
+        var markup = '<tr>\
+        <td>\
+            <div class=\"form-group\">\
+                <select class = \"form-control document\" name="pieces_types[]" style=\"width: 100%;\">\
+                    <option value=\"etude\" selected=\"selected\">Etude </option>\
+                    <option value=\"fiche_technique\"> Fiche technique</option>\
+                </select>\
+            </div>\
+        </td>\
+        <td>\
+            <div class=\"form-group \">\
+                <select class = \"form-control etat\" name="pieces_noms[]" style=\"width: 100%;\">\
+                    <option selected=\"selected\">Approuvée </option>\
+                    <option>Disponible</option>\
+                    <option>En cours d\'approbation</option>\
+                </select>\
+            </div>\
+        </td>\
+        <td>\
+            <div class=\"form-group\">\
+                <input type=\"file\" name="pieces_uploads[]"class=\"form-control\" />\
+            </div>\
+        </td>\
+    </tr>';
+        $(".table-piece tr:last").after(markup);
+    });
+});
+
 
 $(document).ready(function () {
-
     $('.table-points tbody').on('change', '.type_point', function () {
         var currow = $(this).closest('tr');
         var point_type = currow.find('td .type_point').val();
@@ -207,64 +278,4 @@ $(document).ready(function () {
         });
     });
 
-});
-
-
-
-//add point
-$(document).ready(function () {
-    $('#add_point').click(function () {
-        var markup = '<tr>\
-        <td style=\"width: 40%\">\
-            <div class=\"form-group\">\
-                <select class=\"form-control type_point\" name="type_point[]" >\
-                    <option value=\"localite\" selected=\"selected\">Localité</option>\
-                    <option value=\"etablissement_scol\">Etablissement Scolaire</option>\
-                    <option value=\"etablissemnt_sante\"><i class=\"fa fa-dollar\"></i>Etablissement de santé</option>\
-                    <option value=\"autre\"><i class=\"fa fa-dollar\"></i>Autre</option>\
-                </select>\
-            </div>\
-        </td>\
-        <td style=\"width: 60%\">\
-            <div class=\"form-group\">\
-                <select class=\"form-control select2 point-desservis\" name="point_nom_fr[]" style=\"width: 100%;\">\
-                    <option selected=\"selected\">Douar 1</option>\
-                    <option>Douar 2</option>\
-                    <option>Douar 3</option>\
-                </select>\
-            </div>\
-        </td>\
-    </tr>';
-
-        $(".table-points tr:last").after(markup);
-    });
-
-
-    $('#add_piece').click(function () {
-        var markup = '<tr>\
-        <td>\
-            <div class=\"form-group\">\
-                <select class = \"form-control document\" name="pieces_types[]" style=\"width: 100%;\">\
-                    <option value=\"etude\" selected=\"selected\">Etude </option>\
-                    <option value=\"fiche_technique\"> Fiche technique</option>\
-                </select>\
-            </div>\
-        </td>\
-        <td>\
-            <div class=\"form-group \">\
-                <select class = \"form-control etat\" name="pieces_noms[]" style=\"width: 100%;\">\
-                    <option selected=\"selected\">Approuvée </option>\
-                    <option>Disponible</option>\
-                    <option>En cours d\'approbation</option>\
-                </select>\
-            </div>\
-        </td>\
-        <td>\
-            <div class=\"form-group\">\
-                <input type=\"file\" name="pieces_uploads[]"class=\"form-control\" />\
-            </div>\
-        </td>\
-    </tr>';
-        $(".table-piece tr:last").after(markup);
-    });
 });

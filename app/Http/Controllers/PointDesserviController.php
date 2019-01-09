@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 class PointDesserviController extends Controller
 {
 
+    public function getLocalite()
+    {
+        echo "hello";
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -27,6 +32,7 @@ class PointDesserviController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -49,6 +55,7 @@ class PointDesserviController extends Controller
     public function show(PointDesservi $pointDesservi)
     {
         //
+
     }
 
     /**
