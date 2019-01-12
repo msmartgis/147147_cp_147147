@@ -10,7 +10,12 @@ class Demande extends Model
 
     public function communes()
     {
-        return $this->belongsToMany('App\Commune', 'commune_projet')->withTimestamps();
+        return $this->belongsToMany('App\Commune', 'commune_demande')->withTimestamps();
+    }
+
+    public function interventions()
+    {
+        return $this->belongsToMany('App\Intervention', 'intervention_demande')->withTimestamps();
     }
 
     public function partenaire()

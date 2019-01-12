@@ -19,7 +19,10 @@ Route::get('/', 'PagesController@index');
 //resources for demande controller
 Route::resource('demandes', 'DemandesController');
 Route::resource('points_desservis', 'PointDesserviController');
+Route::resource('communes', 'CommunesController');
+Route::post('/loadPoint', 'PointDesserviController@loadPoint');
 
-Route::get('/localites', 'PointDesserviController@getLocalite')->name('getlocalite');
 //Route::post('/load_points_desservis', 'LoadPointsDesservis@load_points_desservis')->name('load_point');
-Route::get('load_points', 'LoadPointsDesservis@load_points_desservis');
+//Route::get('load_points', 'LoadPointsDesservis@load_points_desservis');
+//Route::post('/load_localites', 'PointDesserviController@load_localites');
+

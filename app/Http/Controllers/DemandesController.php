@@ -9,16 +9,18 @@ use App\Porteur;
 use App\PointDesservi;
 use App\Partenaire;
 use App\Piece;
-use Response;
-use Illuminate\Http\Request;
+use App\Intervention;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 
 
-class DemandesController extends Controller
+class DemandesController extends BaseController
 {
+
 
     /**
      * Display a listing of the resource.
@@ -27,7 +29,9 @@ class DemandesController extends Controller
      */
     public function index()
     {
-        return view('demandes.show');
+        $demandes = Demande::all();
+
+        return view('demandes.index')->with('demandes', $demandes);
     }
 
     /**
@@ -37,11 +41,10 @@ class DemandesController extends Controller
      */
     public function create()
     {
-
-
-        //communes list
+         //communes list
         $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
-        
+        $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
+       
          //point desservis
         $localites = PointDesservi::all()->where('type_point', '=', 'localite');
         $etablissement_scols = PointDesservi::all()->where('type_point', '=', 'etablissement_scol');
@@ -50,10 +53,13 @@ class DemandesController extends Controller
         //find the max numero ordre and increment 
         $max_num_ordre = Demande::max('num_ordre');
         $current_numero_ordre = $max_num_ordre + 1;
+        $demande = new Demande;
         return view('demandes.create')->with(
             [
+                'demande' => $demande,
                 'current_numero_ordre' => $current_numero_ordre,
                 'communes' => $communes,
+                'interventions' => $interventions,
                 'localites' => $localites,
                 'etablissement_scols' => $etablissement_scols,
             ]
@@ -71,8 +77,11 @@ class DemandesController extends Controller
         $this->validate($request, ['num_ordre' => 'required']);   
         
         //find the communes for this demande and put them in an array
-        $communes = $request->input('communes');   
+        $communes = $request->input('communes');
+        $interventions = $request->input('interventions');
         
+        //find point desservis
+        $point_desservi = $request->input('points');
         //get the localites
         $localites = $request->input('localites');
         
@@ -125,8 +134,7 @@ class DemandesController extends Controller
             $demande->partenaire()->sync($partners_ids);
         }
 
-        //point desservis********
-
+        //partneaire********
         if (Input::has('partnenaire_type')) {
             $actu_id_partenaire = Partenaire::max('id') + 1;
             $partners_ids = array();
@@ -160,14 +168,23 @@ class DemandesController extends Controller
             //pivot table between partenaire and demande
             $demande->partenaire()->sync($partners_ids);
         }
+
+
+        //point desservi********
+        
         
         //insert in pivot table 
         if ($demande->save()) {
             $commune_ids = Input::get('communes');
             $demande->communes()->sync($commune_ids);
+            //intervention
+            $intervention_ids = Input::get('interventions');
+            $demande->interventions()->sync($intervention_ids);
             //insert localite id and demande id in pivot table 
-            $point_desservi = Input::get('localites');
-            $demande->point_desservi()->sync($point_desservi);
+            $point_desservi_ids = Input::get('points');
+            $demande->point_desservi()->sync($point_desservi_ids);
+
+
         }
         
         //save data in piste*****
@@ -203,13 +220,13 @@ class DemandesController extends Controller
                 }
 
             } else {
+                //bug when no file uploaded!!!!
                 $fileNameToStore = 'noimage.jpg';
                 $piece->path = $fileNameToStore;
             }
 
             for ($i = 0; $i < $items_number; $i++) {
                 $piece = new Piece;
-
                 $piece->type = $pieces_types_array[$i];
                 $piece->nom = $pieces_noms_array[$i];
                 $piece->path = $piece_file_names[$i];
@@ -269,7 +286,7 @@ class DemandesController extends Controller
      */
     public function show(Demande $demande)
     {
-        //
+
     }
 
     /**

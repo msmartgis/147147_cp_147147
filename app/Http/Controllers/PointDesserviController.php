@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 class PointDesserviController extends Controller
 {
 
-    public function getLocalite()
+    public function loadPoint(Request $request)
     {
-        echo "hello";
+        $type_point = $request->type;
+        $localites = PointDesservi::all()->where('type_point', '=', $type_point);
+        return $localites->toJson();
     }
 
 
@@ -21,7 +23,7 @@ class PointDesserviController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -29,11 +31,10 @@ class PointDesserviController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -43,7 +44,7 @@ class PointDesserviController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**

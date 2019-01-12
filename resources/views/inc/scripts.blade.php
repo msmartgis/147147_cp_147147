@@ -30,4 +30,5 @@
 
 	<script src="https://unpkg.com/ionicons@4.5.0/dist/ionicons.js"></script>
 
-    @yield('added_scripts')
+	
+	@stack('added_scripts')

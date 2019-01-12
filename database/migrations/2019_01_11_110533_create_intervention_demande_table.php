@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInterventionTable extends Migration
+class CreateInterventionDemandeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateInterventionTable extends Migration
      */
     public function up()
     {
-        Schema::create('interventions', function (Blueprint $table) {
+        Schema::create('intervention_demande', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nom', 500);
+            $table->integer('intervention_id');
+            $table->integer('demande_id');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateInterventionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('intervention');
+        Schema::dropIfExists('intervention_demande');
     }
 }
