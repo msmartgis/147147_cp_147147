@@ -23,6 +23,12 @@ class Demande extends Model
         return $this->belongsToMany('App\Partenaire', 'partenaire_demande')->withTimestamps();
     }
 
+    //through many 
+    public function type_partenaires()
+    {
+        return $this->hasManyThrough('App\PartenaireType', 'App\Partenaire');
+    }
+
     public function point_desservi()
     {
         return $this->belongsToMany('App\PointDesservi', 'pointdesservi_demande')->withTimestamps();
@@ -30,7 +36,7 @@ class Demande extends Model
 
     public function piste()
     {
-        return $this->hasOne('App\Commune');
+        return $this->hasOne('App\Piste');
     }
 
     public function porteur()
@@ -41,5 +47,10 @@ class Demande extends Model
     public function piece()
     {
         return $this->hasOne('App\Piece');
+    }
+
+    public function session()
+    {
+        return $this->belongsTo('App\Session', 'session_id');
     }
 }

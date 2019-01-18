@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\PointDesservi;
+use App\PointDesserviCategorie;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PointDesserviController extends Controller
 {
 
     public function loadPoint(Request $request)
     {
+        $categories = PointDesserviCategorie::all()->toArray();
         $type_point = $request->type;
-        $localites = PointDesservi::all()->where('type_point', '=', $type_point);
-        return $localites->toJson();
+        $points = PointDesserviCategorie::find($type_point)->point_desservis->toArray();
+        return array('categories' => $categories, 'points' => $points);
     }
 
 

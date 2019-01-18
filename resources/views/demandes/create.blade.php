@@ -150,12 +150,12 @@ $(document).ready(function () {
                 type: point_type
             },
             dataType: 'JSON',
-            success: function (data) {
-                console.log(data);
+            success: function (data) {               
 
-                for(propName in data)
+                for(propName in data.points)
             {
-                switch_markup +="<option value="+data[propName].id+">"+data[propName].nom_fr+"</option>";                                                   
+                
+                switch_markup +="<option value="+data.points[propName].id+">"+data.points[propName].nom_fr+"</option>";                                                   
             } 
             currow.find('td .point-desservis').append(switch_markup);
             }
@@ -165,8 +165,8 @@ $(document).ready(function () {
 
 
 
-    $('#add_point').click(function () {
-        var type_point = "localite";
+    $('#add_point').click(function () {      
+        var type_point = 1;
         $.ajax({
             url: '/loadPoint',
             type: 'POST',
@@ -177,36 +177,33 @@ $(document).ready(function () {
          
             dataType: 'JSON',
             success: function (data) {
-                var propName;
-                var markup2       
-                //console.log(data[0].nom_fr);
-                     
                 
-                        var markup1 = '<tr>\
-                                    <td style=\"width: 40%\">\
-                                        <div class=\"form-group\">\
-                                            <select class=\"form-control type_point\" name="type_point[]" >\
-                                                <option value=\"localite\" selected=\"selected\">Localité</option>\
-                                                <option value=\"etablissement_scol\">Etablissement Scolaire</option>\
-                                                <option value=\"etablissemnt_sante\"><i class=\"fa fa-dollar\"></i>Etablissement de santé</option>\
-                                                <option value=\"autre\"><i class=\"fa fa-dollar\"></i>Autre</option>\
-                                            </select>\
-                                        </div>\
-                                    </td>\
-                                    <td style=\"width: 60%\">\
-                                        <div class=\"form-group\">\
-                                            <select class=\"form-control point-desservis select2 \" name="points[]" style=\"width: 100%;\">';
-                                          
-                                                for(propName in data)
-                                                {
-                                                    markup2 +="<option value="+data[propName].id+">"+data[propName].nom_fr+"</option>";                                                   
-                                                }  
-                                                
-                        var markup3 = "</select></div></td></tr>";
-                           
-                                                
+               // console.log(data.categories);
+                var propName;
+                var markup2; 
+                var markup_categ;
+                 var markup_points;     
+                //console.log(data[0].nom_fr);
+                     for(propName in data.categories)
+                        {
+                            console.log(data.categories[propName].nom_fr);
+                            markup_categ +="<option value="+data.categories[propName].id+">"+data.categories[propName].nom_fr+"</option>";                                                   
+                        }
 
-            $(".table-points tr:last").after(markup1+markup2+markup3);
+                        for(propName in data.points)
+                        {
+                            console.log(data.points[propName].nom_fr);
+                            markup_points +="<option value="+data.points[propName].id+">"+data.points[propName].nom_fr+"</option>";                                                   
+                        }
+
+                        var markup1 = "<tr><td style='width: 40%'><div class='form-group'><select class='form-control type_point select2' name='type_point[]'>";                                               
+                        var markup2="</select></div></td>";
+                        var markup3="<td style='width: 60%'><div class='form-group'><select class='form-control point-desservis select2' name='points[]' style='width: 100%;'>"; 
+                                               
+                        var markup4 = "</select></div></td></tr>";
+            $(".table-points tr:last").after(markup1+markup_categ+markup2+markup3+markup_points+markup4);  
+                
+                        
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("AJAX error: " + textStatus + ' : ' + errorThrown);

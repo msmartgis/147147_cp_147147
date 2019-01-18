@@ -30,5 +30,12 @@
 
 	<script src="https://unpkg.com/ionicons@4.5.0/dist/ionicons.js"></script>
 
-	
+	<!-- Select2 -->
+<script src="{{asset('vendor_components/select2/dist/js/select2.full.js')}}"></script>
+
+
+	<!-- Fab Admin for advanced form element -->
+<script src="{{asset('js/advanced-form-element.js')}}"></script>
+
+
 	@stack('added_scripts')

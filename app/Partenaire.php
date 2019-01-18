@@ -10,4 +10,9 @@ class Partenaire extends Model
     {
         return $this->belongsToMany('App\Demande', 'partenaire_demande')->withTimestamps();
     }
+
+    public function partenaire_type()
+    {
+        return $this->belongsTo('App\PartenaireType');
+    }
 }

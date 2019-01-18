@@ -11,11 +11,11 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Partenaire</label>
-                                <select class="form-control select2" style="width: 100%;" id="partenaire_type">
-                                    <option selected="selected">Commune</option>
-                                    <option>INDH</option>
-                                    <option>ANZOA</option>
-                                    <option>Autre</option>
+                                <select class="form-control select2" style="width: 100%;" name="partnenaire_type_id" id="partenaire_type">
+                                    @foreach ($partenaire_types as $type)
+                                         <option value="{{$type->id}}">{{$type->nom_fr}}</option>
+                                    @endforeach
+                                    
                                 </select>
                             </div>
                         </div>

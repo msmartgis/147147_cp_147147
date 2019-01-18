@@ -11,4 +11,10 @@ class PointDesservi extends Model
     {
         return $this->belongsToMany('App\Demande', 'pointdesservi_demande')->withTimestamps();
     }
+
+    public function point_desservi_categories()
+    {
+        return $this->belongsTo('App\PointDesserviCategorie');
+    }
+
 }

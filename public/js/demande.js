@@ -169,7 +169,9 @@ $(document).ready(function () {
     //item to make id checkbox unique
     $("#add_partner_to_list").click(function () {
         var montant_g = $('#montant_g').val();
-        var partenair_type = $("#partenaire_type").val();
+        var partenair_type_text = $("#partenaire_type :selected").text();
+        var partenair_type_id = $("#partenaire_type").val();
+        //alert('id : ' + partenair_type_id + 'text : ' + partenair_type_text);
         var montant_partnenaire = $("#montant_partnenaire").val();
         //console.log(montant_partnenaire);
         var markup = '<tr>\
@@ -181,7 +183,7 @@ $(document).ready(function () {
                             </div>\
                         </div>\
                         </td>\
-                        <td style=\'text-align:center\'><input type="hidden" name="partnenaire_type[]" value="' + partenair_type + '">' + partenair_type + '</td>\
+                        <td style = \'text-align:center\'><input type="hidden" name="partnenaire_type_ids[]" value="' + partenair_type_id + '">' + partenair_type_text + '</td>\
                         <td style=\'text-align:center\'><input type="hidden" name="montant[]" value="' + montant_partnenaire + '">' + montant_partnenaire + '</td>\
                         <td style=\'text-align:center\'><input type="hidden" name="pourcentage[]" value="' + (montant_partnenaire / montant_g) * 100 + '">' + (montant_partnenaire / montant_g) * 100 + '</td>\
                     </tr>';

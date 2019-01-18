@@ -15,6 +15,7 @@ class CreateDemandeTable extends Migration
     {
         Schema::create('demandes', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->foreign('session_id')->references('id')->on('sessions');
             $table->integer('num_ordre');
             $table->date('date_reception');
             $table->string('objet_fr', 300)->nullable();

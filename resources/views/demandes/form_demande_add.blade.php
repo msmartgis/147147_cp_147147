@@ -40,22 +40,44 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <div class="form-group">
 
                         {{Form::label('','Etat du projet :')}}
-                        {{Form::select('etat_projet', ['realise' => 'Réalisée dans d\'autre programme', 'programme' =>
-                        'Programmée dans d\'autre programme'], null, ['data-placeholder' => 'Etat du
-                        projet','class'=>'form-control'])}}
+                        {{Form::select('etat_projet',
+                         [
+                             'sans' => 'sans',
+                              'realise' => 'Réalisée dans d\'autre programme',
+                              'programme' =>'Programmée dans d\'autre programme'
+                        ], 
+                        'sans',
+                         [
+                            'data-placeholder' => 'Etat du
+                            projet','class'=>'form-control'
+                        ])}}
 
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                     <div class="form-group">
                         {{Form::label('','Longueur :')}}
                         {{Form::text('longueur','',['class'=>'form-control'])}}
                     </div>
                 </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        {{Form::label('','Session:')}}
+                        {{Form::select('session', $sessions, null,
+                        [
+                        'data-placeholder' => 'Selectionner commune(s)',
+                        'class'=>'form-control ',                       
+                        'name'=>'session'
+                        ]
+                        )}}
+
+                    </div>
+                </div>
+
                 <div class="col-12">
                     <div id="map" style="border: solid 1px #666666;box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);"></div>
 
@@ -140,21 +162,12 @@
                                         <tr>
                                             <td style="width: 40%">
                                                 <div class="form-group">
-                                                    {{Form::select('type_point_desservis',
-                                                    [
-                                                    'localite' => 'Localité',
-                                                    'etablissement_scol' => 'Etablissement Scolaire',
-                                                    'etablissemnt_sante' => 'Etablissement de santé ',
-                                                    'autre' => 'Autre'
-                                                    ],
-                                                    'localite',
-                                                    [
-                                                    'data-placeholder' => 'Etat du projet',
-                                                    'class'=>'form-control type_point',
-                                                    'name'=>'type_point[]',
-                                                    ]
-                                                    )
-                                                    }}
+                                                    <select class="form-control  type_point select2" name="type_point[]" 
+                                                        style="width : 100%">
+                                                        @foreach($categorie_points as $categorie_point)
+                                                        <option value="{{ $categorie_point->id}}">{{ $categorie_point->nom_fr}}</option>
+                                                        @endforeach
+                                                    </select>                                            
                                                 </div>
                                             </td>
                                             <td style="width: 60%">

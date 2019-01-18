@@ -15,10 +15,9 @@ class CreateCommunePointsDesservisTable extends Migration
     {
         Schema::create('point_desservis', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type_point', 500);
+            $table->foreign('categorie_point_id')->references('id')->on('point_desservi_categories');
             $table->string('nom_ar', 500);
             $table->string('nom_fr', 500);
-
             $table->timestamps();
         });
     }

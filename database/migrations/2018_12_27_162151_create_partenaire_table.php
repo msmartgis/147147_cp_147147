@@ -15,7 +15,7 @@ class CreatePartenaireTable extends Migration
     {
         Schema::create('partenaires', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type', 100);
+            $table->foreign('partenaire_type_id')->references('id')->on('partenaires_types');
             $table->string('nom_fr', 500);
             $table->string('nom_ar', 500);
             $table->double('montant', 9, 2);

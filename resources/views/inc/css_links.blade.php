@@ -11,6 +11,8 @@
 	<link rel="stylesheet" href="{{asset('css/skins/_all-skins.css')}}">   
 	  
 	<link rel="stylesheet" href="{{asset('css/someCss.css')}}">  
+	<!-- Select2 -->
+<link rel="stylesheet" href="{{asset('vendor_components/select2/dist/css/select2.min.css')}}" />
 	  <!-- horizontal menu style -->
 	<link rel="stylesheet" href="{{asset('css/horizontal_menu_style.css')}}">
 
@@ -22,4 +24,8 @@
 
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" />
 
+
+	
+<!-- daterange picker -->	
+	<link rel="stylesheet" href="{{asset('vendor_components/bootstrap-daterangepicker/daterangepicker.css')}}">
     @yield('added_css')
