@@ -15,7 +15,7 @@
     </li>
 
     <li  class="{{ Request::is('demandes') ? 'nav-item active' : '' }}">
-        <a class="nav-link" href="demandes"
+        <a class="nav-link" href="/demandes"
             ><span class="active-item-here"></span
             ><ion-icon name="document"></ion-icon> <span>DEMANDES</span></a
         >

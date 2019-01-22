@@ -1,41 +1,46 @@
-$(document).on('click', '#close-preview', function(){ 
-    $('.image-preview').popover('hide');
-    // Hover befor close the preview    
-});
+ //add new parentaire
+ var item = 0;
+ $("#add_partner").click(function (event) {
+     if ($('#montant_g').val() == "") {
+         event.stopPropagation();
+     } else {
+         $('#m-add-partenaire').modal("show");
+     }
+ });
 
-$(function() {
-    // Create the close button
-    var closebtn = $('<button/>', {
-        type:"button",
-        text: 'x',
-        id: 'close-preview',
-        style: 'font-size: initial;',
-    });
-    closebtn.attr("class","close pull-right");
+ //item to make id checkbox unique
+ $("#add_partner_to_list").click(function () {
+     var montant_g = $('#montant_g').val();
+     var partenair_type_text = $("#partenaire_type :selected").text();
+     var partenair_type_id = $("#partenaire_type").val();
+     //alert('id : ' + partenair_type_id + 'text : ' + partenair_type_text);
+     var montant_partnenaire = $("#montant_partnenaire").val();
+     //console.log(montant_partnenaire);
+     var markup = '<tr>\
+                        <td style=\'text-align:center\'>\
+                        <div class=\"form-group\">\
+                            <div class=\"checkbox\">\
+                                <input type=\"checkbox\" id=\"row_' + item + '\" name=\"record\">\
+                                <label for="row_' + item + '"></label>\
+                            </div>\
+                        </div>\
+                        </td>\
+                        <td style = \'text-align:center\'><input type="hidden" name="partnenaire_type_ids[]" value="' + partenair_type_id + '">' + partenair_type_text + '</td>\
+                        <td style=\'text-align:center\'><input type="hidden" name="montant[]" value="' + montant_partnenaire + '">' + montant_partnenaire + '</td>\
+                        <td style=\'text-align:center\'><input type="hidden" name="pourcentage[]" value="' + (montant_partnenaire / montant_g) * 100 + '">' + (montant_partnenaire / montant_g) * 100 + '</td>\
+                    </tr>';
+     //$("#table_body_partner").append(markup);
+     $('#table_body_partner > tr:first').before(markup);
+     //markup.prependTo("#table_body_partner");
+     $("#montant_partnenaire").val('');
+     $("#m-add-partenaire").modal('toggle');
+     item++;
 
-    // Clear event
-    $('.image-preview-clear').click(function(){
-        $('.image-preview').attr("data-content","").popover('hide');
-        $('.image-preview-filename').val("");
-        $('.image-preview-clear').hide();
-        $('.image-preview-input input:file').val("");
-        $(".image-preview-input-title").text("Browse"); 
-    }); 
-    // Create the preview image
-    $(".image-preview-input input:file").change(function (){     
-        var img = $('<img/>', {
-            id: 'dynamic',
-            width:250,
-            height:200
-        });      
-        var file = this.files[0];
-        var reader = new FileReader();
-        // Set preview image into the popover data-content
-        reader.onload = function (e) {
-            $(".image-preview-input-title").text("Change");
-            $(".image-preview-clear").show();
-            $(".image-preview-filename").val(file.name);
-        }        
-        reader.readAsDataURL(file);
-    });  
-});
+ });
+ $(".delete-row").click(function () {
+     $("#table_body_partner").find('input[name="record"]').each(function () {
+         if ($(this).is(":checked")) {
+             $(this).parents("tr").remove();
+         }
+     });
+ });

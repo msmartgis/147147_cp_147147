@@ -23,11 +23,6 @@ class Demande extends Model
         return $this->belongsToMany('App\Partenaire', 'partenaire_demande')->withTimestamps();
     }
 
-    //through many 
-    public function type_partenaires()
-    {
-        return $this->hasManyThrough('App\PartenaireType', 'App\Partenaire');
-    }
 
     public function point_desservi()
     {

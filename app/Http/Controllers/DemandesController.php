@@ -26,6 +26,12 @@ use DataTables;
 class DemandesController extends BaseController
 {
 
+    public function affecterAuxConventions(Request $request)
+    {
+        $demande_id = Demande::find($request->id);
+
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -39,6 +45,7 @@ class DemandesController extends BaseController
         $partenaires_types = PartenaireType::all();
         $sessions = Session::all();
         $interventions = Intervention::all();
+        $porteurs = Porteur::all();
 
         $demandes = Demande::with(['communes', 'partenaire', 'piste', 'point_desservi', 'porteur', 'interventions', 'session'])->get();   
         //$demandes = $demandes_collec->toJson();
@@ -47,6 +54,7 @@ class DemandesController extends BaseController
             'communes' => $communes,
             'localites' => $localites,
             'partenaires_types' => $partenaires_types,
+            'porteurs' => $porteurs,
             'sessions' => $sessions,
             'interventions' => $interventions,
         ]);
@@ -79,7 +87,7 @@ class DemandesController extends BaseController
                 //     })->implode(',');
                 // })
                 ->addColumn('action', function ($demandes) {
-                    return '<a href="/demandes/' . $demandes->id . '/edit" class="btn btn-xs btn-info"><i class="fa fa-edit"></i> Modifier</a> <a href="#" class="btn btn-xs btn-warning" ><i class="fa fa-close"></i> Supprimer</a>';
+                    return '<a href="/demandes/' . $demandes->id . '/edit" class="btn btn-xs btn-info"><i class="fa fa-edit"></i> Modifier</a> <a href="#" class="btn btn-xs btn-success affect-modal-btn" data-numero = "' . $demandes->num_ordre . '"  data-id = "' . $demandes->id . '"><i class="fa fa-check"></i> Affecter aux conventions</a>';
                 })
                 ->editColumn('id', '{{$id}}')
                 ->setRowClass(function ($demandes) {

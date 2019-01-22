@@ -15,7 +15,9 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label>Localités</label>
+                
                 <select class="form-control select2" style="width: 100%;">
+                    <option value="all" selected>Indifferent</option>
                     @foreach($localites as $localite)
                     <option value="{{$localite->id}}">{{$localite->nom_fr}}</option>
                     @endforeach
@@ -26,12 +28,12 @@
 
         <div class="col-md-4">
             <div class="form-group">
-                <label>Partenaires</label>
+                <label>Maître d'ouvrage : </label>                
                 <select class="form-control select2" style="width: 100%;">
+                    <option value="all" selected>Indifferent</option>
                     @foreach ($partenaires_types as $type_part)
                     <option>{{$type_part->nom_fr}}</option>
                     @endforeach
-
 
                 </select>
             </div>

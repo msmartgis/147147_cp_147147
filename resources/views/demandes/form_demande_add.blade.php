@@ -361,7 +361,7 @@
                     <button type="button" class="btn btn-secondary delete-row">
                             <i class="fa fa-times"></i>
                             supprimer partenaire
-                        </button>
+                    </button>
                 </div>
         </section>
         <!-- Step 4 -->
