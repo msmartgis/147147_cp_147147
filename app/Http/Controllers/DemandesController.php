@@ -12,24 +12,52 @@ use App\Piece;
 use App\PartenaireType;
 use App\Intervention;
 use App\Session;
+use App\Convention;
 use App\PointDesserviCategorie;
+use App\Moa;
+use App\Projet;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
-
 use DataTables;
 
+use DB;
 
 class DemandesController extends BaseController
 {
-
     public function affecterAuxConventions(Request $request)
     {
-        $demande_id = Demande::find($request->id);
+        $convention_id = Convention::max('id') + 1;
+        $numero_ordre_cnv = Convention::max('num_ordre') + 1;
+        $convention = new Convention;
+        $projet = new Projet;
+        $demande = Demande::find($request->id);
+        //update demande is_affecter
+        DB::table('demandes')
+            ->where('id', $demande->id)
+            ->update(['is_affecter' => 1]);
 
+        $montant_cnv = $request->montant_global;
+        $convention->demande_id = $demande->id;
+        $convention->num_ordre = $numero_ordre_cnv;
+        $convention->montant_global = $montant_cnv;
+        $convention->save();
+
+        if ($convention->save()) {
+            //pivote table with moas
+            $moas_ids = Input::get('moas');
+            $convention->moas()->sync($moas_ids);
+        }
+
+        //save in projet
+        $projet->convention_id = $convention_id;
+        $projet->montant_global = $montant_cnv;
+        $projet->save();
+        return redirect('/demandes')->with('success', 'La demande : ' . $demande->num_ordre . '  est affecté aux conventions avec succès');
+        //return $demande;
     }
 
     /**
@@ -43,6 +71,7 @@ class DemandesController extends BaseController
         //point desservis :: localite only
         $localites = PointDesserviCategorie::find(1)->point_desservis;
         $partenaires_types = PartenaireType::all();
+        $moas = Moa::all();
         $sessions = Session::all();
         $interventions = Intervention::all();
         $porteurs = Porteur::all();
@@ -54,6 +83,7 @@ class DemandesController extends BaseController
             'communes' => $communes,
             'localites' => $localites,
             'partenaires_types' => $partenaires_types,
+            'moas' => $moas,
             'porteurs' => $porteurs,
             'sessions' => $sessions,
             'interventions' => $interventions,
@@ -62,7 +92,7 @@ class DemandesController extends BaseController
 
     public function getDemandes(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaire', 'session');
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaire', 'session')->where('is_affecter', '=', 0);
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -193,6 +223,7 @@ class DemandesController extends BaseController
         $demande->observation = $request->input('observation');
         $demande->etat = $request->input('etat');
         $demande->session_id = $request->input('session');
+        $demande->is_affecter = 0;
         $demande->save();
 
         //save data in partenaire********
@@ -326,12 +357,26 @@ class DemandesController extends BaseController
         // $piece->demande_id = $actu_id_demande;
         // $piece->save();
 
-        //save data in porteur de demande*****
+        //save data in porteur de demande and add it as partenaire_type *****
+        //$max_id_partenaire_type = Partenaire::max('id') + 1;
+        $partenaire_type = new PartenaireType;
+        $moa_from_porteur = new Moa;
+
         $porteur = new Porteur;
         $porteur->nom_porteur_fr = $request->input('nom_porteur_fr');
+        $partenaire_type->nom_fr = $request->input('nom_porteur_fr');
         $porteur->nom_porteur_ar = $request->input('nom_porteur_ar');
+        $partenaire_type->nom_ar = $request->input('nom_porteur_ar');
+
+        //save to moa
+        $moa_from_porteur->nom_fr = $request->input('nom_porteur_fr');
+        $moa_from_porteur->nom_ar = $request->input('nom_porteur_ar');
+
+
         $porteur->demande_id = $actu_id_demande;
         $porteur->save();
+        $partenaire_type->save();
+        $moa_from_porteur->save();
 
         //redirecting with success message
         return redirect('/demandes')->with('success', 'Demande créee avec succès');

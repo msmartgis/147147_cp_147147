@@ -110,18 +110,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    {!! Form::open(['action' => 'DemandesController@affecterAuxConventions','method'=>'post']) !!}  
+                    <input type="hidden" name="id" id="id_demande">
                     <h4>Informations sur le projet</h4>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Maître d'ouvrage : </label>
-                                <select class="form-control select2" style="width: 100%;">
-                                    @foreach ($partenaires_types as $type_part)
-                                    <option value="{{$type_part->id}}">{{$type_part->nom_fr}}</option>
-                                    @endforeach
-
-                                    @foreach ($porteurs as $porteur)
-                                    <option value="{{$porteur->id}}">{{$porteur->nom_porteur_fr}}</option>
+                                <select class="form-control select2" name="moas[]" style="width: 100%;" multiple="multiple">
+                                    @foreach ($moas as $moa)
+                                    <option value="{{$moa->id}}">{{$moa->nom_fr}}</option>
                                     @endforeach
 
                                 </select>
@@ -135,7 +133,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Montant Global TTC:</label>
-                                <input type="text" class="form-control" id="montant_g">
+                                <input type="text" class="form-control" name="montant_global" id="montant_g">
                             </div>
                         </div>
                     </div>
@@ -153,8 +151,9 @@
                                 <tbody id="table_body_partner">
                                     <tr>
                                         <td colspan="4" style="text-align: center"><a href="#" id="add_partner"
-                                                data-toggle="modal" data-target="#m-add-partenaire"> <i class="fa fa-plus"></i>
-                                                <b>Ajouter partenaire</b> </a></td>
+                                            data-toggle="modal" data-target="#m-add-partenaire"> <i class="fa fa-plus"></i>
+                                            <b>Ajouter partenaire</b> </a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -162,16 +161,16 @@
                                 <i class="fa fa-times"></i>
                                 supprimer partenaire
                             </button>
-                        </div>
-
-                        
+                        </div>                        
                     </div>
+                   
                 </div>
 
                 <div class="modal-footer modal-footer-uniform">
                     <button type="button" class="btn btn-bold btn-pure btn-warning" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-bold btn-pure btn-success float-right">Affecter</button>
+                    <button type="submit" class="btn btn-bold btn-pure btn-success float-right">Affecter</button>
                 </div>
+                 {!! Form::close() !!}
             </div>
         </div>
     </div>
@@ -335,6 +334,8 @@
             var numero_ordre = $(this).data('numero');
             var id_demande = $(this).data('id');
             $('.modal-title').text('Affectation aux conventions la demande numero : ' + numero_ordre);
+            $('#id_demande').val(id_demande);
+
             $('#affecter_aux_cnv').modal('show');
         });
 

@@ -146,7 +146,7 @@ $(document).ready(function () {
             </div>\
         </td>\
     </tr>';
-        $(".table-piece tr:last").after(markup);
+        $(".table-piece tr:first").after(markup);
     });
 
 });

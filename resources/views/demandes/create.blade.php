@@ -125,9 +125,6 @@
 {{-- leaflet --}}
 <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
 
-
-<!-- functions js -->
-<script src="{{asset('js/functions.js')}}"></script>
 <!-- CK Editor -->
 <script src="{{asset('vendor_components/ckeditor/ckeditor.js')}}"></script>
 <!-- Bootstrap WYSIHTML5 -->
@@ -203,7 +200,8 @@ $(document).ready(function () {
 
 
 
-    $('#add_point').click(function () {      
+    $('#add_point').click(function () {
+        var item = 1;      
         var type_point = 1;
         $.ajax({
             url: '/loadPoint',
@@ -239,7 +237,7 @@ $(document).ready(function () {
                         var markup3="<td style='width: 60%'><div class='form-group'><select class='form-control point-desservis select2' name='points[]' style='width: 100%;'>"; 
                                                
                         var markup4 = "</select></div></td></tr>";
-            $(".table-points tr:last").after(markup1+markup_categ+markup2+markup3+markup_points+markup4);  
+            $(".table-points tr:first").after(markup1+markup_categ+markup2+markup3+markup_points+markup4);  
                 
                         
             },

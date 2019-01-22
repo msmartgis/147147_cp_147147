@@ -4,13 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Demande extends Model
+class Convention extends Model
 {
-    // protected $fillable = ['num_ordre', 'objet_fr', 'objet_ar'];
-
     public function communes()
     {
         return $this->belongsToMany('App\Commune', 'commune_demande')->withTimestamps();
+    }
+
+    public function moas()
+    {
+        return $this->belongsToMany('App\Moa', 'moa_convention')->withTimestamps();
     }
 
     public function interventions()
@@ -34,6 +37,11 @@ class Demande extends Model
         return $this->hasOne('App\Piste');
     }
 
+    public function demande()
+    {
+        return $this->hasOne('App\Demande');
+    }
+
     public function porteur()
     {
         return $this->hasOne('App\Porteur');
@@ -47,10 +55,5 @@ class Demande extends Model
     public function session()
     {
         return $this->belongsTo('App\Session', 'session_id');
-    }
-
-    public function convention()
-    {
-        return $this->belongsTo('App\Convention', 'demande_id');
     }
 }

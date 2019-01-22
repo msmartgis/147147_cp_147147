@@ -135,18 +135,13 @@
         <h6>Informations techniques</h6>
         <section>
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="box">
-                        <div class="box-header with-border" style="background-color: #cedce3;">
+                        <div class="box-header with-border" style="background-color: #cedce3; text-align: center">
                             <div class="row">
-                                <div class="col-6 ">
-                                    <h4 class="box-title pull-left">Points désservis</h4>
-                                </div>
-                                <div class="col-6">
-                                    <button type="button" class="btn btn-success pull-right" id="add_point" style="padding: 0.4rem 1rem;">
-                                        <i class="fa fa-plus"></i> Ajouter point
-                                    </button>
-                                </div>
+                                <div class="col-12">
+                                    <h5 class="box-title" style="text-align: center">Points désservis</h5>  
+                                </div>        
                             </div>
                         </div>
 
@@ -154,7 +149,7 @@
                         <div class="box-body no-padding">
                             <div class="table-responsive">
                                 <table class="table table-points">
-                                    <tr style="text-align: center;">
+                                    <tr style="text-align: center;">                                       
                                         <th>Type</th>
                                         <th>Nom</th>
                                     </tr>
@@ -181,6 +176,11 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        <tr>
+                                             <td colspan="2" style="text-align: center"><a href="#" id="add_point"> <i class="fa fa-plus"></i>
+                                                <b> Ajouter point</b> </a>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -191,18 +191,13 @@
                 </div>
 
 
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="box">
                         <div class="box-header with-border" style="background-color: #cedce3;">
-                            <div class="row">
-                                <div class="col-6 ">
-                                    <h4 class="box-title pull-left">Pièces </h4>
-                                </div>
-                                <div class="col-6">
-                                    <button type="button" class="btn btn-success pull-right" id="add_piece" style="padding: 0.4rem 1rem;">
-                                        <i class="fa fa-plus"></i> Ajouter pièce
-                                    </button>
-                                </div>
+                            <div class="row"> 
+                                <div class="col-12">
+                                    <h5 class="box-title" style="text-align: center">Pièces </h5>   
+                                </div>    
                             </div>
                         </div>
 
@@ -264,7 +259,12 @@
                                                     {{Form::file('piece_upload',['name'=>'pieces_uploads[]'])}}
                                                 </div>
                                             </td>
+                                        </tr>
 
+                                        <tr>
+                                             <td colspan="3" style="text-align: center"><a href="#" id="add_piece"> <i class="fa fa-plus"></i>
+                                                <b> Ajouter Pièce</b> </a>
+                                            </td>
                                         </tr>
                                     </tbody>
 
@@ -275,8 +275,6 @@
                     </div>
                     <!-- /.box -->
                 </div>
-
-
             </div>
 
             <div class="row">
@@ -301,7 +299,7 @@
         <h6>Information sur le financement du projet</h6>
         <section>
             <div class="row">
-                <div class="col-2">
+                <div class="col-6">
                     <div class="form-group">
 
                         {{Form::label('','Montant global TTC (DH) :')}}
@@ -317,13 +315,11 @@
                         ]
                         )}}
                     </div>
-
-                    <button type="button" class="btn btn-secondary " id="add_partner" data-toggle="modal" data-target="#m-add-partenaire">
-                        <i class="fa fa-plus"></i>
-                        ajouter partenaire
-                    </button>
                 </div>
-                <div class="col-10">
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
                     <div class="box">
                         <div class="box-header">
                             <h4 class="box-title"><strong>Montage Financier proposé</strong></h4>
@@ -341,7 +337,12 @@
                                         </tr>
                                     </thead>
                                     <tbody id="table_body_partner">
-
+                                        <tr>
+                                            <td colspan="4" style="text-align: center"><a href="#" id="add_partner"
+                                                data-toggle="modal" data-target="#m-add-partenaire"> <i class="fa fa-plus"></i>
+                                                <b>Ajouter partenaire</b> </a>
+                                            </td>
+                                        </tr>
                                     </tbody>
 
                                     <!-- <tfoot>
@@ -363,6 +364,8 @@
                             supprimer partenaire
                     </button>
                 </div>
+            </div>
+                
         </section>
         <!-- Step 4 -->
         <h6>Observations et remarques</h6>

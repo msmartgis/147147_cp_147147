@@ -53,7 +53,7 @@ $(function () {
 
     //Price E.g. $ 999.99
     $('#montant_g').formatter({
-        'pattern': 'DH {{999999999}}',
+        'pattern': '{{999999999}}',
         'persistent': true
     });
 
