@@ -1786,8 +1786,8 @@ input::-ms-clear {
 .nav-tabs .nav-item.open .nav-link:hover {
     color: #fff;
     border-color: transparent;
-    border-bottom-color: #398bf7;
-    background-color: #398bf7;
+    border-bottom-color: #f18983;
+    background-color: #f18983;
 }
 
 .nav-tabs .dropup .dropdown-menu {

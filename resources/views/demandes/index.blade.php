@@ -6,6 +6,9 @@
 <!-- bootstrap datepicker -->
 <link rel="stylesheet" href="{{asset('vendor_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}" />
 
+<!--alerts CSS -->
+<link href="{{asset('vendor_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
+
 
 <style>
     th {
@@ -51,171 +54,81 @@
             <div class="box-header with-border">
                 <h4 class="box-title">La liste des demandes</h4>
                 <div class="box-controls pull-right">
-
                 </div>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
-                @include('demandes.filter_demandes')
+            <div class="box-body">                
+                @include('demandes.tabs')                
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="en_cours" role="tabpanel">
+                        <div class="pad">
+                            @include('demandes.filter_demandes')
+                            <div class="row">
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6 ">
+                                    <a href="/demandes/create" class="btn btn-secondary pull-right"><i class="fa fa-plus"
+                                            style="margin-right: 6px"></i>Ajouter
+                                        une demande</a>
+                                    <a href="" class="btn btn-secondary pull-right" style="margin-right : 6px"><i class="fa fa-print"
+                                            style="margin-right: 6px"></i>Imprimer la fiche</a>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top : 12px">
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6">
+                                    <a href="" class="btn btn-success pull-right" style="margin-right : 6px"><i class="fa fa-file-pdf-o"
+                                            style="margin-right: 6px"></i>PDF</a>
 
-                <div class="row">
-                    <div class="col-md-6"></div>
-                    <div class="col-md-6 ">
-                        <a href="/demandes/create" class="btn btn-secondary pull-right"><i class="fa fa-plus" style="margin-right: 6px"></i>Ajouter
-                            une demande</a>
-                        <a href="" class="btn btn-secondary pull-right" style="margin-right : 6px"><i class="fa fa-print"
-                                style="margin-right: 6px"></i>Imprimer la fiche</a>
+                                    <a href="" class="btn btn-success pull-right" style="margin-right : 6px"><i class="fa fa-file-excel-o"
+                                            style="margin-right: 6px"></i>CSV</a>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="demandes_datatables">
+                                    <thead>
+                                        <th>#</th>                                      
+                                        <th>N°ordre</th>
+                                        <th>D.Réception</th>
+                                        <th>Objet</th>
+                                        <th>Communes</th>
+                                        <th>porteur</th>
+                                        <th>Interventions</th>
+                                        <th>M.Totol</th>                                        
+                                       
+                                    </thead>
+
+                                </table>
+                            </div>
+                            <div class="row" style="margin-top : 8px">
+                                    <div class="dropdown" style="margin-left : 8px">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Décision</button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item " href="#" ><div id="modifier"><i class="fa fa-edit"></i> Modifier</div></a>
+                                                <a class="dropdown-item" href="#"><div id="accord_definitif"><i class="fa fa-thumbs-up"></i> Accord défintif</div></a>
+                                                <a class="dropdown-item" href="#"><div id="a_traiter"><i class="fa fa-clock-o"></i> A traiter</div></a>
+                                                <div class="dropdown-divider"></div> 
+                                                <a class="dropdown-item" href="#"><div id="supprimer_demande"><i class="fa fa-close"></i> Supprimer</div></a> 
+                                            </div>
+                                    </div>
+
+                                    <button type="button" id="affecter_aux_cnv" class="btn btn-secondary" style="margin-left : 8px;visibility : hidden">Affecter aux conventions</button>
+                            </div>
+                           
+                        </div>
                     </div>
-                </div>
-                <div class="row" style="margin-top : 12px">
-                    <div class="col-md-6"></div>
-                    <div class="col-md-6">
-                        <a href="" class="btn btn-success pull-right" style="margin-right : 6px"><i class="fa fa-file-pdf-o"
-                                style="margin-right: 6px"></i>PDF</a>
-
-                        <a href="" class="btn btn-success pull-right" style="margin-right : 6px"><i class="fa fa-file-excel-o"
-                                style="margin-right: 6px"></i>CSV</a>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-hover" id="demandes_datatables">
-                        <thead>
-                            <th>Numero ordre</th>
-                            <th>Date Réception</th>
-                            <th>Objet</th>
-                            <th>Communes</th>
-                            <th>porteur</th>
-                            <th>Interventions</th>
-                            <th>M.Totol</th>
-                            <th>Décision</th>
-                            <th>Action</th>
-                        </thead>
-
-                    </table>
-                </div>
+                    <div class="tab-pane pad" id="affectees" role="tabpanel">2</div>
+                    <div class="tab-pane pad" id="accord_definitif" role="tabpanel">2</div>
+                    <div class="tab-pane pad" id="realisees_programme" role="tabpanel">3</div>
+                    <div class="tab-pane pad" id="a_traiter" role="tabpanel">3</div>
+                </div>  
             </div>
             <!-- /.box-body -->
         </div>
         <!-- /.box -->
     </div>
     <!-- modals -->
-    <!-- Modal -->
-    <div class="modal center-modal fade" id="affecter_aux_cnv" tabindex="-1">
-        <div class="modal-dialog m-modal-dim">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title"></h3>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {!! Form::open(['action' => 'DemandesController@affecterAuxConventions','method'=>'post']) !!}  
-                    <input type="hidden" name="id" id="id_demande">
-                    <h4>Informations sur le projet</h4>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Maître d'ouvrage : </label>
-                                <select class="form-control select2" name="moas[]" style="width: 100%;" multiple="multiple">
-                                    @foreach ($moas as $moa)
-                                    <option value="{{$moa->id}}">{{$moa->nom_fr}}</option>
-                                    @endforeach
-
-                                </select>
-                            </div>
-                            <!-- /.form-group -->
-                        </div>
-                    </div>
-
-                    <h4>Financement de projet</h4>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Montant Global TTC:</label>
-                                <input type="text" class="form-control" name="montant_global" id="montant_g">
-                            </div>
-                        </div>
-                    </div>
-
-                    <h5>Montage financier définitif</h5>
-                    <div class="row">
-                        <div class="col-12">
-                            <table class="table table-hover">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Partenaire</th>
-                                    <th>Montant</th>
-                                    <th>Pourcentage</th>
-                                </tr>
-                                <tbody id="table_body_partner">
-                                    <tr>
-                                        <td colspan="4" style="text-align: center"><a href="#" id="add_partner"
-                                            data-toggle="modal" data-target="#m-add-partenaire"> <i class="fa fa-plus"></i>
-                                            <b>Ajouter partenaire</b> </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button type="button" class="btn btn-warning delete-row">
-                                <i class="fa fa-times"></i>
-                                supprimer partenaire
-                            </button>
-                        </div>                        
-                    </div>
-                   
-                </div>
-
-                <div class="modal-footer modal-footer-uniform">
-                    <button type="button" class="btn btn-bold btn-pure btn-warning" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-bold btn-pure btn-success float-right">Affecter</button>
-                </div>
-                 {!! Form::close() !!}
-            </div>
-        </div>
-    </div>
-    <!-- /.modal -->
-
-    <div class="modal fade" id="m-add-partenaire">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Nouveau partenaire</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Partenaire</label>
-                                <select class="form-control select2" style="width: 100%;" name="partnenaire_type_id" id="partenaire_type">
-                                    @foreach ($partenaires_types as $type)
-                                    <option value="{{$type->id}}">{{$type->nom_fr}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="example_input_full_name">Montant:</label>
-                                <input type="text" class="form-control" id="montant_partnenaire">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-success float-right" id="add_partner_to_list">Ajouter à la
-                        liste</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-    <!-- end modals -->
+    @include('demandes.modals')
 </div>
 @endsection
 
@@ -249,8 +162,11 @@
 <script src="{{asset('vendor_components/formatter/jquery.formatter.js')}}"></script>
 
 <script src="{{asset('js/formatter.js')}}"></script>
-
 <script src="{{asset('js/functions.js')}}"></script>
+
+<!-- Sweet-Alert  -->
+<script src="{{asset('')}}vendor_components/sweetalert/sweetalert.min.js"></script>
+<script src="../../../assets/vendor_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -271,7 +187,15 @@
                 }
 
             },
-            columns: [{
+            columns: [
+                {
+                    data: 'checkbox',
+                    name: 'checkbox',
+                    orderable: false,
+                    searchable: false
+                },               
+                
+                {
                     data: 'num_ordre',
                     name: 'demandes.num_ordre'
                 },
@@ -298,18 +222,8 @@
                 {
                     data: 'montant_global',
                     name: 'montant_global'
-                },
-                {
-                    data: 'decision',
-                    name: 'decision'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                }
-            ],
+                }             
+            ],            
             initComplete: function () {
                 this.api().columns().every(function () {
                     var column = this;
@@ -323,21 +237,116 @@
         });
 
 
-
         $('#communes_filter,#session_filter,#intervention_filter').on('change', function (e) {
-
             oTable.draw();
             e.preventDefault();
         });
 
-        $(document).on('click', '.affect-modal-btn', function () {
-            var numero_ordre = $(this).data('numero');
-            var id_demande = $(this).data('id');
-            $('.modal-title').text('Affectation aux conventions la demande numero : ' + numero_ordre);
-            $('#id_demande').val(id_demande);
-
-            $('#affecter_aux_cnv').modal('show');
+        //select item from datatable
+        //edite
+        $("#modifier").click(function () {
+            var id;           
+            $("#demandes_datatables > tbody").find('input[name="checkbox"]').each(function () {
+                if ($(this).is(":checked")) {
+                    id = $('input[name=checkbox]').val();
+                    window.location.href = "demandes/"+id+"/edit";                   
+                    return false;
+                }else{
+                    swal("Veuillez selectionner une demande");
+                    return false;
+                }
+            });
         });
+
+        //effecter 
+        $("#accord_definitif").click(function () {
+            url = "demandes/accord_definitif";
+            datatble_id = "demandes_datatables";
+            name_chechbox = "checkbox";
+            method = "POST";
+            decision_function(datatble_id,name_chechbox,url,method);            
+        });
+
+        //a traiter 
+        $("#a_traiter").click(function () {
+            url = "demandes/a_traiter";
+            datatble_id = "demandes_datatables";
+            name_chechbox = "checkbox";
+            method = "POST";
+            decision_function(datatble_id,name_chechbox,url,method);    
+        });
+
+
+        //function for decision 
+function decision_function(datatble_id, name_chechbox, url,method) {
+    //alert(datatble_id + ' ' + name_chechbox + ' ' + url);
+    var message_sub_title = '';
+    var message_reussi = ''; 
+    if(url == "demandes/accord_definitif")
+    {
+        message_sub_title = "Ajouter a la liste des demandes avec accord définitif!";
+        message_reussi = "Accord définitif réussi.";
+    }
+    if(url == "demandes/a_traiter")
+    {
+        message_sub_title = "Ajouter a la liste des demandes à traiter!";
+        message_reussi = "A traiter réussi.";
+    }
+    var demande_ids = [];
+    var numero_ordres = [];
+    $("#" + datatble_id + " > tbody ").find("input[name=" + name_chechbox + " ]").each(function () {
+        if ($(this).is(":checked")) {
+            demande_ids.push($(this).val());
+            numero_ordres.push($(this).data('numero'));
+            // id_demande = $('input[name=checkbox]').val();
+            // var numero_ordre = $('input[name=checkbox]').data('numero');
+            // $('.modal-title').text('Affectation aux conventions la demande numero : ' + numero_ordre);
+            // $('#id_demande').val(id_demande);
+            // $('#affecter_aux_cnv').modal('show');                                    
+
+        } else {
+            swal("Veuillez selectionner une demande");
+            return false;
+        }
+
+    });
+
+    if (demande_ids.length > 0) {
+        swal({
+            title: "Vous êtes sûr?",
+            text: message_sub_title,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Oui, je confirme!",
+            cancelButtonText: "Non, annuler!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                //send an ajax request to the server update decision column
+                $.ajax({
+                    url: url,
+                    type: method,
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        demande_ids: demande_ids
+                    },
+                    dataType: 'text',
+                    success: function (data) {
+                        if (data == "ok") {
+                            swal("Réussi!", message_reussi, "success");
+                            setTimeout(location.reload.bind(location), 500);
+                        }
+
+                    }
+                });
+            } else {
+                swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
+            }
+        });
+    }
+}
 
     });
 

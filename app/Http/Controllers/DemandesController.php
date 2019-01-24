@@ -26,8 +26,24 @@ use DataTables;
 
 use DB;
 
+
 class DemandesController extends BaseController
 {
+    public function accordDefinitif(Request $request)
+    {
+        $ids = array();
+        $ids = $request->demande_ids;
+        $values = Demande::whereIn('id', $ids)->update(['decision' => 'accord_definitif']);
+        return "ok";
+    }
+
+    public function aTraiter(Request $request)
+    {
+        $ids = array();
+        $ids = $request->demande_ids;
+        $values = Demande::whereIn('id', $ids)->update(['decision' => 'a_traiter']);
+        return "ok";
+    }
     public function affecterAuxConventions(Request $request)
     {
         $convention_id = Convention::max('id') + 1;
@@ -38,7 +54,7 @@ class DemandesController extends BaseController
         //update demande is_affecter
         DB::table('demandes')
             ->where('id', $demande->id)
-            ->update(['is_affecter' => 1]);
+            ->update(['is_affecter' => 1, 'decision' => 'affecter']);
 
         $montant_cnv = $request->montant_global;
         $convention->demande_id = $demande->id;
@@ -92,7 +108,7 @@ class DemandesController extends BaseController
 
     public function getDemandes(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaire', 'session')->where('is_affecter', '=', 0);
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaire', 'session')->where('decision', '=', 'en_cours');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -116,9 +132,11 @@ class DemandesController extends BaseController
                 //         return str_limit($partenaire->partenaire_type('nom_fr'), 30, '...');
                 //     })->implode(',');
                 // })
-                ->addColumn('action', function ($demandes) {
-                    return '<a href="/demandes/' . $demandes->id . '/edit" class="btn btn-xs btn-info"><i class="fa fa-edit"></i> Modifier</a> <a href="#" class="btn btn-xs btn-success affect-modal-btn" data-numero = "' . $demandes->num_ordre . '"  data-id = "' . $demandes->id . '"><i class="fa fa-check"></i> Affecter aux conventions</a>';
+
+                ->addColumn('checkbox', function ($demandes) {
+                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-navy"><label for="' . $demandes->id . '" class="block" ></label>';
                 })
+                ->rawColumns(['checkbox'])
                 ->editColumn('id', '{{$id}}')
                 ->setRowClass(function ($demandes) {
                     return $demandes->id % 2 == 0 ? 'center-data-blue' : 'center-data';
@@ -152,9 +170,7 @@ class DemandesController extends BaseController
                 });
             }
         }
-
         return $datatables->make(true);
-
     }
 
     /**
@@ -224,6 +240,7 @@ class DemandesController extends BaseController
         $demande->etat = $request->input('etat');
         $demande->session_id = $request->input('session');
         $demande->is_affecter = 0;
+        $demande->decision = 'en_cours';
         $demande->save();
 
         //save data in partenaire********
@@ -424,6 +441,8 @@ class DemandesController extends BaseController
      */
     public function destroy(Demande $demande)
     {
-        //
+        Demande::find($demande)->delete();
+         //redirecting with success message
+        return redirect('/demandes')->with('success', 'Demande supprimée avec succès ');
     }
 }

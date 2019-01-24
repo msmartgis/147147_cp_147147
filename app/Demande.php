@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Demande extends Model
 {
     // protected $fillable = ['num_ordre', 'objet_fr', 'objet_ar'];
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     public function communes()
     {

@@ -1,4 +1,8 @@
+
+
 <div class="filters" style="margin-bottom: 24px;margin-top: 8px">
+   						
+      
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
@@ -28,13 +32,12 @@
 
         <div class="col-md-4">
             <div class="form-group">
-                <label>Maître d'ouvrage : </label>                
+                <label>Partenaires : </label>                
                 <select class="form-control select2" style="width: 100%;">
                     <option value="all" selected>Indifferent</option>
                     @foreach ($partenaires_types as $type_part)
                     <option>{{$type_part->nom_fr}}</option>
                     @endforeach
-
                 </select>
             </div>
             <!-- /.form-group -->

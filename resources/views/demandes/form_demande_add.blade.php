@@ -52,8 +52,9 @@
                         ], 
                         'sans',
                          [
-                            'data-placeholder' => 'Etat du
-                            projet','class'=>'form-control'
+                            'data-placeholder' => 'Etat du projet',
+                            'class'=>'form-control',
+                            'name'=>'etat'
                         ])}}
 
                     </div>

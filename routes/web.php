@@ -23,6 +23,8 @@ Route::resource('communes', 'CommunesController');
 Route::post('/loadPoint', 'PointDesserviController@loadPoint');
 Route::get('demande', 'DemandesController@getDemandes')->name('get.demandes');
 Route::post('demandes/affecter_cnv', 'DemandesController@affecterAuxConventions')->name('affecter_cnv');
+Route::post('demandes/accord_definitif', 'DemandesController@accordDefinitif')->name('accord_definitif');
+Route::post('demandes/a_traiter', 'DemandesController@aTraiter')->name('a_traiter');
 
 //Route::post('/load_points_desservis', 'LoadPointsDesservis@load_points_desservis')->name('load_point');
 //Route::get('load_points', 'LoadPointsDesservis@load_points_desservis');
