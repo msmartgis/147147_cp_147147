@@ -8,8 +8,8 @@ class PartenaireType extends Model
 {
     protected $table = 'partenaires_types';
 
-    public function partenaires()
+    public function demandes()
     {
-        return $this->hasMany('App\Partenaire', 'partenaire_type_id', 'id');
+        return $this->belongsToMany('App\Demande', 'partenaire_demande')->withTimestamps();
     }
 }

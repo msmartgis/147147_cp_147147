@@ -1,8 +1,4 @@
-
-
 <div class="filters" style="margin-bottom: 24px;margin-top: 8px">
-   						
-      
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
@@ -18,12 +14,11 @@
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                <label>Localités</label>
-                
-                <select class="form-control select2" style="width: 100%;">
+                <label>Localités</label>                
+                <select class="form-control select2" style="width: 100%;" name="localites" id="localites_filter">
                     <option value="all" selected>Indifferent</option>
                     @foreach($localites as $localite)
-                    <option value="{{$localite->id}}">{{$localite->nom_fr}}</option>
+                    <option value="{{$localite->nom_fr}}">{{$localite->nom_fr}}</option>
                     @endforeach
                 </select>
             </div>
@@ -33,10 +28,10 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label>Partenaires : </label>                
-                <select class="form-control select2" style="width: 100%;">
+                <select class="form-control select2" style="width: 100%;" name="partenaires" id="partenaires_filter">
                     <option value="all" selected>Indifferent</option>
                     @foreach ($partenaires_types as $type_part)
-                    <option>{{$type_part->nom_fr}}</option>
+                    <option value="{{$type_part->id}}">{{$type_part->nom_fr}}</option>
                     @endforeach
                 </select>
             </div>
@@ -77,7 +72,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" class="form-control pull-right" id="reservation">
+                    <input type="text" class="form-control pull-right" name="daterange" id="reservation">
                 </div>
             </div>
             <!-- /.form-group -->

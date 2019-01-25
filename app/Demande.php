@@ -21,13 +21,13 @@ class Demande extends Model
         return $this->belongsToMany('App\Intervention', 'intervention_demande')->withTimestamps();
     }
 
-    public function partenaire()
+    public function partenaires()
     {
-        return $this->belongsToMany('App\Partenaire', 'partenaire_demande')->withTimestamps();
+        return $this->belongsToMany('App\PartenaireType', 'partenaire_demande', 'demande_id', 'partenaire_id')->withPivot('montant', 'pourcentage')->withTimestamps();
     }
 
 
-    public function point_desservi()
+    public function point_desservis()
     {
         return $this->belongsToMany('App\PointDesservi', 'pointdesservi_demande')->withTimestamps();
     }

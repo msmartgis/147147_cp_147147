@@ -94,7 +94,9 @@
                                         <th>Communes</th>
                                         <th>porteur</th>
                                         <th>Interventions</th>
+                                        <th>Partenaire</th>
                                         <th>M.Totol</th>                                        
+                                        <th>Session</th>                                        
                                        
                                     </thead>
 
@@ -106,9 +108,7 @@
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item " href="#" ><div id="modifier"><i class="fa fa-edit"></i> Modifier</div></a>
                                                 <a class="dropdown-item" href="#"><div id="accord_definitif"><i class="fa fa-thumbs-up"></i> Accord défintif</div></a>
-                                                <a class="dropdown-item" href="#"><div id="a_traiter"><i class="fa fa-clock-o"></i> A traiter</div></a>
-                                                <div class="dropdown-divider"></div> 
-                                                <a class="dropdown-item" href="#"><div id="supprimer_demande"><i class="fa fa-close"></i> Supprimer</div></a> 
+                                                <a class="dropdown-item" href="#"><div id="a_traiter"><i class="fa fa-clock-o"></i> A traiter</div></a>                                                
                                             </div>
                                     </div>
 
@@ -184,9 +184,18 @@
                     d.communes = $('select[name=communes]').val();
                     d.session = $('select[name=session]').val();
                     d.interventions = $('select[name=interventions]').val();
+                    d.partenaires = $('select[name=partenaires]').val();
+                    d.localites = $('select[name=localites]').val();
+                    d.daterange = $('input[name=daterange]').val();
                 }
 
             },
+            columnDefs: [
+           
+            { width: 20, targets: 1 },
+            { width: 30, targets: 2 },
+             { width: 300, targets: 3 }
+            ],
             columns: [
                 {
                     data: 'checkbox',
@@ -220,8 +229,16 @@
                     name: 'interventions.nom'
                 },
                 {
+                    data: 'partenaire',
+                    name: 'partenaire.nom_fr'
+                },
+                {
                     data: 'montant_global',
                     name: 'montant_global'
+                },
+                {
+                    data: 'session',
+                    name: 'session.nom'
                 }             
             ],            
             initComplete: function () {
@@ -237,10 +254,13 @@
         });
 
 
-        $('#communes_filter,#session_filter,#intervention_filter').on('change', function (e) {
+        $('#communes_filter,#session_filter,#intervention_filter,#partenaires_filter,#localites_filter,#reservation').on('change paste keyup', function (e) {
             oTable.draw();
             e.preventDefault();
         });
+
+
+        
 
         //select item from datatable
         //edite

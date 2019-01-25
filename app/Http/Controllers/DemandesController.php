@@ -7,7 +7,6 @@ use App\Commune;
 use App\Piste;
 use App\Porteur;
 use App\PointDesservi;
-use App\Partenaire;
 use App\Piece;
 use App\PartenaireType;
 use App\Intervention;
@@ -83,6 +82,7 @@ class DemandesController extends BaseController
      */
     public function index()
     {
+
         $communes = Commune::orderBy('nom_fr')->get();
         //point desservis :: localite only
         $localites = PointDesserviCategorie::find(1)->point_desservis;
@@ -92,7 +92,8 @@ class DemandesController extends BaseController
         $interventions = Intervention::all();
         $porteurs = Porteur::all();
 
-        $demandes = Demande::with(['communes', 'partenaire', 'piste', 'point_desservi', 'porteur', 'interventions', 'session'])->get();   
+        $demandes = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session'])->get();
+        
         //$demandes = $demandes_collec->toJson();
         return view('demandes.index')->with([
             'demandes' => $demandes,
@@ -108,7 +109,7 @@ class DemandesController extends BaseController
 
     public function getDemandes(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaire', 'session')->where('decision', '=', 'en_cours');
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where('decision', '=', 'en_cours');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -127,14 +128,18 @@ class DemandesController extends BaseController
                 })
                 // i should have access to show parntenaire type name for every partenaire
 
-                // ->addColumn('partenaire', function (Demande $demande) {
-                //     return $demande->partenaire->map(function ($partenaire) {
-                //         return str_limit($partenaire->partenaire_type('nom_fr'), 30, '...');
-                //     })->implode(',');
-                // })
+                ->addColumn('partenaire', function (Demande $demande) {
+                    return $demande->partenaires->map(function ($partenaire) {
+                        return str_limit($partenaire->nom_fr, 30, '...');
+                    })->implode(',');
+                })
+
+                ->addColumn('session', function (Demande $demande) {
+                    return $demande->session ? str_limit($demande->session->nom, 30, '...') : '';
+                })
 
                 ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-navy"><label for="' . $demandes->id . '" class="block" ></label>';
+                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
                 })
                 ->rawColumns(['checkbox'])
                 ->editColumn('id', '{{$id}}')
@@ -153,12 +158,45 @@ class DemandesController extends BaseController
             }
         }
 
+        //filter with partenaire
+        if ($partenaires_id = $request->get('partenaires')) {
+            if ($partenaires_id == "all") {
+            } else {
+                $demandes->whereHas('partenaires', function ($query) use ($partenaires_id) {
+                    $query->where('partenaires_types.id', '=', $partenaires_id);
+                });
+            }
+        }
+
+        //filter with localites
+        if ($localites = $request->get('localites')) {
+            if ($localites == "all") {
+            } else {
+                $demandes->whereHas('point_desservis', function ($query) use ($localites) {
+                    $query->where('point_desservis.nom_fr', '=', $localites);
+                });
+            }
+        }
+
         //filter with session
         if ($session_id = $request->get('session')) {
             if ($session_id == "all") {
             } else {
                 $demandes->where('session_id', '=', $session_id);
             }
+        }
+
+        //filter with daterange
+        if ($daterange = $request->get('daterange')) {
+            $daterange_splite = explode('-', $daterange);
+            $date_start = $daterange_splite[0];
+
+            $date_end = $daterange_splite[1];
+            $demandes->where([
+                ['date_reception', '>=', trim($date_start)],
+                ['date_reception', '<=', trim($date_end)],
+            ]);
+
         }
 
         //filter with intervention
@@ -244,41 +282,54 @@ class DemandesController extends BaseController
         $demande->save();
 
         //save data in partenaire********
+        // if (Input::has('partnenaire_type_ids')) {
+        //     $actu_id_partenaire = Partenaire::max('id') + 1;
+        //     $partners_ids = array();
+        // //itterate over tha array and save every partenaire
+        //     $array_combination = array();
+        //     $partner_type_ids_array = array();
+        //     $partner_type_ids_array = Input::get('partnenaire_type_ids');
+
+        //     $partner_montant_array = Input::get('montant');
+
+        //     $partner_pourcentage_array = Input::get('pourcentage');
+        //     $items_number = count($partner_type_ids_array);
+
+
+        //     for ($i = 0; $i < $items_number; $i++) {
+        //         $partenaire = new Partenaire;
+        //         $partenaire->partenaire_type_id = $partner_type_ids_array[$i];
+        //         $partenaire->montant = $partner_montant_array[$i];
+        //         $partenaire->pourcentage = $partner_pourcentage_array[$i];
+        //         array_push($array_combination, $partenaire);
+        //     }
+
+
+        //     foreach ($array_combination as $p) {
+        //         array_push($partners_ids, $actu_id_partenaire);
+        //         $partner = new Partenaire;
+        //         $partner->partenaire_type_id = $p->partenaire_type_id;
+        //         $partner->montant = $p->montant;
+        //         $partner->pourcentage = $p->pourcentage;
+        //         $actu_id_partenaire += 1;
+        //         $partner->save();
+
+        //     }
+        //     //pivot table between partenaire and demande
+        //     $demande->partenaire()->sync($partners_ids);
+        // }
+
+        //partenaire *****
         if (Input::has('partnenaire_type_ids')) {
-            $actu_id_partenaire = Partenaire::max('id') + 1;
-            $partners_ids = array();
-        //itterate over tha array and save every partenaire
-            $array_combination = array();
-            $partner_type_ids_array = array();
-            $partner_type_ids_array = Input::get('partnenaire_type_ids');
-
-            $partner_montant_array = Input::get('montant');
-
-            $partner_pourcentage_array = Input::get('pourcentage');
-            $items_number = count($partner_type_ids_array);
-
-
-            for ($i = 0; $i < $items_number; $i++) {
-                $partenaire = new Partenaire;
-                $partenaire->partenaire_type_id = $partner_type_ids_array[$i];
-                $partenaire->montant = $partner_montant_array[$i];
-                $partenaire->pourcentage = $partner_pourcentage_array[$i];
-                array_push($array_combination, $partenaire);
+            $partenaires_ids = (array)Input::get('partnenaire_type_ids');
+            $montant_partenaire = (array)Input::get('montant');
+            $pourcentage_partenaire = (array)Input::get('pourcentage');
+            for ($i = 0; $i < count($partenaires_ids); $i++) {
+                $demande->partenaires()->attach($partenaires_ids[$i], ['montant' => $montant_partenaire[$i], 'pourcentage' => $pourcentage_partenaire[$i]]);
             }
 
 
-            foreach ($array_combination as $p) {
-                array_push($partners_ids, $actu_id_partenaire);
-                $partner = new Partenaire;
-                $partner->partenaire_type_id = $p->partenaire_type_id;
-                $partner->montant = $p->montant;
-                $partner->pourcentage = $p->pourcentage;
-                $actu_id_partenaire += 1;
-                $partner->save();
-
-            }
-            //pivot table between partenaire and demande
-            $demande->partenaire()->sync($partners_ids);
+            //$demande->partenaires()->sync(array());
         }
 
       // Point desservis **************
@@ -307,9 +358,11 @@ class DemandesController extends BaseController
             $array_combination_piece = array();
             $pieces_types_array = Input::get('pieces_types');
             $pieces_noms_array = Input::get('pieces_noms');
+
             $piece_file_names = array();
             $items_number = count($pieces_types_array);
             $files = $request->file('pieces_uploads');
+           
             //files uploaded get path
             if ($request->hasFile('pieces_uploads')) {
                 foreach ($files as $file) {
@@ -321,6 +374,7 @@ class DemandesController extends BaseController
                     $extension = $file->getClientOriginalExtension();
                         // Filename to store
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+
                     array_push($piece_file_names, $fileNameToStore);
                         // Upload Image
                     $path = $file->storeAs('local/uploaded_files/demandes', $fileNameToStore);
@@ -331,7 +385,6 @@ class DemandesController extends BaseController
                 $fileNameToStore = 'noimage.jpg';
                 $piece->path = $fileNameToStore;
             }
-
             for ($i = 0; $i < $items_number; $i++) {
                 $piece = new Piece;
                 $piece->type = $pieces_types_array[$i];
@@ -375,7 +428,6 @@ class DemandesController extends BaseController
         // $piece->save();
 
         //save data in porteur de demande and add it as partenaire_type *****
-        //$max_id_partenaire_type = Partenaire::max('id') + 1;
         $partenaire_type = new PartenaireType;
         $moa_from_porteur = new Moa;
 
@@ -418,6 +470,7 @@ class DemandesController extends BaseController
      */
     public function edit(Demande $demande)
     {
+        $demande = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session'])->find($demande->id);
         return view('demandes.edit')->with('demande', $demande);
     }
 
