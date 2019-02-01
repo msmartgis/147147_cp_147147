@@ -35,7 +35,6 @@
                         'name'=>'communes[]'
                         ]
                         )}}
-
                     </div>
                 </div>
             </div>
@@ -252,7 +251,6 @@
                                                     )
                                                     }}
                                                 </div>
-
                                             </td>
 
                                             <td>

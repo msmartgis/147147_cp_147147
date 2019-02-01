@@ -44,7 +44,7 @@ class Demande extends Model
 
     public function piece()
     {
-        return $this->hasOne('App\Piece');
+        return $this->hasMany('App\Piece');
     }
 
     public function session()

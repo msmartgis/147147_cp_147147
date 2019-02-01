@@ -41,8 +41,9 @@
     .btn {
         margin-top: 0 !important;
         padding: .2em .6em .3em;
-         !important;
+         
     }
+
 
 </style>
 @endsection
@@ -85,7 +86,7 @@
                                 </div>
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-hover" id="demandes_datatables">
+                                <table class="table table-hover datatables" id="demandes_datatables" style="width:100%">
                                     <thead>
                                         <th>#</th>                                      
                                         <th>N°ordre</th>
@@ -96,6 +97,7 @@
                                         <th>Interventions</th>
                                         <th>Partenaire</th>
                                         <th>M.Totol</th>                                        
+                                        <th>M.CP</th>                                        
                                         <th>Session</th>                                        
                                        
                                     </thead>
@@ -165,8 +167,8 @@
 <script src="{{asset('js/functions.js')}}"></script>
 
 <!-- Sweet-Alert  -->
-<script src="{{asset('')}}vendor_components/sweetalert/sweetalert.min.js"></script>
-<script src="../../../assets/vendor_components/sweetalert/jquery.sweet-alert.custom.js"></script>
+<script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
+<script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
 
 <script>
     $(document).ready(function () {
@@ -206,39 +208,65 @@
                 
                 {
                     data: 'num_ordre',
-                    name: 'demandes.num_ordre'
+                    name: 'demandes.num_ordre',
+                     orderable: true,
+                    searchable: true
                 },
                 {
                     data: 'date_reception',
-                    name: 'demandes.date_reception'
+                    name: 'demandes.date_reception',
+                    orderable: true,
+                    searchable: true
                 },
                 {
                     data: 'objet_fr',
-                    name: 'demandes.objet_fr'
+                    name: 'demandes.objet_fr',
+                    orderable: true,
+                    searchable: true
                 },
                 {
                     data: 'communes',
-                    name: 'communes.nom_fr'
+                    name: 'communes.nom_fr',
+                    orderable: true,
+                    searchable: true
                 },
                 {
                     data: 'porteur',
-                    name: 'porteur.nom_porteur_fr'
+                    name: 'porteur.nom_porteur_fr',
+                    orderable: true,
+                    searchable: true
                 },
                 {
                     data: 'interventions',
-                    name: 'interventions.nom'
+                    name: 'interventions.nom',
+                    orderable: true,
+                    searchable: true
                 },
                 {
-                    data: 'partenaire',
-                    name: 'partenaire.nom_fr'
+                    data: 'partenaires',
+                    name: 'partenaires.nom_fr',
+                    orderable: true,
+                    searchable: true
                 },
                 {
                     data: 'montant_global',
-                    name: 'montant_global'
+                    name: 'montant_global',
+                    orderable: true,
+                    searchable: true
                 },
                 {
+                    data: 'montantCP',
+                    name: 'montantCP',
+                    orderable: true,
+                    searchable: true
+                },
+
+
+                {
                     data: 'session',
-                    name: 'session.nom'
+                    name: 'session.nom',
+                    orderable: true,
+                    searchable: true
                 }             
             ],            
             initComplete: function () {

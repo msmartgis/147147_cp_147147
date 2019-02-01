@@ -10,6 +10,6 @@ class PartenaireType extends Model
 
     public function demandes()
     {
-        return $this->belongsToMany('App\Demande', 'partenaire_demande')->withTimestamps();
+        return $this->belongsToMany('App\Demande', 'partenaire_demande', 'partenaire_id', 'demande_id')->withPivot('montant', 'pourcentage')->withTimestamps();
     }
 }

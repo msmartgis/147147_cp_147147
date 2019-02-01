@@ -23,7 +23,8 @@
     #map {
         height: 75vh;
         margin-top : 8px;
-        margin-bottom: 8px
+        margin-bottom: 8px;
+        z-index: 1;
     }
 
     .hidden {

@@ -82,7 +82,6 @@ class DemandesController extends BaseController
      */
     public function index()
     {
-
         $communes = Commune::orderBy('nom_fr')->get();
         //point desservis :: localite only
         $localites = PointDesserviCategorie::find(1)->point_desservis;
@@ -128,11 +127,23 @@ class DemandesController extends BaseController
                 })
                 // i should have access to show parntenaire type name for every partenaire
 
-                ->addColumn('partenaire', function (Demande $demande) {
+                ->addColumn('partenaires', function (Demande $demande) {
                     return $demande->partenaires->map(function ($partenaire) {
                         return str_limit($partenaire->nom_fr, 30, '...');
                     })->implode(',');
                 })
+
+                ->addColumn('montantCP', function (Demande $demande) {
+
+                    return $demande->partenaires->map(function ($partenaire) {
+                        if ($partenaire->id == 1) {
+                            return str_limit($partenaire->pivot->montant, 30, '...');
+                        }
+                    })->implode(' ');
+
+
+                })
+
 
                 ->addColumn('session', function (Demande $demande) {
                     return $demande->session ? str_limit($demande->session->nom, 30, '...') : '';
@@ -281,44 +292,6 @@ class DemandesController extends BaseController
         $demande->decision = 'en_cours';
         $demande->save();
 
-        //save data in partenaire********
-        // if (Input::has('partnenaire_type_ids')) {
-        //     $actu_id_partenaire = Partenaire::max('id') + 1;
-        //     $partners_ids = array();
-        // //itterate over tha array and save every partenaire
-        //     $array_combination = array();
-        //     $partner_type_ids_array = array();
-        //     $partner_type_ids_array = Input::get('partnenaire_type_ids');
-
-        //     $partner_montant_array = Input::get('montant');
-
-        //     $partner_pourcentage_array = Input::get('pourcentage');
-        //     $items_number = count($partner_type_ids_array);
-
-
-        //     for ($i = 0; $i < $items_number; $i++) {
-        //         $partenaire = new Partenaire;
-        //         $partenaire->partenaire_type_id = $partner_type_ids_array[$i];
-        //         $partenaire->montant = $partner_montant_array[$i];
-        //         $partenaire->pourcentage = $partner_pourcentage_array[$i];
-        //         array_push($array_combination, $partenaire);
-        //     }
-
-
-        //     foreach ($array_combination as $p) {
-        //         array_push($partners_ids, $actu_id_partenaire);
-        //         $partner = new Partenaire;
-        //         $partner->partenaire_type_id = $p->partenaire_type_id;
-        //         $partner->montant = $p->montant;
-        //         $partner->pourcentage = $p->pourcentage;
-        //         $actu_id_partenaire += 1;
-        //         $partner->save();
-
-        //     }
-        //     //pivot table between partenaire and demande
-        //     $demande->partenaire()->sync($partners_ids);
-        // }
-
         //partenaire *****
         if (Input::has('partnenaire_type_ids')) {
             $partenaires_ids = (array)Input::get('partnenaire_type_ids');
@@ -328,8 +301,6 @@ class DemandesController extends BaseController
                 $demande->partenaires()->attach($partenaires_ids[$i], ['montant' => $montant_partenaire[$i], 'pourcentage' => $pourcentage_partenaire[$i]]);
             }
 
-
-            //$demande->partenaires()->sync(array());
         }
 
       // Point desservis **************
@@ -404,28 +375,6 @@ class DemandesController extends BaseController
             }
         }
         
-        // Handle File Upload
-        // if ($request->hasFile('piece_upload')) {
-        //     // Get filename with the extension
-        //     $filenameWithExt = $request->file('piece_upload')->getClientOriginalName();
-        //     // Get just filename
-        //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        //     // Get just ext
-        //     $extension = $request->file('piece_upload')->getClientOriginalExtension();
-        //     // Filename to store
-        //     $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-        //     // Upload Image
-        //     $path = $request->file('piece_upload')->storeAs('local/uploaded_files/demandes', $fileNameToStore);
-        // } else {
-        //     $fileNameToStore = 'noimage.jpg';
-        // }
-
-        // $piece = new Piece;
-        // $piece->type = $request->input('piece_type');
-        // $piece->nom = $request->input('piece_nom');
-        // $piece->path = $fileNameToStore;
-        // $piece->demande_id = $actu_id_demande;
-        // $piece->save();
 
         //save data in porteur de demande and add it as partenaire_type *****
         $partenaire_type = new PartenaireType;
@@ -470,8 +419,20 @@ class DemandesController extends BaseController
      */
     public function edit(Demande $demande)
     {
-        $demande = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session'])->find($demande->id);
-        return view('demandes.edit')->with('demande', $demande);
+        $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
+        $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
+        $pieces = Piece::orderBy('type')->pluck('type');
+        $partenaires_types = PartenaireType::all();
+        $localites = PointDesservi::orderBy('nom_fr')->where('id', '=', 1)->pluck('nom_fr', 'id');
+        $demande = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session', 'piece'])->find($demande->id);
+        //return $demande;
+        return view('demandes.edit.edit')->with([
+            'demande' => $demande,
+            'interventions' => $interventions,
+            'localites' => $localites,
+            'partenaires_types' => $partenaires_types,
+            'communes' => $communes
+        ]);
     }
 
     /**
@@ -483,7 +444,13 @@ class DemandesController extends BaseController
      */
     public function update(Request $request, Demande $demande)
     {
-        //
+        $request->validate([]);
+
+        $demande = Demande::find($demande->id);
+        $demande->objet_fr = $request->objet_fr;
+        $demande->save();
+        return redirect("/demandes\/" . $demande->id . "/edit")->with('success', 'Demande modifier avec succès ');
+
     }
 
     /**
