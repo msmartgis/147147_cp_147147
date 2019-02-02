@@ -23,7 +23,7 @@ class Demande extends Model
 
     public function partenaires()
     {
-        return $this->belongsToMany('App\PartenaireType', 'partenaire_demande', 'demande_id', 'partenaire_id')->withPivot('montant', 'pourcentage')->withTimestamps();
+        return $this->belongsToMany('App\PartenaireType', 'partenaire_demande', 'demande_id', 'partenaire_id')->withPivot('montant')->withTimestamps();
     }
 
 

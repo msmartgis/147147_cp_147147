@@ -296,11 +296,9 @@ class DemandesController extends BaseController
         if (Input::has('partnenaire_type_ids')) {
             $partenaires_ids = (array)Input::get('partnenaire_type_ids');
             $montant_partenaire = (array)Input::get('montant');
-            $pourcentage_partenaire = (array)Input::get('pourcentage');
             for ($i = 0; $i < count($partenaires_ids); $i++) {
-                $demande->partenaires()->attach($partenaires_ids[$i], ['montant' => $montant_partenaire[$i], 'pourcentage' => $pourcentage_partenaire[$i]]);
+                $demande->partenaires()->attach($partenaires_ids[$i], ['montant' => $montant_partenaire[$i]]);
             }
-
         }
 
       // Point desservis **************
@@ -314,7 +312,7 @@ class DemandesController extends BaseController
             $demande->interventions()->sync($intervention_ids);
             //insert localite id and demande id in pivot table 
             $point_desservi_ids = Input::get('points');
-            $demande->point_desservi()->sync($point_desservi_ids);
+            $demande->point_desservis()->sync($point_desservi_ids);
         }
         
         //save data in piste*****

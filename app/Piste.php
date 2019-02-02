@@ -8,6 +8,6 @@ class Piste extends Model
 {
     public function demande()
     {
-        return $this->belongsTo('App\Demande');
+        return $this->belongsTo('App\Demande', 'demande_id');
     }
 }

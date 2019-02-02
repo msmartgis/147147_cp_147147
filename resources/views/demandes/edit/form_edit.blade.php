@@ -231,10 +231,10 @@
                                         
                                     </td>
                                     <td style="text-align: center">
-                                      {{number_format($item->pivot->pourcentage,2)}}
+                                      {{number_format($item->pivot->montant/($demande->montant_global)*100,2)}}
                                     </td>
                                     <td style="text-align: center">
-                                    <button class="btn btn-secondary edit-partenaire" data-montant="{{number_format($item->pivot->montant,2)}}" data-pourcentage="{{number_format($item->pivot->pourcentage,2)}}" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}" ><i class="fa fa-edit"></i>
+                                    <button class="btn btn-secondary edit-partenaire" data-montant="{{number_format($item->pivot->montant,2)}}" data-pourcentage="{{number_format($item->pivot->montant/($demande->montant_global)*100,2)}}" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}" ><i class="fa fa-edit"></i>
                                             Editer</button>
                                     <button class="btn btn-warning delete-partenaire" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}"><i class="fa fa-close"></i>
                                             Supprimer</button>

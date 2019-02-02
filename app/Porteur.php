@@ -10,6 +10,6 @@ class Porteur extends Model
     protected $table = 'porteursprojets';
     public function demande()
     {
-        return $this->belongsTo('App\Demande');
+        return $this->belongsTo('App\Demande', 'demande_id');
     }
 }
