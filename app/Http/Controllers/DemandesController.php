@@ -318,13 +318,11 @@ class DemandesController extends BaseController
         // if ($daterange = $request->get('daterange')) {
         //     $daterange_splite = explode('-', $daterange);
         //     $date_start = $daterange_splite[0];
-
         //     $date_end = $daterange_splite[1];
         //     $demandes->where([
         //         ['date_reception', '>=', trim($date_start)],
         //         ['date_reception', '<=', trim($date_end)],
         //     ]);
-
         // }
 
         //filter with intervention
