@@ -119,8 +119,65 @@
                            
                         </div>
                     </div>
-                    <div class="tab-pane pad" id="affectees" role="tabpanel">2</div>
+
+                    {{-- accord_definitif --}}
                     <div class="tab-pane pad" id="accord_definitif" role="tabpanel">2</div>
+                    {{-- affectees tab --}}
+                    <div class="tab-pane pad" id="affectees" role="tabpanel">
+                        <div class="pad">
+                            @include('demandes.filter_demandes_affectees')
+                            <div class="row">
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6 ">
+                                    <a href="/demandes/create" class="btn btn-secondary pull-right"><i class="fa fa-plus"
+                                            style="margin-right: 6px"></i>Ajouter
+                                        une demande</a>
+                                    <a href="" class="btn btn-secondary pull-right" style="margin-right : 6px"><i class="fa fa-print"
+                                            style="margin-right: 6px"></i>Imprimer la fiche</a>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top : 12px">
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6">
+                                    <a href="" class="btn btn-success pull-right" style="margin-right : 6px"><i class="fa fa-file-pdf-o"
+                                            style="margin-right: 6px"></i>PDF</a>
+
+                                    <a href="" class="btn btn-success pull-right" style="margin-right : 6px"><i class="fa fa-file-excel-o"
+                                            style="margin-right: 6px"></i>CSV</a>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover datatables" id="demandes_datatables_affectees" style="width:100%">
+                                    <thead>
+                                        <th>#</th>                                      
+                                        <th>N°ordre</th>
+                                        <th>D.Réception</th>
+                                        <th>Objet</th>
+                                        <th>Communes</th>
+                                        <th>porteur</th>
+                                        <th>Interventions</th>
+                                        <th>Partenaire</th>
+                                        <th>M.Totol</th>                                        
+                                        <th>M.CP</th>                                        
+                                        <th>Session</th>                                        
+                                       
+                                    </thead>
+
+                                </table>
+                            </div>
+                            <div class="row" style="margin-top : 8px">
+                                    <div class="dropdown" style="margin-left : 8px">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Décision</button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item " href="#" ><div  class="modifier"><i class="fa fa-edit"></i> Modifier</div></a>
+                                                <a class="dropdown-item" href="#"><div  class="restaurer"><i class="fa fa-thumbs-up"></i>Restaurer</div></a>                                                                                   
+                                            </div>
+                                    </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    
                     <div class="tab-pane pad" id="realisees_programme" role="tabpanel">3</div>
                     <div class="tab-pane pad" id="a_traiter" role="tabpanel">3</div>
                 </div>  
@@ -395,6 +452,123 @@ function decision_function(datatble_id, name_chechbox, url,method) {
         });
     }
 }
+
+
+//affectees 
+var oTable_affectees = $('#demandes_datatables_affectees').DataTable({
+            processing: true,
+            serverSide: true,
+            language: {
+                url: "{{ URL::asset('js/french-datatables.json') }}",
+                processing: "<img src='{{asset('images/loader.gif')}}'>",
+            },
+            ajax: {
+                url: '{!! route('get.demandes.affectees') !!}',
+                type: 'GET',
+                data: function (d) {
+                    d.communes = $('select[name=communes]').val();
+                    d.session = $('select[name=session]').val();
+                    d.interventions = $('select[name=interventions]').val();
+                    d.partenaires = $('select[name=partenaires]').val();
+                    d.localites = $('select[name=localites]').val();
+                    //d.daterange = $('input[name=daterange]').val();
+                }
+
+            },
+            columnDefs: [
+           
+            { width: 20, targets: 1 },
+            { width: 30, targets: 2 },
+             { width: 300, targets: 3 }
+            ],
+            columns: [
+                {
+                    data: 'checkbox',
+                    name: 'checkbox',
+                    orderable: false,
+                    searchable: false
+                },               
+                
+                {
+                    data: 'num_ordre',
+                    name: 'demandes.num_ordre',
+                     orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'date_reception',
+                    name: 'demandes.date_reception',
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'objet_fr',
+                    name: 'demandes.objet_fr',
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'communes',
+                    name: 'communes.nom_fr',
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'porteur',
+                    name: 'porteur.nom_porteur_fr',
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'interventions',
+                    name: 'interventions.nom',
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'partenaires',
+                    name: 'partenaires.nom_fr',
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'montant_global',
+                    name: 'montant_global',
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'montantCP',
+                    name: 'montantCP',
+                    orderable: true,
+                    searchable: true
+                },
+
+
+                {
+                    data: 'session',
+                    name: 'session.nom',
+                    orderable: true,
+                    searchable: true
+                }             
+            ],            
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    var input = document.createElement("input");
+                    $(input).appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            column.search($(this).val(), false, false, true).draw();
+                        });
+                });
+            }
+        });
+
+
+        $('#communes_filter_affectees,#session_filter_affectees,#intervention_filter_affectees,#partenaires_filter_affectees,#localites_filter_affectees').on('change paste keyup', function (e) {
+            oTable_affectees.draw();
+            e.preventDefault();
+        });
 
     });
 

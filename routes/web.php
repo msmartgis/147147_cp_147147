@@ -21,6 +21,7 @@ Route::resource('points_desservis', 'PointDesserviController');
 Route::resource('communes', 'CommunesController');
 Route::post('/loadPoint', 'PointDesserviController@loadPoint');
 Route::get('demande', 'DemandesController@getDemandes')->name('get.demandes');
+Route::get('demande/is_affecter', 'DemandesController@getDemandesAffectees')->name('get.demandes.affectees');
 Route::post('demandes/affecter_cnv', 'DemandesController@affecterAuxConventions')->name('affecter_cnv');
 Route::post('demandes/accord_definitif', 'DemandesController@accordDefinitif')->name('accord_definitif');
 Route::post('demandes/a_traiter', 'DemandesController@aTraiter')->name('a_traiter');
