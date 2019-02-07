@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Demande extends Model
 {
-    // protected $fillable = ['num_ordre', 'objet_fr', 'objet_ar'];
+    protected $fillable = ['num_ordre', 'date_reception', 'objet_fr', 'objet_ar', 'montant_global', 'observation', 'decision', 'etat', 'is_affecter', ''];
     use SoftDeletes;
     protected $dates = ['deleted_at'];
 

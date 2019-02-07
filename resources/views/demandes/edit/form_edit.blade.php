@@ -1,4 +1,4 @@
-{!! Form::model($demande, ['route' => ['demandes.update', $demande->id]]) !!}
+{!! Form::model($demande, ['route' => ['demandes.update', $demande->id],'method' => 'PUT']) !!}
 <div class="row">
     <div class="col-lg-9 col-12">
         <div class="box bg-transparent no-shadow">
@@ -145,7 +145,7 @@
                                 @foreach ($demande->piece as $item)
                                 <tr>
                                     <td style="text-align: center">
-                                        {{Form::hidden('type[]',$item->type)}}
+                                        
                                         @switch($item->type)
                                         @case("etude")
                                         Etude
@@ -177,7 +177,7 @@
                                         {{$item->path}}
                                     </td>
                                     <td style="text-align: center">
-                                        <button class="btn btn-warning delete-piece" data-id="{{$item->id}}"><i class="fa fa-close"></i>
+                                        <button type="button" class="btn btn-warning delete-piece" data-id="{{$item->id}}"><i class="fa fa-close"></i>
                                             Supprimer</button>
                                     </td>
                                 </tr>
@@ -233,10 +233,8 @@
                                     <td style="text-align: center">
                                       {{number_format($item->pivot->montant/($demande->montant_global)*100,2)}}
                                     </td>
-                                    <td style="text-align: center">
-                                    <button class="btn btn-secondary edit-partenaire" data-montant="{{number_format($item->pivot->montant,2)}}" data-pourcentage="{{number_format($item->pivot->montant/($demande->montant_global)*100,2)}}" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}" ><i class="fa fa-edit"></i>
-                                            Editer</button>
-                                    <button class="btn btn-warning delete-partenaire" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}"><i class="fa fa-close"></i>
+                                    <td style="text-align: center">                                   
+                                    <button type="button" class="btn btn-warning delete-partenaire" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}"><i class="fa fa-close"></i>
                                             Supprimer</button>
                                     </td>
                                 </tr>
@@ -244,7 +242,7 @@
 
                                 <tr>
                                     <td colspan="4" style="text-align: center"><a href="#" data-toggle="modal"
-                                            data-target="#m-add-partenaire"> <i class="fa fa-plus"></i>
+                                            data-target="#m-add-partenaire-edit"> <i class="fa fa-plus"></i>
                                             <b> Ajouter Partenaire</b> </a>
                                     </td>
                                 </tr>
@@ -252,6 +250,29 @@
 
                         </table>
                     </div>
+                </div>
+
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+
+
+        <div class="box box-default box-solid">
+            <div class="box-header with-border">
+                <h5 class="box-title">Remarques et Observations</h5>
+                <ul class="box-controls pull-right">
+                    <li><a class="box-btn-slide" href="#"></a></li>
+                </ul>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="col-12" style="margin-top : 8px">
+                  <div class="form-group">
+                    
+                    {{Form::textarea('observation', $demande->observation, ['id' => 'editor1', 'class' => 'form-control', 'placeholder' => 'Body Text'])}}
+                </div>
                 </div>
 
             </div>
@@ -278,19 +299,19 @@
                     </div>
 
                     <div class="form-group">
-                        {{Form::label('','N° d\'ordre :')}}
+                        {{Form::label('','Décision :')}}
                         @switch($demande->decision)
                         @case("en_cours")
-                        {{Form::text('decision','En cours',['class'=>'form-control'])}}
+                        {{Form::text('','En cours',['class'=>'form-control'])}}
                         @break
                         @case("a_traiter")
-                        {{Form::text('decision','A traiter',['class'=>'form-control'])}}
+                        {{Form::text('','A traiter',['class'=>'form-control'])}}
                         @break
                         @case("accord_definitif")
-                        {{Form::text('decision','Accord définitif',['class'=>'form-control'])}}
+                        {{Form::text('','Accord définitif',['class'=>'form-control'])}}
                         @break
                         @default
-                        {{Form::text('decision','En cours',['class'=>'form-control'])}}
+                        {{Form::text('',' ',['class'=>'form-control'])}}
                         @endswitch
 
                     </div>
@@ -301,31 +322,40 @@
                     </div>
 
                     <div class="form-group">
+                        {{Form::hidden('id_pist',$demande->piste->id)}}
                         {{Form::label('','Longueur:')}}
                         {{Form::text('longueur',$demande->piste->longueur,['class'=>'form-control'])}}
                     </div>
 
+                    {{Form::submit('Modifier',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
+                    {!! Form::close() !!}                    
+                <button type="button" id="affect_aux_convention_btn" data-id="{{$demande->id}}" data-numero="{{$demande->num_ordre}}" class="btn btn-secondary col-12" style="margin-top: 8px !important" @if ($demande->decision != "accord_definitif")
+                        disabled
+                    @endif>Affectation aux conventions</button>
 
-                    
-                    {{Form::submit('Click Me!',['class'=>'btn btn-secondary col-12'])}}
-                    <button class="btn btn-warning col-12" style="margin: 8px">Spprimer</button>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle col-md-12" type="button" data-toggle="dropdown" style="margin-top:8px !important">Décision</button>
+                        <div class="dropdown-menu col-md-12">
+                            <a class="dropdown-item" href="#">
+                            <div @if($demande->decision == "a_traiter" || $demande->decision == "en_cours")
+                        id="accord_definitif" 
+                    @endif data-id="{{$demande->id}}"><i class="fa fa-thumbs-up"></i> Accord défintif</div>
+                            </a>
+                            <a class="dropdown-item" href="#" >
+                                <div @if($demande->decision == "accord_definitif" || $demande->decision == "en_cours")
+                        id="a_traiter"
+                    @endif  data-id="{{$demande->id}}"><i class="fa fa-clock-o"></i> A traiter</div>
+                            </a>
 
-                    <div class="col-12">
-                        <div class="dropdown ">
-                            <button class="btn btn-secondary dropdown-toggle col-md-12" type="button" data-toggle="dropdown">Décision</button>
-                            <div class="dropdown-menu col-md-12">
-                                <a class="dropdown-item" href="#">
-                                    <div id="accord_definitif"><i class="fa fa-thumbs-up"></i> Accord défintif</div>
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <div id="a_traiter"><i class="fa fa-clock-o"></i> A traiter</div>
-                                </a>
-                            </div>
                         </div>
                     </div>
 
-                    <button class="btn btn-secondary col-12" style="margin: 8px">Affectation aux conventions</button>
+                    <button type="button" class="btn btn-secondary col-12" id="restaurer" data-id="{{$demande->id}}" style="margin-top: 8px !important" @if ($demande->decision == "en_cours")
+                        disabled
+                    @endif>Restaurer (En cours)</button>
 
+                    <button type="button" class="btn btn-warning col-12" id="supprimer_demande" data-id="{{$demande->id}}" style="margin-top: 8px !important">Supprimer</button>
+                
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -336,4 +366,3 @@
 </div>
 <!-- /.row -->
 
-{{Form::close()}}

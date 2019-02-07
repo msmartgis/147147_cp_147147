@@ -349,11 +349,11 @@
 
         //select item from datatable
         //edite
-        $("#modifier").click(function () {
-            var id;           
+        $("#modifier").click(function () {                   
             $("#demandes_datatables > tbody").find('input[name="checkbox"]').each(function () {
-                if ($(this).is(":checked")) {
-                    id = $('input[name=checkbox]').val();
+                if ($(this).prop("checked") == true) {
+                   
+                    var id = $('input[name=checkbox]').val();
                     window.location.href = "demandes/"+id+"/edit";                   
                     return false;
                 }else{
@@ -383,192 +383,187 @@
 
 
         //function for decision 
-function decision_function(datatble_id, name_chechbox, url,method) {
-    //alert(datatble_id + ' ' + name_chechbox + ' ' + url);
-    var message_sub_title = '';
-    var message_reussi = ''; 
-    if(url == "demandes/accord_definitif")
-    {
-        message_sub_title = "Ajouter a la liste des demandes avec accord définitif!";
-        message_reussi = "Accord définitif réussi.";
-    }
-    if(url == "demandes/a_traiter")
-    {
-        message_sub_title = "Ajouter a la liste des demandes à traiter!";
-        message_reussi = "A traiter réussi.";
-    }
-    var demande_ids = [];
-    var numero_ordres = [];
-    $("#" + datatble_id + " > tbody ").find("input[name=" + name_chechbox + " ]").each(function () {
-        if ($(this).is(":checked")) {
-            demande_ids.push($(this).val());
-            numero_ordres.push($(this).data('numero'));
-            // id_demande = $('input[name=checkbox]').val();
-            // var numero_ordre = $('input[name=checkbox]').data('numero');
-            // $('.modal-title').text('Affectation aux conventions la demande numero : ' + numero_ordre);
-            // $('#id_demande').val(id_demande);
-            // $('#affecter_aux_cnv').modal('show');                                    
-
-        } else {
-            swal("Veuillez selectionner une demande");
-            return false;
-        }
-
-    });
-
-    if (demande_ids.length > 0) {
-        swal({
-            title: "Vous êtes sûr?",
-            text: message_sub_title,
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Oui, je confirme!",
-            cancelButtonText: "Non, annuler!",
-            closeOnConfirm: false,
-            closeOnCancel: false
-        }, function (isConfirm) {
-            if (isConfirm) {
-                //send an ajax request to the server update decision column
-                $.ajax({
-                    url: url,
-                    type: method,
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        demande_ids: demande_ids
-                    },
-                    dataType: 'text',
-                    success: function (data) {
-                        if (data == "ok") {
-                            swal("Réussi!", message_reussi, "success");
-                            setTimeout(location.reload.bind(location), 500);
-                        }
-
-                    }
-                });
-            } else {
-                swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
+        function decision_function(datatble_id, name_chechbox, url,method) {
+            //alert(datatble_id + ' ' + name_chechbox + ' ' + url);
+            var message_sub_title = '';
+            var message_reussi = ''; 
+            if(url == "demandes/accord_definitif")
+            {
+                message_sub_title = "Ajouter a la liste des demandes avec accord définitif!";
+                message_reussi = "Accord définitif réussi.";
             }
-        });
-    }
-}
+            if(url == "demandes/a_traiter")
+            {
+                message_sub_title = "Ajouter a la liste des demandes à traiter!";
+                message_reussi = "A traiter réussi.";
+            }
+            var demande_ids = [];
+            var numero_ordres = [];
+            $("#" + datatble_id + " > tbody ").find("input[name=" + name_chechbox + " ]").each(function () {
+                if ($(this).is(":checked")) {
+                    demande_ids.push($(this).val());
+                    numero_ordres.push($(this).data('numero'));                                            
 
-
-//affectees 
-var oTable_affectees = $('#demandes_datatables_affectees').DataTable({
-            processing: true,
-            serverSide: true,
-            language: {
-                url: "{{ URL::asset('js/french-datatables.json') }}",
-                processing: "<img src='{{asset('images/loader.gif')}}'>",
-            },
-            ajax: {
-                url: '{!! route('get.demandes.affectees') !!}',
-                type: 'GET',
-                data: function (d) {
-                    d.communes = $('select[name=communes]').val();
-                    d.session = $('select[name=session]').val();
-                    d.interventions = $('select[name=interventions]').val();
-                    d.partenaires = $('select[name=partenaires]').val();
-                    d.localites = $('select[name=localites]').val();
-                    //d.daterange = $('input[name=daterange]').val();
+                } else {
+                    swal("Veuillez selectionner une demande");
+                    return false;
                 }
 
-            },
-            columnDefs: [
-           
-            { width: 20, targets: 1 },
-            { width: 30, targets: 2 },
-             { width: 300, targets: 3 }
-            ],
-            columns: [
-                {
-                    data: 'checkbox',
-                    name: 'checkbox',
-                    orderable: false,
-                    searchable: false
-                },               
-                
-                {
-                    data: 'num_ordre',
-                    name: 'demandes.num_ordre',
-                     orderable: true,
-                    searchable: true
-                },
-                {
-                    data: 'date_reception',
-                    name: 'demandes.date_reception',
-                    orderable: true,
-                    searchable: true
-                },
-                {
-                    data: 'objet_fr',
-                    name: 'demandes.objet_fr',
-                    orderable: true,
-                    searchable: true
-                },
-                {
-                    data: 'communes',
-                    name: 'communes.nom_fr',
-                    orderable: true,
-                    searchable: true
-                },
-                {
-                    data: 'porteur',
-                    name: 'porteur.nom_porteur_fr',
-                    orderable: true,
-                    searchable: true
-                },
-                {
-                    data: 'interventions',
-                    name: 'interventions.nom',
-                    orderable: true,
-                    searchable: true
-                },
-                {
-                    data: 'partenaires',
-                    name: 'partenaires.nom_fr',
-                    orderable: true,
-                    searchable: true
-                },
-                {
-                    data: 'montant_global',
-                    name: 'montant_global',
-                    orderable: true,
-                    searchable: true
-                },
-                {
-                    data: 'montantCP',
-                    name: 'montantCP',
-                    orderable: true,
-                    searchable: true
-                },
+            });
 
+            if (demande_ids.length > 0) {
+                swal({
+                    title: "Vous êtes sûr?",
+                    text: message_sub_title,
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Oui, je confirme!",
+                    cancelButtonText: "Non, annuler!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        //send an ajax request to the server update decision column
+                        $.ajax({
+                            url: url,
+                            type: method,
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                demande_ids: demande_ids
+                            },
+                            dataType: 'text',
+                            success: function (data) {
+                                if (data.length == 0) {
+                                    swal("Réussi!", message_reussi, "success");
+                                    setTimeout(location.reload.bind(location), 500);
+                                }
 
-                {
-                    data: 'session',
-                    name: 'session.nom',
-                    orderable: true,
-                    searchable: true
-                }             
-            ],            
-            initComplete: function () {
-                this.api().columns().every(function () {
-                    var column = this;
-                    var input = document.createElement("input");
-                    $(input).appendTo($(column.footer()).empty())
-                        .on('change', function () {
-                            column.search($(this).val(), false, false, true).draw();
+                            }
                         });
+                    } else {
+                        swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
+                    }
                 });
             }
-        });
+        }
 
 
-        $('#communes_filter_affectees,#session_filter_affectees,#intervention_filter_affectees,#partenaires_filter_affectees,#localites_filter_affectees').on('change paste keyup', function (e) {
-            oTable_affectees.draw();
-            e.preventDefault();
-        });
+    //LES DEMANDES AFFECTEES
+    var oTable_affectees = $('#demandes_datatables_affectees').DataTable({
+                processing: true,
+                serverSide: true,
+                language: {
+                    url: "{{ URL::asset('js/french-datatables.json') }}",
+                    processing: "<img src='{{asset('images/loader.gif')}}'>",
+                },
+                ajax: {
+                    url: '{!! route('get.demandes.affectees') !!}',
+                    type: 'GET',
+                    data: function (d) {
+                        d.communes = $('select[name=communes]').val();
+                        d.session = $('select[name=session]').val();
+                        d.interventions = $('select[name=interventions]').val();
+                        d.partenaires = $('select[name=partenaires]').val();
+                        d.localites = $('select[name=localites]').val();
+                        //d.daterange = $('input[name=daterange]').val();
+                    }
+
+                },
+                columnDefs: [
+            
+                { width: 20, targets: 1 },
+                { width: 30, targets: 2 },
+                { width: 300, targets: 3 }
+                ],
+                columns: [
+                    {
+                        data: 'checkbox',
+                        name: 'checkbox',
+                        orderable: false,
+                        searchable: false
+                    },               
+                    
+                    {
+                        data: 'num_ordre',
+                        name: 'demandes.num_ordre',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'date_reception',
+                        name: 'demandes.date_reception',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'objet_fr',
+                        name: 'demandes.objet_fr',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'communes',
+                        name: 'communes.nom_fr',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'porteur',
+                        name: 'porteur.nom_porteur_fr',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'interventions',
+                        name: 'interventions.nom',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'partenaires',
+                        name: 'partenaires.nom_fr',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'montant_global',
+                        name: 'montant_global',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'montantCP',
+                        name: 'montantCP',
+                        orderable: true,
+                        searchable: true
+                    },
+
+
+                    {
+                        data: 'session',
+                        name: 'session.nom',
+                        orderable: true,
+                        searchable: true
+                    }             
+                ],            
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        var column = this;
+                        var input = document.createElement("input");
+                        $(input).appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                column.search($(this).val(), false, false, true).draw();
+                            });
+                    });
+                }
+            });
+
+
+            $('#communes_filter_affectees,#session_filter_affectees,#intervention_filter_affectees,#partenaires_filter_affectees,#localites_filter_affectees').on('change paste keyup', function (e) {
+                oTable_affectees.draw();
+                e.preventDefault();
+            });
 
     });
 

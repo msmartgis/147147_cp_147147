@@ -9,22 +9,18 @@ use Illuminate\Http\Request;
 
 class PartenaireTypeController extends Controller
 {
-
     public function addPartenaire(Request $req)
     {
-        //$part = new PartenaireType;
         $part = PartenaireType::find($req->partnenaire_type_id);
-        $pourcentage = $req->montant / $req->montant_global;
-        $part->demandes()->attach($req->demande_id, ['montant' => $req->montant, 'pourcentage' => $pourcentage]);
+        $pourcentage = ($req->montant / $req->montant_global) * 100;
+        $part->demandes()->attach($req->demande_id, ['montant' => $req->montant]);
         return response()->json(array('part' => $part, 'montant' => $req->montant, 'pourcentage' => $pourcentage, 'demande' => $req->demande_id));
-
     }
     public function deletePartenaire(Request $req)
     {
         $demande = Demande::find($req->demande_id);
         $demande->partenaires()->detach($req->partenaire_id);
         return response()->json();
-
     }
     /**
      * Display a listing of the resource.

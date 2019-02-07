@@ -223,13 +223,13 @@ $(document).ready(function () {
                 //console.log(data[0].nom_fr);
                      for(propName in data.categories)
                         {
-                            console.log(data.categories[propName].nom_fr);
+                            //console.log(data.categories[propName].nom_fr);
                             markup_categ +="<option value="+data.categories[propName].id+">"+data.categories[propName].nom_fr+"</option>";                                                   
                         }
 
                         for(propName in data.points)
                         {
-                            console.log(data.points[propName].nom_fr);
+                            //console.log(data.points[propName].nom_fr);
                             markup_points +="<option value="+data.points[propName].id+">"+data.points[propName].nom_fr+"</option>";                                                   
                         }
 
@@ -250,6 +250,6 @@ $(document).ready(function () {
 });
 </script>
 
-<script src="{{asset('js/demande.js')}}"></script>
+<script src="{{asset('js/demandes/demande.js')}}"></script>
 <script src="{{asset('js/functions.js')}}"></script>
 @endpush

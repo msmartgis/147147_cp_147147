@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Demande;
@@ -15,14 +14,12 @@ use App\Convention;
 use App\PointDesserviCategorie;
 use App\Moa;
 use App\Projet;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use DataTables;
-
 use DB;
 
 
@@ -30,10 +27,11 @@ class DemandesController extends BaseController
 {
     public function accordDefinitif(Request $request)
     {
+
         $ids = array();
         $ids = $request->demande_ids;
         $values = Demande::whereIn('id', $ids)->update(['decision' => 'accord_definitif']);
-        return "ok";
+        return response()->json();
     }
 
     public function aTraiter(Request $request)
@@ -41,8 +39,18 @@ class DemandesController extends BaseController
         $ids = array();
         $ids = $request->demande_ids;
         $values = Demande::whereIn('id', $ids)->update(['decision' => 'a_traiter']);
-        return "ok";
+        return response()->json();
     }
+
+    //restaurer demande to en cours again
+    public function restaurerDemande(Request $request)
+    {
+        $ids = array();
+        $ids = $request->demande_ids;
+        $values = Demande::whereIn('id', $ids)->update(['decision' => 'en_cours']);
+        return response()->json();
+    }
+
     public function affecterAuxConventions(Request $request)
     {
         $convention_id = Convention::max('id') + 1;
@@ -71,9 +79,10 @@ class DemandesController extends BaseController
         $projet->convention_id = $convention_id;
         $projet->montant_global = $montant_cnv;
         $projet->save();
-        return redirect('/demandes')->with('success', 'La demande : ' . $demande->num_ordre . '  est affecté aux conventions avec succès');
+        return redirect('/demandes')->with('success', 'Demande affectée aux conventions avec succès');
         //return $demande;
     }
+
 
     /**
      * Display a listing of the resource.
@@ -442,7 +451,6 @@ class DemandesController extends BaseController
             $array_combination_piece = array();
             $pieces_types_array = Input::get('pieces_types');
             $pieces_noms_array = Input::get('pieces_noms');
-
             $piece_file_names = array();
             $items_number = count($pieces_types_array);
             $files = $request->file('pieces_uploads');
@@ -476,7 +484,6 @@ class DemandesController extends BaseController
                 $piece->path = $piece_file_names[$i];
                 array_push($array_combination_piece, $piece);
             }
-
 
             foreach ($array_combination_piece as $p) {
                 $piec = new Piece;
@@ -535,8 +542,9 @@ class DemandesController extends BaseController
         $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
         $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $pieces = Piece::orderBy('type')->pluck('type');
+        $moas = Moa::all();
         $partenaires_types = PartenaireType::all();
-        $localites = PointDesservi::orderBy('nom_fr')->where('id', '=', 1)->pluck('nom_fr', 'id');
+        $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
         $demande = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session', 'piece'])->find($demande->id);
         //return $demande;
         return view('demandes.edit.edit')->with([
@@ -544,6 +552,7 @@ class DemandesController extends BaseController
             'interventions' => $interventions,
             'localites' => $localites,
             'partenaires_types' => $partenaires_types,
+            'moas' => $moas,
             'communes' => $communes
         ]);
     }
@@ -558,12 +567,25 @@ class DemandesController extends BaseController
     public function update(Request $request, Demande $demande)
     {
         $request->validate([]);
-
         $demande = Demande::find($demande->id);
-        $demande->objet_fr = $request->objet_fr;
-        $demande->save();
-        return redirect("/demandes\/" . $demande->id . "/edit")->with('success', 'Demande modifier avec succès ');
+        $demande->update($request->all());
+        //update interventions
+        $intervention_ids = Input::get('interventions');
+        $demande->interventions()->sync($intervention_ids);
+        //update communes
+        $communes_ids = Input::get('communes');
+        $demande->communes()->sync($communes_ids);
 
+        //update pistes 
+
+        Piste::where('id', $request->id_pist)
+            ->update(['longueur' => $request->longueur]);
+       
+
+         //update localites
+        $localites_ids = Input::get('localites');
+        $demande->point_desservis()->sync($localites_ids);
+        return redirect("/demandes" . "/" . $demande->id . "/edit")->with('success', 'Demande modifier avec succès');
     }
 
     /**
@@ -574,8 +596,7 @@ class DemandesController extends BaseController
      */
     public function destroy(Demande $demande)
     {
-        Demande::find($demande)->delete();
-         //redirecting with success message
-        return redirect('/demandes')->with('success', 'Demande supprimée avec succès ');
+        Demande::destroy($demande->id);
+        return response()->json();
     }
 }

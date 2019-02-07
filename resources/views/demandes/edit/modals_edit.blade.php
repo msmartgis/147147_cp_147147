@@ -64,9 +64,9 @@
 
 
 {{-- add partenaire  --}}
- <div class="modal fade" id="m-add-partenaire">
+ <div class="modal fade" id="m-add-partenaire-edit">
         <div class="modal-dialog" role="document">            
-            <form action="{{ action('PartenaireTypeController@addPartenaire') }}" method="POST" class="form-add-partenaire">
+            <form action="{{ action('PartenaireTypeController@addPartenaire') }}" method="POST" class="form-add-partenaire-edit">
                     <input type="hidden" name="demande_id" value="{{$demande->id}}">
                     <input type="hidden" name="montant_global" value="{{$demande->montant_global}}">
                     <input name="_token" type="hidden" value="{{ csrf_token() }}" />
@@ -98,7 +98,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-success float-right" >Ajouter à la
+                    <button type="submit" class="btn btn-success float-right" id="add_partenaire_to_list_edit">Ajouter à la
                         liste</button>
                 </div>
             </div>
@@ -111,9 +111,9 @@
 
 
     {{-- edite partenaire --}}
-    <div class="modal fade" id="m-edite-partenaire">
+    {{-- <div class="modal fade" id="m-edite-partenaire">
         <div class="modal-dialog" role="document">            
-            <form action="{{ action('PartenaireTypeController@addPartenaire') }}" method="POST" class="form-add-partenaire">
+            <form action="{{ action('PartenaireTypeController@addPartenaire') }}" method="POST" class="form-edit-partenaire">
                     <input type="hidden" name="demande_id" value="{{$demande->id}}">
                     <input type="hidden" name="montant_global" value="{{$demande->montant_global}}">
                     <input name="_token" type="hidden" value="{{ csrf_token() }}" />
@@ -153,5 +153,5 @@
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-    </div>
+    </div> --}}
     <!-- /.modal -->

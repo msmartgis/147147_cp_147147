@@ -25,6 +25,7 @@ Route::get('demande/is_affecter', 'DemandesController@getDemandesAffectees')->na
 Route::post('demandes/affecter_cnv', 'DemandesController@affecterAuxConventions')->name('affecter_cnv');
 Route::post('demandes/accord_definitif', 'DemandesController@accordDefinitif')->name('accord_definitif');
 Route::post('demandes/a_traiter', 'DemandesController@aTraiter')->name('a_traiter');
+Route::post('demandes/restaurer', 'DemandesController@restaurerDemande')->name('restaurer_demande');
 Route::post('pieces/add_piece', 'PieceController@addPiece')->name('add_piece');
 Route::post('pieces/delete_piece', 'PieceController@deletePiece')->name('delete_piece');
 Route::post('partenaire/delete_partenaire', 'PartenaireTypeController@deletePartenaire')->name('delete_partenaire');

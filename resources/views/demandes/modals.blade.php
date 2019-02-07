@@ -10,7 +10,7 @@
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['action' => 'DemandesController@affecterAuxConventions','method'=>'post']) !!}
-                    <input type="hidden" name="id" id="id_demande">
+                    <input type="hidden" name="id" id="id_demande_modal_affect" >
                     <h4>Informations sur le projet</h4>
                     <div class="row">
                         <div class="col-md-6">
@@ -114,12 +114,5 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-
-   
-    <!-- /.modal -->
-
-
-
-
 
     <!-- end modals -->

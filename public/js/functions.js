@@ -44,6 +44,3 @@ $(".delete-row").click(function () {
         }
     });
 });
-
-
-
