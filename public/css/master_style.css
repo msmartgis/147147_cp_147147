@@ -328,7 +328,7 @@ img {
 
 .content {
     min-height: 250px;
-    padding: 10px 10px 0px 10px;
+    padding: 5px 5px 0px 5px;
     margin-right: auto;
     margin-left: auto;
 }
@@ -13206,7 +13206,7 @@ table.text-center th {
 
 .profile-tab li a.nav-link.active,
 .skin-blue .customtab li a.nav-link.active {
-    border-bottom: 2px solid #398bf7;
+    border-bottom: 2px solid #f18983;
     color: #fff;
 }
 
@@ -13263,9 +13263,9 @@ table.text-center th {
 
 /*pagination*/
 .pagination>li>a {
-    background-color: #fff;
-    color: #455a64;
-    border-color: #fff;
+    background-color: #6fc15f;
+    color: #fff;
+    border-color: #6fc15f;
 }
 
 .pagination.pagination-flat>li>a {
@@ -13288,7 +13288,7 @@ table.text-center th {
     margin: 0 3px;
     text-decoration: none;
     cursor: pointer;
-    color: #67757c;
+    color: #fff;
     border: 1px solid transparent;
     border-radius: 2px;
 }
@@ -13388,7 +13388,7 @@ table.text-center th {
 .table>thead>tr>td,
 .table>thead>tr>th {
     border-top: 1px solid #f4f4f4;
-    padding: 0.25rem;
+    padding: 0.15rem;
     vertical-align: middle;
 }
 

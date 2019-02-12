@@ -39,5 +39,13 @@
 	<!-- Fab Admin for advanced form element -->
 <script src="{{asset('js/advanced-form-element.js')}}"></script>
 
+{{-- <script>
+	$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+	});
+</script> --}}
+
 
 	@stack('added_scripts')

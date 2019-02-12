@@ -9,11 +9,9 @@
 		<meta name="author" content="">    
     <link rel="icon" href="{{asset('images/favicon.ico')}}">
 
- <title>{{config('app.name')}}</title>
-    
-		@include('inc.css_links')	
-
-  </head>
+	<title>{{config('app.name')}}</title>    
+			@include('inc.css_links')	
+</head>
 
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">

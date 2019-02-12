@@ -10,4 +10,10 @@ class Piste extends Model
     {
         return $this->belongsTo('App\Demande', 'demande_id');
     }
+
+
+    public function convention()
+    {
+        return $this->belongsTo('App\Convention', 'convention_id');
+    }
 }

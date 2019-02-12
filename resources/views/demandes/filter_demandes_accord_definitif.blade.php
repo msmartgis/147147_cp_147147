@@ -3,7 +3,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label>Communes</label>
-                <select class="form-control select2" style="width: 100%;" name="communes" id="communes_filter">
+                <select class="form-control select2" style="width: 100%;" name="communes_filter_accord_definitif" id="communes_filter_accord_definitif">
                     <option value="all" selected>Indifferent</option>
                     @foreach($communes as $commune)
                     <option value="{{$commune->id}}">{{$commune->nom_fr}}</option>
@@ -15,7 +15,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label>Localités</label>                
-                <select class="form-control select2" style="width: 100%;" name="localites" id="localites_filter">
+                <select class="form-control select2" style="width: 100%;" name="localites_filter_accord_definitif" id="localites_filter_accord_definitif">
                     <option value="all" selected>Indifferent</option>
                     @foreach($localites as $localite)
                     <option value="{{$localite->nom_fr}}">{{$localite->nom_fr}}</option>
@@ -28,7 +28,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label>Partenaires : </label>                
-                <select class="form-control select2" style="width: 100%;" name="partenaires" id="partenaires_filter">
+                <select class="form-control select2" style="width: 100%;" name="partenaires_filter_accord_definitif" id="partenaires_filter_accord_definitif">
                     <option value="all" selected>Indifferent</option>
                     @foreach ($partenaires_types as $type_part)
                     <option value="{{$type_part->id}}">{{$type_part->nom_fr}}</option>
@@ -43,11 +43,12 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label>Session</label>
-                <select class="form-control select2" style="width: 100%;" name="session" id="session_filter">
+                <select class="form-control select2" style="width: 100%;" name="session_filter_accord_definitif" id="session_filter_accord_definitif">
                     <option value="all" selected>Indifferent</option>
                     @foreach ($sessions as $session)
                     <option value="{{$session->id}}">{{$session->nom}}</option>
                     @endforeach
+
                 </select>
             </div>
             <!-- /.form-group -->
@@ -55,7 +56,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label>Type d'intervention</label>
-                <select class="form-control select2" style="width: 100%;" name="interventions" id="intervention_filter">
+                <select class="form-control select2" style="width: 100%;" name="interventions_filter_accord_definitif" id="intervention_filter_accord_definitif">
                     <option value="all" selected>Indifferent</option>
                     @foreach ($interventions as $intervention)
                     <option value="{{$intervention->id}}">{{$intervention->nom}}</option>
@@ -71,7 +72,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" class="form-control pull-right" name="daterange" id="reservation">
+                    <input type="text" class="form-control pull-right" name="daterange_filter_accord_definitif" id="reservation_filter_accord_definitif">
                 </div>
             </div>
             <!-- /.form-group -->

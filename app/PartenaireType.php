@@ -12,4 +12,6 @@ class PartenaireType extends Model
     {
         return $this->belongsToMany('App\Demande', 'partenaire_demande', 'partenaire_id', 'demande_id')->withPivot('montant')->withTimestamps();
     }
+
+
 }

@@ -57,7 +57,11 @@ class ConventionController extends Controller
      */
     public function edit(Convention $convention)
     {
-        //
+        $convention = Convention::with(['communes'])->find($convention->id);
+        return $convention;
+        // return view('conventions.edit.edit')->with([
+        //     'convention' => $convention
+        // ]);
     }
 
     /**

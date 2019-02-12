@@ -10,4 +10,9 @@ class Commune extends Model
     {
         return $this->belongsToMany('App\Demande', 'commune_demande')->withTimestamps();
     }
+
+    public function conventions()
+    {
+        return $this->belongsToMany('App\Convention', 'commune_convention')->withTimestamps();
+    }
 }

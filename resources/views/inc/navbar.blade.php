@@ -57,4 +57,11 @@
             ><i class="fa fa-dashboard mr-5"></i> <span>CARTOGRAPHIE</span></a
         >
     </li>
+
+    <li class="nav-item ">
+        <a class="nav-link" href="#"
+            ><span class="active-item-here"></span
+            ><i class="fa fa-dashboard mr-5"></i> <span>Parametres</span></a
+        >
+    </li>
 </ul>

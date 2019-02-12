@@ -3,7 +3,7 @@
     <div class="col-lg-9 col-12">
         <div class="box bg-transparent no-shadow">
             <div class="box-header with-border">
-                <h4 class="box-title">LA DEMANDE NUMERO : {{$demande->id}}</h4>
+                <h4 class="box-title">LA DEMANDE NUMERO : {{$demande->num_ordre}}</h4>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

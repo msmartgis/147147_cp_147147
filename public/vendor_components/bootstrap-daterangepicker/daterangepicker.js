@@ -27,11 +27,10 @@
     }
 }(this, function (moment, $) {
     var DateRangePicker = function (element, options, cb) {
-
         //default settings for options
         this.parentEl = 'body';
         this.element = $(element);
-        this.startDate = moment().startOf('month');
+        this.startDate = moment().startOf('year');
         this.endDate = moment().endOf('month');
         this.minDate = false;
         this.maxDate = false;

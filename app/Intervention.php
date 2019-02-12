@@ -10,4 +10,9 @@ class Intervention extends Model
     {
         return $this->belongsToMany('App\Demande', 'intervention_demande')->withTimestamps();
     }
+
+    public function conventions()
+    {
+        return $this->belongsToMany('App\Convention', 'intervention_convention')->withTimestamps();
+    }
 }

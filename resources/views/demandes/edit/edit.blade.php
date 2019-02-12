@@ -352,12 +352,11 @@ $(document).ready(function () {
             url='{!! route('restaurer_demande')!!}';
             demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
 
-        });
+    });
 
 
         //affectation aux convention
-         $('#affect_aux_convention_btn').click(function(){
-        
+         $('#affect_aux_convention_btn').click(function(){        
             var demande_id = $(this).data('id');
             var numero_ordre = $(this).data('numero');
             $('#id_demande_modal_affect').val(demande_id);
@@ -396,7 +395,7 @@ function demande_mngmnt(id, url, success_message, sub_title_message) {
         closeOnConfirm: false,
         closeOnCancel: false
     }, function (isConfirm) {
-        if (isConfirm) {
+        if (isConfirm) {            
             //send an ajax request to the server update decision column
             $.ajax({
                 url: url,
