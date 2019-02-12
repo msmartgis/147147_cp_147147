@@ -2268,7 +2268,7 @@ input::-ms-clear {
 
     .navbar-nav>.nav-item>.nav-link {
         padding-top: 1.5715rem;
-        padding-bottom: 1.5715rem;
+        padding-bottom: 1rem;
     }
 
     .navbar-nav.navbar-right:last-child {
