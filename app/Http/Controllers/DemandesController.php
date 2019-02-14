@@ -796,6 +796,7 @@ class DemandesController extends BaseController
         $piste->longueur = $request->input('longueur');
         $piste->demande_id = $actu_id_demande;
         $piste->save();
+        
 
         //save data for piece******
         //verify if there is any piece
@@ -856,6 +857,7 @@ class DemandesController extends BaseController
         $porteur->nom_porteur_fr = $request->input('nom_porteur_fr');
         $partenaire_type->nom_fr = $request->input('nom_porteur_fr');
         $porteur->nom_porteur_ar = $request->input('nom_porteur_ar');
+        $porteur->demande_id = $actu_id_demande;
         $partenaire_type->nom_ar = $request->input('nom_porteur_ar');
 
         //save to moa
@@ -898,6 +900,7 @@ class DemandesController extends BaseController
         $partenaires_types = PartenaireType::all();
         $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
         $demande = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session', 'piece'])->find($demande->id);
+        
         //return $demande;
         return view('demandes.edit.edit')->with([
             'demande' => $demande,
@@ -929,10 +932,17 @@ class DemandesController extends BaseController
         $demande->communes()->sync($communes_ids);
 
         //update pistes 
-
         Piste::where('id', $request->id_pist)
             ->update(['longueur' => $request->longueur]);
-       
+
+        
+        //update porteur    
+        Porteur::where('id', $request->id_porteur)
+            ->update(['nom_porteur_fr' => $request->nom_porteur_fr, 'nom_porteur_ar' => $request->nom_porteur_ar]);
+
+         //update porteur in partenaire table too , because porteur can be a partenaire 
+        PartenaireType::where('nom_fr', $request->nom_porteur_fr_old)
+            ->update(['nom_fr' => $request->nom_porteur_fr, 'nom_ar' => $request->nom_porteur_ar]); 
 
          //update localites
         $localites_ids = Input::get('localites');

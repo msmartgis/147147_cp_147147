@@ -21,9 +21,7 @@ $(document).ready(function () {
             }
 
         },
-        columnDefs: [
-
-            {
+        columnDefs: [{
                 width: 20,
                 targets: 1
             },
@@ -138,6 +136,8 @@ $(document).ready(function () {
                 checked = true;
                 window.location.href = "demandes/" + id + "/edit";
                 return false;
+            } else {
+
             }
         });
         if (!checked) {

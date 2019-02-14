@@ -1,12 +1,35 @@
 {!! Form::model($demande, ['route' => ['demandes.update', $demande->id],'method' => 'PUT']) !!}
 <div class="row">
     <div class="col-lg-9 col-12">
-        <div class="box bg-transparent no-shadow">
+        <div class="box box-default  box-solid no-shadow">
             <div class="box-header with-border">
+                <ul class="box-controls">
+                    <li><a class="box-btn-slide" href="#"></a></li>
+                </ul>
                 <h4 class="box-title">LA DEMANDE NUMERO : {{$demande->num_ordre}}</h4>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+                <div class="row" style="margin-top: 8px">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                             {{Form::hidden('id_porteur',$demande->porteur->id)}}
+                             {{Form::hidden('nom_porteur_fr_old',$demande->porteur->nom_porteur_fr)}}
+                            <h6>Porteur de projet (fr)</h6>
+                            <div class="controls">
+                                {{Form::textarea('nom_porteur_fr',$demande->porteur->nom_porteur_fr,['class'=>'form-control','rows'=>'2'])}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <h6>Porteur de projet (ar)</h6>
+                            <div class="controls">
+                                {{Form::textarea('nom_porteur_ar',$demande->porteur->nom_porteur_ar,['class'=>'form-control','rows'=>'2'])}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row" style="margin-top: 8px">
                     <div class="col-lg-6">
                         <div class="form-group">
