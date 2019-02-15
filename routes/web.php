@@ -16,13 +16,23 @@ Route::get('/', 'PagesController@index');
 
 //resources for demande controller
 
-Route::resource('conventions', 'ConventionController');
+Route::group(
+    ['middleware' => 'auth'],
+    function () {
+        Route::resources([
+            'conventions' => 'ConventionController',
+            'points_desservis' => 'PointDesserviController',
+            'communes' => 'CommunesController',
+            'demandes' => 'DemandesController',
+            'pieces' => 'PieceController',
+        ]);
+    }
+);
 
-Route::resource('points_desservis', 'PointDesserviController');
-Route::resource('communes', 'CommunesController');
+
 Route::post('/loadPoint', 'PointDesserviController@loadPoint');
 //demandes
-Route::resource('demandes', 'DemandesController');
+
 Route::get('demande/en_cours', 'DemandesController@getDemandes');
 Route::get('demande/tab_realisee_programmee', 'DemandesController@getDemandesRealiseeProgrammee');
 Route::get('demande/tab_a_traiter', 'DemandesController@getDemandesATraiter');
@@ -36,7 +46,7 @@ Route::post('demande/restaurer', 'DemandesController@restaurerDemande')->name('r
 Route::post('demande/restaurer_from_affectation', 'DemandesController@restaurerDemandeFromAffectation')->name('restaurer_demande_from_affectation');
 
 //pieces
-Route::resource('pieces', 'PieceController');
+
 Route::post('pieces/add_piece', 'PieceController@addPiece')->name('add_piece');
 Route::post('pieces/delete_piece', 'PieceController@deletePiece')->name('delete_piece');
 Route::post('partenaire/delete_partenaire', 'PartenaireTypeController@deletePartenaire')->name('delete_partenaire');
@@ -46,3 +56,7 @@ Route::post('partenaire/add_partenaire', 'PartenaireTypeController@addPartenaire
 //Route::get('load_points', 'LoadPointsDesservis@load_points_desservis');
 //Route::post('/load_localites', 'PointDesserviController@load_localites');
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

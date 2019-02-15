@@ -66,8 +66,17 @@
 				
 					<div role="separator" class="divider col-12"></div>
 					  <div class="col-12 text-left">
-						<a href="#"><i class="fa fa-power-off"></i> Logout</a>
-					  </div>				
+						<a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>	
+                      </div>
+                      			
 					</div>
 					<!-- /.row -->
 				  </li>
