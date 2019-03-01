@@ -124,7 +124,6 @@ $(document).ready(function () {
 
 
 
-
     //select item from datatable
     //edite
     $("#modifier").click(function () {
@@ -132,7 +131,7 @@ $(document).ready(function () {
 
         $("#demandes_datatables > tbody").find('input[name="checkbox"]').each(function () {
             if ($(this).prop("checked") == true) {
-                var id = $('input[name=checkbox]').val();
+                var id = $(this).val();
                 checked = true;
                 window.location.href = "demandes/" + id + "/edit";
                 return false;
