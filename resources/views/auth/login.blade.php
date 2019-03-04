@@ -19,53 +19,24 @@
 </head>
 <body class="hold-transition login-page">
 	
-	<div class="container h-p100" style="margin-top: 80px;">
+	<div class="container h-p100" >
 		<div class="row align-items-center justify-content-md-center h-p100">
-			<div class="col-lg-3 col-md-8 col-12 d-none d-lg-block">
-				<div class="box mb-0 b-0 bg-transparent">
-					<div class="box-body login-slider p-0">
-						<div id="carousel-example-generic-captions" class="carousel slide" data-ride="carousel">
-						<!-- Indicators -->
-						  <ol class="carousel-indicators">
-							<li data-target="#carousel-example-generic-captions" data-slide-to="0" class="active"></li>
-							<li data-target="#carousel-example-generic-captions" data-slide-to="1"></li>
-							<li data-target="#carousel-example-generic-captions" data-slide-to="2"></li>
-						  </ol>                      
-						  <!-- Wrapper for slides -->
-						  <div class="carousel-inner" role="listbox">
-							<div class="carousel-item active">
-							  <img src="{{asset('images/slider/documents.jpeg')}}" class="img-fluid" alt="slide-1">
-							  <div class="carousel-caption">
-								<h3>Gestion des demandes</h3>								
-							  </div>
-							</div>
-							<div class="carousel-item">
-							  <img src="{{asset('images/slider/statistics.jpeg')}}" class="img-fluid" alt="slide-2">
-							  <div class="carousel-caption">					  
-								<h3>Statistiques</h3>							
-							  </div>
-							</div>
-							<div class="carousel-item">
-							  <img src="{{asset('images/slider/map_2.jpeg')}}" class="img-fluid" alt="slide-3">
-							  <div class="carousel-caption">					  
-								<h3>Cartographie</h3>								
-							  </div>
-							</div>
-						  </div>
-						</div>
-					</div>
-				</div>
-			</div>
+
 			<div class="col-lg-4 col-md-8 col-12">
 				<div class="login-box">
 				  <div class="login-box-body">
-					<h3 class="text-center">Bienvenue sur la plateforme CP</h3>
+                      <div style="text-align: center">
+                          <img src="{{asset('images/logo_smartgis.png')}}" alt="">
+                      </div>
+
+                      <h3 class="text-center">Bienvenue sur la plateforme CP</h3>
 					<p class="login-box-msg">Espace de gestion </p>
+                      
 
 					<form method="POST" action="{{ route('login') }}">
                         @csrf
 					  <div class="form-group has-feedback">                       
-                        <input id="username" type="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }} rounded" name="username" value="{{ old('username') }}" placeholder="Adresse email" required autofocus>
+                        <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }} rounded" name="username" value="{{ old('username') }}" placeholder="Adresse email" required autofocus>
 
                         @if ($errors->has('username'))
                             <span class="invalid-feedback" role="alert">
