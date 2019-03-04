@@ -65,11 +65,11 @@
 					<form method="POST" action="{{ route('login') }}">
                         @csrf
 					  <div class="form-group has-feedback">                       
-                        <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} rounded" name="email" value="{{ old('email') }}" placeholder="Adresse email" required autofocus>
+                        <input id="username" type="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }} rounded" name="username" value="{{ old('username') }}" placeholder="Adresse email" required autofocus>
 
-                        @if ($errors->has('email'))
+                        @if ($errors->has('username'))
                             <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('email') }}</strong>
+                                <strong>{{ $errors->first('username') }}</strong>
                             </span>
                         @endif
 						<span class="ion ion-email form-control-feedback"></span>
