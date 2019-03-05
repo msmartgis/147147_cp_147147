@@ -243,3 +243,14 @@ label {
     max-width: 1080px !important;
 
 }
+
+
+/*  steps design  */
+.wizard-content .wizard.wizard-circle > .steps .step
+{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+

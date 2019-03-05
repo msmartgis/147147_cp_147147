@@ -18,74 +18,82 @@
 
   <header class="main-header">
 	<div class="inside-header">
-		<!-- Logo -->
-		<a href="index.html" class="logo">
-		  <!-- mini logo for sidebar mini 50x50 pixels -->
-		  
-		  <!-- logo for regular state and mobile devices -->
-		  <span class="logo-lg">
-			  <img src="{{asset('images/logo.png')}}" alt="logo" class="light-logo">
-			  
+        <!-- Logo -->
+        <a href="{{ route('home') }}" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <b class="logo-mini">
+                <span class="light-logo"><img src="{{asset('images/logo-light.png')}}" alt="logo"></span>
+                <span class="dark-logo"><img src="{{asset('images/logo-dark.png')}}" alt="logo"></span>
+            </b>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg">
+			  <img src="{{asset('images/logo-light-text.png')}}" alt="logo" class="light-logo">
+			  <img src="{{asset('images/logo-dark-text.png')}}" alt="logo" class="dark-logo">
 		  </span>
-		</a>
-		<!-- Header Navbar -->
-		<nav class="navbar navbar-static-top">
-		  <!-- Sidebar toggle button-->
-		 
-		
-		  <ul class="navbar-nav mr-auto mt-md-0">		
-			
-		</ul>	
+        </a>
 
-		  <div class="navbar-custom-menu">
-			<ul class="nav navbar-nav">
-		
-			  <!-- User Account -->
-			  <li class="dropdown user user-menu">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				  <img src="{{asset('images/avatar.png')}}" class="user-image rounded-circle" alt="User Image">
-				</a>
-				<ul class="dropdown-menu scale-up">
-				  <!-- User image -->
-				  <li class="user-header">
-					<img src="{{asset('images/avatar.png')}}" class="float-left rounded-circle" alt="User Image">
 
-					<p>
-					  Juliya Brus
-					  
-					  <a href="#" class="btn btn-danger btn-sm btn-rounded">Voir Profile</a>
-					</p>
-				  </li>
-				  <!-- Menu Body -->
-				  <li class="user-body">
-					<div class="row no-gutters">				 
-					  
-					  <div class="col-12 text-left">
-						<a href="#"><i class="ion ion-settings"></i> Parametres</a>
-					  </div>
-				
-					<div role="separator" class="divider col-12"></div>
-					  <div class="col-12 text-left">
-						<a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle d-block d-lg-none" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <ul class="navbar-nav mr-auto mt-md-0">
+                <!-- .Megamenu -->
+
+                <!-- /.Megamenu -->
+            </ul>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <!-- User Account -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="{{asset('images/avatar.png')}}" class="user-image rounded-circle" alt="User Image">
+                        </a>
+                        <ul class="dropdown-menu scale-up">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="{{asset('images/avatar.png')}}" class="float-left rounded-circle" alt="User Image">
+
+                                <p>
+                                    Juliya Brus
+                                    <small class="mb-5">jb@gmail.com</small>
+                                    <a href="#" class="btn btn-danger btn-sm btn-rounded">View Profile</a>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="row no-gutters">
+                                    <div class="col-12 text-left">
+                                        <a href="#"><i class="ion ion-person"></i> My Profile</a>
+                                    </div>
+
+                                    <div role="separator" class="divider col-12"></div>
+                                    <div class="col-12 text-left">
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                                            {{ __('Logout') }}
+                                        </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>	
-                      </div>
-                      			
-					</div>
-					<!-- /.row -->
-				  </li>
-				</ul>
-			  </li>
-			 
-			</ul>
-		  </div>
-		</nav>	
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
 	</div>
   </header>
   
@@ -127,13 +135,8 @@
 </div>
 <!-- ./wrapper -->
   	
-	<!-- jQuery 3 -->
-	<script src="../assets/vendor_components/jquery-3.3.1/jquery-3.3.1.js"></script>
-	
-	<!-- jQuery UI 1.11.4 -->
-	<script src="../assets/vendor_components/jquery-ui/jquery-ui.js"></script>
-	
-	<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
+
 	<script>
 	  $.widget.bridge('uibutton', $.ui.button);
 	</script>	

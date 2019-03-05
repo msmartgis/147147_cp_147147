@@ -5,13 +5,13 @@
         <h6>Information Général</h6>
         <section>
             <div class="row">
-                <div class="col-3">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="form-group">
                         {{Form::label('','N° d\'ordre :')}}
                         {{Form::text('num_ordre',$current_numero_ordre,['class'=>'form-control'])}}
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="form-group">
                         {{Form::label('','Date de récéption:')}}
                         <div class="input-group date">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-                <div class="col-6">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="form-group">
                         {{Form::label('','Commune:')}}
                         {{Form::select('communes', $communes, null,
@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-4">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="form-group">
 
                         {{Form::label('','Etat du projet :')}}
@@ -58,13 +58,13 @@
 
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="form-group">
                         {{Form::label('','Longueur :')}}
                         {{Form::text('longueur','',['class'=>'form-control'])}}
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="form-group">
                         {{Form::label('','Session:')}}
                         {{Form::select('session', $sessions, null,
@@ -78,7 +78,7 @@
                     </div>
                 </div>
 
-                <div class="col-12">
+                <div class="col-lg-12 col-md-4 col-sm-12 col-xs-12">
                     <div id="map" style="border: solid 1px #666666;box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);"></div>
 
                     <div class="cmodali active" style=" width: 300px;  height: 100px;left:calc(100% - 320px);top:calc(100% - 72px);z-index:99998;">
@@ -98,7 +98,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <h6>Objet (fr)</h6>
                         <div class="controls">
@@ -106,7 +106,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <h6>Objet (ar)</h6>
                         <div class="controls">
@@ -116,14 +116,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="form-group">
                         {{Form::label('','Porteur de projet(fr) :')}}
                         {{Form::text('nom_porteur_fr','',['class'=>'form-control'])}}
 
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="form-group">
                         {{Form::label('','Porteur de projet(ar) :')}}
                         {{Form::text('nom_porteur_ar','',['class'=>'form-control'])}}

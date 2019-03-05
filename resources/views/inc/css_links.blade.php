@@ -1,5 +1,5 @@
 <!-- Bootstrap 4.0-->
-<link rel="stylesheet" href="{{asset('vendor_components/bootstrap/dist/css/bootstrap.css')}}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
 <!-- Bootstrap extend-->
 <link rel="stylesheet" href="{{asset('css/bootstrap-extend.css')}}">
