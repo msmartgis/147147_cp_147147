@@ -3,6 +3,7 @@ $(document).ready(function () {
     var oTable = $('#demandes_datatables').DataTable({
         processing: true,
         serverSide: true,
+        pageLength: 10,
         language: {
             url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json",
             processing: "<div class='spinner'></div>",
