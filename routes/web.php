@@ -14,6 +14,8 @@
  //index
 Route::get('/', 'PagesController@index');
 
+//Route::get('/dashboard','PagesController@dashboard');
+
 //resources for demande controller
 
 Route::group(
