@@ -88,6 +88,10 @@
         <div class="row">
             <div class="col-12">
                 <div class="box">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">Tableau de Bord par intervenant</h4>
+
+                    </div>
                     <div class="box-body no-padding">
                         <div class="table-responsive">
                             <table class="table table-hover">
@@ -190,6 +194,9 @@
         <div class="row">
             <div class="col-12">
                 <div class="box">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">Tableau de Bord par intervention</h4>
+                    </div>
                     <div class="box-body no-padding">
                         <div class="table-responsive">
                             <table class="table table-hover">
