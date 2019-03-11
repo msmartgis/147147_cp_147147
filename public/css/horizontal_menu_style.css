@@ -729,7 +729,7 @@ Project:	Fab Admin - Responsive Admin Template
         position: absolute;
         top: 100%;
         z-index: 1;
-        color: #708895;
+        color: #3d5b99;
     }
 
     .skin-blue-light .main-nav .active-item-here {
@@ -794,7 +794,7 @@ Project:	Fab Admin - Responsive Admin Template
 
 .main-nav {
     margin-top: 45px !important;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
 }
 
@@ -819,7 +819,7 @@ Project:	Fab Admin - Responsive Admin Template
 }
 
 .main-nav {
-    background-color: #599592;
+    background-color: #3d5b99;
 }
 
 .skin-blue-light .main-nav,
@@ -835,7 +835,7 @@ Project:	Fab Admin - Responsive Admin Template
 .main-nav .navbar-nav>.nav-item>.nav-link:hover,
 .main-nav .nav-item.active>.nav-link,
 .main-nav .navbar-nav>.nav-item.show>.nav-link:focus {
-    color: #fff;
+    color: #000;
 }
 
 .skin-blue-light .main-nav .navbar-nav>.nav-link:focus,

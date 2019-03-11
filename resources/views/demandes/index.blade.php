@@ -43,6 +43,11 @@
         padding: .2em .6em .3em;
          
     }
+
+    .nav-tabs
+    {
+        border-bottom: 1px solid #9fd037;
+    }
 </style>
 @endsection
 
@@ -50,11 +55,7 @@
 <div class="row">
     <div class="col-12">
         <div class="box">
-            <div class="box-header with-border">
-                <h4 class="box-title">La liste des demandes</h4>
-                <div class="box-controls pull-right">
-                </div>
-            </div>
+
             <!-- /.box-header -->
             <div class="box-body">                
                 @include('demandes.show.tabs')                

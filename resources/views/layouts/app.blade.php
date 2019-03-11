@@ -22,13 +22,13 @@
         <a href="{{ route('home') }}" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <b class="logo-mini">
-                <span class="light-logo"><img src="{{asset('images/logo-light.png')}}" alt="logo"></span>
-                <span class="dark-logo"><img src="{{asset('images/logo-dark.png')}}" alt="logo"></span>
+                <span class="light-logo"><img src="{{asset('images/logo.png')}}" alt="logo"></span>
+                <span class="dark-logo"><img src="{{asset('images/logo.png')}}" alt="logo"></span>
             </b>
             <!-- logo for regular state and mobile devices -->
             <span class="logo-lg">
-			  <img src="{{asset('images/logo-light-text.png')}}" alt="logo" class="light-logo">
-			  <img src="{{asset('images/logo-dark-text.png')}}" alt="logo" class="dark-logo">
+			  <img src="{{asset('images/logo.png')}}" alt="logo" class="light-logo">
+			  <img src="{{asset('images/logo.png')}}" alt="logo" class="dark-logo">
 		  </span>
         </a>
 
