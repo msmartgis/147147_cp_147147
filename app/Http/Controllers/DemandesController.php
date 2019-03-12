@@ -26,7 +26,10 @@ use DB;
 class DemandesController extends BaseController
 {
 
-
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function accordDefinitif(Request $request)
     {
 
