@@ -20,8 +20,8 @@
         </a>
     </li>
 
-    <li class="nav-item ">
-        <a class="nav-link" href="#"><span class="active-item-here"></span>
+    <li class="{{ Request::is('conventions') ? 'nav-item active' : '' }}">
+        <a class="nav-link" href="/conventions"><span class="active-item-here"></span>
             <img src="{{asset('images/svg/resume.svg')}}" style="width: 1.2em;margin-right: 5px;" />
             <span style="vertical-align: middle;" class="m-font-bold">Conventions</span></a>
     </li>
@@ -29,7 +29,7 @@
     <li class="nav-item ">
         <a class="nav-link" href="#"><span class="active-item-here"></span>
             <img src="{{asset('images/svg/report.svg')}}" style="width: 1.2em;margin-right: 5px;" />
-            <span style="vertical-align: middle;" class="m-font-bold">Aappels D'offres</span></a>
+            <span style="vertical-align: middle;" class="m-font-bold">Appels D'offres</span></a>
     </li>
 
     <li class="nav-item ">

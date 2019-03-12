@@ -202,4 +202,16 @@ class SpreadSheetController extends Controller
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
     }
+
+
+
+
+
+    /*
+     * spreadsheet conventions
+     */
+    public function conventionsSpreadSheet(Request $request)
+    {
+
+    }
 }

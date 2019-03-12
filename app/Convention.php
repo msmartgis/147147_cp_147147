@@ -13,24 +13,24 @@ class Convention extends Model
 
     public function communes()
     {
-        return $this->belongsToMany('App\Commune', 'commune_demande')->withTimestamps();
+        return $this->belongsToMany('App\Commune', 'commune_convention')->withTimestamps();
     }
 
     public function interventions()
     {
-        return $this->belongsToMany('App\Intervention', 'intervention_demande')->withTimestamps();
+        return $this->belongsToMany('App\Intervention', 'intervention_convention')->withTimestamps();
     }
 
 
     public function point_desservis()
     {
-        return $this->belongsToMany('App\PointDesservi', 'pointdesservi_demande')->withTimestamps();
+        return $this->belongsToMany('App\PointDesservi', 'pointdesservi_convention')->withTimestamps();
     }
 
-    public function piste()
+    /*public function piste()
     {
         return $this->hasOne('App\Piste');
-    }
+    }*/
 
 
     public function piece()
@@ -47,6 +47,12 @@ class Convention extends Model
     {
         return $this->belongsToMany('App\Moa', 'moa_convention')->withTimestamps();
     }
+
+    public function partenaires()
+    {
+        return $this->belongsToMany('App\PartenaireType', 'partenaire_convention', 'convention_id', 'partenaire_id')->withPivot('montant')->withTimestamps();
+    }
+
 
 
 }

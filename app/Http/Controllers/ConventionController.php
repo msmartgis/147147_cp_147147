@@ -2,7 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Commune;
 use App\Convention;
+use App\Demande;
+use App\Intervention;
+use App\Moa;
+use App\PartenaireType;
+use App\PointDesserviCategorie;
+use App\Porteur;
+use App\Session;
 use Illuminate\Http\Request;
 
 class ConventionController extends Controller
@@ -15,7 +23,26 @@ class ConventionController extends Controller
      */
     public function index()
     {
-        //
+        $communes = Commune::orderBy('nom_fr')->get();
+        //point desservis :: localite only
+        $localites = PointDesserviCategorie::find(1)->point_desservis;
+        $partenaires_types = PartenaireType::all();
+        $moas = Moa::all();
+        $sessions = Session::all();
+        $interventions = Intervention::all();
+        $porteurs = Porteur::all();
+
+        $conventions = Convention::with(['communes', 'partenaires', 'point_desservis', 'interventions', 'session'])->get();
+        return view('conventions.show.index')->with([
+            '$conventions' => $conventions,
+            'communes' => $communes,
+            'localites' => $localites,
+            'partenaires_types' => $partenaires_types,
+            'moas' => $moas,
+            'porteurs' => $porteurs,
+            'sessions' => $sessions,
+            'interventions' => $interventions,
+        ]);
     }
 
     /**

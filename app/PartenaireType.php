@@ -14,4 +14,10 @@ class PartenaireType extends Model
     }
 
 
+    public function conventions()
+    {
+        return $this->belongsToMany('App\Convention', 'partenaire_convention', 'partenaire_id', 'convention_id')->withPivot('montant')->withTimestamps();
+    }
+
+
 }

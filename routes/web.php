@@ -13,16 +13,12 @@
 
  //index
 Route::get('/', 'PagesController@index');
-
-//Route::get('/dashboard','PagesController@dashboard');
-
-//resources for demande controller
-
 Route::group(
     ['middleware' => 'auth'],
     function () {
         Route::resources([
             'conventions' => 'ConventionController',
+            'projets' => 'ProjetController',
             'points_desservis' => 'PointDesserviController',
             'communes' => 'CommunesController',
             'demandes' => 'DemandesController',
@@ -34,8 +30,8 @@ Route::group(
 
 
 Route::post('/loadPoint', 'PointDesserviController@loadPoint');
-//demandes
 
+//demandes
 Route::get('demande/en_cours', 'DemandesController@getDemandes');
 Route::get('demande/tab_programmee', 'DemandesController@getDemandesProgrammee');
 Route::get('demande/tab_realisee', 'DemandesController@getDemandesRealisee');
@@ -49,16 +45,18 @@ Route::post('demandes/a_traiter', 'DemandesController@aTraiter')->name('a_traite
 Route::post('demande/restaurer', 'DemandesController@restaurerDemande')->name('restaurer_demande');
 Route::post('demande/restaurer_from_affectation', 'DemandesController@restaurerDemandeFromAffectation')->name('restaurer_demande_from_affectation');
 
-//pieces
 
+//Routes for conventions
+Route::get('/conventions', 'ConventionController@index');
+Route::post('conventions/conventionSpreadSheet', 'SpreadSheetController@conventionsSpreadSheet')->name('spreadSheetConvention');
+
+//pieces
 Route::post('pieces/add_piece', 'PieceController@addPiece')->name('add_piece');
 Route::post('pieces/delete_piece', 'PieceController@deletePiece')->name('delete_piece');
 Route::post('partenaire/delete_partenaire', 'PartenaireTypeController@deletePartenaire')->name('delete_partenaire');
 Route::post('partenaire/add_partenaire', 'PartenaireTypeController@addPartenaire')->name('add_partenaire');
 
-//Route::post('/load_points_desservis', 'LoadPointsDesservis@load_points_desservis')->name('load_point');
-//Route::get('load_points', 'LoadPointsDesservis@load_points_desservis');
-//Route::post('/load_localites', 'PointDesserviController@load_localites');
+
 
 
 Auth::routes();
