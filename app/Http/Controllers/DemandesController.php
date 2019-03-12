@@ -31,7 +31,7 @@ class DemandesController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse JSON
      */
     public function accordDefinitif(Request $request)
     {
