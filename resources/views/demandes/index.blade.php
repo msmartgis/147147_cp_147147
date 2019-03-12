@@ -68,8 +68,11 @@
                     @include('demandes.show.tab_affectees')
                     {{-- accord_definitif --}} 
                     @include('demandes.show.tab_accord_definitif') 
-                    {{-- realisee programme --}}
-                     @include('demandes.show.tab_realisees_programme') 
+                    {{--  programme --}}
+                     @include('demandes.show.tab_programmee')
+
+                    {{-- realisee  --}}
+                    @include('demandes.show.tab_realisee')
 
                 </div>  
             </div>
@@ -113,7 +116,8 @@
 <script src="{{asset('js/demandes/index_en_cours.js')}}"></script>
 <script src="{{asset('js/demandes/index_affectees.js')}}"></script>
 <script src="{{asset('js/demandes/index_accord_definitif.js')}}"></script>
-<script src="{{asset('js/demandes/index_realisee_programmee.js')}}"></script>
+<script src="{{asset('js/demandes/index_programmee.js')}}"></script>
+<script src="{{asset('js/demandes/index_realisee.js')}}"></script>
 <script src="{{asset('js/demandes/index_a_traiter.js')}}"></script>
 
 {{-- libraries for datatables exoprting --}}

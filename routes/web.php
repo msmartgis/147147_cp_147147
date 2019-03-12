@@ -37,7 +37,8 @@ Route::post('/loadPoint', 'PointDesserviController@loadPoint');
 //demandes
 
 Route::get('demande/en_cours', 'DemandesController@getDemandes');
-Route::get('demande/tab_realisee_programmee', 'DemandesController@getDemandesRealiseeProgrammee');
+Route::get('demande/tab_programmee', 'DemandesController@getDemandesProgrammee');
+Route::get('demande/tab_realisee', 'DemandesController@getDemandesRealisee');
 Route::get('demande/tab_a_traiter', 'DemandesController@getDemandesATraiter');
 Route::post('demande/demandeSpreadSheetEnCours', 'SpreadSheetController@demandeSpread_en_cours')->name('spread_demande_en_cours');
 Route::get('demande/is_affecter', 'DemandesController@getDemandesAffectees')->name('get.demandes.affectees');

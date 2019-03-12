@@ -4,5 +4,6 @@
     <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#a_traiter_tab" role="tab" style="font-size: 15px;"><span class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">A traiter</span></a> </li>
     <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#affectees_tab" role="tab" style="font-size: 15px;"><span class="hidden-sm-up"><i class="ion-person"></i></span> <span class="hidden-xs-down">Affectées</span></a> </li>
     <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#accord_definitif_tab" role="tab" style="font-size: 15px;"><span class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">Accord définitif</span></a> </li>
-    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#realisee_programmee_tab" role="tab" style="font-size: 15px;"><span class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">Realisées/Programmées</span></a> </li>
+    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#programmee_tab" role="tab" style="font-size: 15px;"><span class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">Programmées dans d'autre programmes</span></a> </li>
+    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#realisee_tab" role="tab" style="font-size: 15px;"><span class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">Réalisées dans d'autre programmes</span></a> </li>
 </ul>

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var oTable_realisee_programmee = $('#demandes_datatables_realisee_programmee').DataTable({
+    var oTable_realisee = $('#demandes_datatables_realisee').DataTable({
         processing: true,
         serverSide: true,
         language: {
@@ -7,15 +7,15 @@ $(document).ready(function () {
             processing: "<img src='{{asset('images/logo.png')}}'>",
         },
         ajax: {
-            url: 'demande/tab_realisee_programmee',
+            url: 'demande/tab_realisee',
             type: 'GET',
             data: function (d) {
-                d.communes = $('select[name=communes_realisee_programmee]').val();
-                d.session = $('select[name=session_realisee_programmee]').val();
-                d.interventions = $('select[name=interventions_realisee_programmee]').val();
-                d.partenaires = $('select[name=partenaires_realisee_programmee]').val();
-                d.localites = $('select[name=localites_realisee_programmee]').val();
-                d.daterange = $('input[name=daterange_realisee_programmee]').val();
+                d.communes = $('select[name=communes_realisee]').val();
+                d.session = $('select[name=session_realisee]').val();
+                d.interventions = $('select[name=interventions_realisee]').val();
+                d.partenaires = $('select[name=partenaires_realisee]').val();
+                d.localites = $('select[name=localites_realisee]').val();
+                d.daterange = $('input[name=daterange_realisee]').val();
             }
 
         },
@@ -35,11 +35,11 @@ $(document).ready(function () {
             }
         ],
         columns: [{
-                data: 'checkbox',
-                name: 'checkbox',
-                orderable: false,
-                searchable: false
-            },
+            data: 'checkbox',
+            name: 'checkbox',
+            orderable: false,
+            searchable: false
+        },
 
             {
                 data: 'num_ordre',
@@ -117,20 +117,20 @@ $(document).ready(function () {
     });
 
 
-    $('#communes_filter_realisee_programmee,#session_filter_realisee_programmee,#intervention_filter_realisee_programmee,#partenaires_filter_realisee_programmee,#localites_filter_realisee_programmee,#reservation_realisee_programmee').on('change paste keyup', function (e) {
+    $('#communes_filter_realisee,#session_filter_realisee,#intervention_filter_realisee,#partenaires_filter_realisee,#localites_filter_realisee,#reservation_realisee').on('change paste keyup', function (e) {
 
-        oTable_realisee_programmee.draw();
+        oTable_realisee.draw();
         e.preventDefault();
     });
 
     //select item from datatable
     //edite
-    $("#modifier_realisee_programmee").click(function () {
+    $("#modifier_realisee").click(function () {
         var checked = false;
-        $("#demandes_datatables_realisee_programmee > tbody").find('input[name="checkbox_realisee_programmee"]').each(function () {
+        $("#demandes_datatables_realisee > tbody").find('input[name="checkbox_realisee"]').each(function () {
             if ($(this).prop("checked") == true) {
                 checked = true;
-                var id = $('input[name=checkbox_realisee_programmee]').val();
+                var id = $('input[name=checkbox_realisee]').val();
                 window.location.href = "demandes/" + id + "/edit";
                 return false;
             }
@@ -143,16 +143,16 @@ $(document).ready(function () {
     });
 
 
-    $("#restaurer_realisee_programmee").click(function () {
+    $("#restaurer_realisee").click(function () {
         url = "demande/restaurer";
-        datatble_id = "demandes_datatables_realisee_programmee";
-        name_chechbox = "checkbox_realisee_programmee";
+        datatble_id = "demandes_datatables_realisee";
+        name_chechbox = "checkbox_realisee";
         method = "POST";
         decision_function(datatble_id, name_chechbox, url, method);
     });
 
 
-    //function for decision 
+    //function for decision
     function decision_function(datatble_id, name_chechbox, url, method) {
         //alert(datatble_id + ' ' + name_chechbox + ' ' + url);
         var message_sub_title = '';
