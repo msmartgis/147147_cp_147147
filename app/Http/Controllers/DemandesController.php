@@ -95,38 +95,7 @@ class DemandesController extends BaseController
         //return $demande;
     }
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $communes = Commune::orderBy('nom_fr')->get();
-        //point desservis :: localite only
-        $localites = PointDesserviCategorie::find(1)->point_desservis;
-        $partenaires_types = PartenaireType::all();
-        $moas = Moa::all();
-        $sessions = Session::all();
-        $interventions = Intervention::all();
-        $porteurs = Porteur::all();
-
-        $demandes = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session'])->get();
-        
-        //$demandes = $demandes_collec->toJson();
-        return view('demandes.index')->with([
-            'demandes' => $demandes,
-            'communes' => $communes,
-            'localites' => $localites,
-            'partenaires_types' => $partenaires_types,
-            'moas' => $moas,
-            'porteurs' => $porteurs,
-            'sessions' => $sessions,
-            'interventions' => $interventions,
-        ]);
-    }
-
+    //get demandes en cours for index tab en_cours datatables
     public function getDemandes(Request $request)
     {
         $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['decision', '=', 'en_cours'], ['etat', '=', 'sans']]);
@@ -243,7 +212,11 @@ class DemandesController extends BaseController
         return $datatables->make(true);
     }
 
-
+    /**
+     * Fetch the datatabase for demande having is_affecte = 1
+     *
+     * @return datatable of elements
+     */
     public function getDemandesAffectees(Request $request)
     {
         $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where('is_affecter', '=', '1');
@@ -357,6 +330,12 @@ class DemandesController extends BaseController
         }
         return $datatables->make(true);
     }
+
+
+    /**
+     * @param Request $request
+     * @return datatables of elements from database having 'decision' = 'accord_definitif'
+     */
 
 
     public function getDemandesAccordDefinitif(Request $request)
@@ -473,6 +452,13 @@ class DemandesController extends BaseController
         return $datatables->make(true);
     }
 
+    /**
+     * @param Request $request
+     *
+     * fetch the database to get demande having etat realise or programmee
+     * @return mixed
+     */
+
     public function getDemandesRealiseeProgrammee(Request $request)
     {
         $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where('etat', '=', 'realise')->orWhere('etat', '=', 'programme');
@@ -584,6 +570,14 @@ class DemandesController extends BaseController
         }
         return $datatables->make(true);
     }
+
+
+    /**
+     * @param Request $request
+     *
+     * get demandes having decision a traiter
+     * @return mixed
+     */
 
 
     public function getDemandesATraiter(Request $request)
@@ -699,6 +693,40 @@ class DemandesController extends BaseController
         }
         return $datatables->make(true);
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $communes = Commune::orderBy('nom_fr')->get();
+        //point desservis :: localite only
+        $localites = PointDesserviCategorie::find(1)->point_desservis;
+        $partenaires_types = PartenaireType::all();
+        $moas = Moa::all();
+        $sessions = Session::all();
+        $interventions = Intervention::all();
+        $porteurs = Porteur::all();
+
+        $demandes = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session'])->get();
+        
+        //$demandes = $demandes_collec->toJson();
+        return view('demandes.index')->with([
+            'demandes' => $demandes,
+            'communes' => $communes,
+            'localites' => $localites,
+            'partenaires_types' => $partenaires_types,
+            'moas' => $moas,
+            'porteurs' => $porteurs,
+            'sessions' => $sessions,
+            'interventions' => $interventions,
+        ]);
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.

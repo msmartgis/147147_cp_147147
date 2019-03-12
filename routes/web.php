@@ -27,6 +27,7 @@ Route::group(
             'communes' => 'CommunesController',
             'demandes' => 'DemandesController',
             'pieces' => 'PieceController',
+            'cartographie' => 'CartographieController'
         ]);
     }
 );

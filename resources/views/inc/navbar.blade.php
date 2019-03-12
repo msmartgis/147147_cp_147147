@@ -1,5 +1,5 @@
 <ul class="navbar-nav">
-    <li class="{{ Request::is('home') ? 'nav-item active' : '' }}">
+    <li class="nav-item">
         <a class="nav-link" href="/home"><span class="active-item-here"></span>
             <img src="{{asset('images/svg/home.svg')}}" style="width: 1.2em;margin-right: 5px;" />
             <span style="vertical-align: middle;">Tableau de Bord</span>
@@ -45,7 +45,7 @@
     </li>
 
     <li class="nav-item ">
-        <a class="nav-link" href="#"><span class="active-item-here"></span>
+        <a class="nav-link" href="/cartographie"><span class="active-item-here"></span>
             <img src="{{asset('images/svg/layers.svg')}}" style="width: 1.2em;margin-right: 5px;" />
             <span style="vertical-align: middle;">Cartographie</span></a>
     </li>

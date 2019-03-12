@@ -61,15 +61,16 @@
                 @include('demandes.show.tabs')                
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    @include('demandes.show.tab_en_cours') 
+                    @include('demandes.show.tab_en_cours')
+                    {{-- a traiter --}}
+                    @include('demandes.show.tab_a_traiter')
                     {{-- affectees tab --}}
                     @include('demandes.show.tab_affectees')
                     {{-- accord_definitif --}} 
                     @include('demandes.show.tab_accord_definitif') 
                     {{-- realisee programme --}}
                      @include('demandes.show.tab_realisees_programme') 
-                     {{-- a traiter --}}
-                     @include('demandes.show.tab_a_traiter')   
+
                 </div>  
             </div>
             <!-- /.box-body -->
