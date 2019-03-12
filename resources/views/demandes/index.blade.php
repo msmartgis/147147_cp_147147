@@ -48,6 +48,10 @@
     {
         border-bottom: 1px solid #9fd037;
     }
+
+    label {
+        margin-top: 0.2rem;
+    }
 </style>
 @endsection
 

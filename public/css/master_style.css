@@ -48,6 +48,23 @@ import icon and fonts Styles
 @import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
+@font-face {
+    font-family: "Lato-font";
+    src:url('/fonts/Lato/lato-v11-latin-ext_latin-regular.woff2') ;
+}
+
+@font-face {
+    font-family: "m-Lato-font";
+    src:url('/fonts/Lato/lato-v11-latin-ext_latin-700.woff2') ;
+}
+
+
+.m-font-bold {
+    font-family: "m-Lato-font";
+}
+
+
+
 
 /*@import url(../../assets/vendor_components/flag-icon/css/flag-icon.css);
 @import url(../../assets/vendor_components/glyphicons/glyphicon.css);
@@ -91,7 +108,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: "Lato", "Helvetica Neue", sans-serif;
+    font-family: "Lato-font";
     line-height: 1.5;
     text-shadow: none;
 }
@@ -140,7 +157,7 @@ h6 small,
 
 body {
     font-weight: 400;
-    font-size: 14px;
+    font-size: 13px;
     color: #2d353c;
 }
 
@@ -13415,8 +13432,9 @@ table.text-center th {
 
 .table th,
 .table thead th {
-    font-weight: 700;
-    font-size: 14px;
+    font-family: "m-Lato-font";
+    font-weight: 600;
+    font-size: 13px;
 }
 
 .contacts-list-name,
