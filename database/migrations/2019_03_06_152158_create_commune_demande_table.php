@@ -15,8 +15,8 @@ class CreateCommuneDemandeTable extends Migration
     {
         Schema::create('commune_demande', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('commune_id');
-            $table->bigInteger('demande_id');
+            $table->bigInteger('commune_id')->nullable();
+            $table->bigInteger('demande_id')->nullable();
             $table->timestamps();
 
             $table->index(['id', 'created_at']);

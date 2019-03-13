@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ConventionsTableSeeder extends Seeder
+class PorteurProjetTable extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class ConventionsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Convention::class,1000)->create();
+        factory(App\Porteur::class,20)->create();
     }
 }

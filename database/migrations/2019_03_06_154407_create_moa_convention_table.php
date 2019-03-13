@@ -15,8 +15,8 @@ class CreateMoaConventionTable extends Migration
     {
         Schema::create('moa_convention', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('convention_id');
-            $table->integer('moa_id');
+            $table->bigInteger('convention_id')->nullable();
+            $table->integer('moa_id')->nullable();
             $table->timestamps();
             $table->index(['id','created_at']);
         });

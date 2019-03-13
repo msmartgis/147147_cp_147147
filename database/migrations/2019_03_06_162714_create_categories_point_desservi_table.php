@@ -14,9 +14,9 @@ class CreateCategoriesPointDesserviTable extends Migration
     public function up()
     {
         Schema::create('point_desservi_categories', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('nom_ar');
-            $table->string('nom_fr');
+            $table->increments('id')->nullable();
+            $table->string('nom_ar')->nullable();
+            $table->string('nom_fr')->nullable();
             $table->timestamps();
         });
     }

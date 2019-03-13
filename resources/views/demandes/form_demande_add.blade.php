@@ -118,16 +118,19 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="form-group">
-                        {{Form::label('','Porteur de projet(fr) :')}}
-                        {{Form::text('nom_porteur_fr','',['class'=>'form-control'])}}
+                        {{Form::label('','Porteur de projet (Fr):')}}
+                        {{Form::select('porteur_projet', $porteur_projet, null,
+                        [
+                        'data-placeholder' => 'Selectionner porteur de projet',
+                        'class'=>'form-control ',
+                        'name'=>'porteur_projet'
+                        ]
+                        )}}
 
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <div class="form-group">
-                        {{Form::label('','Porteur de projet(ar) :')}}
-                        {{Form::text('nom_porteur_ar','',['class'=>'form-control'])}}
-                    </div>
+
                 </div>
             </div>
         </section>

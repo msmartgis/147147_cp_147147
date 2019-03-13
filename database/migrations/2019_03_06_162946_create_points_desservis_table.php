@@ -16,8 +16,8 @@ class CreatePointsDesservisTable extends Migration
         Schema::create('point_desservis', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('categorie_point_id')->unsigned();
-            $table->string('nom_ar');
-            $table->string('nom_fr');
+            $table->string('nom_ar')->nullable();
+            $table->string('nom_fr')->nullable();
             $table->timestamps();
 
             $table->index(['id','created_at']);

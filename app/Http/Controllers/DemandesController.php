@@ -867,6 +867,7 @@ class DemandesController extends BaseController
         $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
         $partenaire_types = PartenaireType::all();
         $sessions = Session::orderBy('nom')->pluck('nom', 'id');
+        $porteur_projet = Porteur::orderBy('nom_porteur_fr')->distinct('nom_porteur_fr')->pluck('nom_porteur_fr','id');
          //point desservis
         $localites = PointDesserviCategorie::find(1)->point_desservis;
         $categorie_points = PointDesserviCategorie::all();
@@ -887,6 +888,7 @@ class DemandesController extends BaseController
                 'etablissement_scols' => $etablissement_scols,
                 'partenaire_types' => $partenaire_types,
                 'sessions' => $sessions,
+                'porteur_projet' => $porteur_projet,
                 'categorie_points' => $categorie_points,
             ]
         );

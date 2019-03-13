@@ -15,8 +15,8 @@ class CreatePointdesserviConventionTable extends Migration
     {
         Schema::create('pointdesservi_convention', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('point_desservi_id');
-            $table->bigInteger('convention_id');
+            $table->bigInteger('point_desservi_id')->nullable();
+            $table->bigInteger('convention_id')->nullable();
             $table->timestamps();
 
             $table->index(['id', 'created_at']);

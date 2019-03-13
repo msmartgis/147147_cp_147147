@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePartenaireProjetTable extends Migration
+class CreateProgrammesProjetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreatePartenaireProjetTable extends Migration
      */
     public function up()
     {
-        Schema::create('partenaire_projet', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('partenaire_id')->nullable();
-            $table->bigInteger('demande_id')->nullable();
+        Schema::create('programmes_projet', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('programme_id')->nullable();
+            $table->bigInteger('projet_id')->nullable();
             $table->timestamps();
-            $table->index(['id','created_at']);
+
+            $table->index(['id', 'created_at']);
         });
     }
 
@@ -29,6 +30,6 @@ class CreatePartenaireProjetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('partenaire_projet');
+        Schema::dropIfExists('programmes_projet');
     }
 }

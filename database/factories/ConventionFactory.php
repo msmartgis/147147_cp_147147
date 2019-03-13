@@ -13,7 +13,7 @@ $factory->define(App\Convention::class, function (Faker $faker) {
 
     return [
         'session_id' => rand(1,12),
-        'demande_id' => rand(10000,20000),
+        'demande_id' => App\Demande::all()->random()->id,
         'num_ordre' => $num_ordre++,
         'date_reception' => $faker->dateTimeThisYear()->format('Y-m-d'),
         'objet_fr'  => $faker->sentence($nbWords = 30, $variableNbWords = true),

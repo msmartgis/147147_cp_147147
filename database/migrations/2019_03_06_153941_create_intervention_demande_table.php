@@ -15,8 +15,8 @@ class CreateInterventionDemandeTable extends Migration
     {
         Schema::create('intervention_demande', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('intervention_id');
-            $table->bigInteger('demande_id');
+            $table->integer('intervention_id')->nullable();
+            $table->bigInteger('demande_id')->nullable();
             $table->timestamps();
             $table->index(['id','created_at']);
         });

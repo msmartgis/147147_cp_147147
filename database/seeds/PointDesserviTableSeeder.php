@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DemandesTableSeeder extends Seeder
+class PointDesserviTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class DemandesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Demande::class,5000)->create();
+        factory(App\PointDesservi::class,16)->create();
     }
 }

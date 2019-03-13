@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ConventionsTableSeeder extends Seeder
+class PointDesserviCategorieTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class ConventionsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Convention::class,1000)->create();
+        factory(App\PointDesserviCategorie::class,6)->create();
     }
 }

@@ -15,8 +15,8 @@ class CreateCommunesTable extends Migration
     {
         Schema::create('communes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nom_fr');
-            $table->string('nom_ar');
+            $table->string('nom_fr')->nullable();
+            $table->string('nom_ar')->nullable();
             $table->timestamps();
 
             $table->index(['id', 'created_at']);

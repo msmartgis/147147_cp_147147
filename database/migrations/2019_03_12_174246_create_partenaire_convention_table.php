@@ -15,9 +15,9 @@ class CreatePartenaireConventionTable extends Migration
     {
         Schema::create('partenaire_convention', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('partenaire_id');
-            $table->bigInteger('convention_id');
-            $table->double('montant');
+            $table->bigInteger('partenaire_id')->nullable();
+            $table->bigInteger('convention_id')->nullable();
+            $table->double('montant')->nullable();
             $table->timestamps();
 
             $table->index(['id', 'created_at']);

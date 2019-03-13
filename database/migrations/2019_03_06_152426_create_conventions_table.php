@@ -15,16 +15,16 @@ class CreateConventionsTable extends Migration
     {
         Schema::create('conventions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('session_id')->unsigned();
-            $table->bigInteger('demande_id')->unsigned();
-            $table->integer('num_ordre');
-            $table->date('date_reception');
-            $table->text('objet_fr');
-            $table->text('objet_ar');
-            $table->double('montant_global');
-            $table->text('observation');
-            $table->string('decision');
-            $table->tinyInteger('is_affecter');
+            $table->bigInteger('session_id')->unsigned()->nullable();
+            $table->bigInteger('demande_id')->unsigned()->nullable();
+            $table->integer('num_ordre')->nullable();
+            $table->date('date_reception')->nullable();
+            $table->text('objet_fr')->nullable();
+            $table->text('objet_ar')->nullable();
+            $table->double('montant_global')->nullable();
+            $table->text('observation')->nullable();
+            $table->string('decision')->nullable();
+            $table->tinyInteger('is_affecter')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

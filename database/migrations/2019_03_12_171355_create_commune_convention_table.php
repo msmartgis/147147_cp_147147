@@ -15,8 +15,8 @@ class CreateCommuneConventionTable extends Migration
     {
         Schema::create('commune_convention', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('commune_id');
-            $table->bigInteger('convention_id');
+            $table->bigInteger('commune_id')->nullable();
+            $table->bigInteger('convention_id')->nullable();
             $table->timestamps();
 
             $table->index(['id', 'created_at']);

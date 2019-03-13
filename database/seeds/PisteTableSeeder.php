@@ -11,6 +11,6 @@ class PisteTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory(App\Piste::class,200)->create();
     }
 }

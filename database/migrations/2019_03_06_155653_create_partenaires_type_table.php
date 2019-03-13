@@ -15,8 +15,8 @@ class CreatePartenairesTypeTable extends Migration
     {
         Schema::create('partenaires_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nom_fr');
-            $table->string('nom_ar');
+            $table->string('nom_fr')->nullable();
+            $table->string('nom_ar')->nullable();
             $table->timestamps();
             $table->index(['id','created_at']);
         });

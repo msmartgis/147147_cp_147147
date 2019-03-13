@@ -15,8 +15,8 @@ class CreateSousProgrammeTable extends Migration
     {
         Schema::create('sousprogrammes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nom');
-            $table->bigInteger('id_projet');
+            $table->string('nom')->nullable();
+            $table->bigInteger('id_projet')->nullable();
             $table->timestamps();
 
             $table->index(['id','created_at']);

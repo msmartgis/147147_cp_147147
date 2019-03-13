@@ -15,14 +15,14 @@ class CreateProjetsTable extends Migration
     {
         Schema::create('projets', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('convention_id')->unsigned();
-            $table->integer('num_ordre');
-            $table->text('objet_fr');
-            $table->text('objet_ar');
-            $table->double('montant_global');
-            $table->double('longueur');
-            $table->double('etat_avancement');
-            $table->string('annee');
+            $table->bigInteger('convention_id')->unsigned()->nullable();
+            $table->integer('num_ordre')->nullable();
+            $table->text('objet_fr')->nullable();
+            $table->text('objet_ar')->nullable();
+            $table->double('montant_global')->nullable();
+            $table->double('longueur')->nullable();
+            $table->double('etat_avancement')->nullable();
+            $table->string('annee')->nullable();
             $table->timestamps();
             $table->index(['convention_id', 'created_at','num_ordre']);
 

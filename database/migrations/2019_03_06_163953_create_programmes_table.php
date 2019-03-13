@@ -15,8 +15,8 @@ class CreateProgrammesTable extends Migration
     {
         Schema::create('programmes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nom');
-            $table->bigInteger('id_projet');
+            $table->string('nom_fr');
+            $table->string('nom_ar');
             $table->timestamps();
 
             $table->index(['id','created_at']);

@@ -54,5 +54,10 @@ class Convention extends Model
     }
 
 
+    public function programmes()
+    {
+        return $this->belongsToMany('App\Programme', 'programmes_convention')->withTimestamps();
+    }
+
 
 }

@@ -15,9 +15,9 @@ class CreatePartenaireDemandeTable extends Migration
     {
         Schema::create('partenaire_demande', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('partenaire_id');
-            $table->bigInteger('demande_id');
-            $table->double('montant');
+            $table->integer('partenaire_id')->nullable();
+            $table->bigInteger('demande_id')->nullable();
+            $table->double('montant')->nullable();
             $table->timestamps();
             $table->index(['id','created_at']);
         });

@@ -17,6 +17,8 @@ class CreatePistesTable extends Migration
             $table->bigInteger('id');
             $table->double('longueur');
             $table->bigInteger('demande_id')->unsigned();
+            $table->bigInteger('projet_id')->unsigned();
+            $table->bigInteger('convention_id')->unsigned();
             $table->timestamps();
 
             $table->index(['id','created_at']);
@@ -24,6 +26,16 @@ class CreatePistesTable extends Migration
             $table->foreign('demande_id')
                 ->references('id')
                 ->on('demandes')
+                ->onDelete('cascade');
+
+            $table->foreign('convention_id')
+                ->references('id')
+                ->on('conventions')
+                ->onDelete('cascade');
+
+            $table->foreign('projet_id')
+                ->references('id')
+                ->on('projets')
                 ->onDelete('cascade');
         });
     }

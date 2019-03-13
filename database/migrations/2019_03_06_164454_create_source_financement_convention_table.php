@@ -15,8 +15,8 @@ class CreateSourceFinancementConventionTable extends Migration
     {
         Schema::create('sourcefinancement_convention', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_sourceFinancement');
-            $table->bigInteger('id_projet');
+            $table->integer('id_sourceFinancement')->nullable();
+            $table->bigInteger('id_projet')->nullable();
             $table->timestamps();
 
             $table->index(['id','created_at']);

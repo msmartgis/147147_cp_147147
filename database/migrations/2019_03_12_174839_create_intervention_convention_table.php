@@ -15,8 +15,8 @@ class CreateInterventionConventionTable extends Migration
     {
         Schema::create('intervention_convention', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('intervention_id');
-            $table->bigInteger('convention_id');
+            $table->bigInteger('intervention_id')->nullable();
+            $table->bigInteger('convention_id')->nullable();
             $table->timestamps();
 
             $table->index(['id', 'created_at']);

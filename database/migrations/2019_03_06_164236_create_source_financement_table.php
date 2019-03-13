@@ -15,10 +15,10 @@ class CreateSourceFinancementTable extends Migration
     {
         Schema::create('sourcesfinancements', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('source');
-            $table->string('reference');
-            $table->string('abreviation');
-            $table->double('montant_total');
+            $table->string('source')->nullable();
+            $table->string('reference')->nullable();
+            $table->string('abreviation')->nullable();
+            $table->double('montant_total')->nullable();
             $table->timestamps();
 
             $table->index(['id','created_at']);

@@ -15,10 +15,12 @@ class CreatePorteurProjetTable extends Migration
     {
         Schema::create('porteursprojets', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type');
-            $table->string('nom_porteur_fr');
-            $table->string('nom_porteur_ar');
-            $table->bigInteger('demande_id')->unsigned();
+            $table->string('type')->nullable();
+            $table->string('nom_porteur_fr')->nullable();
+            $table->string('nom_porteur_ar')->nullable();
+            $table->bigInteger('demande_id')->unsigned()->nullable();
+            $table->bigInteger('convention_id')->unsigned()->nullable();
+            $table->bigInteger('projet_id')->unsigned()->nullable();
             $table->timestamps();
 
             $table->index(['id','created_at']);
@@ -26,6 +28,16 @@ class CreatePorteurProjetTable extends Migration
             $table->foreign('demande_id')
                 ->references('id')
                 ->on('demandes')
+                ->onDelete('cascade');
+
+            $table->foreign('projet_id')
+                ->references('id')
+                ->on('projets')
+                ->onDelete('cascade');
+
+            $table->foreign('convention_id')
+                ->references('id')
+                ->on('conventions')
                 ->onDelete('cascade');
         });
     }

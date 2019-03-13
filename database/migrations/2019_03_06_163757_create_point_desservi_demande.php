@@ -31,6 +31,6 @@ class CreatePointDesserviDemande extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('=pointdesservi_demande');
+        Schema::dropIfExists('pointdesservi_demande');
     }
 }
