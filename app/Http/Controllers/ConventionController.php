@@ -9,6 +9,8 @@ use App\Demande;
 use App\Intervention;
 use App\Moa;
 use App\PartenaireType;
+use App\Piece;
+use App\Piste;
 use App\PointDesserviCategorie;
 use App\Porteur;
 use App\Programme;
@@ -127,11 +129,34 @@ class ConventionController extends Controller
      */
     public function edit(Convention $convention)
     {
-        $convention = Convention::with(['communes'])->find($convention->id);
-        return $convention;
-        // return view('conventions.edit.edit')->with([
-        //     'convention' => $convention
-        // ]);
+        $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
+        $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
+        $pieces = Piece::orderBy('type')->pluck('type');
+        $moas = Moa::all();
+        $avancement = Avancement::all();
+        $partenaires_types = PartenaireType::all();
+
+        //get piste
+        $piste_id = Piste::where('convention_id','=',$convention->id)->first()->id;
+        $piste_longueur = Piste::where('convention_id','=',$convention->id)->first()->longueur;
+
+
+        $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
+        $convention = Convention::with(['communes', 'partenaires', 'point_desservis', 'interventions', 'session', 'piece'])->find($convention->id);
+
+
+        //return convention;
+        return view('conventions.edit.edit')->with([
+            'convention' => $convention,
+            'interventions' => $interventions,
+            'localites' => $localites,
+            'partenaires_types' => $partenaires_types,
+            'moas' => $moas,
+            'communes' => $communes,
+            'avancement' => $avancement,
+            'piste_id' => $piste_id,
+            'piste_longueur' => $piste_longueur
+        ]);
     }
 
     /**

@@ -27,10 +27,7 @@ class Convention extends Model
         return $this->belongsToMany('App\PointDesservi', 'pointdesservi_convention')->withTimestamps();
     }
 
-    /*public function piste()
-    {
-        return $this->hasOne('App\Piste');
-    }*/
+
 
 
     public function piece()
@@ -63,6 +60,19 @@ class Convention extends Model
     {
         return $this->belongsToMany('App\Programme', 'programmes_convention')->withTimestamps();
     }
+
+
+    public function piste()
+    {
+        return $this->belongsTo('App\Piste', 'convention_id');
+    }
+
+
+    /*public function porteur()
+    {
+        return $this->belongsTo('App\Porteur', 'porteur_projet_id');
+    }*/
+
 
 
 }
