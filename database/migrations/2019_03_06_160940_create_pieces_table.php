@@ -18,9 +18,9 @@ class CreatePiecesTable extends Migration
             $table->string('type');
             $table->string('nom');
             $table->string('path');
-            $table->bigInteger('demande_id')->unsigned();
-            $table->bigInteger('convention_id')->unsigned();
-            $table->bigInteger('projet_id')->unsigned();
+            $table->bigInteger('demande_id')->unsigned()->nullable;
+            $table->bigInteger('convention_id')->unsigned()->nullable;
+            $table->bigInteger('projet_id')->unsigned()->nullable;
             $table->timestamps();
 
             $table->index(['id','created_at']);

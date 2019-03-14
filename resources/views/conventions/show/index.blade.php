@@ -57,6 +57,7 @@
 
 @section('content')
     @include('conventions.inc.filters')
+    @include('conventions.show.datatable')
 
 @endsection
 

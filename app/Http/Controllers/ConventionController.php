@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Avancement;
 use App\Commune;
 use App\Convention;
 use App\Demande;
@@ -10,8 +11,10 @@ use App\Moa;
 use App\PartenaireType;
 use App\PointDesserviCategorie;
 use App\Porteur;
+use App\Programme;
 use App\Session;
 use Illuminate\Http\Request;
+use App\PointDesservi;
 
 class ConventionController extends Controller
 {
@@ -31,6 +34,8 @@ class ConventionController extends Controller
         $sessions = Session::all();
         $interventions = Intervention::all();
         $porteurs = Porteur::all();
+        $avancement = Avancement::all();
+        $programmes = Programme::all();
 
         $conventions = Convention::with(['communes', 'partenaires', 'point_desservis', 'interventions', 'session'])->get();
         return view('conventions.show.index')->with([
@@ -42,6 +47,8 @@ class ConventionController extends Controller
             'porteurs' => $porteurs,
             'sessions' => $sessions,
             'interventions' => $interventions,
+            'avancement' => $avancement,
+            'programmes' => $programmes,
         ]);
     }
 
@@ -52,7 +59,42 @@ class ConventionController extends Controller
      */
     public function create()
     {
-        //
+        //communes list
+        $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
+        $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
+        $partenaire_types = PartenaireType::all();
+        $sessions = Session::orderBy('nom')->pluck('nom', 'id');
+        $porteur_projet = Porteur::distinct()->select('id','nom_porteur_fr')->get();
+
+        //point desservis
+        $localites = PointDesserviCategorie::find(1)->point_desservis;
+        $categorie_points = PointDesserviCategorie::all();
+        $etablissement_scols = PointDesservi::all()->where('type_point', '=', 'etab.scolaire');
+
+
+        $moas = Moa::all();
+
+        //find the max numero ordre and increment
+        $max_num_ordre = Demande::max('num_ordre');
+        $current_numero_ordre = $max_num_ordre + 1;
+
+        //creat a new object to send it in form for editing
+        $convention = new Convention();
+        return view('conventions.create.index_create_convention')->with(
+            [
+                'convention' => $convention,
+                'current_numero_ordre' => $current_numero_ordre,
+                'communes' => $communes,
+                'interventions' => $interventions,
+                'localites' => $localites,
+                'etablissement_scols' => $etablissement_scols,
+                'partenaire_types' => $partenaire_types,
+                'sessions' => $sessions,
+                'porteur_projet' => $porteur_projet,
+                'categorie_points' => $categorie_points,
+                'moas' => $moas,
+            ]
+        );
     }
 
     /**

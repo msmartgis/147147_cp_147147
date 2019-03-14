@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Porteur extends Model
 {
 
-    protected $table = 'porteursprojets';
+    protected $table = 'porteurs_projets';
     public function demande()
     {
-        return $this->belongsTo('App\Demande', 'demande_id');
+        return $this->hasMany('App\Demande', 'porteur_projet_id', 'id');
     }
 }

@@ -10,4 +10,9 @@ class Session extends Model
     {
         return $this->hasMany('App\Demande', 'session_id', 'id');
     }
+
+    public function conventions()
+    {
+        return $this->hasMany('App\Convention', 'session_id', 'id');
+    }
 }

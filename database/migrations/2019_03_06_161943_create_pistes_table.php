@@ -14,11 +14,11 @@ class CreatePistesTable extends Migration
     public function up()
     {
         Schema::create('pistes', function (Blueprint $table) {
-            $table->bigInteger('id');
+            $table->bigIncrements('id');
             $table->double('longueur');
-            $table->bigInteger('demande_id')->unsigned();
-            $table->bigInteger('projet_id')->unsigned();
-            $table->bigInteger('convention_id')->unsigned();
+            $table->bigInteger('demande_id')->unsigned()->nullable();
+            $table->bigInteger('projet_id')->unsigned()->nullable();
+            $table->bigInteger('convention_id')->unsigned()->nullable();
             $table->timestamps();
 
             $table->index(['id','created_at']);

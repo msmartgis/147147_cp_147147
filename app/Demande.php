@@ -39,7 +39,7 @@ class Demande extends Model
 
     public function porteur()
     {
-        return $this->hasOne('App\Porteur');
+        return $this->belongsTo('App\Porteur', 'porteur_projet_id');
     }
 
     public function piece()

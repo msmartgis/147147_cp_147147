@@ -118,15 +118,14 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="form-group">
-                        {{Form::label('','Porteur de projet (Fr):')}}
-                        {{Form::select('porteur_projet', $porteur_projet, null,
-                        [
-                        'data-placeholder' => 'Selectionner porteur de projet',
-                        'class'=>'form-control ',
-                        'name'=>'porteur_projet'
-                        ]
-                        )}}
+                        <label>Porteur de projet</label>
+                        <select placeholder="Porteur de projet" class="form-control select2" style="width: 100%;" name="porteur_projet">
 
+                            @foreach($porteur_projet as $porteur)
+                                <option value="{{$porteur->id}}">{{$porteur->nom_porteur_fr}}</option>
+                            @endforeach
+                        </select>
+                        <a href="" class="btn btn-secondary" style="margin-right : 6px"><i class="fa fa-plus" style="margin-right: 6px"></i>Ajouter Porteur de projet  </a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">

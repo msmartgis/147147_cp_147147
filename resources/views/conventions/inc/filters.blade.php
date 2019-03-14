@@ -46,11 +46,19 @@
         </div>
 
 
-        <div class="col-lg-3 " >
-            <a href="/demandes/create" class="btn btn-secondary pull-right"><i class="fa fa-plus" style="margin-right: 6px"></i>Ajouter
-                une demande</a>
-            <a href="" class="btn btn-secondary pull-right" style="margin-right : 6px"><i class="fa fa-print" style="margin-right: 6px"></i>Imprimer
-                la fiche</a>
+        <div class="col-lg-1">
+            <label>M.O.A : </label>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <select class="form-control select2" style="width: 100%;" name="partenaires" id="partenaires_filter">
+                    <option value="all" selected>Indifferent</option>
+                    @foreach ($moas as $moa)
+                        <option value="{{$moa->id}}">{{$moa->nom_fr}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <!-- /.form-group -->
         </div>
 
 
@@ -85,6 +93,43 @@
             </div>
             <!-- /.form-group -->
         </div>
+
+        <div class="col-lg-1">
+            <label>Programme :</label>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <select class="form-control select2" style="width: 100%;" name="programmes" id="programmes_filter">
+                    <option value="all" selected>Indifferent</option>
+                    @foreach ($programmes as $programme)
+                        <option value="{{$programme->id}}">{{$programme->nom_fr}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <!-- /.form-group -->
+        </div>
+
+
+        <div class="col-lg-1">
+            <label>Avancement :</label>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <select class="form-control select2" style="width: 100%;" name="avancement" id="avancement_filter">
+                    <option value="all" selected>Indifferent</option>
+                    @foreach ($avancement as $av)
+                        <option value="{{$av->id}}">{{$av->pourcentage}}%</option>
+                    @endforeach
+                </select>
+            </div>
+            <!-- /.form-group -->
+        </div>
+
+
+    </div>
+
+    <div class="row" style="margin-top : 4px">
+
         <div class="col-lg-1">
             <label>Plage de dates :</label>
         </div>
@@ -100,10 +145,15 @@
             <!-- /.form-group -->
         </div>
 
-        <div class="col-lg-3" >
-            <a href="" class="btn btn-success pull-right" ><i class="fa fa-file-pdf-o" style="margin-right: 6px;"></i>Exporter PDF</a>
-            <button type="submit" class="btn btn-success pull-right" style="margin-right: 6px;" ><i class="fa fa-file-excel-o" style="margin-right: 6px;"></i>Exporter CSV</button>
+        <div class="col-lg-6">
+
         </div>
+
+        <div class="col-lg-3">
+                <a href="" class="btn btn-success pull-right" ><i class="fa fa-file-pdf-o" style="margin-right: 6px;"></i>Exporter PDF</a>
+                <button type="submit" class="btn btn-success pull-right" style="margin-right: 6px;" ><i class="fa fa-file-excel-o" style="margin-right: 6px;"></i>Exporter CSV</button>
+        </div>
+
     </div>
 
 </div>

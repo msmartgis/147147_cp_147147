@@ -26,6 +26,7 @@ class CreateDemandesTable extends Migration
             $table->string('decision')->nullable();
             $table->string('etat')->nullable();
             $table->tinyInteger('is_affecter')->nullable();
+            $table->integer('porteur_projet_id')->unsigned()->nullable();
 
             $table->softDeletes(); // <-- This will add a deleted_at field
             $table->timestamps();

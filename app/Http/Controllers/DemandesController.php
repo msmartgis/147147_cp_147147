@@ -104,7 +104,7 @@ class DemandesController extends BaseController
     //get demandes en cours for index tab en_cours datatables
     public function getDemandes(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['decision', '=', 'en_cours'], ['etat', '=', 'sans']]);
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['decision', '=', 'en_cours'], ['etat', '=', 'sans'],['is_affecter','=',0]]);
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -112,7 +112,7 @@ class DemandesController extends BaseController
                         return str_limit($commune->nom_fr, 15, '...');
                     })->implode(',');
                 })
-                ->addColumn('porteur', function (Demande $demande) {
+                ->addColumn('porteur', function ($demande) {
                     return $demande->porteur ? str_limit($demande->porteur->nom_porteur_fr, 30, '...') : '';
                 })
 
@@ -225,7 +225,7 @@ class DemandesController extends BaseController
      */
     public function getDemandesAffectees(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where('is_affecter', '=', '1');
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where('is_affecter', '=', 1);
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -867,7 +867,8 @@ class DemandesController extends BaseController
         $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
         $partenaire_types = PartenaireType::all();
         $sessions = Session::orderBy('nom')->pluck('nom', 'id');
-        $porteur_projet = Porteur::orderBy('nom_porteur_fr')->distinct('nom_porteur_fr')->pluck('nom_porteur_fr','id');
+        $porteur_projet = Porteur::distinct()->select('id','nom_porteur_fr')->get();
+
          //point desservis
         $localites = PointDesserviCategorie::find(1)->point_desservis;
         $categorie_points = PointDesserviCategorie::all();
@@ -924,6 +925,7 @@ class DemandesController extends BaseController
         $demande->etat = $request->input('etat');
         $demande->session_id = $request->input('session');
         $demande->is_affecter = 0;
+        $demande->porteur_projet_id = $request->input('porteur_projet');
         $demande->decision = 'en_cours';
         $demande->save();
 
@@ -1012,22 +1014,7 @@ class DemandesController extends BaseController
         $partenaire_type = new PartenaireType;
         $moa_from_porteur = new Moa;
 
-        $porteur = new Porteur;
-        $porteur->nom_porteur_fr = $request->input('nom_porteur_fr');
-        $partenaire_type->nom_fr = $request->input('nom_porteur_fr');
-        $porteur->nom_porteur_ar = $request->input('nom_porteur_ar');
-        $porteur->demande_id = $actu_id_demande;
-        $partenaire_type->nom_ar = $request->input('nom_porteur_ar');
 
-        //save to moa
-        $moa_from_porteur->nom_fr = $request->input('nom_porteur_fr');
-        $moa_from_porteur->nom_ar = $request->input('nom_porteur_ar');
-
-
-        $porteur->demande_id = $actu_id_demande;
-        $porteur->save();
-        $partenaire_type->save();
-        $moa_from_porteur->save();
 
         //redirecting with success message
         return redirect('/demandes')->with('success', 'Demande créee avec succès');

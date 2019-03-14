@@ -43,6 +43,11 @@ class Convention extends Model
         return $this->belongsTo('App\Session', 'session_id');
     }
 
+    public function avancement()
+    {
+        return $this->belongsTo('App\Avancement', 'avancement_id');
+    }
+
     public function moas()
     {
         return $this->belongsToMany('App\Moa', 'moa_convention')->withTimestamps();

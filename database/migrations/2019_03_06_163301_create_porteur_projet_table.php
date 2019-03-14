@@ -13,32 +13,15 @@ class CreatePorteurProjetTable extends Migration
      */
     public function up()
     {
-        Schema::create('porteursprojets', function (Blueprint $table) {
+        Schema::create('porteurs_projets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type')->nullable();
             $table->string('nom_porteur_fr')->nullable();
             $table->string('nom_porteur_ar')->nullable();
-            $table->bigInteger('demande_id')->unsigned()->nullable();
-            $table->bigInteger('convention_id')->unsigned()->nullable();
-            $table->bigInteger('projet_id')->unsigned()->nullable();
             $table->timestamps();
 
             $table->index(['id','created_at']);
 
-            $table->foreign('demande_id')
-                ->references('id')
-                ->on('demandes')
-                ->onDelete('cascade');
-
-            $table->foreign('projet_id')
-                ->references('id')
-                ->on('projets')
-                ->onDelete('cascade');
-
-            $table->foreign('convention_id')
-                ->references('id')
-                ->on('conventions')
-                ->onDelete('cascade');
         });
     }
 
@@ -49,6 +32,6 @@ class CreatePorteurProjetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('porteursprojets');
+        Schema::dropIfExists('porteurs_projets');
     }
 }
