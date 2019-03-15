@@ -1,5 +1,6 @@
 {!! Form::open(['action' => 'SpreadSheetController@projetsSpreadSheet','method'=>'POST','class'=>'']) !!}
 <div class="filters" style="margin-bottom: 4px;">
+
     <div class="row">
         <div class="col-lg-1">
             <label >Communes :</label>
@@ -111,7 +112,7 @@
 
 
         <div class="col-lg-1">
-            <label>Avancement :</label>
+            <label>Etat :</label>
         </div>
         <div class="col-lg-2">
             <div class="form-group">
@@ -131,16 +132,16 @@
     <div class="row" style="margin-top : 4px">
 
         <div class="col-lg-1">
-            <label>Plage de dates :</label>
+            <label>Année :</label>
         </div>
         <div class="col-lg-2">
             <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                    </div>
-                    <input type="text" class="form-control pull-right" name="daterange" id="reservation" style="font-size: 0.94rem;">
-                </div>
+                <select class="form-control select2" style="width: 100%;" name="avancement" id="avancement_filter">
+                    <option value="all" selected>Indifferent</option>
+                    @for ($i=0;$i<11;$i++)
+                        <option value="{{$year_actu-$i}}">{{ $year_actu-$i }}</option>
+                    @endfor
+                </select>
             </div>
             <!-- /.form-group -->
         </div>

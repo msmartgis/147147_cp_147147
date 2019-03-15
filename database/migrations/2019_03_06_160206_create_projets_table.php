@@ -21,7 +21,7 @@ class CreateProjetsTable extends Migration
             $table->text('objet_ar')->nullable();
             $table->double('montant_global')->nullable();
             $table->double('longueur')->nullable();
-            $table->double('etat_avancement')->nullable();
+            $table->string('etat')->nullable();
             $table->string('annee')->nullable();
             $table->timestamps();
             $table->index(['convention_id', 'created_at','num_ordre']);

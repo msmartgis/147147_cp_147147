@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddForeignKeyToDemandeTable extends Migration
+class AddForeignKeyToProjetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class AddForeignKeyToDemandeTable extends Migration
      */
     public function up()
     {
-        Schema::table('demandes', function (Blueprint $table) {
-            $table->foreign('porteur_projet_id')
+        Schema::table('projets', function (Blueprint $table) {
+            $table->integer('etat_projet_id')->unsigned();
+
+            $table->foreign('etat_projet_id')
                 ->references('id')
-                ->on('porteurs_projets')
+                ->on('etat_projets')
                 ->onDelete('cascade');
         });
     }
@@ -28,9 +30,9 @@ class AddForeignKeyToDemandeTable extends Migration
      */
     public function down()
     {
-        Schema::table('demandes', function (Blueprint $table) {
-            $table->dropForeign('demandes_projets_porteur_projet_id_foreign');
-
+        Schema::table('projets', function (Blueprint $table) {
+            $table->dropColumn(['etat_projet_id']);
+            $table->dropForeign('etat_projets_etat_projet_id_foreign');
         });
     }
 }

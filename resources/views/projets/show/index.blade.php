@@ -56,8 +56,25 @@
 @endsection
 
 @section('content')
-    @include('projets.inc.filters')
-    @include('projets.show.datatable')
+    <div class="box">
+
+        <!-- /.box-header -->
+        <div class="box-body">
+        @include('projets.show.tabs')
+        <!-- Tab panes -->
+            <div class="tab-content">
+                @include('projets.show.tab_programme')
+                {{-- a traiter --}}
+                @include('projets.show.tab_en_cours')
+                {{-- affectees tab --}}
+                @include('projets.show.tab_en_retard')
+                {{-- accord_definitif --}}
+                @include('projets.show.tab_realise')
+
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
 
 @endsection
 

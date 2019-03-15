@@ -50,6 +50,11 @@ Route::post('demande/restaurer_from_affectation', 'DemandesController@restaurerD
 Route::get('/conventions', 'ConventionController@index');
 Route::post('conventions/conventionSpreadSheet', 'SpreadSheetController@conventionsSpreadSheet')->name('spreadSheetConvention');
 
+
+//routes for projets
+Route::post('conventions/projetsSpreadSheet', 'SpreadSheetController@projetsSpreadSheet')->name('spreadSheetProjet');
+
+
 //pieces
 Route::post('pieces/add_piece', 'PieceController@addPiece')->name('add_piece');
 Route::post('pieces/delete_piece', 'PieceController@deletePiece')->name('delete_piece');
