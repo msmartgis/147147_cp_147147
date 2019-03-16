@@ -175,7 +175,7 @@ img {
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-    line-height: 20px !important;
+    line-height: 16px !important;
 }
 
 .btn {
@@ -257,4 +257,50 @@ label {
 label{
     font-family: "m-Lato-font";
 }
+
+
+
+.select2-container .select2-selection--single {
+    height: 22px !important;
+}
+
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b
+{
+    margin-top: -5px !important;
+
+    border-color: #647585 transparent transparent transparent !important;
+
+}
+
+
+.select2-container--default .select2-selection--single .select2-selection__rendered
+{
+    color: #2d353c !important;
+}
+
+
+.navbar-nav .nav-link
+{
+    padding-bottom: 0.5rem !important;
+}
+
+
+.form-control
+{
+    height: 22px !important;;
+}
+
+.input-group-addon
+{
+    padding: .10rem .5rem;
+}
+
+h1,h2,h3,h5,h6
+{
+    font-family: m-Lato-font !important;
+    font-size: 13px;
+}
+
+
 

@@ -5,9 +5,14 @@ $(document).ready(function () {
         serverSide: true,
         pageLength: 10,
         bInfo : false,
+        info : false,
+        bLengthChange : false,
         language: {
-            url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json",
-            processing: "<div class='spinner'></div>",
+            search: '',
+            searchPlaceholder: 'Recherche...',
+            url: 'http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json',
+            processing: '<div class="spinner"></div>',
+
         },
 
         ajax: {

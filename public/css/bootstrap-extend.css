@@ -2204,7 +2204,7 @@ input::-ms-clear {
 
 .navbar-nav .nav-link {
     padding-top: 1.572rem;
-    padding-bottom: 1.572rem;
+    /*padding-bottom: 0rem; //1.572*/
 }
 
 .navbar-nav .nav-item .nav-link {
@@ -6682,7 +6682,7 @@ label {
 }
 
 .p-15 {
-    padding: 15px !important;
+    padding: 0px ;
 }
 
 .pt-15 {

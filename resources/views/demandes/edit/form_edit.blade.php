@@ -1,12 +1,12 @@
 {!! Form::model($demande, ['route' => ['demandes.update', $demande->id],'method' => 'PUT']) !!}
 <div class="row">
-    <div class="col-lg-9 col-12">
+    <div class="col-lg-10">
         <div class="box box-default  box-solid no-shadow">
             <div class="box-header with-border">
                 <ul class="box-controls">
                     <li><a class="box-btn-slide" href="#"></a></li>
                 </ul>
-                <h4 class="box-title">LA DEMANDE NUMERO : {{$demande->num_ordre}}</h4>
+                <h6 class="box-title pull-left" style="margin-left: 28px"> OBJET/PORTEUR DE PROJET </h6>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -17,7 +17,7 @@
                              {{Form::hidden('nom_porteur_fr_old',$demande->porteur->nom_porteur_fr)}}
                             <h6>Porteur de projet (fr)</h6>
                             <div class="controls">
-                                {{Form::textarea('nom_porteur_fr',$demande->porteur->nom_porteur_fr,['class'=>'form-control','rows'=>'2'])}}
+                                {{Form::textarea('nom_porteur_fr',$demande->porteur->nom_porteur_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
                             </div>
                         </div>
                     </div>
@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <h6>Porteur de projet (ar)</h6>
                             <div class="controls">
-                                {{Form::textarea('nom_porteur_ar',$demande->porteur->nom_porteur_ar,['class'=>'form-control','rows'=>'2'])}}
+                                {{Form::textarea('nom_porteur_ar',$demande->porteur->nom_porteur_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
                             </div>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                         <div class="form-group">
                             <h6>Objet (fr)</h6>
                             <div class="controls">
-                                {{Form::textarea('objet_fr',$demande->objet_fr,['class'=>'form-control','rows'=>'2'])}}
+                                {{Form::textarea('objet_fr',$demande->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
                             </div>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                         <div class="form-group">
                             <h6>Objet (ar)</h6>
                             <div class="controls">
-                                {{Form::textarea('objet_ar',$demande->objet_ar,['class'=>'form-control','rows'=>'2'])}}
+                                {{Form::textarea('objet_ar',$demande->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
                             </div>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                 <ul class="box-controls">
                     <li><a class="box-btn-slide" href="#"></a></li>
                 </ul>
-                <h5 class="box-title">TYPES D'INTERVENTIONS</h5>
+                <h6 class="box-title pull-left" style="margin-left: 28px">TYPES D'INTERVENTIONS</h6>
                 <!-- /.box-tools -->
             </div>
             <!-- /.box-header -->
@@ -84,7 +84,7 @@
 
         <div class="box box-default box-solid">
             <div class="box-header with-border">
-                <h5 class="box-title">LOCALISATION DU PROJET</h5>
+                <h6 class="box-title pull-left" style="margin-left: 28px">LOCALISATION DU PROJET</h6>
                 <ul class="box-controls pull-right">
                     <li><a class="box-btn-slide" href="#"></a></li>
                 </ul>
@@ -147,7 +147,7 @@
 
         <div class="box box-default box-solid">
             <div class="box-header with-border">
-                <h5 class="box-title">PIECES TECHNIQUES</h5>
+                <h5 class="box-title pull-left" style="margin-left: 28px">PIECES TECHNIQUES</h5>
                 <ul class="box-controls pull-right">
                     <li><a class="box-btn-slide" href="#"></a></li>
                 </ul>
@@ -226,7 +226,7 @@
 
         <div class="box box-default box-solid">
             <div class="box-header with-border">
-                <h5 class="box-title">MONTAGE FINANCIER PROPOSE</h5>
+                <h5 class="box-title pull-left"  style="margin-left: 28px">MONTAGE FINANCIER PROPOSE</h5>
                 <ul class="box-controls pull-right">
                     <li><a class="box-btn-slide" href="#"></a></li>
                 </ul>
@@ -305,10 +305,15 @@
 
     </div>
     <!-- /.col -->
-    <div class="col-lg-3 col-12 ">
+    <div class="col-lg-2  ">
         <div class="h-p100 p-15 bg-light bg-secondary-gradient">
             <div class="box bg-transparent no-border no-shadow ">
                 <div class="box-body no-padding mailbox-nav ">
+
+                    <div class="form-group">
+                        {{Form::label('','Demande N°:')}}
+                        {{Form::text('num_ordre',$demande->num_ordre,['class'=>'form-control'])}}
+                    </div>
                     <div class="form-group">
                         {{Form::label('','Date de récéption:')}}
                         <div class="input-group date">

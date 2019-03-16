@@ -1,6 +1,6 @@
 <ul class="navbar-nav">
     <li class="nav-item">
-        <a class="nav-link" href="/home"><span class="active-item-here"></span>
+        <a class="nav-link" href="/home"><span class="active-item-here "></span>
             <img src="{{asset('images/svg/home.svg')}}" style="width: 1.2em;margin-right: 5px;" />
             <span style="vertical-align: middle;" class="m-font-bold">Tableau de Bord</span>
         </a>

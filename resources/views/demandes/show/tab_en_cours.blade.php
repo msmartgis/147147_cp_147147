@@ -1,6 +1,8 @@
 <div class="tab-pane active" id="en_cours_tab" role="tabpanel">
     <div class="pad">
-        @include('demandes.filter_demandes')        
+        @include('demandes.filter_demandes')
+
+
         <div class="table-responsive">
             <table class="table table-hover table-striped datatables" id="demandes_datatables" style="width:100%">
                 <thead>
@@ -18,7 +20,7 @@
                 </thead>
             </table>
         </div>
-        <div class="row" style="margin-top : 8px">
+        {{--<div class="row" style="margin-top : 8px">
             <div class="dropdown" style="margin-left : 8px">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Décision</button>
                 <div class="dropdown-menu">
@@ -36,7 +38,7 @@
 
             <button type="button" id="affecter_aux_cnv" class="btn btn-secondary" style="margin-left : 8px;visibility : hidden">Affecter
                 aux conventions</button>
-        </div>
+        </div>--}}
 
     </div>
 </div>
