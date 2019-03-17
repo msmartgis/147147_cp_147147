@@ -1787,7 +1787,7 @@ input::-ms-clear {
     color: #fff;
     border-color: transparent;
     border-bottom-color: #f18983;
-    background-color: #9fd037;
+    background-color: #8A8B8A;
 }
 
 .nav-tabs .dropup .dropdown-menu {
@@ -6682,7 +6682,7 @@ label {
 }
 
 .p-15 {
-    padding: 0px ;
+    padding: 0px;
 }
 
 .pt-15 {

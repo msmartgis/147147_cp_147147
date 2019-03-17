@@ -75,6 +75,8 @@
 
 @section('content')
 
+    @include('demandes.edit.tabs')
+
 @include('demandes.edit.form_edit')
 
 {{-- Modals --}}

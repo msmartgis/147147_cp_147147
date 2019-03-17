@@ -189,7 +189,7 @@ img {
 }
 
 .m-content {
-    background: #f4f4f4f4 !important;
+    background: #ffffff !important;
 }
 
 label {
@@ -288,7 +288,8 @@ label{
 
 .form-control
 {
-    height: 22px !important;;
+    height: 22px !important;
+    font-size: 13px !important;
 }
 
 .input-group-addon
@@ -296,10 +297,53 @@ label{
     padding: .10rem .5rem;
 }
 
-h1,h2,h3,h5,h6
+h1,h2,h3,h4,h5,h6
 {
     font-family: m-Lato-font !important;
-    font-size: 13px;
+    margin-bottom: 1px !important;
+    margin-top: 8px !important;
+    color: #ffb22b !important
+}
+
+.pad {
+    padding:0 !important;
+}
+
+th
+{
+    background-color: #b6b8b3  !important;
+    color: #fff !important;
+}
+
+
+.skin-blue .customtab li a.nav-link.active
+{
+    border-bottom: 2px solid #8a8b88 !important;
+}
+
+.nav-tabs .nav-link.active
+{
+    background-color: #8a8b88;
+}
+
+.box
+{
+    background: #ffffff;
+}
+
+.bg-secondary-gradient
+{
+    background: linear-gradient(230deg, #fff, #fff) !important;
+}
+
+.wrapper
+{
+    background-color: #fff !important;
+}
+
+.wrapper
+{
+    box-shadow: 0 1px 3px 1px rgba(255, 255, 255, 1) !important;
 }
 
 
