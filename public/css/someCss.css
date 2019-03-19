@@ -1,3 +1,11 @@
+
+
+
+
+
+
+
+
 .navbar-collapse {
     padding-left: 1.5rem;
 }
@@ -15,7 +23,7 @@
 }
 
 .select2-container--default .select2-selection--multiple {
-    background-color: #f4f4f4 !important;
+    background-color: #fff !important;
 }
 
 /* mapping css */
@@ -254,9 +262,6 @@ label {
 }
 
 
-label{
-    font-family: "m-Lato-font";
-}
 
 
 
@@ -299,7 +304,7 @@ label{
 
 h1,h2,h3,h4,h5,h6
 {
-    font-family: m-Lato-font !important;
+    font-family: m-Lato-font;
     margin-bottom: 1px !important;
     margin-top: 8px !important;
     color: #ffb22b !important
@@ -311,19 +316,19 @@ h1,h2,h3,h4,h5,h6
 
 th
 {
-    background-color: #b6b8b3  !important;
-    color: #fff !important;
+    background-color: #E6E6E6  !important;
+    color: #000 !important;
 }
 
 
 .skin-blue .customtab li a.nav-link.active
 {
-    border-bottom: 2px solid #8a8b88 !important;
+    border-bottom: 2px solid #ecb54e !important;
 }
 
 .nav-tabs .nav-link.active
 {
-    background-color: #8a8b88;
+    background-color: #ecb54e;
 }
 
 .box
@@ -344,6 +349,46 @@ th
 .wrapper
 {
     box-shadow: 0 1px 3px 1px rgba(255, 255, 255, 1) !important;
+}
+
+
+.nav-tabs
+{
+    border-bottom: 1px solid #E1B353 !important;
+}
+
+
+hr{
+    background-color : #dce3e6 !important;
+}
+
+.form-control
+{
+    padding: 0rem 0.25rem !important;
+}
+
+
+textarea.form-control
+{
+    height:auto !important;
+}
+
+
+.btn
+{
+    border-radius: 0px !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice
+{
+    background-color: #ff8740 !important;
+    border: 1px solid #ff8740 !important;
+    color : #fff !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove
+{
+    color: #fff !important;
 }
 
 

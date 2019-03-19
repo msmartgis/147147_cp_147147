@@ -36,9 +36,7 @@
 
 <!-- Step wizard -->
 <div class="box box-default">
-    <div class="box-header with-border">
-        <h4 class="box-title">Creation d'une nouvelle demande</h4>
-    </div>
+
     <!-- /.box-header -->
     <div class="box-body wizard-content">
 

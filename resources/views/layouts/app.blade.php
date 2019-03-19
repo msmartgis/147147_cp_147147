@@ -6,11 +6,74 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-		<meta name="author" content="">    
+     <meta name="author" content="">
     <link rel="icon" href="{{asset('images/favicon.ico')}}">
 
-	<title>{{config('app.name')}}</title>    
-			@include('inc.css_links')	
+     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Oswald|Roboto+Condensed" rel="stylesheet">
+	<title>{{config('app.name')}}</title>
+     @include('inc.css_links')
+
+    {{-- TODO i put style here because i don't why it's not working in master-style.css or sommCss.css --}}
+     <style>
+         @font-face {
+             font-family: Lato;
+             src: url('{{ public_path('fonts/Lato/lato-v11-latin-ext_latin-700.ttf') }}');
+         }
+
+
+         @font-face {
+             font-family: Lato2;
+             src: url('{{ public_path('fonts/Lato/lato-v11-latin-ext_latin-regular.ttf') }}');
+         }
+
+         .lato-bold
+         {
+             font-family: 'Oswald','Open Sans';
+             font-weight: bold;
+         }
+
+
+         body,
+         h1,
+         h2,
+         h3,
+         h4,
+         h5,
+         h6 {
+             font-family: 'Roboto Condensed','Open Sans';
+
+         }
+
+         label{
+             font-family: 'Roboto Condensed','Open Sans';
+             font-weight: bold;
+         }
+         .nav-tabs
+         {
+             font-family: 'Roboto Condensed','Open Sans' !important;
+             font-weight: bold;
+         }
+
+
+         .table th,
+         .table thead th {
+             font-family: Lato;
+             font-weight: 600;
+             font-size: 13px;
+         }
+
+         .btn{
+             font-family: Lato,'Open Sans';
+             font-weight: bold;
+             font-size: 12px;
+         }
+
+
+
+
+
+     </style>
+
 </head>
 
 <body class="hold-transition skin-blue layout-top-nav">

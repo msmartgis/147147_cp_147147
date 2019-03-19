@@ -64,7 +64,7 @@
             <div class="box-body">                
                 @include('demandes.show.tabs')                
                 <!-- Tab panes -->
-                <div class="tab-content">
+                <div class="tab-content" style="margin-top: 15px">
                     @include('demandes.show.tab_en_cours')
                     {{-- a traiter --}}
                     @include('demandes.show.tab_a_traiter')

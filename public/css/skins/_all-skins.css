@@ -23,7 +23,7 @@ Project:	Fab Admin - Responsive Admin Template
 /*---Skin: Blue---*/
 .skin-blue .main-header .navbar,
 .skin-blue .main-header {
-    background-color: #3a3a3a;
+    background-color: #363638;
 }
 
 .skin-blue .main-header .navbar .nav>li>a {
@@ -99,7 +99,7 @@ Project:	Fab Admin - Responsive Admin Template
 }
 
 .skin-blue .content {
-    background: #f7f9fa;
+    background: #fff;
 }
 
 .skin-blue .wrapper,

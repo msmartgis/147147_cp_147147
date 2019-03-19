@@ -48,39 +48,11 @@ import icon and fonts Styles
 @import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
-@font-face {
-    font-family: "Lato-font";
-    src:url('/fonts/Lato/lato-v11-latin-ext_latin-regular.woff2') ;
-}
 
-@font-face {
-    font-family: "m-Lato-font";
-    src:url('/fonts/Lato/lato-v11-latin-ext_latin-700.woff2') ;
-}
-
-@font-face {
-    font-family: "m-poppins-font";
-    src:url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i') ;
-}
-
-
-.m-font-bold {
-    font-family: "m-Lato-font";
-}
-
-.m-popping {
-    font-family: "m-poppins-font";
-}
-
-
-
-
-
-/*@import url(../../assets/vendor_components/flag-icon/css/flag-icon.css);
-@import url(../../assets/vendor_components/glyphicons/glyphicon.css);
-@import url(../../assets/vendor_components/material-design-iconic-font/css/materialdesignicons.css);
-@import url(../../assets/vendor_components/simple-line-icons-master/css/simple-line-icons.css);*/
-
+@import url('/vendor_components/flag-icon/css/flag-icon.css');
+@import url('/vendor_components/glyphicons/glyphicon.css');
+@import url('/vendor_components/material-design-iconic-font/css/materialdesignicons.css');
+@import url('/vendor_components/simple-line-icons-master/css/simple-line-icons.css');
 
 
 /*------------------------------------------------------------------
@@ -105,23 +77,9 @@ body {
     overflow-y: auto;
 }
 
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: "Lato-font";
-    line-height: 1.5;
-    text-shadow: none;
-}
+
+
+
 
 h1 small,
 h2 small,
@@ -166,6 +124,7 @@ h6 small,
 }
 
 body {
+    font-family: m-font;
     font-weight: 400;
     font-size: 13px;
     color: #2d353c;
@@ -288,7 +247,7 @@ img {
 
 .content-wrapper {
     min-height: 100%;
-    background-color: #eaeff2;
+    background-color: #fff;
     z-index: 800;
 }
 
@@ -360,7 +319,7 @@ img {
 
 .content {
     min-height: 250px;
-    padding: 5px 5px 0px 5px;
+    /*padding: 5px 5px 0px 5px;*/
     margin-right: auto;
     margin-left: auto;
 }
@@ -3129,9 +3088,9 @@ input[type="color"] {
     -ms-flex-direction: column;
     flex-direction: column;
     border: 1px solid #dce3e6;
-    /* border-radius: 4px; */
+    /* border-radius: 4px;
     -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);
-    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);*/
 }
 
 .pull-up {
@@ -4045,7 +4004,7 @@ input[type="color"] {
 .customtab li a.nav-link {
     border: 0px;
     padding: 0.5rem 0.75rem;
-    color: #67757c;
+    color: #000000;
 }
 
 /*Vertical tabs*/
@@ -10641,7 +10600,7 @@ button.btn.dropdown-toggle.no-caret::after {
 }
 
 .btn {
-    border-radius: 4px;
+
     -webkit-box-shadow: none;
     box-shadow: none;
     border: 1px solid transparent;
@@ -11132,8 +11091,8 @@ table.text-center th {
 
 .btn-secondary {
     color: #fff !important;
-    background-color: #2d353c;
-    border-color: #2d353c;
+    background-color: #686868;
+    border-color: #686868;
 }
 
 .btn-secondary:hover {
@@ -13440,12 +13399,7 @@ table.text-center th {
     margin-top: 5px;
 }
 
-.table th,
-.table thead th {
-    font-family: "m-Lato-font";
-    font-weight: 600;
-    font-size: 13px;
-}
+
 
 .contacts-list-name,
 .direct-chat-name {

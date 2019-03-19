@@ -1,5 +1,5 @@
 {!! Form::open(['action' => 'SpreadSheetController@projetsSpreadSheet','method'=>'POST','class'=>'']) !!}
-<div class="filters" style="margin-bottom: 4px;">
+<div class="filters" style="margin-bottom: 4px;margin-top:8px">
 
     <div class="row">
         <div class="col-lg-1">
@@ -81,7 +81,7 @@
             <!-- /.form-group -->
         </div>
         <div class="col-lg-1">
-            <label>Type d'intervention :</label>
+            <label>Intervention :</label>
         </div>
         <div class="col-lg-2">
             <div class="form-group">
@@ -125,8 +125,6 @@
             </div>
             <!-- /.form-group -->
         </div>
-
-
     </div>
 
     <div class="row" style="margin-top : 4px">
@@ -149,14 +147,12 @@
         <div class="col-lg-6">
 
         </div>
-
-        <div class="col-lg-3">
-                <a href="" class="btn btn-success pull-right" ><i class="fa fa-file-pdf-o" style="margin-right: 6px;"></i>Exporter PDF</a>
-                <button type="submit" class="btn btn-success pull-right" style="margin-right: 6px;" ><i class="fa fa-file-excel-o" style="margin-right: 6px;"></i>Exporter CSV</button>
-        </div>
-
     </div>
 
 </div>
 
 {!! Form::close()!!}
+
+<hr  style="margin:4px">
+@include('projets.inc.action_button_en_cours_execution')
+<hr  style="margin:4px">

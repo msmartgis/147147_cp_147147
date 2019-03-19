@@ -77,11 +77,11 @@
 
     @include('demandes.edit.tabs')
 
-@include('demandes.edit.form_edit')
+    @include('demandes.edit.form_edit')
 
-{{-- Modals --}}
-@include('demandes.modals')
-@include('demandes.edit.modals_edit')
+    {{-- Modals --}}
+    @include('demandes.modals')
+    @include('demandes.edit.modals_edit')
 
 {{-- end modals --}}
 @endsection

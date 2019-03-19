@@ -92,11 +92,11 @@
         </div>
     </div>
 
-    <hr style="background-color: #2d353c;margin:4px">
+    <hr style="margin:4px">
 
     @include('demandes.inc.action_button_en_cours')
 
-    <hr  style="background-color: #2d353c;margin:4px">
+    <hr  style="margin:4px">
 </div>
 
 {!! Form::close()!!}
