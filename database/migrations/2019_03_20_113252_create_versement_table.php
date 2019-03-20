@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSourceFinancementTable extends Migration
+class CreateVersementTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateSourceFinancementTable extends Migration
      */
     public function up()
     {
-        Schema::create('sourcesfinancements', function (Blueprint $table) {
+        Schema::create('versements', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('source')->nullable();
-            $table->string('reference')->nullable();
-            $table->string('abreviation')->nullable();
+            $table->date('date_versement');
+            $table->string('nom_document');
+            $table->string('path');
             $table->timestamps();
 
-            $table->index(['id','created_at']);
+
+            $table->index(['id', 'created_at']);
         });
     }
 
@@ -31,6 +32,6 @@ class CreateSourceFinancementTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sourcesfinancements');
+        Schema::dropIfExists('versements');
     }
 }

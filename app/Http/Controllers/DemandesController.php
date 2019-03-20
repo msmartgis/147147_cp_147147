@@ -864,9 +864,9 @@ class DemandesController extends BaseController
     {
          //communes list
         $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
-        $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
+        $interventions = Intervention::orderBy('mois')->pluck('nom', 'id');
         $partenaire_types = PartenaireType::all();
-        $sessions = Session::orderBy('nom')->pluck('nom', 'id');
+        $sessions = Session::orderBy('mois')->pluck('nom', 'id');
         $porteur_projet = Porteur::distinct()->select('id','nom_porteur_fr')->get();
 
          //point desservis

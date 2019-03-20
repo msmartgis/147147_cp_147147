@@ -17,8 +17,6 @@ class CreateConventionsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('session_id')->unsigned()->nullable();
             $table->bigInteger('demande_id')->unsigned()->nullable();
-            $table->integer('num_ordre')->nullable();
-            $table->date('date_reception')->nullable();
             $table->text('objet_fr')->nullable();
             $table->text('objet_ar')->nullable();
             $table->double('montant_global')->nullable();
@@ -28,7 +26,7 @@ class CreateConventionsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['session_id','demande_id','created_at','num_ordre']);
+            $table->index(['session_id','demande_id','created_at']);
 
             $table->foreign('session_id')
                 ->references('id')

@@ -65,7 +65,7 @@ class ConventionController extends Controller
         $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
         $partenaire_types = PartenaireType::all();
-        $sessions = Session::orderBy('nom')->pluck('nom', 'id');
+        $sessions = Session::orderBy('nom')->pluck('mois', 'id');
         $porteur_projet = Porteur::distinct()->select('id','nom_porteur_fr')->get();
 
         //point desservis
@@ -129,7 +129,7 @@ class ConventionController extends Controller
      */
     public function edit(Convention $convention)
     {
-        $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
+        $interventions = Intervention::orderBy('mois')->pluck('nom', 'id');
         $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $pieces = Piece::orderBy('type')->pluck('type');
         $moas = Moa::all();

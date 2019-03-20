@@ -17,12 +17,12 @@ Route::group(
     ['middleware' => 'auth'],
     function () {
         Route::resources([
-            'conventions' => 'ConventionController',
-            'projets' => 'ProjetController',
+            'convention' => 'ConventionController',
+            'projet' => 'ProjetController',
             'points_desservis' => 'PointDesserviController',
-            'communes' => 'CommunesController',
-            'demandes' => 'DemandesController',
-            'pieces' => 'PieceController',
+            'commune' => 'CommunesController',
+            'demande' => 'DemandesController',
+            'piece' => 'PieceController',
             'cartographie' => 'CartographieController',
             'suivi_versement' => 'SuiviVersementController'
         ]);
