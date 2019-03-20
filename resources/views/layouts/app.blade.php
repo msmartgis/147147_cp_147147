@@ -28,7 +28,7 @@
 
          .lato-bold
          {
-             font-family: 'Oswald','Open Sans';
+             font-family: 'Open Sans';
              font-weight: bold;
          }
 

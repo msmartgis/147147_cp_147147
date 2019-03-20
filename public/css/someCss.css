@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 .navbar-collapse {
     padding-left: 1.5rem;
 }
@@ -307,7 +299,7 @@ h1,h2,h3,h4,h5,h6
     font-family: m-Lato-font;
     margin-bottom: 1px !important;
     margin-top: 8px !important;
-    color: #ffb22b !important
+    color: #000 !important
 }
 
 .pad {
@@ -389,6 +381,57 @@ textarea.form-control
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove
 {
     color: #fff !important;
+}
+
+
+
+
+/*gallerie image */
+:root {
+    /* Set fade in duration */
+    --fade-time: 0.5s;
+}
+
+
+.container {
+    max-width: 1080px;
+    margin: auto;
+    border: #5e5e5e solid 2px;
+    background: #fff;
+}
+
+.main-img img,
+.imgs img {
+    width: 100%;
+}
+
+.imgs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 5px;
+}
+
+.imgs img {
+    cursor: pointer;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn var(--fade-time) ease-in 1 forwards;
+}
+
+/* Media Queries */
+@media(max-width: 600px) {
+    .imgs {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 

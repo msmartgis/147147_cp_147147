@@ -56,6 +56,8 @@ Route::group(
         Route::post('/demande/restaurer_from_affectation', 'DemandesController@restaurerDemandeFromAffectation')->name('restaurer_demande_from_affectation');
 
 
+
+
 //Routes for conventions
         Route::get('/conventions', 'ConventionController@index');
         Route::post('/conventions/conventionSpreadSheet', 'SpreadSheetController@conventionsSpreadSheet')->name('spreadSheetConvention');
@@ -74,12 +76,14 @@ Route::group(
 );
 
 
-
-
-
-
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+//projets routes
+//edit route test
+/* TODO this route is just for making interface design */
+
+Route::get('/edit_project','ProjetController@edit_projet')->name('edit_projet');
 

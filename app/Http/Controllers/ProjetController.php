@@ -93,8 +93,15 @@ class ProjetController extends Controller
      */
     public function edit(Projet $projet)
     {
-        //
+        return view('projets.edit.index_edit_projet');
     }
+
+
+    public function edit_projet()
+    {
+        return view('projets.edit.index_edit_projet');
+    }
+
 
     /**
      * Update the specified resource in storage.

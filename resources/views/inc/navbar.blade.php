@@ -1,6 +1,7 @@
 
 
     <ul class="navbar-nav" >
+
         <li class="nav-item">
             <a class="nav-link" href="{{ route('home') }}"><span class="active-item-here "></span>
                 <img src="{{asset('images/svg/home.svg')}}" style="width: 1.2em;margin-right: 5px;" />
