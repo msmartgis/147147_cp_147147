@@ -132,6 +132,11 @@
         $("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
     }(window, document, jQuery);
 
+
+    $('#datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    });
+
 </script>
 
 

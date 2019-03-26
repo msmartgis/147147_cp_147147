@@ -15,12 +15,12 @@ class CreatePiecesTable extends Migration
     {
         Schema::create('pieces', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type');
-            $table->string('nom');
-            $table->string('path');
-            $table->bigInteger('demande_id')->unsigned()->nullable;
-            $table->bigInteger('convention_id')->unsigned()->nullable;
-            $table->bigInteger('projet_id')->unsigned()->nullable;
+            $table->string('type')->nullable();
+            $table->string('nom')->nullable();
+            $table->string('path')->nullable();
+            $table->bigInteger('demande_id')->unsigned()->nullable();
+            $table->bigInteger('convention_id')->unsigned()->nullable();
+            $table->bigInteger('projet_id')->unsigned()->nullable();
             $table->timestamps();
 
             $table->index(['id','created_at']);

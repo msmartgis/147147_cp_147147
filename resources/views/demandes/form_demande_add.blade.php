@@ -67,12 +67,24 @@
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="form-group">
                         {{Form::label('','Session:')}}
-                        {{Form::select('session', $sessions, null,
-                        [
-                        'data-placeholder' => 'Selectionner commune(s)',
-                        'class'=>'form-control ',                       
-                        'name'=>'session'
-                        ]
+                        {{Form::select(
+                        'size',
+                         array(
+                         '1' => 'Janvier',
+                          '2' => 'Fevrier',
+                          '3' => 'Mars',
+                          '4' => 'Avril',
+                          '5' => 'Mai',
+                          '6' => 'Juin',
+                          '7' => 'Juillet',
+                          '8' => 'Aout',
+                          '9' => 'Septembre',
+                          '10' => 'Octobre',
+                          '11' => 'Novembre',
+                          '12' => 'Decembre',
+                          ),
+                          '1',
+                        ['class'=>'form-control']
                         )}}
 
                     </div>
@@ -136,8 +148,10 @@
         <!-- Step 2 -->
         <h6>Informations techniques</h6>
         <section>
-            <div class="row">
-                <div class="table-responsive">
+            <h5>LES POINTS DESSERVIS</h5>
+            <hr>
+            <div class="row" style="margin: 0 !important;">
+                <div class="table-responsive" style="margin-top: 12px">
                     <table class="table table-points">
                         <tr style="text-align: center;">
                             <th>Type</th>
@@ -155,9 +169,9 @@
                                     </select>
                                 </div>
                             </td>
-                            <td style="width: 60%">
+                            <td style="width: 60%" >
                                 <div class="form-group ">
-                                    <select class="form-control select2 point-desservis" name="points[]"
+                                    <select class="form-control select2 point-desservis " name="points[]"
                                             style="width : 100%">
                                         @foreach($localites as $localite)
                                             <option value="{{ $localite->id}}">{{ $localite->nom_fr}}</option>
@@ -165,17 +179,37 @@
                                     </select>
                                 </div>
                             </td>
+
                         </tr>
+
                         <tr>
-                            <td colspan="2" style="text-align: center"><a href="#" id="add_point"> <i class="fa fa-plus"></i>
-                                    <b> Ajouter point</b> </a>
+                            <td colspan="2" style="text-align: center" >
                             </td>
+
+
                         </tr>
                         </tbody>
                     </table>
-                </div>
 
-                <div class="table-responsive">
+                    <div style="text-align: center">
+                        <div class="response-div-point-desservi">
+                            <a href="#" id="add_point" > <i class="fa fa-plus"></i>
+                                <b> Ajouter point</b>
+                            </a>
+                        </div>
+
+                        <div id="loading-point-desservi">
+                            <img src="{{asset('images/loader/loader4.gif')}}" >
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+                <h5>LES PIECES TECHNIQUES</h5>
+                <hr>
+            <div class="row" style="margin: 0 !important;">
+                <div class="table-responsive" style="margin-top: 12px">
                     <table class="table table-piece">
                         <tr style="text-align: center;">
                             <th>Type</th>
@@ -226,25 +260,24 @@
                             </td>
 
                             <td>
-                                <div class="form-group">
+                                <div class="form-group" style="text-align: center">
                                     {{Form::file('piece_upload',['name'=>'pieces_uploads[]'])}}
                                 </div>
                             </td>
                         </tr>
 
-                        <tr>
-                            <td colspan="3" style="text-align: center"><a href="#" id="add_piece"> <i class="fa fa-plus"></i>
-                                    <b> Ajouter Pièce</b> </a>
-                            </td>
-                        </tr>
                         </tbody>
-
                     </table>
+
+                    <div style="text-align: center">
+                        <a href="#" id="add_piece"> <i class="fa fa-plus"></i>
+                            <b> Ajouter Pièce</b>
+                        </a>
+                    </div>
                 </div>
-
-
-
             </div>
+
+
 
             <div class="row">
                 <div class="col-6">
@@ -287,46 +320,39 @@
                 </div>
             </div>
             <br>
-            <div class="row">
-                <div class="col-12">
-                    <div class="box">
-                        <div class="box-header">
-                            <h4 class="box-title"><strong>Montage Financier proposé</strong></h4>
-                        </div>
-                        <div class="box-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead style="text-align: center">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Partenaire</th>
-                                            <th>Montant</th>
-                                            <th>Pourcentage</th>
-                                           
-                                        </tr>
-                                    </thead>
-                                    <tbody id="table_body_partner">
-                                        <tr>
-                                            <td colspan="4" style="text-align: center"><a href="#" id="add_partner"
-                                                data-toggle="modal" data-target="#m-add-partenaire"> <i class="fa fa-plus"></i>
-                                                <b>Ajouter partenaire</b> </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+            <div class="row" style="margin: 0 !important;">
+                <h5>MONTAGE FINANCIER PROPOSE</h5>
+                <hr>
+                <div class="col-12" style="margin-top: 8px">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead style="text-align: center">
+                            <tr>
+                                <th>#</th>
+                                <th>Partenaire</th>
+                                <th>Montant</th>
+                                <th>Pourcentage</th>
+                            </tr>
+                            </thead>
+                            <tbody id="table_body_partner">
+                            <tr>
+                                <td colspan="4" style="text-align: center"><a href="#" id="add_partner"
+                                                                              data-toggle="modal" data-target="#m-add-partenaire"> <i class="fa fa-plus"></i>
+                                        <b>Ajouter partenaire</b> </a>
+                                </td>
+                            </tr>
+                            </tbody>
 
-                                    <!-- <tfoot>
-                                        <tr class="total-col  totalCol">
-                                            <th></th>
-                                            <th><strong>TOTAL</strong></th>
-                                            <th class="total">0</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>  -->
-                                </table>
-                            </div>
-                           
-                        </div>
+                            <!-- <tfoot>
+                                <tr class="total-col  totalCol">
+                                    <th></th>
+                                    <th><strong>TOTAL</strong></th>
+                                    <th class="total">0</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>  -->
+                        </table>
                     </div>
                     <button type="button" class="btn btn-secondary delete-row">
                             <i class="fa fa-times"></i>

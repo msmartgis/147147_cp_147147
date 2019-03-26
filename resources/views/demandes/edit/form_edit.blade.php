@@ -1,5 +1,5 @@
 
-{!! Form::model($demande, ['route' => ['demandes.update', $demande->id],'method' => 'PUT']) !!}
+{!! Form::model($demande, ['route' => ['demande.update', $demande->id],'method' => 'PUT']) !!}
 
 
 <div class="row">
@@ -316,7 +316,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            {{Form::text('date_reception',$demande->date_reception,['class'=>'form-control
+                            {{Form::text('date_reception',date('d/m/Y', strtotime($demande->date_reception)),['class'=>'form-control
                             pull-right','id'=>'datepicker'])}}
                         </div>
                         <!-- /.input group -->

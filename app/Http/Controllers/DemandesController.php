@@ -14,6 +14,7 @@ use App\Convention;
 use App\PointDesserviCategorie;
 use App\Moa;
 use App\Projet;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
@@ -141,9 +142,9 @@ class DemandesController extends BaseController
                 })
 
 
-                ->addColumn('session', function (Demande $demande) {
-                    return $demande->session ? str_limit($demande->session->nom, 30, '...') : '';
-                })
+                //->addColumn('session', function (Demande $demande) {
+                  //  return $demande->session ? str_limit($demande->session->nom, 30, '...') : '';
+                //})
 
                 ->addColumn('checkbox', function ($demandes) {
                     return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
@@ -186,12 +187,12 @@ class DemandesController extends BaseController
         }
 
         //filter with session
-        if ($session_id = $request->get('session')) {
+       /* if ($session_id = $request->get('session')) {
             if ($session_id == "all") {
             } else {
                 $demandes->where('session_id', '=', $session_id);
             }
-        }
+        }*/
 
         //filter with daterange
         if ($daterange = $request->get('daterange')) {
@@ -829,6 +830,7 @@ class DemandesController extends BaseController
     public function index()
     {
         $communes = Commune::orderBy('nom_fr')->get();
+
         //point desservis :: localite only
         $localites = PointDesserviCategorie::find(1)->point_desservis;
         $partenaires_types = PartenaireType::all();
@@ -864,9 +866,8 @@ class DemandesController extends BaseController
     {
          //communes list
         $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
-        $interventions = Intervention::orderBy('mois')->pluck('nom', 'id');
+        $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
         $partenaire_types = PartenaireType::all();
-        $sessions = Session::orderBy('mois')->pluck('nom', 'id');
         $porteur_projet = Porteur::distinct()->select('id','nom_porteur_fr')->get();
 
          //point desservis
@@ -888,7 +889,6 @@ class DemandesController extends BaseController
                 'localites' => $localites,
                 'etablissement_scols' => $etablissement_scols,
                 'partenaire_types' => $partenaire_types,
-                'sessions' => $sessions,
                 'porteur_projet' => $porteur_projet,
                 'categorie_points' => $categorie_points,
             ]
@@ -916,8 +916,11 @@ class DemandesController extends BaseController
         $actu_id_demande = $id_demande + 1;
         //create demande
         $demande = new Demande;
+
         $demande->num_ordre = $request->input('num_ordre');
-        $demande->date_reception = $request->input('date_reception');
+        //formating date time
+        $date_formatted = str_replace("/",'-',$request->date_reception);
+        $demande->date_reception = $date_formatted->format('Y-m-d');
         $demande->objet_fr = $request->input('objet_fr');
         $demande->objet_ar = $request->input('objet_ar');
         $demande->montant_global = $request->input('montant_global');
@@ -968,9 +971,12 @@ class DemandesController extends BaseController
             $piece_file_names = array();
             $items_number = count($pieces_types_array);
             $files = $request->file('pieces_uploads');
-           
+
+            //define a new piece
+            $piece = new Piece;
             //files uploaded get path
             if ($request->hasFile('pieces_uploads')) {
+
                 foreach ($files as $file) {
                         // Get filename with the extension
                     $filenameWithExt = $file->getClientOriginalName();
@@ -992,7 +998,6 @@ class DemandesController extends BaseController
                 $piece->path = $fileNameToStore;
             }
             for ($i = 0; $i < $items_number; $i++) {
-                $piece = new Piece;
                 $piece->type = $pieces_types_array[$i];
                 $piece->nom = $pieces_noms_array[$i];
                 $piece->path = $piece_file_names[$i];
@@ -1017,7 +1022,7 @@ class DemandesController extends BaseController
 
 
         //redirecting with success message
-        return redirect('/demandes')->with('success', 'Demande créee avec succès');
+        return redirect('/demande')->with('success', 'Demande créee avec succès');
     }
 
     /**
@@ -1039,6 +1044,7 @@ class DemandesController extends BaseController
      */
     public function edit(Demande $demande)
     {
+
         $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
         $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $pieces = Piece::orderBy('type')->pluck('type');
@@ -1046,7 +1052,8 @@ class DemandesController extends BaseController
         $partenaires_types = PartenaireType::all();
         $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
         $demande = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session', 'piece'])->find($demande->id);
-        
+
+
         //return $demande;
         return view('demandes.edit.edit')->with([
             'demande' => $demande,
@@ -1067,9 +1074,17 @@ class DemandesController extends BaseController
      */
     public function update(Request $request, Demande $demande)
     {
-        $request->validate([]);
-        $demande = Demande::find($demande->id);
-        $demande->update($request->all());
+        //$request->validate($request, ['num_ordre' => 'required']);
+        $demande_to_update = Demande::find($demande->id);
+        $demande_to_update->objet_fr = $request->objet_fr;
+        $demande_to_update->objet_ar = $request->objet_ar;
+        $demande_to_update->observation = $request->observation;
+        $date_formatted = str_replace("/",'-',$request->date_reception);
+
+        $demande_to_update->date_reception = Carbon::parse($date_formatted)->format('Y-m-d');
+        $demande_to_update->save();
+
+
         //update interventions
         $intervention_ids = Input::get('interventions');
         $demande->interventions()->sync($intervention_ids);
@@ -1093,7 +1108,7 @@ class DemandesController extends BaseController
          //update localites
         $localites_ids = Input::get('localites');
         $demande->point_desservis()->sync($localites_ids);
-        return redirect("/demandes" . "/" . $demande->id . "/edit")->with('success', 'Demande modifier avec succès');
+        return redirect("/demande" . "/" . $demande->id . "/edit")->with('success', 'Demande modifier avec succès');
     }
 
     /**

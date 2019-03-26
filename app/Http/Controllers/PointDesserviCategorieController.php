@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class PointDesserviCategorieController extends Controller
 {
+
+
+
+
     /**
      * Display a listing of the resource.
      *

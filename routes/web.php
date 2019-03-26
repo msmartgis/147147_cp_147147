@@ -10,7 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
  */
-
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
  //index
 Route::get('/', 'PagesController@index');
 Route::group(
@@ -19,7 +20,8 @@ Route::group(
         Route::resources([
             'convention' => 'ConventionController',
             'projet' => 'ProjetController',
-            'points_desservis' => 'PointDesserviController',
+            'pointDesservi' => 'PointDesserviController',
+            'pDesserviCateg' => 'PointDesserviCategorieController',
             'commune' => 'CommunesController',
             'demande' => 'DemandesController',
             'piece' => 'PieceController',
@@ -28,9 +30,7 @@ Route::group(
         ]);
 
         Route::get('/demande/create','DemandesController@create')->name('createDemande');
-
         Route::get('/demande','DemandesController@index')->name('indexDemande');
-
 
         Route::get('/projet','ProjetController@index')->name('indexProjet');
 
@@ -39,10 +39,9 @@ Route::group(
         Route::get('/suivi_versement','SuiviVersementController@index')->name('indexSuiviVersement');
 
 
-        Route::post('/loadPoint', 'PointDesserviController@loadPoint');
 
 //demandes
-        Route::get('/demande/en_cours', 'DemandesController@getDemandes');
+        Route::get('demande/en_cours', 'DemandesController@getDemandes');
         Route::get('/demande/tab_programmee', 'DemandesController@getDemandesProgrammee');
         Route::get('/demande/tab_realisee', 'DemandesController@getDemandesRealisee');
         Route::get('/demande/tab_a_traiter', 'DemandesController@getDemandesATraiter');
@@ -72,13 +71,18 @@ Route::group(
         Route::post('/pieces/delete_piece', 'PieceController@deletePiece')->name('delete_piece');
         Route::post('/partenaire/delete_partenaire', 'PartenaireTypeController@deletePartenaire')->name('delete_partenaire');
         Route::post('/partenaire/add_partenaire', 'PartenaireTypeController@addPartenaire')->name('add_partenaire');
+
+
+        //point desservis
+        Route::post('/pointDesservi/loadPoint', 'PointDesserviController@loadPoint');
     }
 );
 
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+
+
 
 
 //projets routes
@@ -86,4 +90,3 @@ Route::get('/home', 'HomeController@index')->name('home');
 /* TODO this route is just for making interface design */
 
 Route::get('/edit_project','ProjetController@edit_projet')->name('edit_projet');
-

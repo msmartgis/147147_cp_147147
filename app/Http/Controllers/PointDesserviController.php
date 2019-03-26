@@ -12,10 +12,13 @@ class PointDesserviController extends Controller
 
     public function loadPoint(Request $request)
     {
+
+
         $categories = PointDesserviCategorie::all()->toArray();
         $type_point = $request->type;
         $points = PointDesserviCategorie::find($type_point)->point_desservis->toArray();
         return array('categories' => $categories, 'points' => $points);
+        //return \response()->json(['categories' => $categories, 'points' => $points]);
     }
 
 
@@ -58,7 +61,7 @@ class PointDesserviController extends Controller
      */
     public function show(PointDesservi $pointDesservi)
     {
-        //
+
 
     }
 

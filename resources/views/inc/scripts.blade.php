@@ -48,4 +48,5 @@
 </script> --}}
 
 
-	@stack('added_scripts')
+
+ @stack('added_scripts')

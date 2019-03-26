@@ -12,10 +12,8 @@
 	
 <link rel="stylesheet" href="{{asset('css/someCss.css')}}">
 	<!-- Select2 -->
-<link rel="stylesheet" href="public/vendor_components/select2/dist/css/select2.min.css" />
-<link rel="stylesheet" href="{{asset('/css/font-awesome.css')}}" />
-<link rel="stylesheet" href="{{asset('css/ionicons.css')}}" />
-<link rel="stylesheet" href="{{asset('css/themify-icons.css')}}" />
+<link rel="stylesheet" href="{{asset('vendor_components/select2/dist/css/select2.min.css')}}" />
+<link rel="stylesheet" href="{{asset('css/font-awesome.css')}}" />
 	<!-- horizontal menu style -->
 <link rel="stylesheet" href="{{asset('css/horizontal_menu_style.css')}}">
 
@@ -29,7 +27,7 @@
 
 
 <!-- daterange picker -->	
-	<link rel="stylesheet" href="public/vendor_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="{{asset('vendor_components/bootstrap-daterangepicker/daterangepicker.css')}}">
 
 
 

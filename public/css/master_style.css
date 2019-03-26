@@ -48,13 +48,13 @@ import icon and fonts Styles
 @import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
-
+/*
 @import url('/vendor_components/flag-icon/css/flag-icon.css');
 @import url('/vendor_components/glyphicons/glyphicon.css');
 @import url('/vendor_components/material-design-iconic-font/css/materialdesignicons.css');
 @import url('/vendor_components/simple-line-icons-master/css/simple-line-icons.css');
 
-
+*/
 /*------------------------------------------------------------------
 
 [Typography]
@@ -4198,14 +4198,14 @@ input[type="color"] {
 }
 
 .wizard-content .wizard>.steps>ul>li.current>a {
-    color: #2f3d4a;
+    color: #000;
     cursor: default
 }
 
 .wizard-content .wizard>.steps>ul>li.current .step {
-    border-color: #4b868c;
+    border-color: #ecb54e;
     background-color: #fff;
-    color: #4b868c
+    color: #ecb54e;
 }
 
 .wizard-content .wizard>.steps>ul>li.disabled a,
@@ -4222,7 +4222,7 @@ input[type="color"] {
 }
 
 .wizard-content .wizard>.steps>ul>li.done .step {
-    background-color: #cfe4de;
+    background-color: #ff8740;
     border-color: #f4f4f4;
     color: #4f5965
 }
@@ -4301,10 +4301,10 @@ input[type="color"] {
 }
 
 .wizard-content .wizard>.actions>ul>li>a {
-    background: #cedce3;
-    color: #4f5965;
+    background: #ff8740;
+    color: #fff;
     display: block;
-    padding: 7px 12px;
+    padding: 2px 9px;
     border-radius: 4px;
     border: 1px solid transparent
 }
@@ -4355,20 +4355,20 @@ input[type="color"] {
     top: 45px;
     width: 50%;
     height: 3px;
-    background-color: #116466
+    background-color: #ff8740
 }
 
 .wizard-content .wizard.wizard-circle>.steps>ul>li.current:after,
 .wizard-content .wizard.wizard-circle>.steps>ul>li.current~li:after,
 .wizard-content .wizard.wizard-circle>.steps>ul>li.current~li:before {
-    background-color: #425B68
+    background-color: #686868
 }
 
 .wizard-content .wizard.wizard-circle>.steps .step {
     width: 160px;
     height: 50px;
     line-height: 45px;
-    border: 3px solid #425B68;
+    border: 3px solid #686868;
     font-size: 1.3rem;
     border-radius: 10px;
 }
@@ -10695,9 +10695,9 @@ table.text-center th {
 }
 
 .btn-default {
-    background-color: #f4f4f4;
-    color: #455a64;
-    border-color: #ddd;
+    background-color: #ecb54e;
+    color: #fff;
+    border-color: #ecb54e;
 }
 
 .btn-default.hover,
@@ -10962,8 +10962,8 @@ table.text-center th {
 }
 
 .btn-success {
-    background-color: #9fd037;
-    border-color: #9fd037;
+    background-color: #ff8740;
+    border-color: #ff8740;
     color: #fff;
 }
 

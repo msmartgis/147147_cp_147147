@@ -16,7 +16,6 @@
                 <th>Partenaire</th>
                 <th style="width: 1% !important">M.Totol</th>
                 <th style="width: 1% !important">M.CP</th>
-                <th style="width: 1% !important">Session</th>
                 </thead>
             </table>
         </div>

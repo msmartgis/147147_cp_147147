@@ -20,7 +20,7 @@ $(document).ready(function () {
             type: 'GET',
             data: function (d) {
                 d.communes = $('select[name=communes]').val();
-                d.session = $('select[name=session]').val();
+                //d.session = $('select[name=session]').val();
                 d.interventions = $('select[name=interventions]').val();
                 d.partenaires = $('select[name=partenaires]').val();
                 d.localites = $('select[name=localites]').val();
@@ -101,14 +101,6 @@ $(document).ready(function () {
                 name: 'montantCP',
                 orderable: true,
                 searchable: true
-            },
-
-
-            {
-                data: 'session',
-                name: 'session.nom',
-                orderable: true,
-                searchable: true
             }
         ],
         initComplete: function () {
@@ -124,7 +116,7 @@ $(document).ready(function () {
     });
 
 
-    $('#communes_filter,#session_filter,#intervention_filter,#partenaires_filter,#localites_filter,#reservation').on('change paste keyup', function (e) {
+    $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#reservation').on('change paste keyup', function (e) {
         oTable.draw();
         e.preventDefault();
     });

@@ -434,5 +434,17 @@ textarea.form-control
     }
 }
 
+hr{
+    color:#2d353c;
+    margin:0;
+}
+
+
+.modal-title{
+    margin-top: 0 !important;
+    line-height: 0 !important;
+    margin-bottom: 0 !important;
+}
+
 
 

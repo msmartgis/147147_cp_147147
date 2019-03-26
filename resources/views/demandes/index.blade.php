@@ -118,20 +118,13 @@
 <script src="{{asset('js/formatter.js')}}"></script>
 <script src="{{asset('js/functions.js')}}"></script>
 <script src="{{asset('js/demandes/index_en_cours.js')}}"></script>
+{{--
 <script src="{{asset('js/demandes/index_affectees.js')}}"></script>
 <script src="{{asset('js/demandes/index_accord_definitif.js')}}"></script>
 <script src="{{asset('js/demandes/index_programmee.js')}}"></script>
 <script src="{{asset('js/demandes/index_realisee.js')}}"></script>
 <script src="{{asset('js/demandes/index_a_traiter.js')}}"></script>
-
-{{-- libraries for datatables exoprting --}}
-{{-- <script src="{{asset('js/vfs_fonts.js')}}"></script>
-<script src="{{asset('js/buttons.html5.min.js')}}"></script>
-<script src="{{asset('js/buttons.print.min.js')}}"></script>
-<script src="{{asset('js/buttons.flash.min.js')}}"></script>
-<script src="{{asset('js/jszip.min.js')}}"></script>
-<script src="{{asset('js/dataTables.buttons.min.js')}}"></script>
-<script src="{{asset('js/jquery.dataTables.min.js')}}"></script> --}}
+--}}
 
 <!-- Sweet-Alert  -->
 <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>

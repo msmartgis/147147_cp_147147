@@ -15,11 +15,28 @@
 .form-group {
 	margin-bottom: 1rem !important;
 }
+
+@font-face {
+	font-family: Lato;
+	src: url('{{ public_path('fonts/Lato/lato-v11-latin-ext_latin-700.ttf') }}');
+}
+
+
+@font-face {
+	font-family: Lato2;
+	src: url('{{ public_path('fonts/Lato/lato-v11-latin-ext_latin-regular.ttf') }}');
+}
+
+.lato-bold
+{
+	font-family: 'Open Sans';
+	font-weight: bold;
+}
 </style>
 </head>
 <body class="hold-transition login-page">
 	
-	<div class="container h-p100" >
+	<div class="container h-p100" style="margin-top:80px !important;border:0 !important;background: none !important;max-width: none !important;">
 		<div class="row align-items-center justify-content-md-center h-p100">
 
 			<div class="col-lg-4 col-md-8 col-12">
@@ -29,8 +46,8 @@
                           <img src="{{asset('images/logo_smartgis.png')}}" alt="">
                       </div>
 
-                      <h3 class="text-center">Bienvenue sur la plateforme CP</h3>
-					<p class="login-box-msg">Espace de gestion </p>
+                      <h3 class="text-center lato-bold">Bienvenue sur la plateforme CP</h3>
+					<p class="login-box-msg lato-bold">Espace de gestion </p>
                       
 
 					<form method="POST" action="{{ route('login') }}">
@@ -70,7 +87,7 @@
 						</div>
 						<!-- /.col -->
 						<div class="col-12 text-center">
-						  <button type="submit" class="btn btn-info btn-block margin-top-10">Connexion</button>
+						  <button type="submit" class="btn btn-info btn-block margin-top-10 lato-bold">Connexion</button>
 						</div>
 						<!-- /.col -->
 					  </div>
@@ -85,8 +102,6 @@
 			</div>
 		</div>
 	</div>
-
-
 @include('inc.scripts')
 
 </body>
