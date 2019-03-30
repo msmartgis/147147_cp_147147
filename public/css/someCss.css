@@ -441,10 +441,37 @@ hr{
 
 
 .modal-title{
-    margin-top: 0 !important;
     line-height: 0 !important;
     margin-bottom: 0 !important;
 }
 
 
+table tr {
+    cursor:pointer;
+}
 
+
+button:disabled {
+    cursor: not-allowed;
+
+}
+
+.modal-header
+{
+    padding: 0;
+}
+
+.modal-header
+{
+    padding: 0.15rem 1rem !important;
+}
+
+.modal-body
+{
+    padding : 0;
+}
+
+.modal-body
+{
+    padding: 0.5rem !important;
+}

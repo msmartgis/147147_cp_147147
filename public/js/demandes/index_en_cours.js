@@ -11,12 +11,11 @@ $(document).ready(function () {
             search: '',
             searchPlaceholder: 'Recherche...',
             url: 'http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json',
-            processing: '<div class="spinner"></div>',
-
+            processing: '',
         },
 
         ajax: {
-            url: 'demande/en_cours',
+            url: 'demandes/en_cours',
             type: 'GET',
             data: function (d) {
                 d.communes = $('select[name=communes]').val();
@@ -123,39 +122,19 @@ $(document).ready(function () {
 
 
 
-    //select item from datatable
-    //edite
-    $("#modifier").click(function () {
-        var checked = false;
-
-        $("#demandes_datatables > tbody").find('input[name="checkbox"]').each(function () {
-            if ($(this).prop("checked") == true) {
-                var id = $(this).val();
-                checked = true;
-                window.location.href = "demandes/" + id + "/edit";
-                return false;
-            } else {
-
-            }
-        });
-        if (!checked) {
-            swal("Veuillez selectionner une demande");
-            return false;
-        }
-    });
 
     //effecter 
-    $("#accord_definitif").click(function () {
-        url = "demandes/accord_definitif";
-        datatble_id = "demandes_datatables";
-        name_chechbox = "checkbox";
-        method = "POST";
-
-        decision_function(datatble_id, name_chechbox, url, method);
+    $("#accord_definitif_btn").click(function () {
+        //url = "demandes/a_traiter";
+        datatbleId = "demandes_datatables";
+        nameCheckbox = "checkbox";
+        titleModal = "ACCORD DEFINITIF";
+        //method = "POST";
+        accordAndAffectation_modal_data(titleModal,datatbleId ,nameCheckbox);
     });
 
     //a traiter 
-    $("#a_traiter").click(function () {
+    $("#a_traiter_btn").click(function () {
         url = "demandes/a_traiter";
         datatble_id = "demandes_datatables";
         name_chechbox = "checkbox";
@@ -164,74 +143,97 @@ $(document).ready(function () {
     });
 
 
-    //function for decision 
-    function decision_function(datatble_id, name_chechbox, url, method) {
-        //alert("from en cours");
-        var checked = false;
-        var message_sub_title = '';
-        var message_reussi = '';
-        if (url == "demandes/accord_definitif") {
-            message_sub_title = "Ajouter a la liste des demandes avec accord définitif!";
-            message_reussi = "Accord définitif réussi.";
+    //delete record from add partenaire table
+    $("#delete_partenaire").click(function () {
+        removeRowFromTable("table_body_partner");
+    });
+
+
+    //delete record from add source financement table
+    $("#delete_source_financement").click(function () {
+        removeRowFromTable("table_body_source");
+    });
+
+
+
+    //add new parentaire
+    $("#add_partner").click(function (event) {
+        if ($('#montant_g').val() == "") {
+            event.stopPropagation();
+        } else {
+            $('#m-add-partenaire').modal("show");
         }
-        if (url == "demandes/a_traiter") {
-            message_sub_title = "Ajouter a la liste des demandes à traiter!";
-            message_reussi = "A traiter réussi.";
+    });
+
+
+//add new source for cp financement
+    $("#add_source").click(function (event) {
+        if ($('#montant_cp').val() == "") {
+            event.stopPropagation();
+        } else {
+            $('#m-add-source-financement').modal("show");
         }
-        var demande_ids = [];
-        var numero_ordres = [];
-        $("#" + datatble_id + " > tbody ").find("input[name=" + name_chechbox + " ]").each(function () {
-            if ($(this).is(":checked")) {
-                demande_ids.push($(this).val());
-                numero_ordres.push($(this).data('numero'));
-                checked = true;
-            }
-        });
+    });
 
-        if (!checked) {
-            swal("Veuillez selectionner une demande");
-            return false;
-        }
+    //item to make id checkbox unique
+    var item_partenaire = 0;
+    $("#add_partner_to_list").click(function () {
+        var montant_g = $('#montant_g').val();
+        var partenair_type_text = $("#partenaire_type :selected").text();
+        var partenair_type_id = $("#partenaire_type").val();
+        var montant_partnenaire = $("#montant_partnenaire").val();
 
-        if (demande_ids.length > 0) {
-            swal({
-                title: "Vous êtes sûr?",
-                text: message_sub_title,
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Oui, je confirme!",
-                cancelButtonText: "Non, annuler!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function (isConfirm) {
-                if (isConfirm) {
-                    //send an ajax request to the server update decision column
+        var markup = '<tr>'+
+         '<td style=\'text-align:center\'>'+
+         '<div class=\"form-group\">'+
+         '<div class=\"checkbox\">'+
+         '<input type=\"checkbox\" id=\"row_' + item_partenaire + '\" name=\"record\">'+
+         '<label for="row_' + item_partenaire + '"></label>'+
+         '</div>'+
+         '</div>'+
+         '</td>'+
+         '<td style = \'text-align:center\'><input type="hidden" name="partnenaire_type_ids[]" value="' + partenair_type_id + '">' + partenair_type_text + '</td>'+
+         '<td style=\'text-align:center\'><input type="hidden" name="montant[]" value="' + montant_partnenaire + '">' + montant_partnenaire + '</td>'+
+         '<td style=\'text-align:center\'><input type="hidden" name="pourcentage[]" value="' + (montant_partnenaire / montant_g) * 100 + '">' + (montant_partnenaire / montant_g) * 100 + '</td>'+
+         '</tr>';
 
-                    $.ajax({
-                        url: url,
-                        type: method,
-                        data: {
-                            _token: $('meta[name="csrf-token"]').attr('content'),
-                            demande_ids: demande_ids
-                        },
-                        dataType: 'JSON',
-                        success: function (data) {
-                            //console.log(data);
-                            if (data.length == 0) {
-                                swal("Réussi!", message_reussi, "success");
-                                setTimeout(location.reload.bind(location), 500);
-                            }
-                        }
-                    });
-                } else {
-                    swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
-                }
-            });
-        }
-    }
+        $('#table_body_partner > tr:last').before(markup);
+        $("#montant_partnenaire").val('');
+        $("#partenaire_type :selected").remove();
+        $("#m-add-partenaire").modal('toggle');
+    });
 
 
 
+//add source to list
+    var item_source = 0;
+    $("#add_source_to_list").click(function () {
+        var montant_cp = $('#montant_cp').val();
+        var sourceFinancementText = $("#sourceFinancement :selected").text().split(":").shift();
+        var ref =  $("#sourceFinancement :selected").text().split(":").pop();
+        var source_id = $("#sourceFinancement").val();
+        var montant_source = $("#montant_sourceFinancement").val();
+
+
+        var markup_source = '<tr>'+
+         '<td style="text-align:center">'+
+         '<div class="form-group">'+
+         '<div class="checkbox">'+
+         '<input type="checkbox" id="row_' + item_source + '\" name="record">'+
+         '<label for="row_' + item_source + '"></label>'+
+         '</div>'+
+         '</div>'+
+         '</td>'+
+         '<td style = "text-align:center"><input type="hidden" name="source_financement_ids[]" value="' + source_id + '">' + sourceFinancementText + '</td>'+
+         '<td style="text-align:center"><input type="hidden" name="montant[]" value="' + ref + '">' + ref + '</td>'+
+         '<td style="text-align:center"><input type="hidden" name="pourcentage[]" value="' + montant_source + '">' + montant_source+ '</td>'+
+         '</tr>';
+
+
+        $('#table_body_source > tr:last').before(markup_source);
+        $("#montant_sourceFinancement").val('');
+        $("#sourceFinancement :selected").remove();
+        $("#m-add-source-financement").modal('toggle');
+    });
 
 });

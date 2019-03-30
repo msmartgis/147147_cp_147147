@@ -56,4 +56,11 @@ class Demande extends Model
     {
         return $this->belongsTo('App\Convention', 'demande_id');
     }
+
+    public function sourceFinancement()
+    {
+        return $this->belongsToMany('App\SourceFinancement', 'sourcefinancement_demande')->withPivot('montant')->withTimestamps();
+    }
+
+
 }

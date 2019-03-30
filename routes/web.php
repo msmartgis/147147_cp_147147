@@ -41,18 +41,20 @@ Route::group(
 
 
 //demandes
-        Route::get('demande/en_cours', 'DemandesController@getDemandes');
-        Route::get('/demande/tab_programmee', 'DemandesController@getDemandesProgrammee');
-        Route::get('/demande/tab_realisee', 'DemandesController@getDemandesRealisee');
-        Route::get('/demande/tab_a_traiter', 'DemandesController@getDemandesATraiter');
-        Route::post('/demande/demandeSpreadSheetEnCours', 'SpreadSheetController@demandeSpread_en_cours')->name('spread_demande_en_cours');
-        Route::get('/demande/is_affecter', 'DemandesController@getDemandesAffectees')->name('get.demandes.affectees');
-        Route::get('/demande/tab_accord_definitif', 'DemandesController@getDemandesAccordDefinitif')->name('get.demandes.accord_definitif');
-        Route::post('/demandes/affecter_cnv', 'DemandesController@affecterAuxConventions')->name('affecter_cnv');
-        Route::post('/demandes/accord_definitif', 'DemandesController@accordDefinitif')->name('accord_definitif');
+        Route::get('/demandes/getDemandeData', 'DemandesController@getDemandeData');
+        Route::get('/demandes/en_cours', 'DemandesController@getDemandes');
+        Route::get('/demandes/tab_a_traiter', 'DemandesController@getDemandesATraiter');
+        Route::get('/demandes/tab_programmee', 'DemandesController@getDemandesProgrammee');
+        Route::get('/demandes/tab_realisee', 'DemandesController@getDemandesRealisee');
+        Route::post('/demandes/demandeSpreadSheetEnCours', 'SpreadSheetController@demandeSpread_en_cours')->name('spread_demande_en_cours');
+        Route::post('/demandes/demandeSpreadSheetATraiter', 'SpreadSheetController@demandeSpread_a_traiter')->name('spread_demande_a_traiter');
+        Route::post('/demandes/demandeSpreadSheetAccordDefinitif', 'SpreadSheetController@demandeSpread_accord_definitif')->name('spread_demande_accord_definitif');
+        Route::get('/demandes/is_affecter', 'DemandesController@getDemandesAffectees')->name('get.demandes.affectees');
+        Route::get('/demandes/tab_accord_definitif', 'DemandesController@getDemandesAccordDefinitif')->name('get.demandes.accord_definitif');
+        Route::post('/demandes/affecter_or_accord', 'DemandesController@accordOrAffectation')->name('affecterOrAccord');
         Route::post('/demandes/a_traiter', 'DemandesController@aTraiter')->name('a_traiter');
-        Route::post('/demande/restaurer', 'DemandesController@restaurerDemande')->name('restaurer_demande');
-        Route::post('/demande/restaurer_from_affectation', 'DemandesController@restaurerDemandeFromAffectation')->name('restaurer_demande_from_affectation');
+        Route::post('/demandes/restaurer', 'DemandesController@restaurerDemande')->name('restaurer_demande');
+        Route::post('/demandes/restaurer_from_affectation', 'DemandesController@restaurerDemandeFromAffectation')->name('restaurer_demande_from_affectation');
 
 
 

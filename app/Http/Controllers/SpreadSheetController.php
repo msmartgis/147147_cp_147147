@@ -205,6 +205,11 @@ class SpreadSheetController extends Controller
 
 
 
+    public function demandeSpread_a_traiter(Request $request)
+    {
+
+    }
+
 
 
     /*

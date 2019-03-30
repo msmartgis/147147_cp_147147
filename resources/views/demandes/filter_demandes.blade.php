@@ -55,9 +55,18 @@
             <div class="form-group">
                 <select class="form-control select2" style="width: 100%;" name="session" id="session_filter">
                     <option value="all" selected>Indifferent</option>
-                    @foreach ($sessions as $session)
-                    <option value="{{$session->id}}">{{$session->nom}}</option>
-                    @endforeach
+                    <option value="1">Janvier</option>
+                    <option value="2">Fevrier</option>
+                    <option value="3">Mars</option>
+                    <option value="4">Avril</option>
+                    <option value="5">Mai</option>
+                    <option value="6">Juin</option>
+                    <option value="7">Juillet</option>
+                    <option value="8">Aout</option>
+                    <option value="9">Septembre</option>
+                    <option value="10">Octobre</option>
+                    <option value="11">Novembre</option>
+                    <option value="12">Decembre</option>
                 </select>
             </div>
             <!-- /.form-group -->

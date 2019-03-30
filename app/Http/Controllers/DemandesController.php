@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
-
+use App\SourceFinancement;
+use Response;
 use App\Demande;
 use App\Commune;
 use App\Piste;
@@ -16,7 +17,7 @@ use App\Moa;
 use App\Projet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+//use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
@@ -31,18 +32,36 @@ class DemandesController extends BaseController
      * */
 
     /**
+     * for showing some data about demande (for accord defintif or affectation aux convention)
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse JSON
+     *
+     * return $demande as json data
      */
-    public function accordDefinitif(Request $request)
+
+    public function getDemandeData(Request $req)
     {
+       /*$demande = Demande::with('partenaires')
+           ->wherePivot
+           ->whereHas('partenaires', function($q) {
+               $q->where('partenaire_demande.partenaire_id', '=', 1);
+           })
+           ->get();*/
 
-        $ids = array();
-        $ids = $request->demande_ids;
+       $montant_global = Demande::find($req->id,['montant_global']);
 
-        $values = Demande::whereIn('id', $ids)->update(['decision' => 'accord_definitif', 'etat' => 'sans']);
-        return response()->json();
+       $demande = Demande::find($req->id);
+
+        $pivot_all =  $demande->partenaires()
+            ->get();
+
+       $pivot =  $demande->partenaires()->where('partenaire_id','=',1)
+           ->get();
+
+       return response()->json(['montantGlobal'=>$montant_global,'pivot'=>$pivot,'pivot_all' => $pivot_all]);
     }
+
+
+
 
     public function aTraiter(Request $request)
     {
@@ -70,42 +89,61 @@ class DemandesController extends BaseController
         return response()->json();
     }
 
-    public function affecterAuxConventions(Request $request)
+    public function accordOrAffectation(Request $request)
     {
-        $convention_id = Convention::max('id') + 1;
-        $numero_ordre_cnv = Convention::max('num_ordre') + 1;
-        $convention = new Convention;
-        $projet = new Projet;
-        $demande = Demande::find($request->id);
-        //update demande is_affecter
-        DB::table('demandes')
-            ->where('id', $demande->id)
-            ->update(['is_affecter' => 1, 'decision' => 'affecter', 'etat' => 'sans']);
+        $is_affectation =  (int)$request->affecter;
 
-        $montant_cnv = $request->montant_global;
-        $convention->demande_id = $demande->id;
-        $convention->num_ordre = $numero_ordre_cnv;
-        $convention->montant_global = $montant_cnv;
-        $convention->save();
+        //accord definitif
+        if($is_affectation === 0)
+        {
+            return $request->id;
+            //update pistes
+           // Demande::where('id', $request->id)
+             //   ->update(['montant_global' => $request->montant_global]);
 
-        if ($convention->save()) {
-            //pivote table with moas
-            $moas_ids = Input::get('moas');
-            $convention->moas()->sync($moas_ids);
+
         }
 
-        //save in projet
-        $projet->convention_id = $convention_id;
-        $projet->montant_global = $montant_cnv;
-        $projet->save();
-        return redirect('/demandes')->with('success', 'Demande affectée aux conventions avec succès');
+        //affectation aux convntion
+        if($is_affectation === 1)
+        {
+            return 'affectation '.$request->id;
+            $convention_id = Convention::max('id') + 1;
+            $numero_ordre_cnv = Convention::max('num_ordre') + 1;
+            $convention = new Convention;
+            $projet = new Projet;
+            $demande = Demande::find($request->id);
+            //update demande is_affecter
+            DB::table('demandes')
+                ->where('id', $demande->id)
+                ->update(['is_affecter' => 1, 'decision' => 'affecter', 'etat' => 'sans']);
+
+            $montant_cnv = $request->montant_global;
+            $convention->demande_id = $demande->id;
+            $convention->num_ordre = $numero_ordre_cnv;
+            $convention->montant_global = $montant_cnv;
+            $convention->save();
+
+            if ($convention->save()) {
+                //pivote table with moas
+                $moas_ids = Input::get('moas');
+                $convention->moas()->sync($moas_ids);
+            }
+
+            //save in projet
+            $projet->convention_id = $convention_id;
+            $projet->montant_global = $montant_cnv;
+            $projet->save();
+            return redirect('/demandes')->with('success', 'Demande affectée aux conventions avec succès');
+        }
+
         //return $demande;
     }
 
     //get demandes en cours for index tab en_cours datatables
     public function getDemandes(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['decision', '=', 'en_cours'], ['etat', '=', 'sans'],['is_affecter','=',0]]);
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis')->where([['decision', '=', 'en_cours'],['etat','=','sans'],['is_affecter','=',0]]);
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -114,6 +152,136 @@ class DemandesController extends BaseController
                     })->implode(',');
                 })
                 ->addColumn('porteur', function ($demande) {
+                    return $demande->porteur ? str_limit($demande->porteur->nom_porteur_fr, 30, '...') : '';
+                })
+
+                ->addColumn('interventions', function (Demande $demande) {
+                    return $demande->interventions->map(function ($intervention) {
+                        return str_limit($intervention->nom, 30, '...');
+                    })->implode(',');
+                })
+                // i should have access to show parntenaire type name for every partenaire
+
+                ->addColumn('partenaires', function (Demande $demande) {
+                    return $demande->partenaires->map(function ($partenaire) {
+                        return str_limit($partenaire->nom_fr, 30, '...');
+                    })->implode(',');
+                })
+
+                ->addColumn('montantCP', function (Demande $demande) {
+                    return $demande->partenaires->map(function ($partenaire) {
+                        if ($partenaire->id == 1) {
+                            return str_limit($partenaire->pivot->montant, 30, '...');
+                        }
+                    })->implode(' ');
+                })
+
+
+
+
+                ->addColumn('checkbox', function ($demandes) {
+                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
+                })
+
+
+                ->addColumn('num_ordre', function ($demandes) {
+                    return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
+                })
+                ->rawColumns(['checkbox','num_ordre'])
+
+                ->setRowClass(function ($demandes) {
+                    return 'center-data';
+                });
+
+
+        }
+
+        //filter with communes
+        if ($communes_id = $request->get('communes')) {
+            if ($communes_id == "all") {
+            } else {
+                $demandes->whereHas('communes', function ($query) use ($communes_id) {
+                    $query->where('communes.id', '=', $communes_id);
+                });
+            }
+        }
+
+        //filter with partenaire
+        if ($partenaires_id = $request->get('partenaires')) {
+            if ($partenaires_id == "all") {
+            } else {
+                $demandes->whereHas('partenaires', function ($query) use ($partenaires_id) {
+                    $query->where('partenaires_types.id', '=', $partenaires_id);
+                });
+            }
+        }
+
+        //filter with localites
+        if ($localites = $request->get('localites')) {
+            if ($localites == "all") {
+            } else {
+                $demandes->whereHas('point_desservis', function ($query) use ($localites) {
+                    $query->where('point_desservis.nom_fr', '=', $localites);
+                });
+            }
+        }
+
+        //filter with session
+        if ($session_id = $request->get('session')) {
+            if ($session_id == "all") {
+            } else {
+                $demandes->where('mois', '=', $session_id);
+            }
+        }
+
+        //filter with daterange
+        if ($daterange = $request->get('daterange')) {
+            $daterange_splite = explode('-', $daterange);
+            $date_start = $daterange_splite[0];
+            $date_start_formatted = date("Y-m-d", strtotime($date_start));
+            $date_end = $daterange_splite[1];
+            $date_end_formatted = date("Y-m-d", strtotime($date_end));
+
+            $demandes->where([
+                ['date_reception', '>=', trim($date_start_formatted)],
+                ['date_reception', '<=', trim($date_end_formatted)],
+            ]);
+
+        }
+
+        //filter with intervention
+        if ($interventions_id = $request->get('interventions')) {
+            if ($interventions_id == "all") {
+            } else {
+                $demandes->whereHas('interventions', function ($query) use ($interventions_id) {
+                    $query->where('interventions.id', '=', $interventions_id);
+                });
+            }
+        }
+        return $datatables->make(true);
+    }
+
+
+
+    /**
+     * @param Request $request
+     *
+     * get demandes having decision a traiter
+     * @return mixed
+     */
+
+
+    public function getDemandesATraiter(Request $request)
+    {
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis')->where([['decision', '=', 'a_traiter'],['etat','=','sans'],['is_affecter','=',0]]);
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($demandes)
+                ->addColumn('communes', function (Demande $demande) {
+                    return $demande->communes->map(function ($commune) {
+                        return str_limit($commune->nom_fr, 15, '...');
+                    })->implode(',');
+                })
+                ->addColumn('porteur', function (Demande $demande) {
                     return $demande->porteur ? str_limit($demande->porteur->nom_porteur_fr, 30, '...') : '';
                 })
 
@@ -142,14 +310,17 @@ class DemandesController extends BaseController
                 })
 
 
-                //->addColumn('session', function (Demande $demande) {
-                  //  return $demande->session ? str_limit($demande->session->nom, 30, '...') : '';
-                //})
+                ->addColumn('session', function (Demande $demande) {
+                    return $demande->session ? str_limit($demande->session->nom, 30, '...') : '';
+                })
 
                 ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
+                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_a_traiter" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
                 })
-                ->rawColumns(['checkbox'])
+                ->addColumn('num_ordre', function ($demandes) {
+                    return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
+                })
+                ->rawColumns(['checkbox','num_ordre'])
                 ->editColumn('id', '{{$id}}')
                 ->setRowClass(function ($demandes) {
                     return 'center-data';
@@ -187,22 +358,24 @@ class DemandesController extends BaseController
         }
 
         //filter with session
-       /* if ($session_id = $request->get('session')) {
+        if ($session_id = $request->get('session')) {
             if ($session_id == "all") {
             } else {
-                $demandes->where('session_id', '=', $session_id);
+                $demandes->where('mois', '=', $session_id);
             }
-        }*/
+        }
 
         //filter with daterange
         if ($daterange = $request->get('daterange')) {
             $daterange_splite = explode('-', $daterange);
             $date_start = $daterange_splite[0];
-
+            $date_start_formatted = date("Y-m-d", strtotime($date_start));
             $date_end = $daterange_splite[1];
+            $date_end_formatted = date("Y-m-d", strtotime($date_end));
+
             $demandes->where([
-                ['date_reception', '>=', trim($date_start)],
-                ['date_reception', '<=', trim($date_end)],
+                ['date_reception', '>=', trim($date_start_formatted)],
+                ['date_reception', '<=', trim($date_end_formatted)],
             ]);
 
         }
@@ -218,6 +391,128 @@ class DemandesController extends BaseController
         }
         return $datatables->make(true);
     }
+
+
+
+    /**
+     * @param Request $request
+     * @return datatables of elements from database having 'decision' = 'accord_definitif'
+     */
+
+
+    public function getDemandesAccordDefinitif(Request $request)
+    {
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis')->where([['decision', '=', 'accord_definitif'],['etat','=','sans'],['is_affecter','=',0]]);
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($demandes)
+                ->addColumn('communes', function (Demande $demande) {
+                    return $demande->communes->map(function ($commune) {
+                        return str_limit($commune->nom_fr, 15, '...');
+                    })->implode(',');
+                })
+                ->addColumn('porteur', function (Demande $demande) {
+                    return $demande->porteur ? str_limit($demande->porteur->nom_porteur_fr, 30, '...') : '';
+                })
+
+                ->addColumn('interventions', function (Demande $demande) {
+                    return $demande->interventions->map(function ($intervention) {
+                        return str_limit($intervention->nom, 30, '...');
+                    })->implode(',');
+                })
+                // i should have access to show parntenaire type name for every partenaire
+
+                ->addColumn('partenaires', function (Demande $demande) {
+                    return $demande->partenaires->map(function ($partenaire) {
+                        return str_limit($partenaire->nom_fr, 30, '...');
+                    })->implode(',');
+                })
+
+                ->addColumn('montantCP', function (Demande $demande) {
+
+                    return $demande->partenaires->map(function ($partenaire) {
+                        if ($partenaire->id == 1) {
+                            return str_limit($partenaire->pivot->montant, 30, '...');
+                        }
+                    })->implode(' ');
+
+
+                })
+
+
+                ->addColumn('checkbox', function ($demandes) {
+                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_accord_definitif" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
+                })
+                ->addColumn('num_ordre', function ($demandes) {
+                    return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
+                })
+                ->rawColumns(['checkbox','num_ordre'])
+                ->editColumn('id', '{{$id}}')
+                ->setRowClass(function ($demandes) {
+                    return 'center-data';
+                });
+        }
+
+        //filter with communes
+        if ($communes_id = $request->get('communes')) {
+            if ($communes_id == "all") {
+            } else {
+                $demandes->whereHas('communes', function ($query) use ($communes_id) {
+                    $query->where('communes.id', '=', $communes_id);
+                });
+            }
+        }
+
+        //filter with partenaire
+        if ($partenaires_id = $request->get('partenaires')) {
+            if ($partenaires_id == "all") {
+            } else {
+                $demandes->whereHas('partenaires', function ($query) use ($partenaires_id) {
+                    $query->where('partenaires_types.id', '=', $partenaires_id);
+                });
+            }
+        }
+
+        //filter with localites
+        if ($localites = $request->get('localites')) {
+            if ($localites == "all") {
+            } else {
+                $demandes->whereHas('point_desservis', function ($query) use ($localites) {
+                    $query->where('point_desservis.nom_fr', '=', $localites);
+                });
+            }
+        }
+
+        //filter with session
+        if ($session_id = $request->get('session')) {
+            if ($session_id == "all") {
+            } else {
+                $demandes->where('session_id', '=', $session_id);
+            }
+        }
+
+        //filter with daterange
+        if ($daterange = $request->get('daterange')) {
+            $daterange_splite = explode('-', $daterange);
+            $date_start = $daterange_splite[0];
+            $date_end = $daterange_splite[1];
+            $demandes->where([
+                ['date_reception', '>=', trim($date_start)],
+                ['date_reception', '<=', trim($date_end)],
+            ]);
+        }
+
+        //filter with intervention
+        if ($interventions_id = $request->get('interventions')) {
+            if ($interventions_id == "all") {
+            } else {
+                $demandes->whereHas('interventions', function ($query) use ($interventions_id) {
+                    $query->where('interventions.id', '=', $interventions_id);
+                });
+            }
+        }
+        return $datatables->make(true);
+    }
+
 
     /**
      * Fetch the datatabase for demande having is_affecte = 1
@@ -339,125 +634,7 @@ class DemandesController extends BaseController
     }
 
 
-    /**
-     * @param Request $request
-     * @return datatables of elements from database having 'decision' = 'accord_definitif'
-     */
 
-
-    public function getDemandesAccordDefinitif(Request $request)
-    {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['decision', '=', 'accord_definitif'], ['etat', '=', 'sans']]);
-        if ($request->ajax()) {
-            $datatables = DataTables::eloquent($demandes)
-                ->addColumn('communes', function (Demande $demande) {
-                    return $demande->communes->map(function ($commune) {
-                        return str_limit($commune->nom_fr, 15, '...');
-                    })->implode(',');
-                })
-                ->addColumn('porteur', function (Demande $demande) {
-                    return $demande->porteur ? str_limit($demande->porteur->nom_porteur_fr, 30, '...') : '';
-                })
-
-                ->addColumn('interventions', function (Demande $demande) {
-                    return $demande->interventions->map(function ($intervention) {
-                        return str_limit($intervention->nom, 30, '...');
-                    })->implode(',');
-                })
-                // i should have access to show parntenaire type name for every partenaire
-
-                ->addColumn('partenaires', function (Demande $demande) {
-                    return $demande->partenaires->map(function ($partenaire) {
-                        return str_limit($partenaire->nom_fr, 30, '...');
-                    })->implode(',');
-                })
-
-                ->addColumn('montantCP', function (Demande $demande) {
-
-                    return $demande->partenaires->map(function ($partenaire) {
-                        if ($partenaire->id == 1) {
-                            return str_limit($partenaire->pivot->montant, 30, '...');
-                        }
-                    })->implode(' ');
-
-
-                })
-
-
-                ->addColumn('session', function (Demande $demande) {
-                    return $demande->session ? str_limit($demande->session->nom, 30, '...') : '';
-                })
-
-                ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_accord_definitif" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
-                })
-                ->rawColumns(['checkbox'])
-                ->editColumn('id', '{{$id}}')
-                ->setRowClass(function ($demandes) {
-                    return 'center-data';
-                });
-        }
-
-        //filter with communes
-        if ($communes_id = $request->get('communes')) {
-            if ($communes_id == "all") {
-            } else {
-                $demandes->whereHas('communes', function ($query) use ($communes_id) {
-                    $query->where('communes.id', '=', $communes_id);
-                });
-            }
-        }
-
-        //filter with partenaire
-        if ($partenaires_id = $request->get('partenaires')) {
-            if ($partenaires_id == "all") {
-            } else {
-                $demandes->whereHas('partenaires', function ($query) use ($partenaires_id) {
-                    $query->where('partenaires_types.id', '=', $partenaires_id);
-                });
-            }
-        }
-
-        //filter with localites
-        if ($localites = $request->get('localites')) {
-            if ($localites == "all") {
-            } else {
-                $demandes->whereHas('point_desservis', function ($query) use ($localites) {
-                    $query->where('point_desservis.nom_fr', '=', $localites);
-                });
-            }
-        }
-
-        //filter with session
-        if ($session_id = $request->get('session')) {
-            if ($session_id == "all") {
-            } else {
-                $demandes->where('session_id', '=', $session_id);
-            }
-        }
-
-        //filter with daterange
-        if ($daterange = $request->get('daterange')) {
-            $daterange_splite = explode('-', $daterange);
-            $date_start = $daterange_splite[0];
-            $date_end = $daterange_splite[1];
-            $demandes->where([
-                ['date_reception', '>=', trim($date_start)],
-                ['date_reception', '<=', trim($date_end)],
-            ]);
-        }
-
-        //filter with intervention
-        if ($interventions_id = $request->get('interventions')) {
-            if ($interventions_id == "all") {
-            } else {
-                $demandes->whereHas('interventions', function ($query) use ($interventions_id) {
-                    $query->where('interventions.id', '=', $interventions_id);
-                });
-            }
-        }
-        return $datatables->make(true);
-    }
 
     /**
      * @param Request $request
@@ -700,127 +877,6 @@ class DemandesController extends BaseController
     }
 
 
-    /**
-     * @param Request $request
-     *
-     * get demandes having decision a traiter
-     * @return mixed
-     */
-
-
-    public function getDemandesATraiter(Request $request)
-    {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['decision', '=', 'a_traiter'], ['etat', '=', 'sans']]);
-        if ($request->ajax()) {
-            $datatables = DataTables::eloquent($demandes)
-                ->addColumn('communes', function (Demande $demande) {
-                    return $demande->communes->map(function ($commune) {
-                        return str_limit($commune->nom_fr, 15, '...');
-                    })->implode(',');
-                })
-                ->addColumn('porteur', function (Demande $demande) {
-                    return $demande->porteur ? str_limit($demande->porteur->nom_porteur_fr, 30, '...') : '';
-                })
-
-                ->addColumn('interventions', function (Demande $demande) {
-                    return $demande->interventions->map(function ($intervention) {
-                        return str_limit($intervention->nom, 30, '...');
-                    })->implode(',');
-                })
-                // i should have access to show parntenaire type name for every partenaire
-
-                ->addColumn('partenaires', function (Demande $demande) {
-                    return $demande->partenaires->map(function ($partenaire) {
-                        return str_limit($partenaire->nom_fr, 30, '...');
-                    })->implode(',');
-                })
-
-                ->addColumn('montantCP', function (Demande $demande) {
-
-                    return $demande->partenaires->map(function ($partenaire) {
-                        if ($partenaire->id == 1) {
-                            return str_limit($partenaire->pivot->montant, 30, '...');
-                        }
-                    })->implode(' ');
-
-
-                })
-
-
-                ->addColumn('session', function (Demande $demande) {
-                    return $demande->session ? str_limit($demande->session->nom, 30, '...') : '';
-                })
-
-                ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_a_traiter" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
-                })
-                ->rawColumns(['checkbox'])
-                ->editColumn('id', '{{$id}}')
-                ->setRowClass(function ($demandes) {
-                    return 'center-data';
-                });
-        }
-
-        //filter with communes
-        if ($communes_id = $request->get('communes')) {
-            if ($communes_id == "all") {
-            } else {
-                $demandes->whereHas('communes', function ($query) use ($communes_id) {
-                    $query->where('communes.id', '=', $communes_id);
-                });
-            }
-        }
-
-        //filter with partenaire
-        if ($partenaires_id = $request->get('partenaires')) {
-            if ($partenaires_id == "all") {
-            } else {
-                $demandes->whereHas('partenaires', function ($query) use ($partenaires_id) {
-                    $query->where('partenaires_types.id', '=', $partenaires_id);
-                });
-            }
-        }
-
-        //filter with localites
-        if ($localites = $request->get('localites')) {
-            if ($localites == "all") {
-            } else {
-                $demandes->whereHas('point_desservis', function ($query) use ($localites) {
-                    $query->where('point_desservis.nom_fr', '=', $localites);
-                });
-            }
-        }
-
-        //filter with session
-        if ($session_id = $request->get('session')) {
-            if ($session_id == "all") {
-            } else {
-                $demandes->where('session_id', '=', $session_id);
-            }
-        }
-
-        //filter with daterange
-        if ($daterange = $request->get('daterange')) {
-            $daterange_splite = explode('-', $daterange);
-            $date_start = $daterange_splite[0];
-            $date_end = $daterange_splite[1];
-            $demandes->where([
-                ['date_reception', '>=', trim($date_start)],
-                ['date_reception', '<=', trim($date_end)],
-            ]);
-        }
-
-        //filter with intervention
-        if ($interventions_id = $request->get('interventions')) {
-            if ($interventions_id == "all") {
-            } else {
-                $demandes->whereHas('interventions', function ($query) use ($interventions_id) {
-                    $query->where('interventions.id', '=', $interventions_id);
-                });
-            }
-        }
-        return $datatables->make(true);
-    }
 
     /**
      * Display a listing of the resource.
@@ -839,6 +895,8 @@ class DemandesController extends BaseController
         $interventions = Intervention::all();
         $porteurs = Porteur::all();
 
+        $sourceFincancement = SourceFinancement::all();
+
         $demandes = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session'])->get();
         
         //$demandes = $demandes_collec->toJson();
@@ -851,6 +909,7 @@ class DemandesController extends BaseController
             'porteurs' => $porteurs,
             'sessions' => $sessions,
             'interventions' => $interventions,
+            'sourceFincancement'=> $sourceFincancement
         ]);
     }
 

@@ -4,9 +4,9 @@
 
 
         <div class="table-responsive">
-            <table class="table table-hover table-striped datatables" id="demandes_datatables" style="width:100%">
+            <table class="table table-hover table-striped datatables" id="demandes_datatables" style="width:100% ;" >
                 <thead>
-                <th style="width: 1% !important">#</th>
+                <th style="width: 1% !important"></th>
                 <th style="width: 1% !important">N°ordre</th>
                 <th style="width: 1% !important">D.Réception</th>
                 <th >Objet</th>
