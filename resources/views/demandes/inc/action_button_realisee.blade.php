@@ -1,7 +1,7 @@
 
 <div class="row" style="margin-top: 4px">
     <div class="col-lg-6">
-        
+
     </div>
 
     <div class="col-lg-6">
@@ -16,6 +16,7 @@
         </div>
 
         <a href="{{ route('createDemande') }}" class="btn btn-secondary pull-right" style="margin-right:4px"><i class="fa fa-plus" style="margin-right: 6px"></i>Ajouter
-            une demande</a>
+            une demande
+        </a>
     </div>
 </div>

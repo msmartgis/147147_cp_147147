@@ -18,19 +18,17 @@
                                     <div class="row" style="margin-top: 8px">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                {{Form::hidden('id_porteur',$demande->porteur->id)}}
-                                                {{Form::hidden('nom_porteur_fr_old',$demande->porteur->nom_porteur_fr)}}
-                                                <div class="controls">
-                                                    {{Form::textarea('nom_porteur_fr',$demande->porteur->nom_porteur_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
-                                                </div>
+                                                {{Form::select('porteur_projet', $porteur_projet, $demande->porteur->id,
+                                                [
+                                                'data-placeholder' => 'Selectionner commune(s)',
+                                                'class'=>'form-control select2',
+                                                'name'=>'porteur_projet'
+                                                ]
+                                                )}}
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <div class="controls">
-                                                    {{Form::textarea('nom_porteur_ar',$demande->porteur->nom_porteur_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
-                                                </div>
-                                            </div>
+
                                         </div>
                                     </div>
 
@@ -54,11 +52,11 @@
                                         </div>
                                     </div>
                                     <!-- /.row -->
+                                    <h5>INTERVENTIONS </h5>
+                                    <hr style="color:#2d353c;margin:0">
                                     <div class="row">
                                         <div class="col-12" style="margin-top : 8px">
                                             <div class="form-group">
-                                                {{Form::label('','Interventions:')}}
-
                                                 {{Form::select('interventions', $interventions, $demande->interventions->pluck('id'),
                                                 [
                                                 'data-placeholder' => 'Selectionner commune(s)',
@@ -185,6 +183,52 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    @if($demande->decision == 'accord_definitif' || $demande->is_affecter == '1')
+                                    <div class="row" style="margin-top:8px">
+                                        <h5>MONTAGE FINANCIER PROPOSE</h5>
+                                        <hr style="color:#2d353c;margin-top:0px;margin-bottom: 4px">
+                                        <div class="col-12">
+                                            <table class="table table-hover" style="margin-top: 8px">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Source</th>
+                                                    <th>Reference</th>
+                                                    <th>Montant Total</th>
+                                                </tr>
+                                                <tbody id="table_body_source">
+                                                <tr>
+
+                                                </tr>
+                                                @foreach ($demande->partenaires as $item)
+                                                    <tr>
+                                                        <td style="text-align: center">
+                                                            {{$item->nom_fr}}
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            {{number_format($item->pivot->montant,2)}}
+
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            {{number_format($item->pivot->montant/($demande->montant_global)*100,2)}}
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            <button type="button" class="btn btn-warning delete-partenaire" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                Supprimer</button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                            <div class="col-12" style="text-align: center">
+                                                <a href="#" id="add_source" data-toggle="modal" data-target="#m-add-source-financement">
+                                                    <i class="fa fa-plus"></i>
+                                                    <b>Ajouter Source</b>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -277,7 +321,6 @@
                 <!-- /.box -->
             </div>
         </div>
-
     </div>
     <!-- /.col -->
     <div class="col-lg-2" style="padding-left: 0px !important;">
@@ -296,13 +339,12 @@
                         Accord définitif
                         @break
                         @default
-
                         @endswitch
                     </h5>
 
                     <div class="form-group">
                         {{Form::label('','Demande N°:')}}
-                        {{Form::text('num_ordre',$demande->num_ordre,['class'=>'form-control'])}}
+                        {{Form::text('num_ordre',$demande->num_ordre,['class'=>'form-control','disabled'])}}
                     </div>
                     <div class="form-group">
                         {{Form::label('','Date de récéption:')}}
@@ -340,23 +382,30 @@
 
                     {{Form::submit('Modifier',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
                     {!! Form::close() !!}                    
-                <button type="button" id="affect_aux_convention_btn" data-id="{{$demande->id}}" data-numero="{{$demande->num_ordre}}" class="btn btn-secondary col-12" style="margin-top: 8px !important" @if ($demande->decision != "accord_definitif")
+                <button type="button" data-id="affectationConventionEditBtn_{{$demande->id}}"  id="affectation_conventions_edit_btn" data-numero="{{$demande->num_ordre}}" class="btn btn-secondary col-12" style="margin-top: 8px !important" @if ($demande->decision != "accord_definitif")
                         disabled
                     @endif>Affectation aux conventions</button>
 
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle col-md-12" type="button" data-toggle="dropdown" style="margin-top:8px !important">Décision</button>
                         <div class="dropdown-menu col-md-12">
-                            <a class="dropdown-item" href="#">
-                            <div @if($demande->decision == "a_traiter" || $demande->decision == "en_cours")
-                        id="accord_definitif" 
-                    @endif data-id="{{$demande->id}}"><i class="fa fa-thumbs-up"></i> Accord défintif</div>
-                            </a>
-                            <a class="dropdown-item" href="#" >
-                                <div @if($demande->decision == "accord_definitif" || $demande->decision == "en_cours")
-                        id="a_traiter"
-                    @endif  data-id="{{$demande->id}}"><i class="fa fa-clock-o"></i> A traiter</div>
-                            </a>
+                            <button type="button" data-id="accordDefinitifEditBtn_{{$demande->id}}" id="accord_definitif_edit_btn" class="dropdown-item" href="#">
+                                <div
+                                    @if($demande->decision == "a_traiter" || $demande->decision == "en_cours")
+
+                                    @endif ><i class="fa fa-thumbs-up"></i> Accord défintif
+                                </div>
+                            </button>
+                            <button type="button"  class="dropdown-item" href="#" >
+                                <div
+                                        @if($demande->decision == "accord_definitif" || $demande->decision == "en_cours")
+                                            id="a_traiter"
+                                        @endif
+                                        data-id="{{$demande->id}}">
+                                    <i class="fa fa-clock-o"></i>
+                                    A traiter
+                                </div>
+                            </button>
 
                         </div>
                     </div>

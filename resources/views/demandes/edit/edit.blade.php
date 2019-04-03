@@ -266,16 +266,6 @@ $(document).ready(function () {
         });
     });
 
-    //edite partenaire 
-    // $(document).on('click', '.edit-partenaire', function () {
-    //     var montant_part = ($(this).data('montant'));
-    //     var id_partenaire = ($(this).data('partenaire'));
-    //     //alert(id_partenaire);
-    //     //alert(montant_part);
-    //     $("input[name='montant']").val(montant_part);
-    //     $("#partenaire_type_edit").val(id_partenaire).change();
-    //     $('#m-edite-partenaire').modal('show');
-    // });
 
     //delete partenaire 
 
@@ -362,20 +352,6 @@ $(document).ready(function () {
     });
 
 
-        //affectation aux convention
-         $('#affect_aux_convention_btn').click(function(){        
-            var demande_id = $(this).data('id');
-            var numero_ordre = $(this).data('numero');
-            $('#id_demande_modal_affect').val(demande_id);
-            $('.modal-title').text('Affectation aux conventions la demande numero : ' + numero_ordre);           
-            $('#affecter_aux_cnv').modal('show');          
-                     
-            // message_reussi = "Restauration effectuée avec succès";
-            // message_sub_title = "Restaurer cette demande!!";
-            // url='{!! route('restaurer_demande')!!}';
-            // decision_edit(demande_id,'',url,message_reussi,message_sub_title);
-
-        });
 
 
           //supprimer demande
@@ -464,9 +440,68 @@ function delete_function(id, url, success_message, sub_title_message,redirect) {
         }
     });
 }
+    //accord_defintif
+    $("#accord_definitif_edit_btn").click(function () {
+        id_full = $("#accord_definitif_edit_btn").data('id');
+        id = id_full.split('_').pop();
+        titleModal = "ACCORD DEFINITIF";
+        affectOrAccord = 0;
+        accordAndAffectation_modal_edit_data(id,titleModal ,affectOrAccord);
+    });
 
-    
 
+//affectation aux conventions
+    $("#affectation_conventions_edit_btn").click(function () {
+        id_full = $("#accord_definitif_edit_btn").data('id');
+        id = id_full.split('_').pop();
+        titleModal = "AFECTATION AUX CONVENTIONS";
+        affectOrAccord = 1;
+        accordAndAffectation_modal_edit_data(id,titleModal ,affectOrAccord);
+    });
+
+    //affectation and accord defintitf
+    function accordAndAffectation_modal_edit_data(id,titleModal ,affectOrAccord)
+    {
+
+        $.ajax({
+            url: '/demandes/getDemandeData',
+            type: 'GET',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id : id
+            },
+            dataType: 'JSON',
+            success: function (data) {
+                //console.log(data);
+                $('#table_body_partner').empty();
+                var montant_cp =data.pivot[0].pivot.montant;
+                var montant_global = data.montantGlobal.montant_global;
+                $('#modalTitleAccordAndAffect').text(titleModal);
+                $('#cp_id').val(data.partenaire_id);
+                $('#id_demande_modal_affect').val(data.id.id);
+                $('#montant_g').val(montant_global);
+                $('#affecterORAccord').val(affectOrAccord);
+                $('#montant_cp').val(montant_cp);
+                $("#accordAndAffectModal").modal();
+
+                if(data.pivot_all.length > 0)
+                {
+                    for( i = 0 ; i < data.pivot_all.length ; i++)
+                    {
+                        $('#table_body_partner').append('<tr style="text-align: center">'+
+                            '<td>'+
+                            '<input type="checkbox" name="record" id="row_'+data.pivot_all[i].id+'">'+
+                            '<label for="row_'+data.pivot_all[i].id+'"></label>'+
+                            '</td>'+
+                            '<td><input type="hidden" name="partnenaire_type_ids[]" value="' + data.pivot_all[i].id + '">'+data.pivot_all[i].nom_fr+'</td>'+
+                            '<td><input type="hidden" name="montant[]" value="' + data.pivot_all[i].pivot.montant + '">'+data.pivot_all[i].pivot.montant+'</td>'+
+                            '<td><input type="hidden" name="pourcentage[]" value="' +(data.pivot_all[i].pivot.montant)/montant_global*100+ '">'+(data.pivot_all[i].pivot.montant)/montant_global*100+'</td>'+
+                            '</tr>');
+                    }
+                }
+            }
+        });
+    }
 });
 
 </script>

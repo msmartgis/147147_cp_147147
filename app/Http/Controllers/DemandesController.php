@@ -711,8 +711,6 @@ class DemandesController extends BaseController
     }
 
 
-
-
     /**
      * @param Request $request
      *
@@ -833,7 +831,6 @@ class DemandesController extends BaseController
     }
 
 
-
     /**
      * @param Request $request
      *
@@ -952,7 +949,6 @@ class DemandesController extends BaseController
         }
         return $datatables->make(true);
     }
-
 
 
     /**
@@ -1181,15 +1177,15 @@ class DemandesController extends BaseController
      */
     public function edit(Demande $demande)
     {
-
         $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
         $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $pieces = Piece::orderBy('type')->pluck('type');
         $moas = Moa::all();
         $partenaires_types = PartenaireType::all();
         $sourceFincancement = SourceFinancement::all();
+        $porteur_projet = Porteur::orderBy('nom_porteur_fr')->pluck('nom_porteur_fr', 'id');
         $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
-        $demande = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session', 'piece'])->find($demande->id);
+        $demande = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session', 'piece','sourceFinancement'])->find($demande->id);
 
 
         //return $demande;
@@ -1200,7 +1196,8 @@ class DemandesController extends BaseController
             'partenaires_types' => $partenaires_types,
             'moas' => $moas,
             'communes' => $communes,
-            'sourceFincancement' => $sourceFincancement
+            'sourceFincancement' => $sourceFincancement,
+            'porteur_projet' => $porteur_projet
         ]);
     }
 
@@ -1215,12 +1212,14 @@ class DemandesController extends BaseController
     {
         //$request->validate($request, ['num_ordre' => 'required']);
         $demande_to_update = Demande::find($demande->id);
+        $demande_to_update->porteur_projet_id = $request->porteur_projet;
         $demande_to_update->objet_fr = $request->objet_fr;
         $demande_to_update->objet_ar = $request->objet_ar;
         $demande_to_update->observation = $request->observation;
         $date_formatted = str_replace("/",'-',$request->date_reception);
-
         $demande_to_update->date_reception = Carbon::parse($date_formatted)->format('Y-m-d');
+
+        //return  $request->porteur_projet;
         $demande_to_update->save();
 
 
@@ -1235,14 +1234,6 @@ class DemandesController extends BaseController
         Piste::where('id', $request->id_pist)
             ->update(['longueur' => $request->longueur]);
 
-        
-        //update porteur    
-        Porteur::where('id', $request->id_porteur)
-            ->update(['nom_porteur_fr' => $request->nom_porteur_fr, 'nom_porteur_ar' => $request->nom_porteur_ar]);
-
-         //update porteur in partenaire table too , because porteur can be a partenaire 
-        PartenaireType::where('nom_fr', $request->nom_porteur_fr_old)
-            ->update(['nom_fr' => $request->nom_porteur_fr, 'nom_ar' => $request->nom_porteur_ar]); 
 
          //update localites
         $localites_ids = Input::get('localites');

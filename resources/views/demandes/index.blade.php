@@ -260,6 +260,8 @@
     }
 
 
+
+
     //affectation and accord defintitf
     function accordAndAffectation_modal_data(modalTitle,datatable,nameCheckbox,affectOrAccord)
     {
