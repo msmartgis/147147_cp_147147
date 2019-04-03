@@ -1,6 +1,6 @@
+var demandeAccordDefintifTable;
 $(document).ready(function () {
-
-    var oTable_accord_definitif = $('#demandes_datatables_accord_definitif').DataTable({
+    demandeAccordDefintifTable = $('#demandes_datatables_accord_definitif').DataTable({
         processing: true,
         serverSide: true,
         language: {
@@ -108,23 +108,51 @@ $(document).ready(function () {
         }
     });
 
+    demandeAccordDefintifTable.on('draw', function () {
+        checked = false;
+        $('#demandes_datatables_accord_definitif :input[type="checkbox"]').change(function() {
+            number_checked = $('#demandes_datatables_accord_definitif :input[type="checkbox"]:checked').length;
+
+            if(number_checked === 0)
+            {
+                $('.multiple-choice-accord-definitif,.unique-choice-accord-definitif').attr('disabled', true);
+            }
+
+            if(number_checked === 1)
+            {
+                $('.unique-choice-accord-definitif,.multiple-choice-accord-definitif').removeAttr("disabled");
+            }
+
+            if(number_checked > 1)
+            {
+                $('.multiple-choice-accord-definitif').removeAttr('disabled');
+                $('.unique-choice-accord-definitif').attr('disabled', true);
+            }
+        });
+    } );
+
 
     $('#communes_filter_accord_definitif,#intervention_filter_accord_definitif,#partenaires_filter_accord_definitif,#localites_filter_accord_definitif,#reservation_filter_accord_definitif').on('change paste keyup', function (e) {
-        oTable_accord_definitif.draw();
+        demandeAccordDefintifTable.draw();
         e.preventDefault();
     });
 
+    //Affectation aux conventions
+    $("#affecter_btn_accord_definitif").click(function () {
+        datatbleId = "demandes_datatables_accord_definitif";
+        nameCheckbox = "checkbox_accord_definitif";
+        titleModal = "AFFECTER AUX CONVENTIONS";
+        affectOrAccord = 1;
+        accordAndAffectation_modal_data(titleModal,datatbleId ,nameCheckbox,affectOrAccord);
+    });
 
 
-
-    $("#restaurer_accord_definitif").click(function () {
+    $("#restaurer_acccord_definitif_btn").click(function () {
         url = "demandes/restaurer";
         datatble_id = "demandes_datatables_accord_definitif";
         name_chechbox = "checkbox_accord_definitif";
         method = "POST";
         decision_function(datatble_id, name_chechbox, url, method);
     });
-
-
 
 });

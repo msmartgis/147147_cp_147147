@@ -9,7 +9,7 @@ class Demande extends Model
 {
     protected $fillable = ['num_ordre', 'date_reception', 'objet_fr', 'objet_ar', 'montant_global', 'observation', 'decision', 'etat', 'is_affecter', ''];
     use SoftDeletes;
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at','date_reception'];
 
     public function communes()
     {
@@ -59,7 +59,7 @@ class Demande extends Model
 
     public function sourceFinancement()
     {
-        return $this->belongsToMany('App\SourceFinancement', 'sourcefinancement_demande')->withPivot('montant')->withTimestamps();
+        return $this->belongsToMany('App\SourceFinancement', 'sourcefinancement_demande','demande_id', 'sourceFinancement_id')->withPivot('montant')->withTimestamps();
     }
 
 

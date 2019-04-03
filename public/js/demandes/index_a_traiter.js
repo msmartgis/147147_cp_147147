@@ -1,10 +1,12 @@
+var demandeATaiterTable;
 $(document).ready(function () {
-    var oTable = $('#demandes_datatables_a_traiter').DataTable({
+     demandeATaiterTable = $('#demandes_datatables_a_traiter').DataTable({
         processing: true,
         serverSide: true,
         language: {
+            search: '', searchPlaceholder: 'Recherche...',
             url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json",
-            processing: "<img src='{{asset('images/logo.png')}}'>",
+            processing: '<img src="{{asset("images/logo.png")}}">',
         },
         ajax: {
             url: 'demandes/tab_a_traiter',
@@ -108,22 +110,41 @@ $(document).ready(function () {
         }
     });
 
+    demandeATaiterTable.on('draw', function () {
+        checked = false;
+        $('#demandes_datatables_a_traiter :input[type="checkbox"]').change(function() {
+            number_checked = $('#demandes_datatables_a_traiter :input[type="checkbox"]:checked').length;
+            if(number_checked === 0)
+            {
+                $('.multiple-choice-a-traiter,.unique-choice-a-traiter').attr('disabled', true);
+            }
+
+            if(number_checked === 1)
+            {
+                $('.unique-choice-a-traiter,.multiple-choice-a-traiter').removeAttr("disabled");
+            }
+
+            if(number_checked > 1)
+            {
+                $('.multiple-choice-a-traiter').removeAttr('disabled');
+                $('.unique-choice-a-traiter').attr('disabled', true);
+            }
+        });
+    } );
+
 
     $('#communes_filter_a_traiter,#intervention_filter_a_traiter,#partenaires_filter_a_traiter,#localites_filter_a_traiter,#reservation_a_traiter').on('change paste keyup', function (e) {
-        oTable.draw();
+        demandeATaiterTable.draw();
         e.preventDefault();
     });
 
 
     //effecter
-    $("#accord_definitif_btn_a_traiter_tab").click(function () {
-
-        url = "demandes/accord_definitif";
-        datatble_id = "demandes_datatables_a_traiter";
-        name_chechbox = "checkbox_a_traiter";
-        method = "POST";
-
-        decision_function(datatble_id, name_chechbox, url, method);
+    $("#accord_definitif_btn_a_traiter").click(function () {
+        datatbleId = "demandes_datatables_a_traiter";
+        nameCheckbox = "checkbox_a_traiter";
+        titleModal = "ACCORD DEFINITIF";
+        accordAndAffectation_modal_data(titleModal,datatbleId ,nameCheckbox);
     });
 
 

@@ -1,7 +1,6 @@
 
 {!! Form::model($demande, ['route' => ['demande.update', $demande->id],'method' => 'PUT']) !!}
 
-
 <div class="row">
     <div class="col-lg-10">
         <div class="row">
@@ -70,10 +69,7 @@
                                                 )}}
                                             </div>
                                         </div>
-
                                     </div>
-
-
 
                                     <div class="row">
                                         <div class="col-12" style="margin-top : 8px">
@@ -130,17 +126,17 @@
                                                     @endforeach
 
                                                     <tr>
-                                                        <td colspan="4" style="text-align: center">
-                                                            <a href="#" data-toggle="modal" data-target="#add_modal_piece"> <i class="fa fa-plus"></i>
-                                                                <b> Ajouter Pièce</b> </a>
-                                                        </td>
+
                                                     </tr>
                                                     </tbody>
-
                                                 </table>
+                                                <div style="text-align: center">
+                                                    <a href="#" data-toggle="modal" data-target="#add_modal_piece"> <i class="fa fa-plus"></i>
+                                                        <b> Ajouter Pièce</b> </a>
+                                                </div>
+
                                             </div>
                                         </div>
-
                                     </div>
 
 
@@ -175,22 +171,20 @@
                                                             </td>
                                                         </tr>
                                                     @endforeach
-
                                                     <tr>
-                                                        <td colspan="4" style="text-align: center"><a href="#" data-toggle="modal"
-                                                                                                      data-target="#m-add-partenaire-edit"> <i class="fa fa-plus"></i>
-                                                                <b> Ajouter Partenaire</b> </a>
-                                                        </td>
+
                                                     </tr>
                                                     </tbody>
-
                                                 </table>
+                                                <div style="text-align: center">
+                                                    <a href="#" data-toggle="modal"
+                                                       data-target="#m-add-partenaire-edit"> <i class="fa fa-plus"></i>
+                                                        <b> Ajouter Partenaire</b>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-
                                     </div>
-
-
                                 </div>
                             </div>
 

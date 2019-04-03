@@ -40,16 +40,10 @@ class DemandesController extends BaseController
 
     public function getDemandeData(Request $req)
     {
-       /*$demande = Demande::with('partenaires')
-           ->wherePivot
-           ->whereHas('partenaires', function($q) {
-               $q->where('partenaire_demande.partenaire_id', '=', 1);
-           })
-           ->get();*/
-
-       $montant_global = Demande::find($req->id,['montant_global']);
-
-       $demande = Demande::find($req->id);
+        $partenaire_id = PartenaireType::where('nom_fr','CP')->first()->id;
+        $montant_global = Demande::find($req->id,['montant_global']);
+        $demande_id = Demande::find($req->id,['id']);
+        $demande = Demande::find($req->id);
 
         $pivot_all =  $demande->partenaires()
             ->get();
@@ -57,9 +51,8 @@ class DemandesController extends BaseController
        $pivot =  $demande->partenaires()->where('partenaire_id','=',1)
            ->get();
 
-       return response()->json(['montantGlobal'=>$montant_global,'pivot'=>$pivot,'pivot_all' => $pivot_all]);
+       return response()->json(['id'=>$demande_id,'montantGlobal'=>$montant_global,'partenaire_id'=>$partenaire_id,'pivot'=>$pivot,'pivot_all' => $pivot_all]);
     }
-
 
 
 
@@ -89,38 +82,110 @@ class DemandesController extends BaseController
         return response()->json();
     }
 
+    /**
+     * get the data from modal form
+     *
+     * verify if it's n 'accord ' or 'affectation'
+     *
+     * if it's an 'affectation' create new convention and  new project
+     *
+     * @return the success message and redirect
+     */
+
     public function accordOrAffectation(Request $request)
     {
-        $is_affectation =  (int)$request->affecter;
-
-        //accord definitif
-        if($is_affectation === 0)
+        $demande = Demande::find($request->id);
+        if($request->affecter == '0')
         {
-            return $request->id;
-            //update pistes
-           // Demande::where('id', $request->id)
-             //   ->update(['montant_global' => $request->montant_global]);
+            //update demande
+            Demande::where('id', $request->id)
+                 ->update(['montant_global' => $request->montant_global]);
 
 
+            //update decision
+            Demande::where('id', $request->id)
+                ->update(['decision' => 'accord_definitif']);
+
+
+            //update montant cp
+            $demande->partenaires()->updateExistingPivot($request->cp_id,array('montant' =>$request->montant_cp));
+
+            //insert source de finacnement *****
+            if (Input::has('source_financement_ids') !== null) {
+                $source_financement_ids = (array)Input::get('source_financement_ids');
+                //return $source_financement_ids;
+                $montant_source = (array)Input::get('montant_source');
+                for ($i = 0; $i < count($source_financement_ids); $i++) {
+                    $demande->sourceFinancement()->attach($source_financement_ids[$i], ['montant' => $montant_source[$i]]);
+                }
+            }
+
+            //update partenaires
+            //$demande->partenaires()->updateExistingPivot($request->cp_id,array('montant' =>$request->montant_cp));
+
+            if (Input::has('partnenaire_type_ids') !== null) {
+                $partnenaire_type_ids = (array)Input::get('partnenaire_type_ids');
+                //return $source_financement_ids;
+                $montant = (array)Input::get('montant');
+                $pivotData = array();
+                for ($i = 0; $i < count($partnenaire_type_ids); $i++) {
+                    array_push($pivotData,['montant' => $montant[$i]]);
+                }
+
+                $syncData = array_combine($partnenaire_type_ids,$pivotData);
+                $demande->partenaires()->sync($syncData);
+            }
+
+            return redirect('/demande')->with('success', 'Accord definititf  avec succès');
         }
 
         //affectation aux convntion
-        if($is_affectation === 1)
+        if($request->affecter == '1')
         {
-            return 'affectation '.$request->id;
             $convention_id = Convention::max('id') + 1;
-            $numero_ordre_cnv = Convention::max('num_ordre') + 1;
+            //$numero_ordre_cnv = Convention::max('num_ordre') + 1;
             $convention = new Convention;
             $projet = new Projet;
+
+
             $demande = Demande::find($request->id);
             //update demande is_affecter
             DB::table('demandes')
                 ->where('id', $demande->id)
                 ->update(['is_affecter' => 1, 'decision' => 'affecter', 'etat' => 'sans']);
 
+            //update partenaires
+            //$demande->partenaires()->updateExistingPivot($request->cp_id,array('montant' =>$request->montant_cp));
+
+            if (Input::has('partnenaire_type_ids') !== null) {
+                $partnenaire_type_ids = (array)Input::get('partnenaire_type_ids');
+                //return $source_financement_ids;
+                $montant = (array)Input::get('montant');
+                $pivotData = array();
+                for ($i = 0; $i < count($partnenaire_type_ids); $i++) {
+                    array_push($pivotData,['montant' => $montant[$i]]);
+                }
+
+                $syncData = array_combine($partnenaire_type_ids,$pivotData);
+                $demande->partenaires()->sync($syncData);
+            }
+
+            //update montant cp
+            $demande->partenaires()->updateExistingPivot($request->cp_id,array('montant' =>$request->montant_cp));
+
+            //insert source de finacnement *****
+            if (Input::has('source_financement_ids') !== null) {
+                $source_financement_ids = (array)Input::get('source_financement_ids');
+                //return $source_financement_ids;
+                $montant_source = (array)Input::get('montant_source');
+                for ($i = 0; $i < count($source_financement_ids); $i++) {
+                    $demande->sourceFinancement()->attach($source_financement_ids[$i], ['montant' => $montant_source[$i]]);
+                }
+            }
+
             $montant_cnv = $request->montant_global;
             $convention->demande_id = $demande->id;
-            $convention->num_ordre = $numero_ordre_cnv;
+            //$convention->num_ordre = $numero_ordre_cnv;
             $convention->montant_global = $montant_cnv;
             $convention->save();
 
@@ -134,10 +199,10 @@ class DemandesController extends BaseController
             $projet->convention_id = $convention_id;
             $projet->montant_global = $montant_cnv;
             $projet->save();
-            return redirect('/demandes')->with('success', 'Demande affectée aux conventions avec succès');
+            return redirect('/demande')->with('success', 'Demande affectée aux conventions avec succès');
         }
 
-        //return $demande;
+
     }
 
     //get demandes en cours for index tab en_cours datatables
@@ -149,7 +214,7 @@ class DemandesController extends BaseController
                 ->addColumn('communes', function (Demande $demande) {
                     return $demande->communes->map(function ($commune) {
                         return str_limit($commune->nom_fr, 15, '...');
-                    })->implode(',');
+                    })->implode(', ');
                 })
                 ->addColumn('porteur', function ($demande) {
                     return $demande->porteur ? str_limit($demande->porteur->nom_porteur_fr, 30, '...') : '';
@@ -158,14 +223,14 @@ class DemandesController extends BaseController
                 ->addColumn('interventions', function (Demande $demande) {
                     return $demande->interventions->map(function ($intervention) {
                         return str_limit($intervention->nom, 30, '...');
-                    })->implode(',');
+                    })->implode(', ');
                 })
                 // i should have access to show parntenaire type name for every partenaire
 
                 ->addColumn('partenaires', function (Demande $demande) {
                     return $demande->partenaires->map(function ($partenaire) {
                         return str_limit($partenaire->nom_fr, 30, '...');
-                    })->implode(',');
+                    })->implode(', ');
                 })
 
                 ->addColumn('montantCP', function (Demande $demande) {
@@ -180,12 +245,16 @@ class DemandesController extends BaseController
 
 
                 ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
+                    return '<input type="checkbox" id="demandeEnCoursCb_' . $demandes->id . '" name="checkbox" class="demande-en-cours-checkbox" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="demandeEnCoursCb_' . $demandes->id . '" class="block" ></label>';
                 })
 
 
                 ->addColumn('num_ordre', function ($demandes) {
                     return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
+                })
+
+                ->addColumn('date_reception', function ($demandes) {
+                    return $demandes->date_reception->format('d-m-Y');
                 })
                 ->rawColumns(['checkbox','num_ordre'])
 
@@ -279,7 +348,7 @@ class DemandesController extends BaseController
                 ->addColumn('communes', function (Demande $demande) {
                     return $demande->communes->map(function ($commune) {
                         return str_limit($commune->nom_fr, 15, '...');
-                    })->implode(',');
+                    })->implode(', ');
                 })
                 ->addColumn('porteur', function (Demande $demande) {
                     return $demande->porteur ? str_limit($demande->porteur->nom_porteur_fr, 30, '...') : '';
@@ -288,14 +357,14 @@ class DemandesController extends BaseController
                 ->addColumn('interventions', function (Demande $demande) {
                     return $demande->interventions->map(function ($intervention) {
                         return str_limit($intervention->nom, 30, '...');
-                    })->implode(',');
+                    })->implode(', ');
                 })
                 // i should have access to show parntenaire type name for every partenaire
 
                 ->addColumn('partenaires', function (Demande $demande) {
                     return $demande->partenaires->map(function ($partenaire) {
                         return str_limit($partenaire->nom_fr, 30, '...');
-                    })->implode(',');
+                    })->implode(', ');
                 })
 
                 ->addColumn('montantCP', function (Demande $demande) {
@@ -315,7 +384,10 @@ class DemandesController extends BaseController
                 })
 
                 ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_a_traiter" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
+                    return '<input type="checkbox" id="demandeATraiterCb_' . $demandes->id . '" name="checkbox_a_traiter" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="demandeATraiterCb_' . $demandes->id . '" class="block" ></label>';
+                })
+                ->addColumn('date_reception', function ($demandes) {
+                    return $demandes->date_reception->format('d-m-Y');
                 })
                 ->addColumn('num_ordre', function ($demandes) {
                     return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
@@ -393,7 +465,6 @@ class DemandesController extends BaseController
     }
 
 
-
     /**
      * @param Request $request
      * @return datatables of elements from database having 'decision' = 'accord_definitif'
@@ -408,7 +479,7 @@ class DemandesController extends BaseController
                 ->addColumn('communes', function (Demande $demande) {
                     return $demande->communes->map(function ($commune) {
                         return str_limit($commune->nom_fr, 15, '...');
-                    })->implode(',');
+                    })->implode(', ');
                 })
                 ->addColumn('porteur', function (Demande $demande) {
                     return $demande->porteur ? str_limit($demande->porteur->nom_porteur_fr, 30, '...') : '';
@@ -417,14 +488,14 @@ class DemandesController extends BaseController
                 ->addColumn('interventions', function (Demande $demande) {
                     return $demande->interventions->map(function ($intervention) {
                         return str_limit($intervention->nom, 30, '...');
-                    })->implode(',');
+                    })->implode(', ');
                 })
                 // i should have access to show parntenaire type name for every partenaire
 
                 ->addColumn('partenaires', function (Demande $demande) {
                     return $demande->partenaires->map(function ($partenaire) {
                         return str_limit($partenaire->nom_fr, 30, '...');
-                    })->implode(',');
+                    })->implode(', ');
                 })
 
                 ->addColumn('montantCP', function (Demande $demande) {
@@ -440,10 +511,13 @@ class DemandesController extends BaseController
 
 
                 ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_accord_definitif" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
+                    return '<input type="checkbox" id="demandeAccordDefinitifCb_' . $demandes->id . '" name="checkbox_accord_definitif" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="demandeAccordDefinitifCb_' . $demandes->id . '" class="block" ></label>';
                 })
                 ->addColumn('num_ordre', function ($demandes) {
                     return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
+                })
+                ->addColumn('date_reception', function ($demandes) {
+                    return $demandes->date_reception->format('d-m-Y');
                 })
                 ->rawColumns(['checkbox','num_ordre'])
                 ->editColumn('id', '{{$id}}')
@@ -527,7 +601,7 @@ class DemandesController extends BaseController
                 ->addColumn('communes', function (Demande $demande) {
                     return $demande->communes->map(function ($commune) {
                         return str_limit($commune->nom_fr, 15, '...');
-                    })->implode(',');
+                    })->implode(', ');
                 })
                 ->addColumn('porteur', function (Demande $demande) {
                     return $demande->porteur ? str_limit($demande->porteur->nom_porteur_fr, 30, '...') : '';
@@ -536,14 +610,14 @@ class DemandesController extends BaseController
                 ->addColumn('interventions', function (Demande $demande) {
                     return $demande->interventions->map(function ($intervention) {
                         return str_limit($intervention->nom, 30, '...');
-                    })->implode(',');
+                    })->implode(', ');
                 })
                 // i should have access to show parntenaire type name for every partenaire
 
                 ->addColumn('partenaires', function (Demande $demande) {
                     return $demande->partenaires->map(function ($partenaire) {
                         return str_limit($partenaire->nom_fr, 30, '...');
-                    })->implode(',');
+                    })->implode(', ');
                 })
 
                 ->addColumn('montantCP', function (Demande $demande) {
@@ -563,7 +637,10 @@ class DemandesController extends BaseController
                 })
 
                 ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_affectees" value="' . $demandes->id . '" data-id="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
+                    return '<input type="checkbox" id="demandeAffecteCb_' . $demandes->id . '" name="checkbox_affectees" value="' . $demandes->id . '" data-id="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="demandeAffecteCb_' . $demandes->id . '" class="block" ></label>';
+                })
+                ->addColumn('date_reception', function ($demandes) {
+                    return $demandes->date_reception->format('d-m-Y');
                 })
                 ->rawColumns(['checkbox'])
                 ->editColumn('id', '{{$id}}')
@@ -645,7 +722,7 @@ class DemandesController extends BaseController
 
     public function getDemandesRealisee(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where('etat', '=', 'realise');
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['decision','=','sans'],['etat','=','realisee'],['is_affecter','=',0]]);
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -680,12 +757,12 @@ class DemandesController extends BaseController
 
 
                 })
-                ->addColumn('session', function (Demande $demande) {
-                    return $demande->session ? str_limit($demande->session->nom, 30, '...') : '';
+                ->addColumn('date_reception', function ($demandes) {
+                    return $demandes->date_reception->format('d-m-Y');
                 })
 
                 ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_realisee" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
+                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_programmee" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
                 })
                 ->rawColumns(['checkbox'])
                 ->editColumn('id', '{{$id}}')
@@ -766,7 +843,7 @@ class DemandesController extends BaseController
 
     public function getDemandesProgrammee(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where('etat', '=', 'programme');
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['decision','=','sans'],['etat','=','programmee'],['is_affecter','=',0]]);
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -801,8 +878,8 @@ class DemandesController extends BaseController
 
 
                 })
-                ->addColumn('session', function (Demande $demande) {
-                    return $demande->session ? str_limit($demande->session->nom, 30, '...') : '';
+                ->addColumn('date_reception', function ($demandes) {
+                    return $demandes->date_reception->format('d-m-Y');
                 })
 
                 ->addColumn('checkbox', function ($demandes) {
@@ -978,8 +1055,9 @@ class DemandesController extends BaseController
 
         $demande->num_ordre = $request->input('num_ordre');
         //formating date time
-        $date_formatted = str_replace("/",'-',$request->date_reception);
-        $demande->date_reception = $date_formatted->format('Y-m-d');
+        $date_to_time = strtotime(str_replace("/",'-',$request->date_reception));
+        $date_formatted = date('Y-m-d',$date_to_time);
+        $demande->date_reception = $date_formatted;
         $demande->objet_fr = $request->input('objet_fr');
         $demande->objet_ar = $request->input('objet_ar');
         $demande->montant_global = $request->input('montant_global');
@@ -1109,6 +1187,7 @@ class DemandesController extends BaseController
         $pieces = Piece::orderBy('type')->pluck('type');
         $moas = Moa::all();
         $partenaires_types = PartenaireType::all();
+        $sourceFincancement = SourceFinancement::all();
         $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
         $demande = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session', 'piece'])->find($demande->id);
 
@@ -1120,7 +1199,8 @@ class DemandesController extends BaseController
             'localites' => $localites,
             'partenaires_types' => $partenaires_types,
             'moas' => $moas,
-            'communes' => $communes
+            'communes' => $communes,
+            'sourceFincancement' => $sourceFincancement
         ]);
     }
 

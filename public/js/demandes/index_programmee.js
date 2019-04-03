@@ -7,7 +7,7 @@ $(document).ready(function () {
             processing: "<img src='{{asset('images/logo.png')}}'>",
         },
         ajax: {
-            url: 'demande/tab_programmee',
+            url: 'demandes/tab_programmee',
             type: 'GET',
             data: function (d) {
                 d.communes = $('select[name=communes_programmee]').val();
@@ -17,10 +17,8 @@ $(document).ready(function () {
                 d.localites = $('select[name=localites_programmee]').val();
                 d.daterange = $('input[name=daterange_programmee]').val();
             }
-
         },
         columnDefs: [
-
             {
                 width: 20,
                 targets: 1
@@ -94,14 +92,6 @@ $(document).ready(function () {
                 name: 'montantCP',
                 orderable: true,
                 searchable: true
-            },
-
-
-            {
-                data: 'session',
-                name: 'session.nom',
-                orderable: true,
-                searchable: true
             }
         ],
         initComplete: function () {
@@ -117,7 +107,7 @@ $(document).ready(function () {
     });
 
 
-    $('#communes_filter_programmee,#session_filter_programmee,#intervention_filter_programmee,#partenaires_filter_programmee,#localites_filter_programmee,#reservation_programmee').on('change paste keyup', function (e) {
+    $('#communes_filter_programmee,#intervention_filter_programmee,#partenaires_filter_programmee,#localites_filter_programmee,#reservation_programmee').on('change paste keyup', function (e) {
 
         oTable_programmee.draw();
         e.preventDefault();

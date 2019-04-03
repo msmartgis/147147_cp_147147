@@ -1,8 +1,6 @@
 <div class="tab-pane active" id="en_cours_tab" role="tabpanel">
     <div class="pad">
         @include('demandes.filter_demandes')
-
-
         <div class="table-responsive">
             <table class="table table-hover table-striped datatables" id="demandes_datatables" style="width:100% ;" >
                 <thead>

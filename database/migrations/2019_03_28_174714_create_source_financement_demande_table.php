@@ -15,8 +15,8 @@ class CreateSourceFinancementDemandeTable extends Migration
     {
         Schema::create('sourceFinancement_demande', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_sourceFinancement')->nullable();
-            $table->bigInteger('id_demande')->nullable();
+            $table->integer('sourceFinancement_id')->nullable();
+            $table->bigInteger('demande_id')->nullable();
             $table->double('montant')->nullable();
             $table->timestamps();
             $table->index(['id','created_at']);

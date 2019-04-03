@@ -1,3 +1,5 @@
+{{--TODO add remove option when adding partner or document--}}
+
 {!! Form::model($demande,['action' => 'DemandesController@store','method'=>'POST','class'=>'tab-wizard
         wizard-circle create-demande','enctype' => 'multipart/form-data']) !!}
 
@@ -265,7 +267,6 @@
                                 </div>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
 
@@ -276,7 +277,6 @@
                     </div>
                 </div>
             </div>
-
 
 
             <div class="row">
@@ -303,7 +303,6 @@
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-
                         {{Form::label('','Montant global TTC (DH) :')}}
 
                         {{Form::text(

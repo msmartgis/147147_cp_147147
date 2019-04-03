@@ -1,20 +1,9 @@
 
 
 <div class="row" style="margin-top: 4px">
-
     <div class="col-lg-6">
-       {{-- <button class="btn btn-secondary dropdown-toggle pull-left" type="button" data-toggle="dropdown" style="margin-right: 6px"><i class="fa fa-calendar" style="margin-right : 6px"></i>Session</button>
-        <div class="dropdown-menu">
-            @foreach ($sessions as $session)
-                <a class="dropdown-item " href="#">
-                    <div ><i class="fa fa-calendar"></i> {{$session->date}}</div>
-                </a>
-            @endforeach
-        </div>--}}
-
-        <button type="button" class="btn btn-secondary pull-left" id="accord_definitif_btn_a_traiter_tab" style="margin-right : 6px ;background-color: #F2922A !important;border-color: #F2922A !important;"><i class="fa fa-print" style="margin-right: 6px "></i>Accord definitif</button>
-        <button type="button" class="btn btn-secondary pull-left" id="restaurer_a_traiter" style="margin-right : 6px"><i class="fa fa-arrow-circle-left" style="margin-right: 6px"></i>Restaurer </button>
-
+        <button type="button" class="btn btn-secondary pull-left unique-choice-a-traiter" id="accord_definitif_btn_a_traiter" style="margin-right : 6px ;background-color: #F2922A !important;border-color: #F2922A !important;" disabled><i class="fa fa-thumbs-o-up" style="margin-right: 6px "></i>Accord definitif</button>
+        <button type="button" class="btn btn-secondary pull-left multiple-choice-a-traiter" id="restaurer_a_traiter" style="margin-right : 6px" disabled><i class="fa fa-arrow-circle-left" style="margin-right: 6px"></i>Restaurer </button>
     </div>
 
 
@@ -28,12 +17,7 @@
                 <div ><i class="fa fa-thumbs-up"></i> Excel </div>
             </a>
         </div>
-
         <a href="{{ route('createDemande') }}" class="btn btn-secondary pull-right" style="margin-right:4px"><i class="fa fa-plus" style="margin-right: 6px"></i>Ajouter
             une demande</a>
-
     </div>
-
-
-
 </div>

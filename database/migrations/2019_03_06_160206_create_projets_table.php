@@ -16,6 +16,8 @@ class CreateProjetsTable extends Migration
         Schema::create('projets', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('convention_id')->unsigned()->nullable();
+            $table->bigInteger('avancement_id')->unsigned()->nullable();
+            $table->bigInteger('etat_projet_id')->unsigned()->nullable();
             $table->integer('num_ordre')->nullable();
             $table->text('objet_fr')->nullable();
             $table->text('objet_ar')->nullable();
@@ -29,6 +31,16 @@ class CreateProjetsTable extends Migration
             $table->foreign('convention_id')
                 ->references('id')
                 ->on('conventions')
+                ->onDelete('cascade');
+
+            $table->foreign('avancement_id')
+                ->references('id')
+                ->on('avancement')
+                ->onDelete('cascade');
+
+            $table->foreign('etat_projet_id')
+                ->references('id')
+                ->on('etat_projets')
                 ->onDelete('cascade');
         });
     }

@@ -1,9 +1,11 @@
+var demandesEnCoursTable;
+var checked_demande_en_cours = 0;
 $(document).ready(function () {
 
-    var oTable = $('#demandes_datatables').DataTable({
+    demandesEnCoursTable = $('#demandes_datatables').DataTable({
         processing: true,
         serverSide: true,
-        pageLength: 10,
+        pageLength: 15,
         bInfo : false,
         info : false,
         bLengthChange : false,
@@ -11,7 +13,7 @@ $(document).ready(function () {
             search: '',
             searchPlaceholder: 'Recherche...',
             url: 'http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json',
-            processing: '',
+            processing: '<img src="/images/loader/loader4.gif">'
         },
 
         ajax: {
@@ -114,26 +116,47 @@ $(document).ready(function () {
         }
     });
 
+    demandesEnCoursTable.on('draw', function () {
+        $('#demandes_datatables :input[type="checkbox"]').change(function() {
+            number_checked = $('#demandes_datatables :input[type="checkbox"]:checked').length;
+
+            if(number_checked === 0)
+            {
+                $('.multiple-choice-en-cours,.unique-choice-en-cours').attr('disabled', true);
+            }
+
+            if(number_checked === 1)
+            {
+                $('.unique-choice-en-cours,.multiple-choice-en-cours').removeAttr("disabled");
+            }
+
+            if(number_checked > 1)
+            {
+                $('.multiple-choice-en-cours').removeAttr('disabled');
+                $('.unique-choice-en-cours').attr('disabled', true);
+            }
+
+        });
+    } );
+
 
     $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#reservation').on('change paste keyup', function (e) {
-        oTable.draw();
+        demandesEnCoursTable.draw();
         e.preventDefault();
     });
 
 
 
-
-    //effecter 
+//effecter
     $("#accord_definitif_btn").click(function () {
-        //url = "demandes/a_traiter";
         datatbleId = "demandes_datatables";
         nameCheckbox = "checkbox";
         titleModal = "ACCORD DEFINITIF";
-        //method = "POST";
-        accordAndAffectation_modal_data(titleModal,datatbleId ,nameCheckbox);
+        affectOrAccord = 0;
+        accordAndAffectation_modal_data(titleModal,datatbleId ,nameCheckbox,affectOrAccord);
     });
 
-    //a traiter 
+//a traiter
     $("#a_traiter_btn").click(function () {
         url = "demandes/a_traiter";
         datatble_id = "demandes_datatables";
@@ -143,20 +166,20 @@ $(document).ready(function () {
     });
 
 
-    //delete record from add partenaire table
+//delete record from add partenaire table
     $("#delete_partenaire").click(function () {
         removeRowFromTable("table_body_partner");
     });
 
 
-    //delete record from add source financement table
+//delete record from add source financement table
     $("#delete_source_financement").click(function () {
         removeRowFromTable("table_body_source");
     });
 
 
 
-    //add new parentaire
+//add new parentaire
     $("#add_partner").click(function (event) {
         if ($('#montant_g').val() == "") {
             event.stopPropagation();
@@ -175,7 +198,7 @@ $(document).ready(function () {
         }
     });
 
-    //item to make id checkbox unique
+//item to make id checkbox unique
     var item_partenaire = 0;
     $("#add_partner_to_list").click(function () {
         var montant_g = $('#montant_g').val();
@@ -184,25 +207,25 @@ $(document).ready(function () {
         var montant_partnenaire = $("#montant_partnenaire").val();
 
         var markup = '<tr>'+
-         '<td style=\'text-align:center\'>'+
-         '<div class=\"form-group\">'+
-         '<div class=\"checkbox\">'+
-         '<input type=\"checkbox\" id=\"row_' + item_partenaire + '\" name=\"record\">'+
-         '<label for="row_' + item_partenaire + '"></label>'+
-         '</div>'+
-         '</div>'+
-         '</td>'+
-         '<td style = \'text-align:center\'><input type="hidden" name="partnenaire_type_ids[]" value="' + partenair_type_id + '">' + partenair_type_text + '</td>'+
-         '<td style=\'text-align:center\'><input type="hidden" name="montant[]" value="' + montant_partnenaire + '">' + montant_partnenaire + '</td>'+
-         '<td style=\'text-align:center\'><input type="hidden" name="pourcentage[]" value="' + (montant_partnenaire / montant_g) * 100 + '">' + (montant_partnenaire / montant_g) * 100 + '</td>'+
-         '</tr>';
+            '<td style=\'text-align:center\'>'+
+            '<div class=\"form-group\">'+
+            '<div class=\"checkbox\">'+
+            '<input type=\"checkbox\" id=\"row_' + item_partenaire + '\" name=\"record\">'+
+            '<label for="row_' + item_partenaire + '"></label>'+
+            '</div>'+
+            '</div>'+
+            '</td>'+
+            '<td style = \'text-align:center\'><input type="hidden" name="partnenaire_type_ids[]" value="' + partenair_type_id + '">' + partenair_type_text + '</td>'+
+            '<td style=\'text-align:center\'><input type="hidden" name="montant[]" value="' + montant_partnenaire + '">' + montant_partnenaire + '</td>'+
+            '<td style=\'text-align:center\'><input type="hidden" name="pourcentage[]" value="' + (montant_partnenaire / montant_g) * 100 + '">' + (montant_partnenaire / montant_g) * 100 + '</td>'+
+            '</tr>';
 
         $('#table_body_partner > tr:last').before(markup);
         $("#montant_partnenaire").val('');
         $("#partenaire_type :selected").remove();
         $("#m-add-partenaire").modal('toggle');
+        item_partenaire++;
     });
-
 
 
 //add source to list
@@ -216,24 +239,25 @@ $(document).ready(function () {
 
 
         var markup_source = '<tr>'+
-         '<td style="text-align:center">'+
-         '<div class="form-group">'+
-         '<div class="checkbox">'+
-         '<input type="checkbox" id="row_' + item_source + '\" name="record">'+
-         '<label for="row_' + item_source + '"></label>'+
-         '</div>'+
-         '</div>'+
-         '</td>'+
-         '<td style = "text-align:center"><input type="hidden" name="source_financement_ids[]" value="' + source_id + '">' + sourceFinancementText + '</td>'+
-         '<td style="text-align:center"><input type="hidden" name="montant[]" value="' + ref + '">' + ref + '</td>'+
-         '<td style="text-align:center"><input type="hidden" name="pourcentage[]" value="' + montant_source + '">' + montant_source+ '</td>'+
-         '</tr>';
+            '<td style="text-align:center">'+
+            '<div class="form-group">'+
+            '<div class="checkbox">'+
+            '<input type="checkbox" id="row_' + item_source + '\" name="record">'+
+            '<label for="row_' + item_source + '"></label>'+
+            '</div>'+
+            '</div>'+
+            '</td>'+
+            '<td style = "text-align:center"><input type="hidden" name="source_financement_ids[]" value="' + source_id + '">' + sourceFinancementText + '</td>'+
+            '<td style="text-align:center"><input type="hidden" name="ref[]" value="' + ref + '">' + ref + '</td>'+
+            '<td style="text-align:center"><input type="hidden" name="montant_source[]" value="' + montant_source + '">' + montant_source+ '</td>'+
+            '</tr>';
 
 
         $('#table_body_source > tr:last').before(markup_source);
         $("#montant_sourceFinancement").val('');
         $("#sourceFinancement :selected").remove();
         $("#m-add-source-financement").modal('toggle');
+        item_source++;
     });
 
 });

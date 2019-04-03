@@ -12,6 +12,7 @@
                     {!! Form::open(['action' => 'DemandesController@accordOrAffectation','method'=>'post']) !!}
                     <input type="hidden" name="id" id="id_demande_modal_affect" >
                     <input type="hidden" name="affecter" id="affecterORAccord">
+                    <input type="hidden" name="cp_id" id="cp_id">
                     <h4>Informations sur le projet</h4>
                     <hr>
                     <div class="row">

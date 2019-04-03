@@ -1,7 +1,7 @@
 
 <div class="row" style="margin-top: 4px">
-    <div class="col-lg-6"><button type="button" class="btn btn-secondary pull-left unique-choice-accord-definitif" id="affecter_btn_accord_definitif" style="margin-right : 6px ;background-color: #F2922A !important;border-color: #F2922A !important;" disabled><i class="fa fa-thumbs-o-up" style="margin-right: 6px "></i>Affecter aux conventions</button>
-        <button type="button" class="btn btn-secondary pull-left multiple-choice-accord-definitif" id="restaurer_acccord_definitif_btn" style="margin-right : 6px" disabled><i class="fa fa-arrow-circle-left" style="margin-right: 6px"></i>Restaurer </button>
+    <div class="col-lg-6">
+        <button type="button" class="btn btn-secondary pull-left multiple-choice-affecte" id="restaurer_affecte_btn" style="margin-right : 6px" disabled><i class="fa fa-arrow-circle-left" style="margin-right: 6px"></i>Restaurer </button>
     </div>
 
     <div class="col-lg-6">
@@ -18,7 +18,4 @@
         <a href="{{ route('createDemande') }}" class="btn btn-secondary pull-right" style="margin-right:4px"><i class="fa fa-plus" style="margin-right: 6px"></i>Ajouter
             une demande</a>
     </div>
-
-
-
 </div>

@@ -39,24 +39,26 @@ Route::group(
         Route::get('/suivi_versement','SuiviVersementController@index')->name('indexSuiviVersement');
 
 
-
 //demandes
         Route::get('/demandes/getDemandeData', 'DemandesController@getDemandeData');
         Route::get('/demandes/en_cours', 'DemandesController@getDemandes');
         Route::get('/demandes/tab_a_traiter', 'DemandesController@getDemandesATraiter');
-        Route::get('/demandes/tab_programmee', 'DemandesController@getDemandesProgrammee');
+        Route::get('/demandes/tab_accord_definitif', 'DemandesController@getDemandesAccordDefinitif')->name('get.demandes.accord_definitif');
+        Route::get('/demandes/tab_is_affecter', 'DemandesController@getDemandesAffectees')->name('get.demandes.affectees');
+        Route::get('/demandes/tab_programmee', 'DemandesController@getDemandesProgrammee')->name('get.demandes.programmee');
         Route::get('/demandes/tab_realisee', 'DemandesController@getDemandesRealisee');
+
         Route::post('/demandes/demandeSpreadSheetEnCours', 'SpreadSheetController@demandeSpread_en_cours')->name('spread_demande_en_cours');
         Route::post('/demandes/demandeSpreadSheetATraiter', 'SpreadSheetController@demandeSpread_a_traiter')->name('spread_demande_a_traiter');
         Route::post('/demandes/demandeSpreadSheetAccordDefinitif', 'SpreadSheetController@demandeSpread_accord_definitif')->name('spread_demande_accord_definitif');
-        Route::get('/demandes/is_affecter', 'DemandesController@getDemandesAffectees')->name('get.demandes.affectees');
-        Route::get('/demandes/tab_accord_definitif', 'DemandesController@getDemandesAccordDefinitif')->name('get.demandes.accord_definitif');
+        Route::post('/demandes/demandeSpreadSheetAffecter', 'SpreadSheetController@demandeSpread_affecter')->name('spread_demande_affecter');
+        Route::post('/demandes/demandeSpreadSheetPogrammee', 'SpreadSheetController@demandeSpread_programmee')->name('spread_demande_programmee');
+        Route::post('/demandes/demandeSpreadSheetRealisee', 'SpreadSheetController@demandeSpread_realisee')->name('spread_demande_realisee');
+
         Route::post('/demandes/affecter_or_accord', 'DemandesController@accordOrAffectation')->name('affecterOrAccord');
         Route::post('/demandes/a_traiter', 'DemandesController@aTraiter')->name('a_traiter');
         Route::post('/demandes/restaurer', 'DemandesController@restaurerDemande')->name('restaurer_demande');
         Route::post('/demandes/restaurer_from_affectation', 'DemandesController@restaurerDemandeFromAffectation')->name('restaurer_demande_from_affectation');
-
-
 
 
 //Routes for conventions

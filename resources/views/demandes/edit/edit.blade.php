@@ -332,7 +332,7 @@ $(document).ready(function () {
         //demande_id = $(this).data('id');                
         message_reussi = "Accord définitif avec succès";
         message_sub_title = "Un accord définitif sera affecté a cette demande!!";
-        url='{!! route('accord_definitif')!!}';
+        url='{!! route('affecterOrAccord')!!}';
         demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
 
     });
