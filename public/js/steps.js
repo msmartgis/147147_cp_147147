@@ -7,7 +7,7 @@ $(".tab-wizard").steps({
         finish: "Enregistrer"
     },
     onFinished: function (event, currentIndex) {
-        $('.create-demande').submit();
+        $('.form-create').submit();
 
     }
 });

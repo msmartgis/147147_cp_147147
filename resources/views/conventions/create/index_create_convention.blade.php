@@ -30,12 +30,14 @@
         .hidden {
             display: none;
         }
+
+        #loading-point-desservi { display: none; }
     </style>
 
 @endsection @section('content')
-
     <!-- Step wizard -->
     <div class="box box-default">
+
         <!-- /.box-header -->
         <div class="box-body wizard-content">
 
@@ -135,11 +137,19 @@
 <script src="{{asset('vendor_components/jquery-toast-plugin-master/src/jquery.toast.js')}}"></script>
 <script src="{{asset('js/toastr.js')}}"></script>
 
+<script src="{{asset('js/conventions/create.js')}}"></script>
+<script src="{{asset('js/functions/functions.js')}}"></script>
+
 <script>
     ! function (window, document, $) {
         "use strict";
         $("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
     }(window, document, jQuery);
+
+
+    $('#datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    });
 
 </script>
 <script>
@@ -164,45 +174,44 @@
     //         return result;
     //     }
     $(document).ready(function () {
-        var switch_markup;
 
+        var switchMarkup;
+        loading_image('loading-point-desservi','response-div-point-desservi');
         //point desservi management *********************
         $('.table-points tbody').on('change', '.type_point', function () {
-
+            //$('.show-point-desservi').hide();
             var currow = $(this).closest('tr');
-            var point_type = currow.find('td .type_point').val();
+            var pointType = currow.find('td .type_point').val();
+            //alert(pointType+'test');
             //var col1 = currow.find('td:eq(1)').text();
             currow.find('td .point-desservis').html('');
-            switch_markup ='';
+            switchMarkup ='';
             //send ajax data
             $.ajax({
-                url: '/loadPoint',
-                type: 'POST',
+                url: '/pointDesservi/loadPoint',
+                type: 'post',
                 data: {
                     _token: '{{ csrf_token() }}',
-                    type: point_type
+                    type: pointType
                 },
                 dataType: 'JSON',
                 success: function (data) {
-
-                    for(propName in data.points)
+                    console.log(data);
+                    for(var propName in data.points)
                     {
-
-                        switch_markup +="<option value="+data.points[propName].id+">"+data.points[propName].nom_fr+"</option>";
+                        switchMarkup +='<option value='+data.points[propName].id+'>'+data.points[propName].nom_fr+'</option>';
                     }
-                    currow.find('td .point-desservis').append(switch_markup);
+                    currow.find('td .point-desservis').append(switchMarkup);
                 }
             });
-
         });
-
 
 
         $('#add_point').click(function () {
             var item = 1;
             var type_point = 1;
             $.ajax({
-                url: '/loadPoint',
+                url: '/pointDesservi/loadPoint',
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
@@ -211,7 +220,6 @@
 
                 dataType: 'JSON',
                 success: function (data) {
-
                     // console.log(data.categories);
                     var propName;
                     var markup2;
@@ -235,7 +243,7 @@
                     var markup3="<td style='width: 60%'><div class='form-group'><select class='form-control point-desservis select2' name='points[]' style='width: 100%;'>";
 
                     var markup4 = "</select></div></td></tr>";
-                    $(".table-points tr:first").after(markup1+markup_categ+markup2+markup3+markup_points+markup4);
+                    $(".table-points tr:last").after(markup1+markup_categ+markup2+markup3+markup_points+markup4);
 
 
                 },
@@ -244,9 +252,13 @@
                 }
             });
         });
+
+
+        $(".delete-row").click(function () {
+            removeRowFromTable('table_body_partner');
+        });
     });
 </script>
 
-<script src="{{asset('js/demandes/demande.js')}}"></script>
-<script src="{{asset('js/functions.js')}}"></script>
+
 @endpush

@@ -11,8 +11,6 @@ function loading_image(id,div_response)
     });
 }
 
-
-
 //delete row from table
 function removeRowFromTable(tableBody)
 {
@@ -23,8 +21,6 @@ function removeRowFromTable(tableBody)
         }
     });
 }
-
-
 
 //row click datatables
 function onRowClick(idRow,page)

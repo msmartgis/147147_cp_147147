@@ -355,7 +355,7 @@
         });
 
 
-        //affectation aux convention
+        //affectation aux conventions
         $('#affect_aux_convention_btn').click(function(){
             var demande_id = $(this).data('id');
             var numero_ordre = $(this).data('numero');

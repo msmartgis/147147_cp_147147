@@ -1109,7 +1109,6 @@ class DemandesController extends BaseController
             $piece = new Piece;
             //files uploaded get path
             if ($request->hasFile('pieces_uploads')) {
-
                 foreach ($files as $file) {
                         // Get filename with the extension
                     $filenameWithExt = $file->getClientOriginalName();
@@ -1125,7 +1124,8 @@ class DemandesController extends BaseController
                     $path = $file->storeAs('local/uploaded_files/demandes', $fileNameToStore);
                 }
 
-            } else {
+            }
+            else {
                 //bug when no file uploaded!!!!
                 $fileNameToStore = 'noimage.jpg';
                 $piece->path = $fileNameToStore;
@@ -1133,7 +1133,11 @@ class DemandesController extends BaseController
             for ($i = 0; $i < $items_number; $i++) {
                 $piece->type = $pieces_types_array[$i];
                 $piece->nom = $pieces_noms_array[$i];
-                $piece->path = $piece_file_names[$i];
+                if(!empty($piece_file_names))
+                {
+                    $piece->path = $piece_file_names[$i];
+                }
+
                 array_push($array_combination_piece, $piece);
             }
 

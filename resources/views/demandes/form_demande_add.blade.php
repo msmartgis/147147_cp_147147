@@ -1,7 +1,7 @@
 {{--TODO add remove option when adding partner or document--}}
 
 {!! Form::model($demande,['action' => 'DemandesController@store','method'=>'POST','class'=>'tab-wizard
-        wizard-circle create-demande','enctype' => 'multipart/form-data']) !!}
+        wizard-circle form-create','enctype' => 'multipart/form-data']) !!}
 
         <!-- Step 1 -->
         <h6>Information Général</h6>

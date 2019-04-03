@@ -110,21 +110,6 @@
         </div>
 
 
-        <div class="col-lg-1">
-            <label>Avancement :</label>
-        </div>
-        <div class="col-lg-2">
-            <div class="form-group">
-                <select class="form-control select2" style="width: 100%;" name="avancement" id="avancement_filter">
-                    <option value="all" selected>Indifferent</option>
-                    @foreach ($avancement as $av)
-                        <option value="{{$av->id}}">{{$av->pourcentage}}%</option>
-                    @endforeach
-                </select>
-            </div>
-            <!-- /.form-group -->
-        </div>
-
 
     </div>
 
