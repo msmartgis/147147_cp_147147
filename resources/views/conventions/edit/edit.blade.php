@@ -75,11 +75,14 @@
 
 @section('content')
 
+    @include('conventions.edit.tabs')
+
     @include('conventions.edit.form_edit')
 
     {{-- Modals --}}
-    {{--@include('demandes.modals')--}}
-    {{--@include('demandes.edit.modals_edit')--}}
+    @include('conventions.modals')
+    @include('conventions.edit.modals_edit')
+
 
     {{-- end modals --}}
 @endsection
@@ -130,6 +133,11 @@
         $("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
     }(window, document, jQuery);
 
+
+    $('#datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    });
+
 </script>
 
 
@@ -137,9 +145,7 @@
 <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
 
-<script src="{{asset('js/demandes/demande.js')}}"></script>
-<script src="{{asset('js/demandes/functions.js')}}"></script>
-<script src="{{asset('js/demandes/edit/demande_edit.js')}}"></script>
+<script src="{{asset('js/conventions/create.js')}}"></script>
 <script src="{{asset('js/functions.js')}}"></script>
 
 
@@ -171,7 +177,7 @@
                         <td>" + data.nom + "</td>\
                         <td>" + data.path + "</td>\
                         <td style='text-align: center'>\
-                            <button class='btn btn-warning delete-piece' data-id='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
+                            <button class='btn btn-warning delete-piece' data-id='conventionPiece_" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
                         </td>\
                         </tr>";
                     $(markup).prependTo("#pieces_tbody");
@@ -184,7 +190,7 @@
         //delete piece
         $(".delete-piece").click(function () {
             var piece_id;
-            piece_id = $(this).data('id');
+            piece_id = $(this).data('id').split('_').pop();
             message_reussi = "La piéce a été supprimer avec succès";
             message_sub_title = "Le document sera supprimé définitivement";
 
@@ -242,43 +248,31 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                    console.log(data);
                     markup =
                         "<tr style='text-align: center'>\
                             <td>" + data.part.nom_fr + "</td>\
                         <td>" + data.montant + "</td>\
                         <td>" + data.pourcentage + "</td>\
                         <td style='text-align: center'>\
-                            <button class='btn btn-secondary edit-partenaire' data-demande'" + data.demande + "' data-partnaire='" + data.id + "' style='visibility : hidden'><i class='fa fa-edit'></i> Editer</button>\
-                            <button type='button' class='btn btn-warning delete-partenaire' data-demande'" + data.demande + "' data-partnaire='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
+                            <button type='button' class='btn btn-warning delete-partenaire' data-convention'" + data.convention + "' data-partnaire='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
                         </td>\
                         </tr>";
-                    $(markup).prependTo("#partenaire_tbody");
+                    $(markup).appendTo("#partenaire_tbody");
                     $('#m-add-partenaire-edit').modal('hide');
                 }
             });
         });
 
-        //edite partenaire
-        // $(document).on('click', '.edit-partenaire', function () {
-        //     var montant_part = ($(this).data('montant'));
-        //     var id_partenaire = ($(this).data('partenaire'));
-        //     //alert(id_partenaire);
-        //     //alert(montant_part);
-        //     $("input[name='montant']").val(montant_part);
-        //     $("#partenaire_type_edit").val(id_partenaire).change();
-        //     $('#m-edite-partenaire').modal('show');
-        // });
 
         //delete partenaire
 
         $(".delete-partenaire").click(function () {
-            var demande_id;
+            var convention_id;
             var partenaire_id;
-            demande_id = $(this).data('demande');
+            convention_id = $(this).data('convention');
             partenaire_id = $(this).data('partenaire');
             message_reussi = "Le partenaire a été supprimer avec succès";
-            message_sub_title = "Le partenaire sera supprimé définitivement dans cette demande";
+            message_sub_title = "Le partenaire sera supprimé définitivement dans cette convention";
 
             swal({
                 title: "Vous êtes sûr?",
@@ -294,11 +288,11 @@
                 if (isConfirm) {
                     //send an ajax request to the server update decision column
                     $.ajax({
-                        url: '{!! route("delete_partenaire")!!}',
+                        url: '{!! route("delete_partenaire_convention")!!}',
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
-                            demande_id: demande_id,
+                            convention_id: convention_id,
                             partenaire_id: partenaire_id
                         },
                         dataType: 'JSON',
@@ -318,72 +312,19 @@
         });
 
 
-        //accord definitif
-        $('#accord_definitif').click(function(){
-            var demande_id =[];
-            demande_id.push($(this).data('id'));
-            //demande_id = $(this).data('id');
-            message_reussi = "Accord définitif avec succès";
-            message_sub_title = "Un accord définitif sera affecté a cette demande!!";
-            url='{!! route('affecterOrAccord')!!}';
-            demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
-
-        });
-
-        //a traiter
-        $('#a_traiter').click(function(){
-            var demande_id =[];
-            demande_id.push($(this).data('id'));
-            //demande_id = $(this).data('id');
-            message_reussi = "A traiter affecté avec succès";
-            message_sub_title = "A traiter sera affecté a cette demande!!";
-            url='{!! route('a_traiter')!!}';
-            demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
-
-        });
-
-
-        //restaurer en cours
-        $('#restaurer').click(function(){
-            var demande_id =[];
-            demande_id.push($(this).data('id'));
-            message_reussi = "Restauration effectuée avec succès";
-            message_sub_title = "Restaurer cette demande!!";
-            url='{!! route('restaurer_demande')!!}';
-            demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
-
-        });
-
-
-        //affectation aux conventions
-        $('#affect_aux_convention_btn').click(function(){
-            var demande_id = $(this).data('id');
-            var numero_ordre = $(this).data('numero');
-            $('#id_demande_modal_affect').val(demande_id);
-            $('.modal-title').text('Affectation aux conventions la demande numero : ' + numero_ordre);
-            $('#affecter_aux_cnv').modal('show');
-
-            // message_reussi = "Restauration effectuée avec succès";
-            // message_sub_title = "Restaurer cette demande!!";
-            // url='{!! route('restaurer_demande')!!}';
-            // decision_edit(demande_id,'',url,message_reussi,message_sub_title);
-
-        });
-
-
-        //supprimer demande
-        $('#supprimer_demande').click(function(){
-            var demande_id = $(this).data('id');
+        //supprimer convention
+        $('#supprimer_convention').click(function(){
+            var convention_id = $(this).data('id');
             message_reussi = "Suppression effectuée avec succès";
-            message_sub_title = "Voulez vous vraiment supprimer cette demande!!";
-            url='{{url("demandes")}}'+'/'+demande_id;
-            redirect = "/demandes";
-            delete_function(demande_id,url,message_reussi,message_sub_title,redirect);
+            message_sub_title = "Voulez vous vraiment supprimer cette convention!!";
+            url='{{url("convention")}}'+'/'+convention_id;
+            redirect = "/convention";
+            delete_function(convention_id,url,message_reussi,message_sub_title,redirect);
         });
 
 
-        //demande_managemnt
-        function demande_mngmnt(id, url, success_message, sub_title_message) {
+        //convention_managemnt
+        function convention_mngmnt(id, url, success_message, sub_title_message) {
             swal({
                 title: "Vous êtes sûr?",
                 text: sub_title_message,
@@ -402,7 +343,7 @@
                         type: 'POST',
                         data: {
                             "_token": '{{ csrf_token() }}',
-                            "demande_ids": id,
+                            "convention_ids": id,
                         },
                         dataType: 'JSON',
                         success: function (data) {
@@ -420,7 +361,7 @@
         }
 
 
-//delete function 
+//delete function
         function delete_function(id, url, success_message, sub_title_message,redirect) {
             swal({
                 title: "Vous êtes sûr?",

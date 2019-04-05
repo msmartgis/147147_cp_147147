@@ -12,8 +12,8 @@ class Piste extends Model
     }
 
 
-    public function conventions()
+    public function convention()
     {
-        return $this->hasMany('App\Convention', 'convention_id', 'id');
+        return $this->belongsTo('App\Convention', 'convention_id');
     }
 }

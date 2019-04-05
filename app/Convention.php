@@ -28,8 +28,6 @@ class Convention extends Model
     }
 
 
-
-
     public function piece()
     {
         return $this->hasMany('App\Piece');
@@ -47,8 +45,10 @@ class Convention extends Model
 
     public function moas()
     {
-        return $this->belongsToMany('App\Moa', 'moa_convention')->withTimestamps();
+        return $this->belongsTo('App\Moa', 'moa_id');
     }
+
+
 
     public function partenaires()
     {
@@ -56,22 +56,22 @@ class Convention extends Model
     }
 
 
-    public function programmes()
+    public function programme()
     {
-        return $this->belongsToMany('App\Programme', 'programmes_convention')->withTimestamps();
+        return $this->belongsTo('App\Programme', 'programme_id');
     }
 
 
     public function piste()
     {
-        return $this->belongsTo('App\Piste', 'convention_id');
+        return $this->hasOne('App\Piste');
     }
 
 
-    /*public function porteur()
+    public function porteur()
     {
         return $this->belongsTo('App\Porteur', 'porteur_projet_id');
-    }*/
+    }
 
 
 

@@ -36,7 +36,16 @@ class PieceController extends Controller
         $piece->type = $request->piece_type;
         $piece->nom = $request->piece_nom;
         $piece->path = $fileNameToStore;
-        $piece->demande_id = $request->demande_id;
+        if(isset($request->demande_id))
+        {
+            $piece->demande_id = $request->demande_id;
+        }
+
+        if(isset($request->convention_id))
+        {
+            $piece->convention_id = $request->convention_id;
+        }
+
         $piece->save();
         return response()->json($piece);
 

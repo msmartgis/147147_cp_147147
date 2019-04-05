@@ -359,8 +359,8 @@ $(document).ready(function () {
               var demande_id = $(this).data('id');                
                 message_reussi = "Suppression effectuée avec succès";
                 message_sub_title = "Voulez vous vraiment supprimer cette demande!!";
-                url='{{url("demandes")}}'+'/'+demande_id;
-                redirect = "/demandes";
+                url='{{url("demande")}}'+'/'+demande_id;
+                redirect = "/demande";
                 delete_function(demande_id,url,message_reussi,message_sub_title,redirect);
             });
 

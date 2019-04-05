@@ -52,13 +52,84 @@
         label {
             margin-top: 0.2rem;
         }
+
+
+        [type=checkbox]+label:before,
+        [type=checkbox]:not(.filled-in)+label:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 12px;
+            z-index: 0;
+            border: 1.5px solid #ff8740;
+            border-radius: 1px;
+            margin-top: 0px;
+            -webkit-transition: .2s;
+            -o-transition: .2s;
+            transition: .2s;
+        }
+
+
+        [type=checkbox]+label {
+            font-weight: 0;
+            position: relative;
+            padding-left: 0px;
+            cursor: pointer;
+            display: inline-block;
+            height: 16px;
+            line-height: 25px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -ms-user-select: none;
+        }
+
+        [type=checkbox]:checked.chk-col-green+label:before {
+            border-right: 2px solid #2fbc26;
+            border-bottom: 2px solid #2fbc26;
+        }
+
+
+        [type=checkbox]:checked+label:before {
+            top: -4px;
+            left: 0px;
+            width: 9px;
+            height: 18px;
+            border-top: 2px solid transparent;
+            border-left: 2px solid transparent;
+            border-right: 2px solid #398bf7;
+            border-bottom: 2px solid #398bf7;
+            -webkit-transform: rotate(40deg);
+            -ms-transform: rotate(40deg);
+            transform: rotate(40deg);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform-origin: 100% 100%;
+            -ms-transform-origin: 100% 100%;
+            transform-origin: 100% 100%
+        }
     </style>
 @endsection
 
 @section('content')
-    @include('conventions.inc.filters')
-    @include('conventions.show.datatable')
+    <div class="row">
+        <div class="col-12">
+            <div class="box">
 
+                <!-- /.box-header -->
+                <div class="box-body">
+                    @include('conventions.show.filters')
+                    @include('conventions.show.datatable')
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- modals -->
+        @include('conventions.modals')
+    </div>
 @endsection
 
 @push('added_scripts')
@@ -87,16 +158,217 @@
 <script src="{{asset('vendor_components/formatter/formatter.js')}}"></script>
 <script src="{{asset('vendor_components/formatter/jquery.formatter.js')}}"></script>
 
+
 <script src="{{asset('js/formatter.js')}}"></script>
-<script src="{{asset('js/functions.js')}}"></script>
+<script src="{{asset('js/conventions/show.js')}}"></script>
+
 
 <!-- Sweet-Alert  -->
 <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
 
+
+<script src="{{asset('js/functions/functions.js')}}"></script>
+
+
 <script>
 
+    //function for decision
+    function decision_function(datatble_id, name_chechbox, url, method) {
+        var checked = false;
+        var message_sub_title = '';
+        var message_reussi = '';
+        if (url == "demandes/a_traiter") {
+            message_sub_title = "Ajouter a la liste des demandes à traiter!";
+            message_reussi = "A traiter réussi.";
+        }
 
+        if (url == "demandes/restaurer_from_affectation") {
+            message_sub_title = "Voulez-vous vraiment effectuer cette opération!";
+            message_reussi = "Réstauration réussi.";
+        }
+        var demande_ids = [];
+        var numero_ordres = [];
+        $("#" + datatble_id + " > tbody ").find("input[name=" + name_chechbox + " ]").each(function () {
+            if ($(this).is(":checked")) {
+                id_demande_full = $(this).val().split('_');
+                demande_ids.push(id_demande_full.pop());
+                numero_ordres.push($(this).data('numero'));
+                checked = true;
+            }
+        });
+
+        if (!checked) {
+            swal("Veuillez selectionner une demande");
+            return false;
+        }
+
+        if (demande_ids.length > 0) {
+            swal({
+                title: "Vous êtes sûr?",
+                text: message_sub_title,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Oui, je confirme!",
+                cancelButtonText: "Non, annuler!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    //send an ajax request to the server update decision column
+
+                    $.ajax({
+                        url: url,
+                        type: method,
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            demande_ids: demande_ids
+                        },
+                        dataType: 'JSON',
+                        success: function (data) {
+                            //console.log(data);
+                            if (data.length == 0) {
+                                swal("Réussi!", message_reussi, "success");
+                                setTimeout(location.reload.bind(location), 500);
+                            }
+                        }
+                    });
+                } else {
+                    swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
+                }
+            });
+        }
+    }
+
+
+
+
+    //affectation and accord defintitf
+    function accordAndAffectation_modal_data(modalTitle,datatable,nameCheckbox,affectOrAccord)
+    {
+        if($("#"+datatable+" > tbody").find("input[name=" + nameCheckbox + " ]:checked"))
+        {
+            var id_full= $("#"+datatable+" > tbody").find("input[name=" + nameCheckbox + " ]:checked").attr('id');
+            var id = id_full.split('_').pop();
+            $.ajax({
+                url: 'demandes/getDemandeData',
+                type: 'GET',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id : id
+                },
+                dataType: 'JSON',
+                success: function (data) {
+                    //console.log(data);
+                    $('#table_body_partner').empty();
+                    var montant_cp =data.pivot[0].pivot.montant;
+                    var montant_global = data.montantGlobal.montant_global;
+                    $('#modalTitleAccordAndAffect').text(modalTitle);
+                    $('#cp_id').val(data.partenaire_id);
+                    $('#id_demande_modal_affect').val(data.id.id);
+                    $('#montant_g').val(montant_global);
+                    $('#affecterORAccord').val(affectOrAccord);
+                    $('#montant_cp').val(montant_cp);
+                    $("#accordAndAffectModal").modal();
+
+                    if(data.pivot_all.length > 0)
+                    {
+                        for( i = 0 ; i < data.pivot_all.length ; i++)
+                        {
+                            $('#table_body_partner').append('<tr style="text-align: center">'+
+                                '<td>'+
+                                '<input type="checkbox" name="record" id="row_'+data.pivot_all[i].id+'">'+
+                                '<label for="row_'+data.pivot_all[i].id+'"></label>'+
+                                '</td>'+
+                                '<td><input type="hidden" name="partnenaire_type_ids[]" value="' + data.pivot_all[i].id + '">'+data.pivot_all[i].nom_fr+'</td>'+
+                                '<td><input type="hidden" name="montant[]" value="' + data.pivot_all[i].pivot.montant + '">'+data.pivot_all[i].pivot.montant+'</td>'+
+                                '<td><input type="hidden" name="pourcentage[]" value="' +(data.pivot_all[i].pivot.montant)/montant_global*100+ '">'+(data.pivot_all[i].pivot.montant)/montant_global*100+'</td>'+
+                                '</tr>');
+                        }
+                    }
+                }
+            });
+
+        }
+
+    }
+
+
+    //restaurer en cours affecter
+    $("#restaurer_affectees").click(function () {
+        $("#demandes_datatables_affectees > tbody").find('input[name="checkbox_affectees"]').each(function () {
+            if ($(this).prop("checked") == true) {
+                var demande_id = [];
+                demande_id.push($('input[name=checkbox_affectees]').val());
+                message_reussi = "Restauration effectuée avec succès";
+                message_sub_title = "Restaurer cette demande!!";
+                url='{!! route('restaurer_demande_from_affectation')!!}';
+                demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
+            } else {
+                swal("Veuillez selectionner une demande");
+                return false;
+            }
+        });
+    });
+
+
+    //restaurer accord definitif
+    $("#restaurer_accord_definitif").click(function () {
+        $("#demandes_datatables_accord_definitif > tbody").find('input[name="checkbox_accord_definitif"]').each(function () {
+            if ($(this).prop("checked") == true) {
+                var id_full= $("#"+datatable+" > tbody").find("input[name=" + nameCheckbox + " ]:checked").attr('id');
+                var id = id_full.split('_').pop();
+                var demande_id = [];
+                demande_id.push($('input[name=checkbox_accord_definitif]').val());
+                message_reussi = "Restauration effectuée avec succès";
+                message_sub_title = "Restaurer cette demande!!";
+                url='{!! route('restaurer_demande')!!}';
+                restaurerAccordOrAffectation(demande_id,url,message_reussi,message_sub_title);
+            } else {
+                swal("Veuillez selectionner une demande");
+                return false;
+            }
+        });
+    });
+
+
+    //demande_managemnt
+    function restaurerAccordOrAffectation(id, url, success_message, sub_title_message) {
+        swal({
+            title: "Vous êtes sûr?",
+            text: sub_title_message,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Oui, je confirme!",
+            cancelButtonText: "Non, annuler!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                //send an ajax request to the server update decision column
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        "_token": '{{ csrf_token() }}',
+                        "demande_ids": id,
+                    },
+                    dataType: 'JSON',
+                    success: function (data) {
+                        console.log(data);
+                        if (data.length == 0) {
+                            swal("Réussi!", success_message, "success");
+                            setTimeout(location.reload.bind(location), 500);
+                        }
+                    }
+                });
+            } else {
+                swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
+            }
+        });
+    }
 </script>
 
 @endpush

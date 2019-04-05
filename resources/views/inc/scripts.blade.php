@@ -47,6 +47,8 @@
 	});
 </script> --}}
 
-
+ <script>
+     var assetBaseUrl = "{{ asset('') }}";
+ </script>
 
  @stack('added_scripts')

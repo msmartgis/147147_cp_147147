@@ -219,4 +219,10 @@ class SpreadSheetController extends Controller
     {
 
     }
+
+
+    public function conventionSpread(Request $request)
+    {
+
+    }
 }

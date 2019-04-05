@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Convention;
 use App\PartenaireType;
 use App\Demande;
 use Illuminate\Http\Request;
@@ -13,13 +14,31 @@ class PartenaireTypeController extends Controller
     {
         $part = PartenaireType::find($req->partnenaire_type_id);
         $pourcentage = ($req->montant / $req->montant_global) * 100;
-        $part->demandes()->attach($req->demande_id, ['montant' => $req->montant]);
-        return response()->json(array('part' => $part, 'montant' => $req->montant, 'pourcentage' => $pourcentage, 'demande' => $req->demande_id));
+        if(isset($req->demande_id))
+        {
+            $part->demandes()->attach($req->demande_id, ['montant' => $req->montant]);
+            return response()->json(array('part' => $part, 'montant' => $req->montant, 'pourcentage' => $pourcentage, 'demande' => $req->demande_id));
+        }
+
+        if(isset($req->convention_id))
+        {
+            $part->conventions()->attach($req->convention_id, ['montant' => $req->montant]);
+            return response()->json(array('part' => $part, 'montant' => $req->montant, 'pourcentage' => $pourcentage, 'convention' => $req->convention_id));
+        }
+
     }
+
     public function deletePartenaire(Request $req)
     {
         $demande = Demande::find($req->demande_id);
         $demande->partenaires()->detach($req->partenaire_id);
+        return response()->json();
+    }
+
+    public function deletePartenaireConvention(Request $req)
+    {
+        $convention = Convention::find($req->convention_id);
+        $convention->partenaires()->detach($req->partenaire_id);
         return response()->json();
     }
     /**

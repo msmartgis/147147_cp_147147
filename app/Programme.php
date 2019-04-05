@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Programme extends Model
 {
-    public function conventions()
-    {
-        return $this->belongsToMany('App\Convention', 'programmes_convention')->withTimestamps();
-    }
+       public function convention()
+     {
+         return $this->hasMany('App\Convention', 'programme_id', 'id');
+     }
 
     public function projets()
     {
         return $this->belongsToMany('App\Projet', 'programmes_projets')->withTimestamps();
     }
+
 }

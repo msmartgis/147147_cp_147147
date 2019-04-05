@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Moa extends Model
 {
 
-    public function convention()
+    public function conventions()
     {
-        return $this->belongsToMany('App\Convention', 'moa_convention')->withTimestamps();
+        return $this->hasMany('App\Convention', 'moa_id', 'id');
     }
+
+
 }

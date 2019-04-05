@@ -48,12 +48,21 @@ Route::group(
                 Route::get('/demandes/tab_programmee', 'DemandesController@getDemandesProgrammee')->name('get.demandes.programmee');
                 Route::get('/demandes/tab_realisee', 'DemandesController@getDemandesRealisee');
 
+
+                //conventions
+                Route::get('/conventions/show', 'ConventionController@getConventions');
+                Route::get('/convention/create', 'ConventionController@create')->name('createConvention');
+
+                Route::get('/convention/{id}/fiche', 'ConventionController@fiche')->name('convention.fiche');
+
+                //SPREADSHEET
                 Route::post('/demandes/demandeSpreadSheetEnCours', 'SpreadSheetController@demandeSpread_en_cours')->name('spread_demande_en_cours');
                 Route::post('/demandes/demandeSpreadSheetATraiter', 'SpreadSheetController@demandeSpread_a_traiter')->name('spread_demande_a_traiter');
                 Route::post('/demandes/demandeSpreadSheetAccordDefinitif', 'SpreadSheetController@demandeSpread_accord_definitif')->name('spread_demande_accord_definitif');
                 Route::post('/demandes/demandeSpreadSheetAffecter', 'SpreadSheetController@demandeSpread_affecter')->name('spread_demande_affecter');
                 Route::post('/demandes/demandeSpreadSheetPogrammee', 'SpreadSheetController@demandeSpread_programmee')->name('spread_demande_programmee');
                 Route::post('/demandes/demandeSpreadSheetRealisee', 'SpreadSheetController@demandeSpread_realisee')->name('spread_demande_realisee');
+                Route::post('/conventions/conventionSpreadSheet', 'SpreadSheetController@conventionSpread')->name('spread_convention');
 
                 Route::post('/demandes/affecter_or_accord', 'DemandesController@accordOrAffectation')->name('affecterOrAccord');
                 Route::post('/demandes/a_traiter', 'DemandesController@aTraiter')->name('a_traiter');
@@ -74,6 +83,7 @@ Route::group(
                 Route::post('/pieces/add_piece', 'PieceController@addPiece')->name('add_piece');
                 Route::post('/pieces/delete_piece', 'PieceController@deletePiece')->name('delete_piece');
                 Route::post('/partenaire/delete_partenaire', 'PartenaireTypeController@deletePartenaire')->name('delete_partenaire');
+                Route::post('/partenaire/delete_partenaire_covention', 'PartenaireTypeController@deletePartenaireConvention')->name('delete_partenaire_convention');
                 Route::post('/partenaire/add_partenaire', 'PartenaireTypeController@addPartenaire')->name('add_partenaire');
 
 

@@ -19,8 +19,156 @@ use Illuminate\Http\Request;
 use App\PointDesservi;
 use Illuminate\Support\Facades\Input;
 
+use DataTables;
+
 class ConventionController extends Controller
 {
+
+    /**
+     * Diplay datatable data
+     *
+     */
+    public function getConventions(Request $request)
+    {
+        $conventions = Convention::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis','programme','moas');
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($conventions)
+                ->addColumn('communes', function (Convention $convention) {
+                    return $convention->communes->map(function ($commune) {
+                        return str_limit($commune->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('point_desservis', function (Convention $convention) {
+                    return $convention->point_desservis->map(function ($point_desservi) {
+                        return str_limit($point_desservi->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('interventions', function (Convention $convention) {
+                    return $convention->interventions->map(function ($intervention) {
+                        return str_limit($intervention->nom, 30, '...');
+                    })->implode(', ');
+                })
+                // i should have access to show parntenaire type name for every partenaire
+
+                ->addColumn('partenaires', function (Convention $convention) {
+                    return $convention->partenaires->map(function ($partenaire) {
+                        return str_limit($partenaire->nom_fr, 30, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('montantCP', function (Convention $convention) {
+                    return $convention->partenaires->map(function ($partenaire) {
+                        if ($partenaire->id == 1) {
+                            return str_limit($partenaire->pivot->montant, 30, '...');
+                        }
+                    })->implode(' ');
+                })
+
+
+                ->addColumn('moas', function (Convention $convention) {
+                    return $convention->moas ? str_limit($convention->moas->nom_fr, 40, '...') : '';
+                })
+
+                ->addColumn('programme', function (Convention $convention) {
+                    return $convention->programme ? str_limit($convention->programme->nom_fr, 40, '...') : '';
+                })
+
+
+                ->addColumn('checkbox', function ($conventions) {
+                    return '<input type="checkbox" id="conventionCb_' . $conventions->id . '" name="checkbox" class="convention-checkbox" value="' . $conventions->id . '"  data-numero ="' . $conventions->num_ordre . '" class="chk-col-green"><label for="conventionCb_' . $conventions->id . '" class="block" ></label>';
+                })
+
+
+                ->addColumn('num_ordre', function ($conventions) {
+                    return '<a href="convention/'.$conventions->id.'/edit">'.$conventions->num_ordre.'</a>';
+                })
+
+
+                ->rawColumns(['checkbox','num_ordre'])
+
+                ->setRowClass(function ($conventions) {
+                    return 'center-data';
+                });
+
+
+        }
+
+        //filter with communes
+        if ($communes_id = $request->get('communes')) {
+            if ($communes_id == "all") {
+            } else {
+                $conventions->whereHas('communes', function ($query) use ($communes_id) {
+                    $query->where('communes.id', '=', $communes_id);
+                });
+            }
+        }
+
+        //filter with partenaire
+        if ($partenaires_id = $request->get('partenaires')) {
+            if ($partenaires_id == "all") {
+            } else {
+                $conventions->whereHas('partenaires', function ($query) use ($partenaires_id) {
+                    $query->where('partenaires_types.id', '=', $partenaires_id);
+                });
+            }
+        }
+
+        //moa filter
+        if ($moas_id = $request->get('moas')) {
+            if ($moas_id == "all") {
+            } else {
+                $conventions->where('moa_id', '=', $moas_id);
+            }
+        }
+
+        //programme filter
+        if ($programmes_id = $request->get('programmes')) {
+            if ($programmes_id == "all") {
+            } else {
+                $conventions->where('programme_id', '=', $programmes_id);
+            }
+        }
+
+        //filter with localites
+        if ($localites = $request->get('localites')) {
+            if ($localites == "all") {
+            } else {
+                $conventions->whereHas('point_desservis', function ($query) use ($localites) {
+                    $query->where('point_desservis.nom_fr', '=', $localites);
+                });
+            }
+        }
+
+        //filter with session
+        if ($session_id = $request->get('session')) {
+            if ($session_id == "all") {
+            } else {
+                $conventions->where('mois', '=', $session_id);
+            }
+        }
+
+
+        //filter with intervention
+        if ($interventions_id = $request->get('interventions')) {
+            if ($interventions_id == "all") {
+            } else {
+                $conventions->whereHas('interventions', function ($query) use ($interventions_id) {
+                    $query->where('interventions.id', '=', $interventions_id);
+                });
+            }
+        }
+        return $datatables->make(true);
+
+    }
+
+
+    public function fiche(Request $request, Convention $convention)
+    {
+
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -99,7 +247,6 @@ class ConventionController extends Controller
      */
     public function store(Request $request)
     {
-
         $this->validate($request, ['num_ordre' => 'required']);
         //find the communes for this convention and put them in an array
         $communes = $request->input('communes');
@@ -120,7 +267,8 @@ class ConventionController extends Controller
         $convention->observation = $request->input('observation');
         $convention->session_id = $request->input('session');
         $convention->programme_id = $request->input('programme');
-        $convention->moa_id = $request->input('moa');
+        $convention->porteur_projet_id = $request->input('porteur_projet');
+        $convention->moa_id = $request->input('moas');
         $convention->save();
 
         //partenaire *****
@@ -148,7 +296,7 @@ class ConventionController extends Controller
         //save data in piste*****
         $piste = new Piste;
         $piste->longueur = $request->input('longueur');
-        $piste->demande_id = $actu_id_convention;
+        $piste->convention_id = $actu_id_convention;
         $piste->save();
 
 
@@ -237,31 +385,27 @@ class ConventionController extends Controller
      */
     public function edit(Convention $convention)
     {
-        $interventions = Intervention::orderBy('mois')->pluck('nom', 'id');
+        $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
         $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $pieces = Piece::orderBy('type')->pluck('type');
-        $moas = Moa::all();
+        $moas = Moa::orderBy('nom_fr')->pluck('nom_fr', 'id');
+        $programmes = Programme::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $partenaires_types = PartenaireType::all();
-
-        //get piste
-        $piste_id = Piste::where('convention_id', '=', $convention->id)->first()->id;
-        $piste_longueur = Piste::where('convention_id', '=', $convention->id)->first()->longueur;
-
-
+        $porteur_projet = Porteur::orderBy('nom_porteur_fr')->pluck('nom_porteur_fr', 'id');
         $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
-        $convention = Convention::with(['communes', 'partenaires', 'point_desservis', 'interventions', 'session', 'piece'])->find($convention->id);
+        $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'piece','programme','moas'])->find($convention->id);
+        //return $convention;
 
-
-        //return conventions;
+        //return $convention;
         return view('conventions.edit.edit')->with([
-            'conventions' => $convention,
+            'convention' => $convention,
             'interventions' => $interventions,
             'localites' => $localites,
             'partenaires_types' => $partenaires_types,
             'moas' => $moas,
             'communes' => $communes,
-            'piste_id' => $piste_id,
-            'piste_longueur' => $piste_longueur
+            'programmes' => $programmes,
+            'porteur_projet' => $porteur_projet
         ]);
     }
 
@@ -274,7 +418,36 @@ class ConventionController extends Controller
      */
     public function update(Request $request, Convention $convention)
     {
-        //
+        //$request->validate($request, ['num_ordre' => 'required']);
+        $convention_to_update = Convention::find($convention->id);
+        $convention_to_update->porteur_projet_id = $request->porteur_projet;
+        $convention_to_update->moa_id = $request->moa;
+        $convention_to_update->programme_id = $request->programme;
+        $convention_to_update->objet_fr = $request->objet_fr;
+        $convention_to_update->objet_ar = $request->objet_ar;
+        $convention_to_update->observation = $request->observation;
+
+        //return  $request->porteur_projet;
+        $convention_to_update->save();
+
+
+        //update interventions
+        $intervention_ids = Input::get('interventions');
+        $convention->interventions()->sync($intervention_ids);
+        //update communes
+        $communes_ids = Input::get('communes');
+        $convention->communes()->sync($communes_ids);
+
+
+        //update pistes
+        Piste::where('id', $request->id_pist)
+            ->update(['longueur' => $request->longueur]);
+
+
+        //update localites
+        $localites_ids = Input::get('localites');
+        $convention->point_desservis()->sync($localites_ids);
+        return redirect("/convention" . "/" . $convention->id . "/edit")->with('success', 'Convention modifier avec succès');
     }
 
     /**
@@ -285,6 +458,7 @@ class ConventionController extends Controller
      */
     public function destroy(Convention $convention)
     {
-        //
+        Convention::destroy($convention->id);
+        return response()->json();
     }
 }
