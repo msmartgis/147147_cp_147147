@@ -20,6 +20,7 @@ use App\PointDesservi;
 use Illuminate\Support\Facades\Input;
 
 use DataTables;
+use DB;
 
 class ConventionController extends Controller
 {
@@ -86,11 +87,140 @@ class ConventionController extends Controller
                 })
 
 
-                ->rawColumns(['checkbox','num_ordre'])
+                ->rawColumns(['checkbox','num_ordre']);
 
-                ->setRowClass(function ($conventions) {
-                    return 'center-data';
+
+        }
+
+        //filter with communes
+        if ($communes_id = $request->get('communes')) {
+            if ($communes_id == "all") {
+            } else {
+                $conventions->whereHas('communes', function ($query) use ($communes_id) {
+                    $query->where('communes.id', '=', $communes_id);
                 });
+            }
+        }
+
+        //filter with partenaire
+        if ($partenaires_id = $request->get('partenaires')) {
+            if ($partenaires_id == "all") {
+            } else {
+                $conventions->whereHas('partenaires', function ($query) use ($partenaires_id) {
+                    $query->where('partenaires_types.id', '=', $partenaires_id);
+                });
+            }
+        }
+
+        //moa filter
+        if ($moas_id = $request->get('moas')) {
+            if ($moas_id == "all") {
+            } else {
+                $conventions->where('moa_id', '=', $moas_id);
+            }
+        }
+
+        //programme filter
+        if ($programmes_id = $request->get('programmes')) {
+            if ($programmes_id == "all") {
+            } else {
+                $conventions->where('programme_id', '=', $programmes_id);
+            }
+        }
+
+        //filter with localites
+        if ($localites = $request->get('localites')) {
+            if ($localites == "all") {
+            } else {
+                $conventions->whereHas('point_desservis', function ($query) use ($localites) {
+                    $query->where('point_desservis.nom_fr', '=', $localites);
+                });
+            }
+        }
+
+        //filter with session
+        if ($session_id = $request->get('session')) {
+            if ($session_id == "all") {
+            } else {
+                $conventions->where('mois', '=', $session_id);
+            }
+        }
+
+
+        //filter with intervention
+        if ($interventions_id = $request->get('interventions')) {
+            if ($interventions_id == "all") {
+            } else {
+                $conventions->whereHas('interventions', function ($query) use ($interventions_id) {
+                    $query->where('interventions.id', '=', $interventions_id);
+                });
+            }
+        }
+        return $datatables->make(true);
+
+    }
+
+
+    // VERSEMENTS
+    public function getVersements(Request $request)
+    {
+        $conventions = Convention::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis','programme','moas');
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($conventions)
+                ->addColumn('communes', function (Convention $convention) {
+                    return $convention->communes->map(function ($commune) {
+                        return str_limit($commune->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('point_desservis', function (Convention $convention) {
+                    return $convention->point_desservis->map(function ($point_desservi) {
+                        return str_limit($point_desservi->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('interventions', function (Convention $convention) {
+                    return $convention->interventions->map(function ($intervention) {
+                        return str_limit($intervention->nom, 30, '...');
+                    })->implode(', ');
+                })
+                // i should have access to show parntenaire type name for every partenaire
+
+                ->addColumn('partenaires', function (Convention $convention) {
+                    return $convention->partenaires->map(function ($partenaire) {
+                        return str_limit($partenaire->nom_fr, 30, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('montantCP', function (Convention $convention) {
+                    return $convention->partenaires->map(function ($partenaire) {
+                        if ($partenaire->id == 1) {
+                            return str_limit($partenaire->pivot->montant, 30, '...');
+                        }
+                    })->implode(' ');
+                })
+
+
+                ->addColumn('moas', function (Convention $convention) {
+                    return $convention->moas ? str_limit($convention->moas->nom_fr, 40, '...') : '';
+                })
+
+                ->addColumn('programme', function (Convention $convention) {
+                    return $convention->programme ? str_limit($convention->programme->nom_fr, 40, '...') : '';
+                })
+
+
+                ->addColumn('checkbox', function ($conventions) {
+                    return '<input type="checkbox" id="conventionCb_' . $conventions->id . '" name="checkbox" class="convention-checkbox" value="' . $conventions->id . '"  data-numero ="' . $conventions->num_ordre . '" class="chk-col-green"><label for="conventionCb_' . $conventions->id . '" class="block" ></label>';
+                })
+
+
+                ->addColumn('num_ordre', function ($conventions) {
+                    return '<a href="convention/'.$conventions->id.'/editVersement">'.$conventions->num_ordre.'</a>';
+                })
+
+
+                ->rawColumns(['checkbox','num_ordre']);
 
 
         }
@@ -168,6 +298,12 @@ class ConventionController extends Controller
     {
 
     }
+
+
+
+
+
+
 
 
     /**
@@ -363,7 +499,7 @@ class ConventionController extends Controller
 
 
         //redirecting with success message
-        return redirect('/convention')->with('success', 'Demande créee avec succès');
+        return redirect('/convention')->with('success', 'Convention créee avec succès');
     }
 
     /**
@@ -398,6 +534,33 @@ class ConventionController extends Controller
 
         //return $convention;
         return view('conventions.edit.edit')->with([
+            'convention' => $convention,
+            'interventions' => $interventions,
+            'localites' => $localites,
+            'partenaires_types' => $partenaires_types,
+            'moas' => $moas,
+            'communes' => $communes,
+            'programmes' => $programmes,
+            'porteur_projet' => $porteur_projet
+        ]);
+    }
+
+
+    public function editVersement(Convention $convention)
+    {
+        $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
+        $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
+        $pieces = Piece::orderBy('type')->pluck('type');
+        $moas = Moa::orderBy('nom_fr')->pluck('nom_fr', 'id');
+        $programmes = Programme::orderBy('nom_fr')->pluck('nom_fr', 'id');
+        $partenaires_types = PartenaireType::all();
+        $porteur_projet = Porteur::orderBy('nom_porteur_fr')->pluck('nom_porteur_fr', 'id');
+        $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
+        $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'piece','programme','moas'])->find($convention->id);
+        //return $convention;
+
+        //return $convention;
+        return view('conventions.suiviVersement.edit.edit')->with([
             'convention' => $convention,
             'interventions' => $interventions,
             'localites' => $localites,

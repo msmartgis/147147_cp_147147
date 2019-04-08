@@ -20,4 +20,11 @@ class PartenaireType extends Model
     }
 
 
+    public function versements()
+    {
+        return $this->hasMany('App\SuiviVersement', 'partenaire_id', 'id');
+    }
+
+
+
 }

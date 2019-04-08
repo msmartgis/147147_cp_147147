@@ -75,4 +75,11 @@ class Convention extends Model
 
 
 
+    public function versements()
+    {
+        return $this->hasMany('App\SuiviVersement', 'convention_id', 'id');
+    }
+
+
+
 }

@@ -35,8 +35,8 @@ Route::group(
                 Route::get('/projet', 'ProjetController@index')->name('indexProjet');
 
                 Route::get('/convention', 'ConventionController@index')->name('indexConvention');
+                Route::get('/suiviVersement', 'SuiviVersementController@index')->name('indexSuiviVersement');
 
-                Route::get('/suivi_versement', 'SuiviVersementController@index')->name('indexSuiviVersement');
 
 
                 //demandes
@@ -50,9 +50,13 @@ Route::group(
 
 
                 //conventions
+
                 Route::get('/conventions/show', 'ConventionController@getConventions');
                 Route::get('/convention/create', 'ConventionController@create')->name('createConvention');
 
+                //suivi des versment
+                Route::get('/conventions/showVersement', 'ConventionController@getVersements');
+                Route::get('/convention/{convention}/editVersement', 'ConventionController@editVersement');
                 Route::get('/convention/{id}/fiche', 'ConventionController@fiche')->name('convention.fiche');
 
                 //SPREADSHEET

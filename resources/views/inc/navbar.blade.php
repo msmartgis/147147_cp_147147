@@ -16,7 +16,7 @@
             </a>
         </li>
 
-        <li class="{{ Request::is('conventions') ? 'nav-item active' : '' }}">
+        <li class="{{ Request::is('convention') ? 'nav-item active' : '' }}">
             <a class="nav-link" href="{{ route('indexConvention') }}"><span class="active-item-here"></span>
                 <img src="{{asset('images/svg/resume.svg')}}" style="width: 1.2em;margin-right: 5px;" />
                 <span style="vertical-align: middle;" class="lato-bold">CONVENTIONS</span></a>
