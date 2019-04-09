@@ -15,6 +15,7 @@ use App\PointDesserviCategorie;
 use App\Porteur;
 use App\Programme;
 use App\Session;
+use App\SuiviVersement;
 use Illuminate\Http\Request;
 use App\PointDesservi;
 use Illuminate\Support\Facades\Input;
@@ -31,7 +32,7 @@ class ConventionController extends Controller
      */
     public function getConventions(Request $request)
     {
-        $conventions = Convention::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis','programme','moas');
+        $conventions = Convention::with( 'communes', 'interventions', 'partenaires','point_desservis','programme','moas');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($conventions)
                 ->addColumn('communes', function (Convention $convention) {
@@ -164,7 +165,7 @@ class ConventionController extends Controller
     // VERSEMENTS
     public function getVersements(Request $request)
     {
-        $conventions = Convention::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis','programme','moas');
+        $conventions = Convention::with( 'communes', 'interventions', 'partenaires','point_desservis','programme','moas');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($conventions)
                 ->addColumn('communes', function (Convention $convention) {
@@ -299,13 +300,6 @@ class ConventionController extends Controller
 
     }
 
-
-
-
-
-
-
-
     /**
      * Display a listing of the resource.
      *
@@ -320,7 +314,6 @@ class ConventionController extends Controller
         $moas = Moa::all();
         $sessions = Session::all();
         $interventions = Intervention::all();
-        $porteurs = Porteur::all();
         $programmes = Programme::all();
 
         $conventions = Convention::with(['communes', 'partenaires', 'point_desservis', 'interventions', 'session'])->get();
@@ -330,7 +323,6 @@ class ConventionController extends Controller
             'localites' => $localites,
             'partenaires_types' => $partenaires_types,
             'moas' => $moas,
-            'porteurs' => $porteurs,
             'sessions' => $sessions,
             'interventions' => $interventions,
             'programmes' => $programmes,
@@ -350,7 +342,6 @@ class ConventionController extends Controller
         $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
         $partenaire_types = PartenaireType::all();
         //$sessions = Session::orderBy('nom')->pluck('mois', 'id');
-        $porteur_projet = Porteur::distinct()->select('id', 'nom_porteur_fr')->get();
         //point desservis
         $localites = PointDesserviCategorie::find(1)->point_desservis;
         $categorie_points = PointDesserviCategorie::all();
@@ -368,7 +359,6 @@ class ConventionController extends Controller
                 'localites' => $localites,
                 'etablissement_scols' => $etablissement_scols,
                 'partenaire_types' => $partenaire_types,
-                'porteur_projet' => $porteur_projet,
                 'categorie_points' => $categorie_points,
                 'moas' => $moas,
             ]
@@ -403,7 +393,6 @@ class ConventionController extends Controller
         $convention->observation = $request->input('observation');
         $convention->session_id = $request->input('session');
         $convention->programme_id = $request->input('programme');
-        $convention->porteur_projet_id = $request->input('porteur_projet');
         $convention->moa_id = $request->input('moas');
         $convention->save();
 
@@ -463,7 +452,7 @@ class ConventionController extends Controller
 
                     array_push($piece_file_names, $fileNameToStore);
                     // Upload Image
-                    $path = $file->storeAs('local/uploaded_files/conventions', $fileNameToStore);
+                    $path = $file->storeAs('local/uploaded_files/conventions/'.$actu_id_convention, $fileNameToStore);
                 }
 
             } else {
@@ -527,9 +516,8 @@ class ConventionController extends Controller
         $moas = Moa::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $programmes = Programme::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $partenaires_types = PartenaireType::all();
-        $porteur_projet = Porteur::orderBy('nom_porteur_fr')->pluck('nom_porteur_fr', 'id');
         $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
-        $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'piece','programme','moas'])->find($convention->id);
+        $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis',  'interventions', 'piece','programme','moas'])->find($convention->id);
         //return $convention;
 
         //return $convention;
@@ -540,8 +528,7 @@ class ConventionController extends Controller
             'partenaires_types' => $partenaires_types,
             'moas' => $moas,
             'communes' => $communes,
-            'programmes' => $programmes,
-            'porteur_projet' => $porteur_projet
+            'programmes' => $programmes
         ]);
     }
 
@@ -554,12 +541,10 @@ class ConventionController extends Controller
         $moas = Moa::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $programmes = Programme::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $partenaires_types = PartenaireType::all();
-        $porteur_projet = Porteur::orderBy('nom_porteur_fr')->pluck('nom_porteur_fr', 'id');
+        $versements = SuiviVersement::with('partenaire')->where([['convention_id','=',$convention->id]])->orderBy('date_versement','asc')->get();
         $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
-        $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'piece','programme','moas'])->find($convention->id);
-        //return $convention;
+        $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis',  'interventions', 'piece','programme','moas','versements'])->find($convention->id);
 
-        //return $convention;
         return view('conventions.suiviVersement.edit.edit')->with([
             'convention' => $convention,
             'interventions' => $interventions,
@@ -568,7 +553,7 @@ class ConventionController extends Controller
             'moas' => $moas,
             'communes' => $communes,
             'programmes' => $programmes,
-            'porteur_projet' => $porteur_projet
+            'versements' => $versements
         ]);
     }
 
@@ -583,7 +568,6 @@ class ConventionController extends Controller
     {
         //$request->validate($request, ['num_ordre' => 'required']);
         $convention_to_update = Convention::find($convention->id);
-        $convention_to_update->porteur_projet_id = $request->porteur_projet;
         $convention_to_update->moa_id = $request->moa;
         $convention_to_update->programme_id = $request->programme;
         $convention_to_update->objet_fr = $request->objet_fr;

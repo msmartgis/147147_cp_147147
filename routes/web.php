@@ -55,9 +55,13 @@ Route::group(
                 Route::get('/convention/create', 'ConventionController@create')->name('createConvention');
 
                 //suivi des versment
-                Route::get('/conventions/showVersement', 'ConventionController@getVersements');
+                Route::get('/conventions/showVersement', 'ConventionController@getVersements')->name('versement.show');
                 Route::get('/convention/{convention}/editVersement', 'ConventionController@editVersement');
                 Route::get('/convention/{id}/fiche', 'ConventionController@fiche')->name('convention.fiche');
+
+                Route::post('/versement/getVersementData', 'SuiviVersementController@getVersementData')->name('versement.getData');
+                Route::post('/versement/addVersement', 'SuiviVersementController@addVersement')->name('versement.add');
+                Route::get('/versement/downloadFile', 'SuiviVersementController@downloadFile')->name('versement.download');
 
                 //SPREADSHEET
                 Route::post('/demandes/demandeSpreadSheetEnCours', 'SpreadSheetController@demandeSpread_en_cours')->name('spread_demande_en_cours');

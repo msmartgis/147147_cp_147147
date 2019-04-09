@@ -1,5 +1,7 @@
 //LOADER IMAGE WHILE WAITING FOR AJAX RESPONSE
 //point desservi
+
+
 function loading_image(id,div_response)
 {
    $(document).ajaxStart(function () {

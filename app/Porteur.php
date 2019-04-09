@@ -14,9 +14,4 @@ class Porteur extends Model
     }
 
 
-    public function convention()
-    {
-        return $this->hasMany('App\Convention', 'porteur_projet_id', 'id');
-    }
-
 }

@@ -68,8 +68,22 @@
 
         .btn {
             margin-top: 0 !important;
-            padding: .1em .1em .1em;
+            padding: .2em .2em .2em;
         }
+
+        .loading_modal{
+            width:100px; /* This value will depend on what size you want for your loading image, let's say it's 50px */
+            height: 100px;
+            position:absolute;
+            left:50%;
+            top:50%;
+            margin-top: -100px;
+            margin-left: -73px;
+            z-index: 2;
+
+        }
+
+
     </style>
 @endsection
 
@@ -77,7 +91,7 @@
 
     @include('conventions.suiviVersement.edit.form_edit')
 
-
+    @include('conventions.suiviVersement.edit.modals_edit')
 
 
     {{-- end modals --}}
@@ -135,12 +149,9 @@
     });
 
 </script>
-
-
 <!-- Sweet-Alert  -->
 <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
-
 <script src="{{asset('js/conventions/create.js')}}"></script>
 <script src="{{asset('js/functions.js')}}"></script>
 
@@ -148,131 +159,52 @@
 
 <script>
     $(document).ready(function () {
-        //files managemnt *********
-        //add piece
-        $('.form-ulpoad-piece').on('submit', function (e) {
-            $form = $(this);
-            e.preventDefault();
-            var markup = '';
-            url = $form.attr('action');
-            type = $form.attr('method');
-            $.ajax({
-                'type': type,
-                'url': url,
-                'data': new FormData(this),
-                // Tell jQuery not to process data or worry about content-type
-                // You *must* include these options!
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    console.log(data);
-                    markup =
-                        "<tr style='text-align: center'>\
-                            <td>" + data.type + "</td>\
-                        <td>" + data.nom + "</td>\
-                        <td>" + data.path + "</td>\
-                        <td style='text-align: center'>\
-                            <button class='btn btn-warning delete-piece' data-id='conventionPiece_" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
-                        </td>\
-                        </tr>";
-                    $(markup).prependTo("#pieces_tbody");
-                    $('#add_modal_piece').modal('hide');
-                }
+            $(document).ajaxStart(function () {
+                $(".loading_modal").show();
+                $(".form-add-versement myForm :input").prop("disabled", true);
+            }).ajaxStop(function () {
+                $(".loading_modal").hide();
+                $(".form-add-versement myForm :input").prop("disabled", false);
             });
-        });
-
-
-        //delete piece
-        $(".delete-piece").click(function () {
-            var piece_id;
-            piece_id = $(this).data('id').split('_').pop();
-            message_reussi = "La piéce a été supprimer avec succès";
-            message_sub_title = "Le document sera supprimé définitivement";
-
-            swal({
-                title: "Vous êtes sûr?",
-                text: message_sub_title,
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Oui, je confirme!",
-                cancelButtonText: "Non, annuler!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function (isConfirm) {
-                if (isConfirm) {
-                    //send an ajax request to the server update decision column
-                    $.ajax({
-                        url: '{!! route('delete_piece')!!}',
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            piece_id: piece_id
-                        },
-                        dataType: 'JSON',
-                        success: function (data) {
-
-                            if (data.length == 0) {
-                                swal("Réussi!", message_reussi, "success");
-                                setTimeout(location.reload.bind(location), 500);
-                            }
-
-                        }
-                    });
-                } else {
-                    swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
-                }
-            });
-        });
-
 
         //add partenaire
-        $('.form-add-partenaire-edit').on('submit', function (e) {
-            $form = $(this);
-            e.preventDefault();
-            var markup = '';
-            url = $form.attr('action');
-            type = $form.attr('method');
+        $('.add-versement').on('click', function () {
+            var montant_verse = 0;
+            var data_partenaire = $(this).data('id').split('_');
+            var partenaire_name = data_partenaire[0];
+            var partenaire_id = data_partenaire[1];
+
+            var partenaire_part = data_partenaire[2];
+            var convention_id =  $('#hidden_data_versement_modal').find('input[name="convention_id"]').val();
+            var _token = $('#hidden_data_versement_modal').find('input[name="_token"]').val();
+            $('#partenaire_name_modal').val(partenaire_name);
+            $('#part_partenaire').val(partenaire_part);
+            $('#partenaire_id_hidden').val(partenaire_id);
+            $('#m-add-versement').modal();
             $.ajax({
-                'type': type,
-                'url': url,
-                'data': new FormData(this),
-                // Tell jQuery not to process data or worry about content-type
-                // You *must* include these options!
-                cache: false,
-                contentType: false,
-                processData: false,
+                'url': '/versement/getVersementData',
+                'type': 'POST',
+                'data': {
+                    '_token' :_token ,
+                    'partenaire_id' : partenaire_id,
+                    'convention_id' : convention_id,
+                },
                 success: function (data) {
-                    markup =
-                        "<tr style='text-align: center'>\
-                            <td>" + data.part.nom_fr + "</td>\
-                        <td>" + data.montant + "</td>\
-                        <td>" + data.pourcentage + "</td>\
-                        <td style='text-align: center'>\
-                            <button type='button' class='btn btn-warning delete-partenaire' data-convention'" + data.convention + "' data-partnaire='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
-                        </td>\
-                        </tr>";
-                    $(markup).appendTo("#partenaire_tbody");
-                    $('#m-add-partenaire-edit').modal('hide');
+                    montant_verse = data.montant_verse;
+                    $('.form-add-versement').find('input[name="montant_verse"]').val(montant_verse);
+                    $('#rest_a_verser').val(partenaire_part-montant_verse);
+                    $('#rest_a_verse_hidden').val(partenaire_part-montant_verse);
+                   //
                 }
             });
         });
 
-
-        //delete partenaire
-
-        $(".delete-partenaire").click(function () {
-            var convention_id;
-            var partenaire_id;
-            convention_id = $(this).data('convention');
-            partenaire_id = $(this).data('partenaire');
-            message_reussi = "Le partenaire a été supprimer avec succès";
-            message_sub_title = "Le partenaire sera supprimé définitivement dans cette convention";
-
+        //supprimer versement
+        $('.delete-versement').click(function(){
+            var versement_id = $(this).data('id');
             swal({
                 title: "Vous êtes sûr?",
-                text: message_sub_title,
+                text: "Voulez-vous supprimer ce versement",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
@@ -284,108 +216,18 @@
                 if (isConfirm) {
                     //send an ajax request to the server update decision column
                     $.ajax({
-                        url: '{!! route("delete_partenaire_convention")!!}',
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            convention_id: convention_id,
-                            partenaire_id: partenaire_id
-                        },
-                        dataType: 'JSON',
-                        success: function (data) {
-
-                            if (data.length == 0) {
-                                swal("Réussi!", message_reussi, "success");
-                                setTimeout(location.reload.bind(location), 500);
-                            }
-
-                        }
-                    });
-                } else {
-                    swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
-                }
-            });
-        });
-
-
-        //supprimer convention
-        $('#supprimer_convention').click(function(){
-            var convention_id = $(this).data('id');
-            message_reussi = "Suppression effectuée avec succès";
-            message_sub_title = "Voulez vous vraiment supprimer cette convention!!";
-            url='{{url("convention")}}'+'/'+convention_id;
-            redirect = "/convention";
-            delete_function(convention_id,url,message_reussi,message_sub_title,redirect);
-        });
-
-
-        //convention_managemnt
-        function convention_mngmnt(id, url, success_message, sub_title_message) {
-            swal({
-                title: "Vous êtes sûr?",
-                text: sub_title_message,
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Oui, je confirme!",
-                cancelButtonText: "Non, annuler!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function (isConfirm) {
-                if (isConfirm) {
-                    //send an ajax request to the server update decision column
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: {
-                            "_token": '{{ csrf_token() }}',
-                            "convention_ids": id,
-                        },
-                        dataType: 'JSON',
-                        success: function (data) {
-                            console.log(data);
-                            if (data.length == 0) {
-                                swal("Réussi!", success_message, "success");
-                                setTimeout(location.reload.bind(location), 500);
-                            }
-                        }
-                    });
-                } else {
-                    swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
-                }
-            });
-        }
-
-
-//delete function
-        function delete_function(id, url, success_message, sub_title_message,redirect) {
-            swal({
-                title: "Vous êtes sûr?",
-                text: sub_title_message,
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Oui, je confirme!",
-                cancelButtonText: "Non, annuler!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function (isConfirm) {
-                if (isConfirm) {
-                    //send an ajax request to the server update decision column
-                    $.ajax({
-                        url: url,
+                        url: '/suivi_versement/'+versement_id,
                         type: 'DELETE',
                         data: {
                             "_token": '{{ csrf_token() }}',
-                            "_method": 'DELETE',
-                            "id": id,
+                            'id' : versement_id
                         },
                         dataType: 'JSON',
                         success: function (data) {
                             console.log(data);
                             if (data.length == 0) {
-                                swal("Réussi!", success_message, "success");
-                                setTimeout(window.location.replace(redirect), 500);
+                                swal("Réussi!", "Versement supprimer avec succès", "success");
+                                setTimeout(location.reload.bind(location), 500);
                             }
                         }
                     });
@@ -393,12 +235,8 @@
                     swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
                 }
             });
-        }
-
-
-
+        });
     });
-
 </script>
 
 @endpush

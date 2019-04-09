@@ -1121,7 +1121,7 @@ class DemandesController extends BaseController
 
                     array_push($piece_file_names, $fileNameToStore);
                         // Upload Image
-                    $path = $file->storeAs('local/uploaded_files/demandes', $fileNameToStore);
+                    $path = $file->storeAs('local/uploaded_files/demandes/'.$actu_id_demande, $fileNameToStore);
                 }
 
             }

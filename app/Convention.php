@@ -68,10 +68,6 @@ class Convention extends Model
     }
 
 
-    public function porteur()
-    {
-        return $this->belongsTo('App\Porteur', 'porteur_projet_id');
-    }
 
 
 

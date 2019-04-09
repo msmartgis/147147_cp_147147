@@ -259,16 +259,6 @@
             });
         });
 
-        //edite partenaire
-        // $(document).on('click', '.edit-partenaire', function () {
-        //     var montant_part = ($(this).data('montant'));
-        //     var id_partenaire = ($(this).data('partenaire'));
-        //     //alert(id_partenaire);
-        //     //alert(montant_part);
-        //     $("input[name='montant']").val(montant_part);
-        //     $("#partenaire_type_edit").val(id_partenaire).change();
-        //     $('#m-edite-partenaire').modal('show');
-        // });
 
         //delete partenaire
 
@@ -308,7 +298,6 @@
                                 swal("Réussi!", message_reussi, "success");
                                 setTimeout(location.reload.bind(location), 500);
                             }
-
                         }
                     });
                 } else {
@@ -339,9 +328,7 @@
             message_sub_title = "A traiter sera affecté a cette demande!!";
             url='{!! route('a_traiter')!!}';
             demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
-
         });
-
 
         //restaurer en cours
         $('#restaurer').click(function(){
@@ -351,7 +338,6 @@
             message_sub_title = "Restaurer cette demande!!";
             url='{!! route('restaurer_demande')!!}';
             demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
-
         });
 
 
@@ -362,12 +348,6 @@
             $('#id_demande_modal_affect').val(demande_id);
             $('.modal-title').text('Affectation aux conventions la demande numero : ' + numero_ordre);
             $('#affecter_aux_cnv').modal('show');
-
-            // message_reussi = "Restauration effectuée avec succès";
-            // message_sub_title = "Restaurer cette demande!!";
-            // url='{!! route('restaurer_demande')!!}';
-            // decision_edit(demande_id,'',url,message_reussi,message_sub_title);
-
         });
 
 
@@ -419,7 +399,6 @@
             });
         }
 
-
 //delete function 
         function delete_function(id, url, success_message, sub_title_message,redirect) {
             swal({
@@ -457,11 +436,6 @@
                 }
             });
         }
-
-
-
     });
-
 </script>
-
 @endpush

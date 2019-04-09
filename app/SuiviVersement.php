@@ -9,7 +9,7 @@ class SuiviVersement extends Model
     protected $table = "versements";
     public function partenaire()
     {
-        return $this->belongsTo('App\Partenaire', 'partenaire_id');
+        return $this->belongsTo('App\PartenaireType', 'partenaire_id');
     }
 
 
