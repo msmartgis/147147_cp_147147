@@ -236,7 +236,7 @@ class DemandesController extends BaseController
                 ->addColumn('montantCP', function (Demande $demande) {
                     return $demande->partenaires->map(function ($partenaire) {
                         if ($partenaire->id == 1) {
-                            return str_limit($partenaire->pivot->montant, 30, '...');
+                            return number_format($partenaire->pivot->montant);
                         }
                     })->implode(' ');
                 })
@@ -251,6 +251,10 @@ class DemandesController extends BaseController
 
                 ->addColumn('num_ordre', function ($demandes) {
                     return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
+                })
+
+                ->addColumn('montant_global', function ($demandes) {
+                    return number_format($demandes->montant_global);
                 })
 
                 ->addColumn('date_reception', function ($demandes) {
@@ -371,7 +375,7 @@ class DemandesController extends BaseController
 
                     return $demande->partenaires->map(function ($partenaire) {
                         if ($partenaire->id == 1) {
-                            return str_limit($partenaire->pivot->montant, 30, '...');
+                            return number_format($partenaire->pivot->montant);
                         }
                     })->implode(' ');
 
@@ -388,6 +392,9 @@ class DemandesController extends BaseController
                 })
                 ->addColumn('date_reception', function ($demandes) {
                     return $demandes->date_reception->format('d-m-Y');
+                })
+                ->addColumn('montant_global', function ($demandes) {
+                    return number_format($demandes->montant_global);
                 })
                 ->addColumn('num_ordre', function ($demandes) {
                     return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
@@ -502,7 +509,7 @@ class DemandesController extends BaseController
 
                     return $demande->partenaires->map(function ($partenaire) {
                         if ($partenaire->id == 1) {
-                            return str_limit($partenaire->pivot->montant, 30, '...');
+                            return number_format($partenaire->pivot->montant);
                         }
                     })->implode(' ');
 
@@ -515,6 +522,9 @@ class DemandesController extends BaseController
                 })
                 ->addColumn('num_ordre', function ($demandes) {
                     return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
+                })
+                ->addColumn('montant_global', function ($demandes) {
+                    return number_format($demandes->montant_global);
                 })
                 ->addColumn('date_reception', function ($demandes) {
                     return $demandes->date_reception->format('d-m-Y');
@@ -624,7 +634,7 @@ class DemandesController extends BaseController
 
                     return $demande->partenaires->map(function ($partenaire) {
                         if ($partenaire->id == 1) {
-                            return str_limit($partenaire->pivot->montant, 30, '...');
+                            return number_format($partenaire->pivot->montant);
                         }
                     })->implode(' ');
 
@@ -638,6 +648,9 @@ class DemandesController extends BaseController
 
                 ->addColumn('checkbox', function ($demandes) {
                     return '<input type="checkbox" id="demandeAffecteCb_' . $demandes->id . '" name="checkbox_affectees" value="' . $demandes->id . '" data-id="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="demandeAffecteCb_' . $demandes->id . '" class="block" ></label>';
+                })
+                ->addColumn('montant_global', function ($demandes) {
+                    return number_format($demandes->montant_global);
                 })
                 ->addColumn('date_reception', function ($demandes) {
                     return $demandes->date_reception->format('d-m-Y');
@@ -749,7 +762,7 @@ class DemandesController extends BaseController
 
                     return $demande->partenaires->map(function ($partenaire) {
                         if ($partenaire->id == 1) {
-                            return str_limit($partenaire->pivot->montant, 30, '...');
+                            return number_format($partenaire->pivot->montant);
                         }
                     })->implode(' ');
 
@@ -757,6 +770,9 @@ class DemandesController extends BaseController
                 })
                 ->addColumn('date_reception', function ($demandes) {
                     return $demandes->date_reception->format('d-m-Y');
+                })
+                ->addColumn('montant_global', function ($demandes) {
+                    return number_format($demandes->montant_global);
                 })
 
                 ->addColumn('checkbox', function ($demandes) {
@@ -869,7 +885,7 @@ class DemandesController extends BaseController
 
                     return $demande->partenaires->map(function ($partenaire) {
                         if ($partenaire->id == 1) {
-                            return str_limit($partenaire->pivot->montant, 30, '...');
+                            return number_format($partenaire->pivot->montant);
                         }
                     })->implode(' ');
 
@@ -877,6 +893,9 @@ class DemandesController extends BaseController
                 })
                 ->addColumn('date_reception', function ($demandes) {
                     return $demandes->date_reception->format('d-m-Y');
+                })
+                ->addColumn('montant_global', function ($demandes) {
+                    return number_format($demandes->montant_global);
                 })
 
                 ->addColumn('checkbox', function ($demandes) {

@@ -1,17 +1,18 @@
 <div class="table-responsive">
     <table class="table table-hover table-striped datatables" id="suivi_versment_datatables" style="width:100% ;" >
         <thead>
-        <th style="width: 1% !important"></th>
-        <th style="width: 1% !important">N°ordre</th>
-        <th style="width: 10% !important" >Objet</th>
-        <th style="width: 10% !important">Liaison Routière</th>
-        <th style="width: 15% !important">Communes</th>
-        <th style="width: 10% !important">Maitre D'ouvrage</th>
-        <th style="width: 8% !important">Interventions</th>
-        <th style="width: 10% !important">Partenaire</th>
-        <th style="width: 8% !important">Programme</th>
-        <th style="width: 1% !important">M.Totol</th>
-        <th style="width: 1% !important">M.CP</th>
+        <th ></th>
+        <th >N°ordre</th>
+        <th >Liaison Routière</th>
+        <th >Communes</th>
+        <th >Maitre D'ouvrage</th>
+        <th >Interventions</th>
+        <th >Partenaire</th>
+        <th >Programme</th>
+        <th >M.Totol</th>
+        <th >M.CP</th>
+        <th >M.Verse</th>
+        <th >Etat (%)</th>
         </thead>
     </table>
 </div>

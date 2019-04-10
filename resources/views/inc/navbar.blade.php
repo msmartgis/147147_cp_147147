@@ -28,7 +28,7 @@
                 <span style="vertical-align: middle;" class="lato-bold">SUIVI DE VERSEMENT</span></a>
         </li>
 
-        <li class="nav-item ">
+        <li class="{{ Request::is('appel_offre') ? 'nav-item active' : '' }}">
             <a class="nav-link" href="#"><span class="active-item-here"></span>
                 <img src="{{asset('images/svg/report.svg')}}" style="width: 1.2em;margin-right: 5px;" />
                 <span style="vertical-align: middle;" class="lato-bold">APPELS D'OFFRES</span></a>

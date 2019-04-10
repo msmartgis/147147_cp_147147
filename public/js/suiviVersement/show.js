@@ -10,6 +10,7 @@ $(document).ready(function () {
         info : false,
         bLengthChange : true,
         language: {
+            processing: '<img src="/images/loader/loader_3.gif"  />',
             search: '',
             searchPlaceholder: 'Recherche...',
             url: 'http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json',
@@ -26,91 +27,100 @@ $(document).ready(function () {
                 d.localites = $('select[name=localites]').val();
                 d.moas = $('select[name=moas]').val();
                 d.programmes = $('select[name=programmes]').val();
+                d.etat_versement_from = $('select[name=etat_versement_from]').val();
+                d.etat_versement_to = $('select[name=etat_versement_to]').val();
             }
 
         },
-        columnDefs: [{
-            width: 20,
-            targets: 1
-        },
-            {
-                width: 30,
-                targets: 2
-            },
-            {
-                width: 300,
-                targets: 3
-            }
-        ],
+
         columns: [
             {
                 data: 'checkbox',
                 name: 'checkbox',
                 orderable: false,
-                searchable: false
+                searchable: false,
+                width: '1%'
             },
 
             {
                 data: 'num_ordre',
                 name: 'conventions.num_ordre',
                 orderable: true,
-                searchable: true
-            },
-            {
-                data: 'objet_fr',
-                name: 'conventions.objet_fr',
-                orderable: true,
-                searchable: true
+                searchable: true,
+                width: '1%'
             },
             {
                 data: 'point_desservis',
                 name: 'point_desservis.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width: '15%'
             },
             {
                 data: 'communes',
                 name: 'communes.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width: '15%'
             },
 
             {
                 data: 'moas',
                 name: 'moas.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width: '10%'
             },
             {
                 data: 'interventions',
                 name: 'interventions.nom',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width: '15%'
             },
             {
                 data: 'partenaires',
                 name: 'partenaires.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width: '10%'
             },
             {
                 data: 'programme',
                 name: 'programme.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width: '5%'
             },
             {
                 data: 'montant_global',
                 name: 'montant_global',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width: '3%'
             },
             {
                 data: 'montantCP',
                 name: 'montantCP',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width: '3%'
+            },
+            {
+                data: 'montant_verse',
+                name: 'montant_verse',
+                orderable: true,
+                searchable: true,
+                width: '3%'
+            },
+            {
+                data: 'etat_versement',
+                name: 'etat_versement',
+                orderable: true,
+                searchable: true,
+                width: '6%'
             }
+
         ],
         initComplete: function () {
             this.api().columns().every(function () {
@@ -125,7 +135,7 @@ $(document).ready(function () {
     });
 
 
-    $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#programmes_filter,#moas_filter').on('change paste keyup', function (e) {
+    $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#programmes_filter,#moas_filter,#etat_versement_from,#etat_versement_to').on('change paste keyup', function (e) {
         suiviVersmentTable.draw();
         e.preventDefault();
     });
