@@ -80,6 +80,7 @@
                                                         <th>Nom</th>
                                                         <th>Upload</th>
                                                         <th></th>
+                                                        <th></th>
                                                     </tr>
                                                     <tbody id="pieces_tbody">
                                                     @foreach ($demande->piece as $item)
@@ -116,8 +117,20 @@
                                                             <td style="text-align: center">
                                                                 {{$item->path}}
                                                             </td>
+
+
+                                                            <td style="text-align: center;">
+                                                                <a href="/files/download/demandes/{{$demande->id}}/{{$item->path}}">
+                                                                    <button type="button"  class="btn btn-secondary-table " >
+                                                                        <i class="fa fa-download"></i>
+                                                                        Télécharger</button>
+
+                                                                </a>
+
+                                                            </td>
+
                                                             <td style="text-align: center">
-                                                                <button type="button" class="btn btn-warning delete-piece" data-id="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                <button type="button" class="btn btn-danger-table delete-piece" data-id="{{$item->id}}"><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
                                                         </tr>
@@ -164,7 +177,7 @@
                                                                 {{number_format($item->pivot->montant/($demande->montant_global)*100,2)}}
                                                             </td>
                                                             <td style="text-align: center">
-                                                                <button type="button" class="btn btn-warning delete-partenaire" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                <button type="button" class="btn btn-danger-table delete-partenaire" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}"><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
                                                         </tr>

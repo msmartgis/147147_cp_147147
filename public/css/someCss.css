@@ -373,14 +373,19 @@ textarea.form-control
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice
 {
-    background-color: #ff8740 !important;
-    border: 1px solid #ff8740 !important;
-    color : #fff !important;
+    background-color: transparent!important;
+    border: 1px solid transparent!important;
+    color: #ff8740!important;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove
 {
-    color: #fff !important;
+    color: #ff8740 !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered li
+{
+    text-decoration: underline !important;
 }
 
 
@@ -501,4 +506,30 @@ table.dataTable thead .sorting_desc_disabled:after
 .table-striped tbody tr:nth-of-type(odd)
 {
     background-color: #fff !important;
+}
+
+
+.btn-danger-table
+{
+    background-color: transparent;
+    border-color: transparent;
+    color: #f60909;
+    text-decoration: underline;
+}
+
+.btn-success-table{
+    background-color: transparent;
+    border-color: transparent;
+    color: #9fd037;
+
+}
+
+.btn-secondary-table{
+    color: #686868!important;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered li {
+    font-weight: 600;
 }

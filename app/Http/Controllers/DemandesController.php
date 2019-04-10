@@ -1099,14 +1099,15 @@ class DemandesController extends BaseController
         //verify if there is any piece
         if (Input::has('pieces_types')) {
             $array_combination_piece = array();
+            $pieces_types_array = array();
+            $pieces_noms_array = array();
+            $piece_file_names = array();
             $pieces_types_array = Input::get('pieces_types');
             $pieces_noms_array = Input::get('pieces_noms');
-            $piece_file_names = array();
             $items_number = count($pieces_types_array);
             $files = $request->file('pieces_uploads');
-
             //define a new piece
-            $piece = new Piece;
+
             //files uploaded get path
             if ($request->hasFile('pieces_uploads')) {
                 foreach ($files as $file) {
@@ -1125,30 +1126,29 @@ class DemandesController extends BaseController
                 }
 
             }
-            else {
-                //bug when no file uploaded!!!!
-                $fileNameToStore = 'noimage.jpg';
-                $piece->path = $fileNameToStore;
-            }
+
+
+
             for ($i = 0; $i < $items_number; $i++) {
+                $piece = new Piece;
                 $piece->type = $pieces_types_array[$i];
                 $piece->nom = $pieces_noms_array[$i];
-                if(!empty($piece_file_names))
-                {
-                    $piece->path = $piece_file_names[$i];
-                }
-
-                array_push($array_combination_piece, $piece);
+                $piece->path = $piece_file_names[$i];
+                $piece->demande_id = $actu_id_demande;
+                $piece->save();
+                //array_push($array_combination_piece, $piece);
             }
 
-            foreach ($array_combination_piece as $p) {
+
+
+           /* foreach ($array_combination_piece as $p) {
                 $piec = new Piece;
                 $piec->type = $p->type;
                 $piec->nom = $p->nom;
                 $piec->path = $p->path;
-                $piec->demande_id = $actu_id_demande;
-                $piec->save();
-            }
+
+
+            }*/
         }
         
 

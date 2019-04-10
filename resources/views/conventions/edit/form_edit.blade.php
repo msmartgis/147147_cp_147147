@@ -13,24 +13,7 @@
                             {{--tab informations generales--}}
                             <div class="tab-pane active" id="information_generale_tab" role="tabpanel">
                                 <div class="pad">
-                                    <h5>PORTEUR DE PROJET </h5>
-                                    <hr style="color:#2d353c;margin:0">
-                                    <div class="row" style="margin-top: 8px">
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                {{Form::select('porteur_projet', $porteur_projet, $convention->porteur->id,
-                                                [
-                                                'data-placeholder' => 'Selectionner commune(s)',
-                                                'class'=>'form-control select2',
-                                                'name'=>'porteur_projet'
-                                                ]
-                                                )}}
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
 
-                                        </div>
-                                    </div>
 
                                     <h5>Maitre D'OUVRAGE </h5>
                                     <hr style="color:#2d353c;margin:0">
@@ -119,6 +102,7 @@
                                                         <th>Nom</th>
                                                         <th>Upload</th>
                                                         <th></th>
+                                                        <th></th>
                                                     </tr>
                                                     <tbody id="pieces_tbody">
                                                     @foreach ($convention->piece as $item)
@@ -155,8 +139,16 @@
                                                             <td style="text-align: center">
                                                                 {{$item->path}}
                                                             </td>
+                                                            <td style="text-align: center;">
+                                                                <a href="/files/download/conventions/{{$convention->id}}/{{$item->path}}">
+                                                                    <button type="button"  class="btn btn-secondary-table " >
+                                                                        <i class="fa fa-download"></i>
+                                                                        Télécharger</button>
+
+                                                                </a>
+                                                            </td>
                                                             <td style="text-align: center">
-                                                                <button type="button" class="btn btn-warning delete-piece" data-id="conventionPiece_{{$item->id}}"><i class="fa fa-close"></i>
+                                                                <button type="button" class="btn btn-danger-table delete-piece" data-id="conventionPiece_{{$item->id}}"><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
                                                         </tr>
@@ -179,7 +171,7 @@
 
                                     <div class="row">
                                         <div class="col-12" style="margin-top : 8px">
-                                            <h5>MONTAGE FINANCIER PROPOSE</h5>
+                                            <h5>MONTAGE FINANCIER DEFINITIF</h5>
                                             <hr style="color:#2d353c;margin-top:0px;margin-bottom: 4px">
                                             <div class="table-responsive">
                                                 <table class="table table-piece">
@@ -203,7 +195,7 @@
                                                                 {{number_format($item->pivot->montant/($convention->montant_global)*100,2)}}
                                                             </td>
                                                             <td style="text-align: center">
-                                                                <button type="button" class="btn btn-warning delete-partenaire" data-convention="{{$convention->id}}" data-partenaire="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                <button type="button" class="btn btn-danger-table delete-partenaire" data-id="{{$convention->id}}_{{$item->id}}"><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
                                                         </tr>
@@ -214,8 +206,8 @@
                                                     </tbody>
                                                 </table>
                                                 <div style="text-align: center">
-                                                    <a href="#" data-toggle="modal"
-                                                       data-target="#m-add-partenaire-edit"> <i class="fa fa-plus"></i>
+                                                    <a href="#" data-toggle="modal" data-target="#m-add-partenaire-edit">
+                                                        <i class="fa fa-plus"></i>
                                                         <b> Ajouter Partenaire</b>
                                                     </a>
                                                 </div>

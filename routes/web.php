@@ -95,6 +95,8 @@ Route::group(
                 Route::post('/partenaire/add_partenaire', 'PartenaireTypeController@addPartenaire')->name('add_partenaire');
 
 
+                //files
+                Route::get('/files/download/{directory}/{id}/{file_name}', 'FilesController@fileDownload')->name('files.download');
                 //point desservis
                 Route::post('/pointDesservi/loadPoint', 'PointDesserviController@loadPoint');
         }

@@ -84,6 +84,22 @@
         }
 
 
+        .btn-success.disabled, .btn-success:disabled
+        {
+            color: #6c6969;
+        }
+
+        .btn-success.disabled, .btn-success:disabled
+        {
+            background-color: transparent;
+            border-color: transparent;
+            opacity: 0.5;
+
+        }
+
+
+
+
     </style>
 @endsection
 

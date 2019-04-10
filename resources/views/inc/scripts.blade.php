@@ -39,6 +39,8 @@
 	<!-- Fab Admin for advanced form element -->
 <script src="{{asset('js/advanced-form-element.js')}}"></script>
 
+
+
 {{-- <script>
 	$.ajaxSetup({
 			headers: {
@@ -50,5 +52,7 @@
  <script>
      var assetBaseUrl = "{{ asset('') }}";
  </script>
+
+
 
  @stack('added_scripts')

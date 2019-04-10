@@ -254,7 +254,6 @@
                                     'class'=>'form-control etat',
                                     'style'=>'width : 100%',
                                     'name'=>'pieces_noms[]',
-
                                     ]
                                     )
                                     }}

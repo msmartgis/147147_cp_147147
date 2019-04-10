@@ -78,8 +78,8 @@
     @include('conventions.edit.form_edit')
 
     {{-- Modals --}}
-    {{--@include('demandes.modals')--}}
-    {{--@include('demandes.edit.modals_edit')--}}
+   @include('conventions.modals')
+   @include('conventions.edit.modals_edit')
 
     {{-- end modals --}}
 @endsection
@@ -263,10 +263,12 @@
         //delete partenaire
 
         $(".delete-partenaire").click(function () {
-            var demande_id;
+            var convention_partenaire = $(this).data('id').split('_');
+            var convention_id;
             var partenaire_id;
-            demande_id = $(this).data('demande');
-            partenaire_id = $(this).data('partenaire');
+
+            convention_id = convention_partenaire[0];
+            partenaire_id = convention_partenaire[1];
             message_reussi = "Le partenaire a été supprimer avec succès";
             message_sub_title = "Le partenaire sera supprimé définitivement dans cette demande";
 
@@ -284,11 +286,11 @@
                 if (isConfirm) {
                     //send an ajax request to the server update decision column
                     $.ajax({
-                        url: '{!! route("delete_partenaire")!!}',
+                        url: '{!! route("delete_partenaire_convention")!!}',
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
-                            demande_id: demande_id,
+                            convention_id: convention_id,
                             partenaire_id: partenaire_id
                         },
                         dataType: 'JSON',

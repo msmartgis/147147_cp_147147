@@ -429,17 +429,17 @@ class ConventionController extends Controller
         //verify if there is any piece
         if (Input::has('pieces_types')) {
             $array_combination_piece = array();
+            $pieces_types_array = array();
+            $pieces_noms_array = array();
+            $piece_file_names = array();
             $pieces_types_array = Input::get('pieces_types');
             $pieces_noms_array = Input::get('pieces_noms');
-            $piece_file_names = array();
             $items_number = count($pieces_types_array);
             $files = $request->file('pieces_uploads');
-
             //define a new piece
-            $piece = new Piece;
+
             //files uploaded get path
             if ($request->hasFile('pieces_uploads')) {
-
                 foreach ($files as $file) {
                     // Get filename with the extension
                     $filenameWithExt = $file->getClientOriginalName();
@@ -455,29 +455,30 @@ class ConventionController extends Controller
                     $path = $file->storeAs('local/uploaded_files/conventions/'.$actu_id_convention, $fileNameToStore);
                 }
 
-            } else {
-                //bug when no file uploaded!!!!
-                $fileNameToStore = 'noimage.jpg';
-                $piece->path = $fileNameToStore;
-            }
-            for ($i = 0; $i < $items_number; $i++) {
-                $piece->type = $pieces_types_array[$i];
-                $piece->nom = $pieces_noms_array[$i];
-                if(!empty($piece_file_names))
-                {
-                    $piece->path = $piece_file_names[$i];
-                }
-                array_push($array_combination_piece, $piece);
             }
 
-            foreach ($array_combination_piece as $p) {
-                $piec = new Piece;
-                $piec->type = $p->type;
-                $piec->nom = $p->nom;
-                $piec->path = $p->path;
-                $piec->convention_id = $actu_id_convention;
-                $piec->save();
+
+
+            for ($i = 0; $i < $items_number; $i++) {
+                $piece = new Piece;
+                $piece->type = $pieces_types_array[$i];
+                $piece->nom = $pieces_noms_array[$i];
+                $piece->path = $piece_file_names[$i];
+                $piece->convention_id = $actu_id_convention;
+                $piece->save();
+                //array_push($array_combination_piece, $piece);
             }
+
+
+
+            /* foreach ($array_combination_piece as $p) {
+                 $piec = new Piece;
+                 $piec->type = $p->type;
+                 $piec->nom = $p->nom;
+                 $piec->path = $p->path;
+
+
+             }*/
         }
 
 
@@ -574,7 +575,7 @@ class ConventionController extends Controller
         $convention_to_update->objet_ar = $request->objet_ar;
         $convention_to_update->observation = $request->observation;
 
-        //return  $request->porteur_projet;
+        //return  $request->porteurporteur_projet;
         $convention_to_update->save();
 
 

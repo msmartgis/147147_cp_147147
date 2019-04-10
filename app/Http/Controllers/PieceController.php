@@ -12,6 +12,7 @@ class PieceController extends Controller
 
     public function addPiece(Request $request)
     {
+        $path_file = "";
         // $this->validate($request, [
         //     'piece_upload' => 'required|max:1999'
         // ]);
@@ -27,7 +28,16 @@ class PieceController extends Controller
             // Filename to store
             $fileNameToStore = $filename . '_' . time() . '.' . $extension;
             // Upload Image
-            $path = $request->file('piece_upload')->storeAs('local/uploaded_files/demandes', $fileNameToStore);
+            if(isset($request->demande_id))
+            {
+                $path_file ="local/uploaded_files/demandes/".$request->demande_id;
+            }
+
+            if(isset($request->convention_id))
+            {
+                $path_file ="local/uploaded_files/conventions/".$request->convention_id;
+            }
+            $path = $request->file('piece_upload')->storeAs($path_file, $fileNameToStore);
         } else {
             $fileNameToStore = 'noimage.jpg';
         }

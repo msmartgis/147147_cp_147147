@@ -45,7 +45,7 @@
 
                         <div class="row">
                             <div class="col-12" style="margin-top : 8px">
-                                <h5>MONTAGE FINANCIER PROPOSE</h5>
+                                <h5>MONTAGE FINANCIER DEFINITIF</h5>
                                 <hr style="color:#2d353c;margin-top:0px;margin-bottom: 4px">
                                 <div class="table-responsive">
                                     <table class="table table-piece">
@@ -81,7 +81,7 @@
                                                 </td>
 
                                                 <td style="text-align: center">
-                                                    <button type="button" class="btn btn-warning add-versement"  data-id="{{$item->nom_fr}}_{{$item->id}}_{{$item->pivot->montant}}"
+                                                    <button type="button" class="btn btn-success-table add-versement"  data-id="{{$item->nom_fr}}_{{$item->id}}_{{$item->pivot->montant}}"
                                                     @if($montant_verse/($item->pivot->montant)*100 == 100)
                                                         disabled
                                                     @endif
@@ -110,7 +110,6 @@
                                         <tr style="text-align: center;">
                                             <th>Partenaire</th>
                                             <th>Montant Versé</th>
-                                            <th>Pris en charge</th>
                                             <th>Reste</th>
                                             <th>%</th>
                                         </tr>
@@ -139,9 +138,7 @@
                                                         @endphp
 
                                                     </td>
-                                                    <td style="text-align: center">
-                                                        !!
-                                                    </td>
+
                                                     <td style="text-align: center">
                                                         @php
                                                             echo($item->pivot->montant-$montant_verse);
@@ -178,6 +175,7 @@
                                             <th>Date</th>
                                             <th>Montant Versé</th>
                                             <th>Nom document</th>
+                                            <th>Pris en charge</th>
                                             <th></th>
                                             <th></th>
                                         </tr>
@@ -208,11 +206,20 @@
                                                 <td style="text-align: center;">
                                                     {{$versement->document}}
                                                 </td>
+                                                <td style="text-align: center">
+                                                    @if($versement->prise_en_charge == 1)
+                                                        OUI
+                                                    @endif
+
+                                                        @if($versement->prise_en_charge == 0)
+                                                            NON
+                                                        @endif
+                                                </td>
                                                 @if($versement->path != "")
                                                 <form action="{{route('versement.download')}}" method="get">
                                                     <input type="hidden" name="id" value="{{$versement->id}}">
                                                     <td style="text-align: center;">
-                                                            <button type="submit" class="btn btn-secondary ">
+                                                            <button type="submit" class="btn btn-secondary-table ">
                                                                 <i class="fa fa-download"></i>
                                                                 Télécharger</button>
                                                     </td>
@@ -222,7 +229,7 @@
                                                 @endif
 
                                                 <td style="text-align: center; width : 15%">
-                                                    <button type="button" class="btn btn-success delete-versement"  data-id="{{$versement->id}}">
+                                                    <button type="button" class="btn btn-danger-table delete-versement"  data-id="{{$versement->id}}" >
                                                         <i class="fa fa-times-circle"></i>
                                                         Supprimer versement</button>
                                                 </td>

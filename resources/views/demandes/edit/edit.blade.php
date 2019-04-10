@@ -178,7 +178,7 @@ $(document).ready(function () {
                         <td>" + data.nom + "</td>\
                         <td>" + data.path + "</td>\
                         <td style='text-align: center'>\
-                            <button class='btn btn-warning delete-piece' data-id='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
+                            <button class='btn btn-danger-table delete-piece' data-id='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
                         </td>\
                         </tr>";
                 $(markup).prependTo("#pieces_tbody");
@@ -186,6 +186,8 @@ $(document).ready(function () {
             }
         });
     });
+
+
 
 
     //delete piece

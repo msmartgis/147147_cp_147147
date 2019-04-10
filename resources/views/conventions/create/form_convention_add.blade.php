@@ -293,7 +293,7 @@
                 'montant_global',
                 '',
                 [
-                'class'=>'form-control',
+                'class'=>'form-control input-element',
                 'id'=>'montant_g',
                 'data-validation-containsnumber-regex'=>'(\d)+',
                 'data-validation-containsnumber-message'=>'Veuillez saisir des numeros seulement'

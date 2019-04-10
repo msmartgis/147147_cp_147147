@@ -20,6 +20,7 @@
         "vue": "^2.5.17"
     },
     "dependencies": {
+        "cleave.js": "^1.4.10",
         "font-family-system-ui": "0.0.1"
     }
 }

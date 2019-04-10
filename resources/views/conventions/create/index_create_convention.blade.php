@@ -139,6 +139,7 @@
 
 <script src="{{asset('js/conventions/create.js')}}"></script>
 <script src="{{asset('js/functions/functions.js')}}"></script>
+<script src="{{asset('js/Cleave.js')}}"></script>
 
 <script>
     ! function (window, document, $) {
@@ -149,6 +150,12 @@
 
     $('#datepicker').datepicker({
         format: 'dd/mm/yyyy'
+    });
+
+    var cleave = new Cleave('.input-element', {
+        date: true,
+        delimiter: '-',
+        datePattern: ['Y', 'm', 'd']
     });
 
 </script>
