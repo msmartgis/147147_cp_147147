@@ -50,9 +50,11 @@ $(function () {
     );
 
     //Date picker
-    $('#datepicker').datepicker({
+    $('#datepicker2,#datepicker').datepicker({
         autoclose: true
     });
+
+
 
     //iCheck for checkbox and radio inputs
     $('.ichack-input input[type="checkbox"].minimal, .ichack-input input[type="radio"].minimal').iCheck({

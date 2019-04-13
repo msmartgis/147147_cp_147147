@@ -17,7 +17,7 @@ class CreateAppelOffresTable extends Migration
             $table->bigIncrements('id');
             $table->integer('moa_id')->unsigned()->nullable();
             $table->bigInteger('adjiducataire_id')->unsigned()->nullable();
-            $table->integer('numero')->nullable();
+            $table->string('numero')->nullable();
             $table->string('objet_ar')->nullable();
             $table->string('objet_fr')->nullable();
             $table->date('date_publication')->nullable();

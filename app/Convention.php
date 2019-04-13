@@ -72,4 +72,12 @@ class Convention extends Model
     {
         return $this->hasMany('App\SuiviVersement', 'convention_id', 'id');
     }
+
+
+
+
+    public function appelOffres()
+    {
+        return $this->belongsTo('App\AppelOffre', 'appel_offre_id');
+    }
 }

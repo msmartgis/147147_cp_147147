@@ -1,4 +1,6 @@
 @extends('layouts.app') @section('added_css')
+
+    <link rel="stylesheet" href="{{asset('css/datatable/datatables.min.css')}}" />
     <!-- Bootstrap time Picker -->
     <link rel="stylesheet" href="{{asset('vendor_plugins/timepicker/bootstrap-timepicker.min.css')}}" />
 
@@ -32,27 +34,35 @@
         }
 
         #loading-point-desservi { display: none; }
+
+        .etat-projet{
+            display: none;
+        }
+
+
     </style>
 
-@endsection
-@section('content')
+@endsection @section('content')
     <!-- Step wizard -->
     <div class="box box-default">
 
         <!-- /.box-header -->
         <div class="box-body wizard-content">
 
-            <p>sfezfe</p>
+            @include('conventions.appel_offre.create.form_appel_offre_add')
         </div>
         <!-- /.box-body -->
 
 
+        <!-- /.modal -->
 
         <!-- modals -->
     </div>
     <!-- /.box -->
 @endsection
 @push('added_scripts')
+
+<script src="{{asset('css/datatable/datatables.min.js')}}"></script>
 <!-- steps -->
 <script src="{{asset('vendor_components/jquery-steps-master/build/jquery.steps.js')}}"></script>
 
@@ -71,10 +81,6 @@
 <!-- Select2 -->
 <script src="{{asset('vendor_components/select2/dist/js/select2.full.js')}}"></script>
 
-<!-- InputMask -->
-<script src="{{asset('vendor_plugins/input-mask/jquery.inputmask.js')}}"></script>
-<script src="{{asset('vendor_plugins/input-mask/jquery.inputmask.date.extensions.js')}}"></script>
-<script src="{{asset('vendor_plugins/input-mask/jquery.inputmask.extensions.js')}}"></script>
 
 <!-- date-range-picker -->
 <script src="{{asset('vendor_components/moment/min/moment.min.js')}}"></script>
@@ -97,9 +103,8 @@
 <!-- toast -->
 <script src="{{asset('vendor_components/jquery-toast-plugin-master/src/jquery.toast.js')}}"></script>
 <script src="{{asset('js/toastr.js')}}"></script>
-
-<script src="{{asset('js/conventions/create.js')}}"></script>
 <script src="{{asset('js/functions/functions.js')}}"></script>
+<script src="{{asset('js/appel_offre/show_appel_offre_conventions.js')}}"></script>
 
 <script>
     ! function (window, document, $) {
@@ -111,8 +116,60 @@
     $('#datepicker').datepicker({
         format: 'dd/mm/yyyy'
     });
+</script>
 
 
+<script>
+    $(document).ready(function(){
+        $(function() {
+            $('#etat_selector').change(function(){
+                $('.etat-projet').hide();
+                $('#' + $(this).val()).show();
+            });
+        });
+
+
+        //add piece
+        var item_document = 1;
+        $('#add_piece').click(function(){
+            var markup = '<tr>' +
+                '<td>' +
+                '<div class="form-group">'+
+                '<div class="checkbox">'+
+                '<input type="checkbox" id="row_' + item_document + '" name="record">'+
+                '<label for="row_' + item_document + '"></label>'+
+                '</div>'+
+                '</div>'+
+                '</td>' +
+
+                '<td>' +
+                '<select class="form-control select2" style="width: 100%;" name="pieces_types[]" id="etat_selector">' +
+                '<option value="cps" selected>CPS</option>' +
+                '<option value="rc" >RC</option>' +
+                '<option value="cps+rc" >CPS+RC</option>' +
+                '<option value="bordereau_prix" >BORDEREAU DES PRIX</option>' +
+                '<option value="avis_publication_fr" >AVIS DE PUBLICATION FR</option>' +
+                '<option value="avis_publication_ar" >AVIS DE PUBLICATION AR</option>' +
+                '<option value="en_preparation" >En péparation</option>' +
+                ' </select>' +
+                '</td>' +
+
+                '<td>' +
+                '<div class="form-group" style="text-align: center">' +
+                '<input type="file" name="pieces_uploads[]">' +
+                '</div>'+
+                '</td>' +
+                '';
+            $('.table-piece tr:last').after(markup);
+            item_document++;
+        });
+
+        //delete piece
+        $('.delete-row').click(function () {
+            removeRowFromTable("pieces_tbody");
+        });
+
+    });
 </script>
 
 

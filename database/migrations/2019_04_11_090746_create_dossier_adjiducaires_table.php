@@ -17,8 +17,14 @@ class CreateDossierAdjiducairesTable extends Migration
             $table->bigIncrements('id');
             $table->string('document')->nullable();
             $table->string('file_name')->nullable();
+            $table->bigInteger('appel_offre_id')->unsigned()->nullable();
             $table->timestamps();
             $table->index(['id', 'created_at']);
+
+            $table->foreign('appel_offre_id')
+                ->references('id')
+                ->on('appel_offres')
+                ->onDelete('cascade');
         });
     }
 

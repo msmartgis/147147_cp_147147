@@ -1,12 +1,13 @@
-
+var checkedelements=[];
 $(document).ready(function () {
-    var suiviVersmentTable;
+
+    var conventionAOTable;
     var checked_convention = 0;
 
-    suiviVersmentTable = $('#suivi_versment_datatables').DataTable({
+    conventionAOTable = $('#appel_offre_datatables').DataTable({
         processing: true,
         serverSide: true,
-        pageLength: 20,
+        pageLength: 10,
         bInfo : false,
         info : false,
         bLengthChange : true,
@@ -18,7 +19,7 @@ $(document).ready(function () {
         },
 
         ajax: {
-            url: 'conventions/showVersement',
+            url: '/conventions/showCoventionsAppelOffre',
             type: 'GET',
             data: function (d) {
                 d.communes = $('select[name=communes]').val();
@@ -135,10 +136,40 @@ $(document).ready(function () {
         }
     });
 
+    var montant_total = 0;
+    var montant_cv = 0;
+    var markup = '';
+
+    conventionAOTable.on('draw', function () {
+        for(i=0;i<checkedelements.length;i++)
+        {
+            $("#conventionCb_"+checkedelements[i].data('id')).prop('checked', true);
+        }
+
+        $('#appel_offre_datatables :input[type="checkbox"]').change(function() {
+            montant_total = 0;
+            if(this.checked) {
+                checkedelements.push($(this));
+            }
+            else {
+                checkedelements.splice(checkedelements.indexOf(this),1);
+            }
+            for(i=0;i<checkedelements.length;i++)
+            {
+                montant_cv = checkedelements[i].data('montant');
+                montant_total += montant_cv;
+                markup = '<input type="hidden" value='+checkedelements[i].data('id')+' name="conventions_ids[]">';
+            }
+
+            $('#montant_global_ao').val(montant_total);
+            $('#list_conventions').append(markup);
+
+        });
+    } );
+
 
     $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#programmes_filter,#moas_filter,#etat_versement_from,#etat_versement_to').on('change paste keyup', function (e) {
         suiviVersmentTable.draw();
         e.preventDefault();
     });
-
 });

@@ -56,6 +56,9 @@ Route::group(
                 Route::get('/conventions/show', 'ConventionController@getConventions');
                 Route::get('/convention/create', 'ConventionController@create')->name('createConvention');
 
+                //appel offre
+                Route::get('/conventions/showCoventionsAppelOffre', 'ConventionController@getConventionsAppelOffre')->name('appelOffre.showCovenntions');
+                Route::get('/conventions/showAppelOffre', 'ConventionController@getAppelOffre')->name('appelOffre.show');
                 //suivi des versment
                 Route::get('/conventions/showVersement', 'ConventionController@getVersements')->name('versement.show');
                 Route::get('/convention/{convention}/editVersement', 'ConventionController@editVersement');
@@ -66,8 +69,7 @@ Route::group(
                 Route::get('/versement/downloadFile', 'SuiviVersementController@downloadFile')->name('versement.download');
 
 
-                //appel offre
-                Route::get('/conventions/show_appel_offre', 'ConventionController@getConventionsAppelOffre')->name('appelOffre.conventions');
+
                 //SPREADSHEET
                 Route::post('/demandes/demandeSpreadSheetEnCours', 'SpreadSheetController@demandeSpread_en_cours')->name('spread_demande_en_cours');
                 Route::post('/demandes/demandeSpreadSheetATraiter', 'SpreadSheetController@demandeSpread_a_traiter')->name('spread_demande_a_traiter');

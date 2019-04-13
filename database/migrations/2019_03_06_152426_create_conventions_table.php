@@ -19,6 +19,7 @@ class CreateConventionsTable extends Migration
             $table->bigInteger('demande_id')->unsigned()->nullable();
             $table->bigInteger('programme_id')->unsigned()->nullable();
             $table->bigInteger('moa_id')->unsigned()->nullable();
+            $table->bigInteger('appel_offre_id')->unsigned()->nullable();
             $table->text('objet_fr')->nullable();
             $table->text('objet_ar')->nullable();
             $table->double('montant_global')->nullable();
@@ -39,6 +40,13 @@ class CreateConventionsTable extends Migration
                 ->references('id')
                 ->on('demandes')
                 ->onDelete('cascade');
+
+            $table->foreign('appel_offre_id')
+                ->references('id')
+                ->on('appel_offres')
+                ->onDelete('cascade');
+
+
 
 
         });

@@ -133,7 +133,7 @@
 @endsection
 
 @push('added_scripts')
-<script src="css/datatable/datatables.min.js"></script>
+<script src="{{asset('css/datatable/datatables.min.js')}}"></script>
 
 <!-- iCheck 1.0.1 -->
 <script src="{{asset('vendor_plugins/iCheck/icheck.min.js')}}"></script>
