@@ -23,11 +23,10 @@ class AppelOffre extends Model
         return $this->belongsTo('App\Moa', 'moa_id');
     }
 
+
     public function adjiducataires()
     {
         return $this->belongsTo('App\Adjiducataire', 'adjiducataire_id');
     }
-
-
 
 }

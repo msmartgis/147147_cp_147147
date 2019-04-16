@@ -4,7 +4,7 @@ $(document).ready(function () {
     var conventionAOTable;
     var checked_convention = 0;
 
-    conventionAOTable = $('#appel_offre_datatables').DataTable({
+    conventionAOTable = $('#appel_offre_edit_datatables').DataTable({
         processing: true,
         serverSide: true,
         pageLength: 10,
@@ -19,9 +19,10 @@ $(document).ready(function () {
         },
 
         ajax: {
-            url: '/conventions/showCoventionsAppelOffre',
+            url: '/conventions/showAppelOffreEdit',
             type: 'GET',
             data: function (d) {
+                d.appelOffre_id = $('input[name=id]').val();
                 d.communes = $('select[name=communes]').val();
                 //d.session = $('select[name=session]').val();
                 d.interventions = $('select[name=interventions]').val();
@@ -146,7 +147,7 @@ $(document).ready(function () {
             $("#conventionCb_"+checkedelements[i].data('id')).prop('checked', true);
         }
 
-        $('#appel_offre_datatables :input[type="checkbox"]').change(function() {
+        $('#appel_offre_edit_datatables :input[type="checkbox"]').change(function() {
             montant_total = 0;
             if(this.checked) {
                 checkedelements.push($(this));
@@ -165,7 +166,7 @@ $(document).ready(function () {
             $('#list_conventions').append(markup);
 
         });
-    });
+    } );
 
 
     $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#programmes_filter,#moas_filter,#etat_versement_from,#etat_versement_to').on('change paste keyup', function (e) {

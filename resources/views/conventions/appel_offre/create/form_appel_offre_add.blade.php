@@ -122,7 +122,7 @@
                 <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </div>
-                {{Form::text('date_ouverture_plis','',['class'=>'form-control pull-right','id'=>'datepicker'])}}
+                {{Form::text('date_publication','',['class'=>'form-control pull-right','id'=>'datepicker'])}}
             </div>
             <!-- /.input group -->
         </div>
@@ -133,7 +133,7 @@
                 <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </div>
-                {{Form::text('date_commencement','',['class'=>'form-control pull-right','id'=>'datepicker2'])}}
+                {{Form::text('date_ouverture_plis','',['class'=>'form-control pull-right','id'=>'datepicker2'])}}
             </div>
             <!-- /.input group -->
         </div>
@@ -167,9 +167,9 @@
                             'cps' => 'CPS',
                             'rc' => 'RC',
                              'cps+rc' => 'CPS+RC',
-                             'bordereau_prix' => 'BORDEREAU DES PRIX',
-                             'avis_publication_fr' => 'AVIS DE PUBLICATION FR',
-                             'avis_publication_ar' => 'AVIS DE PUBLICATION AR'
+                             'bordereau des prix' => 'BORDEREAU DES PRIX',
+                             'avis de publication fr' => 'AVIS DE PUBLICATION FR',
+                             'avis publication ar' => 'AVIS DE PUBLICATION AR'
                             ],
                             'cps',
                             [

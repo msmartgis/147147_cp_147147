@@ -1,10 +1,10 @@
 var checkedelements=[];
 $(document).ready(function () {
 
-    var conventionAOTable;
+    var AOTable;
     var checked_convention = 0;
 
-    conventionAOTable = $('#appel_offre_datatables').DataTable({
+    AOTable = $('#appel_offre_datatables').DataTable({
         processing: true,
         serverSide: true,
         pageLength: 10,
@@ -22,9 +22,13 @@ $(document).ready(function () {
             url: '/conventions/showAppelOffre',
             type: 'GET',
             data: function (d) {
-
+                d.moas = $('select[name=moas]').val();
+                d.interventions = $('select[name=interventions]').val();
+                d.etat = $('select[name=etat]').val();
+                d.nb_projet = $('select[name=nb_projet]').val();
+                d.daterange_publication = $('input[name=daterange_publication]').val();
+                d.daterange_ouverture_plis = $('input[name=daterange_ouverture_plis]').val();
             }
-
         },
 
         columns: [
@@ -97,6 +101,11 @@ $(document).ready(function () {
                     });
             });
         }
+    });
+
+    $('#moas_filter,#intervention_filter,#etat_filter,#nb_projet_filter,#reservation,#ouverture_plis').on('change paste keyup', function (e) {
+        AOTable.draw();
+        e.preventDefault();
     });
 
 

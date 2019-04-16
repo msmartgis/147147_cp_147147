@@ -25,6 +25,7 @@ $(function () {
     $('#reservation_filter_affectees').daterangepicker();
     $('#reservation_realisee_programmee').daterangepicker();
     $('#reservation_a_traiter').daterangepicker();
+    $('#ouverture_plis').daterangepicker();
     //Date range picker with time picker
     $('#reservationtime').daterangepicker({
         timePicker: true,

@@ -40,8 +40,6 @@ Route::group(
 
                 Route::get('/appelOffre', 'AppelOffreController@index')->name('indexAppelOffre');
 
-
-
                 //demandes
                 Route::get('/demandes/getDemandeData', 'DemandesController@getDemandeData');
                 Route::get('/demandes/en_cours', 'DemandesController@getDemandes');
@@ -57,7 +55,8 @@ Route::group(
                 Route::get('/convention/create', 'ConventionController@create')->name('createConvention');
 
                 //appel offre
-                Route::get('/conventions/showCoventionsAppelOffre', 'ConventionController@getConventionsAppelOffre')->name('appelOffre.showCovenntions');
+                Route::get('/conventions/showCoventionsAppelOffre', 'ConventionController@getConventionsAppelOffre')->name('appelOffre.showCoventions');
+                Route::get('/conventions/showAppelOffreEdit', 'ConventionController@showAppelOffreEdit')->name('appelOffre.showCoventionsEdit');
                 Route::get('/conventions/showAppelOffre', 'ConventionController@getAppelOffre')->name('appelOffre.show');
                 //suivi des versment
                 Route::get('/conventions/showVersement', 'ConventionController@getVersements')->name('versement.show');
@@ -101,7 +100,8 @@ Route::group(
                 Route::post('/partenaire/delete_partenaire_covention', 'PartenaireTypeController@deletePartenaireConvention')->name('delete_partenaire_convention');
                 Route::post('/partenaire/add_partenaire', 'PartenaireTypeController@addPartenaire')->name('add_partenaire');
 
-
+                Route::post('/pieces/add_piece_dossier_adjiducataire', 'DossierAdjiducataireController@addPiece')->name('dossier_adjiducataire.add_piece');
+                Route::post('/pieces/delete_piece_dossier_adjiducataire', 'DossierAdjiducataireController@deletePiece')->name('dossier_adjiducataire.delete_piece');
                 //files
                 Route::get('/files/download/{directory}/{id}/{file_name}', 'FilesController@fileDownload')->name('files.download');
                 //point desservis

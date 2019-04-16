@@ -111,7 +111,6 @@ class AppelOffreController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, ['numero' => 'required']);
-
         $appelOffre = new AppelOffre();
         $actu_id = AppelOffre::max('id')+1;
         $appelOffre->numero = $request->numero;
@@ -122,18 +121,14 @@ class AppelOffreController extends Controller
         $appelOffre->moa_id = $request->moas;
         $appelOffre->etat = $request->etat;
 
-
-
         $appelOffre->date_ouverture_plis = $this->date_fromatting($request->date_ouverture_plis);
         $appelOffre->date_commencement =  $this->date_fromatting($request->date_commencement);
         $appelOffre->observations = $request->observations;
-
         $appelOffre->save();
 
 
         if($appelOffre->save())
         {
-
             if(Input::has('conventions_ids'))
             {
                 $ids_array = [];
@@ -215,7 +210,38 @@ class AppelOffreController extends Controller
      */
     public function edit(AppelOffre $appelOffre)
     {
-        //
+        //for edit
+        $interventions_edit = Intervention::orderBy('nom')->pluck('nom', 'id');
+        $moas_edit = Moa::orderBy('nom_fr')->pluck('nom_fr', 'id');
+
+        //for filters
+        $communes = Commune::orderBy('nom_fr')->get();
+        //point desservis :: localite only
+        $localites = PointDesserviCategorie::find(1)->point_desservis;
+        $partenaires_types = PartenaireType::all();
+        $moas = Moa::all();
+        $sessions = Session::all();
+        $interventions = Intervention::all();
+        $porteurs = Porteur::all();
+        $programmes = Programme::all();
+        $conventions = Convention::with(['communes', 'partenaires', 'point_desservis', 'interventions', 'session'])->get();
+        $appelOffre = AppelOffre::with(['conventions','moas'])->find($appelOffre->id);
+
+        return view('conventions.appel_offre.edit.index_edit_ao')->with([
+            'appelOffre' => $appelOffre,
+            'conventions' => $conventions,
+            'communes' => $communes,
+            'localites' => $localites,
+            'partenaires_types' => $partenaires_types,
+            'moas' => $moas,
+            'porteurs' => $porteurs,
+            'sessions' => $sessions,
+            'interventions' => $interventions,
+            'programmes' => $programmes,
+            'interventions_edit'=>$interventions_edit,
+            'moas_edit' => $moas_edit,
+
+        ]);
     }
 
     /**
@@ -227,7 +253,18 @@ class AppelOffreController extends Controller
      */
     public function update(Request $request, AppelOffre $appelOffre)
     {
-        //
+        $appelOffre = AppelOffre::find($appelOffre->id);
+        $appelOffre->objet_fr = $request->objet_fr;
+        $appelOffre->objet_ar = $request->objet_ar;
+        $appelOffre->moa_id = $request->moa;
+        $appelOffre->numero = $request->numero;
+        $appelOffre->montant_globale = $request->montant_global;
+        $appelOffre->caution_provisoir = $request->caution_provisoir;
+        $appelOffre->etat = $request->etat;
+        //return  $request->porteurporteur_projet;
+        $appelOffre->save();
+
+        return redirect("/appelOffre" . "/" . $appelOffre->id . "/edit")->with('success', 'Appel d\'offre modifier avec succès');
     }
 
     /**

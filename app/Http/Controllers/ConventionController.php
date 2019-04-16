@@ -26,7 +26,13 @@ use DB;
 
 class ConventionController extends Controller
 {
-
+    //formatting date
+    public function date_fromatting($date)
+    {
+        //formating date time
+        $date_to_time = strtotime(str_replace("/",'-',$date));
+        return $date_formatted = date('Y-m-d',$date_to_time);
+    }
     /**
      * Diplay datatable data
      *
@@ -328,8 +334,9 @@ class ConventionController extends Controller
 
     // APPEL OFFRE SHOW CONVENTIONS
     public function getConventionsAppelOffre(Request $request)
-{
-    $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'versements');
+    {
+    $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'versements')
+                                ->whereNull('appel_offre_id');
     if ($request->ajax()) {
         $datatables = DataTables::eloquent($conventions)
             ->addColumn('communes', function (Convention $convention) {
@@ -485,7 +492,7 @@ class ConventionController extends Controller
             $datatables = DataTables::eloquent($appelOffres)
 
                 ->addColumn('numero', function ($appelOffres) {
-                    return '<a href="convention/' . $appelOffres->numero . '/editVersement">' . $appelOffres->numero . '</a>';
+                    return '<a href="appelOffre/' . $appelOffres->id . '/edit">' . $appelOffres->numero . '</a>';
                 })
                 ->addColumn('montant_global', function ($appelOffres) {
                     return number_format($appelOffres->montant_globale);
@@ -499,7 +506,6 @@ class ConventionController extends Controller
                     $nombre_projet = Convention::where([['appel_offre_id', '=', $appelOffres->id]])
                         ->distinct('appel_offre_id')->count('appel_offre_id');
                     return $nombre_projet;
-
                 })
 
                 ->addColumn('adjiducataire', function (AppelOffre $appelOffre) {
@@ -516,13 +522,214 @@ class ConventionController extends Controller
                         return "En Préparation";
                     }
                 })
-
-
-
                 //to render to html markup
                 ->rawColumns([ 'numero']);
         }
 
+        //moa filter
+        if ($moas_id = $request->get('moas')) {
+            if ($moas_id == "all") {
+            } else {
+                $appelOffres->where('moa_id', '=', $moas_id);
+            }
+        }
+
+
+        //intervention filter
+        if ($interventions_id = $request->get('interventions')) {
+            if ($interventions_id == "all") {
+            } else {
+                $appelOffres->whereHas('conventions.interventions', function ($query) use ($interventions_id) {
+                    $query->where('interventions.id', '=', $interventions_id);
+                });
+            }
+        }
+
+        //etat filter
+        if ($etat = $request->get('etat')) {
+            if ($etat == "all") {
+            } else {
+                $appelOffres->where('etat', '=', $etat);
+            }
+        }
+
+
+        //filter with daterange date publication
+      /*  if ($daterange_publication = $request->get('daterange_publication')) {
+            $daterangepublication_splite = explode('-', $daterange_publication);
+            $date_publication_start = $this->date_fromatting($daterangepublication_splite[0]) ;
+            $date_publication_end = $this->date_fromatting($daterangepublication_splite[1]);
+            $appelOffres->where([
+                ['date_publication', '>=', trim($date_publication_start)],
+                ['date_publication', '<=', trim($date_publication_end)],
+            ]);
+        }
+
+        //filter with daterange date ouverture des plis
+        if ($daterange_ouverture_plis = $request->get('daterange_ouverture_plis')) {
+            $daterange_ouverture_pli_splite = explode('-', $daterange_ouverture_plis);
+            $date_ouverture_plis_start =  $this->date_fromatting($daterange_ouverture_pli_splite[0]);
+            $date_ouverture_plis_end =  $this->date_fromatting($daterange_ouverture_pli_splite[1]);
+            $appelOffres->where([
+                ['date_ouverture_plis', '>=', trim($date_ouverture_plis_start)],
+                ['date_ouverture_plis', '<=', trim($date_ouverture_plis_end)],
+            ]);
+        }*/
+
+
+
+        return $datatables->make(true);
+    }
+
+    // CONVENTIONS SELECTIONNER IN APPEL OFFRE EDIT
+    public function showAppelOffreEdit(Request $request)
+    {
+        //$appelOffre_id = $request->appelOffre_id;
+        $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'versements','appelOffres')
+                                    ->orderBy('appel_offre_id','desc');
+
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($conventions)
+                ->addColumn('communes', function (Convention $convention) {
+                    return $convention->communes->map(function ($commune) {
+                        return str_limit($commune->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+                ->addColumn('point_desservis', function (Convention $convention) {
+                    return $convention->point_desservis->map(function ($point_desservi) {
+                        return str_limit($point_desservi->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+                ->addColumn('interventions', function (Convention $convention) {
+                    return $convention->interventions->map(function ($intervention) {
+                        return str_limit($intervention->nom, 30, '...');
+                    })->implode(', ');
+                })
+                // i should have access to show parntenaire type name for every partenaire
+
+                ->addColumn('partenaires', function (Convention $convention) {
+                    return $convention->partenaires->map(function ($partenaire) {
+                        return str_limit($partenaire->nom_fr, 30, '...');
+                    })->implode(', ');
+                })
+                ->addColumn('montantCP', function (Convention $convention) {
+                    return $convention->partenaires->map(function ($partenaire) {
+                        if ($partenaire->id == 1) {
+                            return number_format($partenaire->pivot->montant);
+                        }
+                    })->implode(' ');
+                })
+                ->addColumn('moas', function (Convention $convention) {
+                    return $convention->moas ? str_limit($convention->moas->nom_fr, 40, '...') : '';
+                })
+                ->addColumn('programme', function (Convention $convention) {
+                    return $convention->programme ? str_limit($convention->programme->nom_fr, 40, '...') : '';
+                })
+                ->addColumn('checkbox', function (Convention $convention) {
+                    if($convention->appelOffres)
+                    {
+                        if($convention->id == $convention->appelOffres->id){
+                            return '<input type="checkbox" id="conventionCb_' . $convention->id . '" name="checkbox_convention_appel_offre"  class="convention-checkbox" value="' . $convention->id . '" data-montant="' . $convention->montant_global . '"  data-id="' . $convention->id . '" data-numero ="' . $convention->num_ordre . '" class="chk-col-green" checked><label for="conventionCb_' . $convention->id . '" class="block" ></label>';
+                        }else{
+                            return '<input type="checkbox" id="conventionCb_' . $convention->id . '" name="checkbox_convention_appel_offre"  class="convention-checkbox" value="' . $convention->id . '" data-montant="' . $convention->montant_global . '"  data-id="' . $convention->id . '" data-numero ="' . $convention->num_ordre . '" class="chk-col-green" ><label for="conventionCb_' . $convention->id . '" class="block" ></label>';
+                        }
+                        
+                    }else{
+                        return '<input type="checkbox" id="conventionCb_' . $convention->id . '" name="checkbox_convention_appel_offre"  class="convention-checkbox" value="' . $convention->id . '" data-montant="' . $convention->montant_global . '"  data-id="' . $convention->id . '" data-numero ="' . $convention->num_ordre . '" class="chk-col-green" ><label for="conventionCb_' . $convention->id . '" class="block" ></label>';
+                    }
+
+
+                })
+                ->addColumn('num_ordre', function ($conventions) {
+                    return '<a href="convention/' . $conventions->id . '/editVersement">' . $conventions->num_ordre . '</a>';
+                })
+                ->addColumn('montant_global', function ($conventions) {
+                    return number_format($conventions->montant_global);
+                })
+                ->addColumn('montant_verse', function ($conventions) {
+                    $montant_verse = SuiviVersement::where([['convention_id', '=', $conventions->id]])
+                        ->sum('montant');
+
+                    return number_format($montant_verse);
+
+                })
+                ->addColumn('etat_versement', function ($conventions) {
+                    $montant_verse = SuiviVersement::where([['convention_id', '=', $conventions->id]])
+                            ->sum('montant') / $conventions->montant_global * 100;
+
+                    return number_format($montant_verse);
+
+                })
+                ->rawColumns(['checkbox', 'num_ordre']);
+        }
+
+
+
+
+        //filter with communes
+        if ($communes_id = $request->get('communes')) {
+            if ($communes_id == "all") {
+            } else {
+                $conventions->whereHas('communes', function ($query) use ($communes_id) {
+                    $query->where('communes.id', '=', $communes_id);
+                });
+            }
+        }
+
+        //filter with partenaire
+        if ($partenaires_id = $request->get('partenaires')) {
+            if ($partenaires_id == "all") {
+            } else {
+                $conventions->whereHas('partenaires', function ($query) use ($partenaires_id) {
+                    $query->where('partenaires_types.id', '=', $partenaires_id);
+                });
+            }
+        }
+
+        //moa filter
+        if ($moas_id = $request->get('moas')) {
+            if ($moas_id == "all") {
+            } else {
+                $conventions->where('moa_id', '=', $moas_id);
+            }
+        }
+
+        //programme filter
+        if ($programmes_id = $request->get('programmes')) {
+            if ($programmes_id == "all") {
+            } else {
+                $conventions->where('programme_id', '=', $programmes_id);
+            }
+        }
+
+        //filter with localites
+        if ($localites = $request->get('localites')) {
+            if ($localites == "all") {
+            } else {
+                $conventions->whereHas('point_desservis', function ($query) use ($localites) {
+                    $query->where('point_desservis.nom_fr', '=', $localites);
+                });
+            }
+        }
+
+        //filter with session
+        if ($session_id = $request->get('session')) {
+            if ($session_id == "all") {
+            } else {
+                $conventions->where('mois', '=', $session_id);
+            }
+        }
+
+
+        //filter with intervention
+        if ($interventions_id = $request->get('interventions')) {
+            if ($interventions_id == "all") {
+            } else {
+                $conventions->whereHas('interventions', function ($query) use ($interventions_id) {
+                    $query->where('interventions.id', '=', $interventions_id);
+                });
+            }
+        }
         return $datatables->make(true);
     }
 
@@ -750,9 +957,7 @@ class ConventionController extends Controller
         $partenaires_types = PartenaireType::all();
         $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
         $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis',  'interventions', 'piece','programme','moas'])->find($convention->id);
-        //return $convention;
 
-        //return $convention;
         return view('conventions.edit.edit')->with([
             'convention' => $convention,
             'interventions' => $interventions,

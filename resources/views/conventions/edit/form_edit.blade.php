@@ -13,8 +13,6 @@
                             {{--tab informations generales--}}
                             <div class="tab-pane active" id="information_generale_tab" role="tabpanel">
                                 <div class="pad">
-
-
                                     <h5>Maitre D'OUVRAGE </h5>
                                     <hr style="color:#2d353c;margin:0">
                                     <div class="row" style="margin-top: 8px">
@@ -30,7 +28,6 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
-
                                         </div>
                                     </div>
 
