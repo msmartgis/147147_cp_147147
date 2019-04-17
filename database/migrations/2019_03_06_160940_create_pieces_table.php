@@ -20,7 +20,6 @@ class CreatePiecesTable extends Migration
             $table->string('path')->nullable();
             $table->bigInteger('demande_id')->unsigned()->nullable();
             $table->bigInteger('convention_id')->unsigned()->nullable();
-            $table->bigInteger('projet_id')->unsigned()->nullable();
             $table->timestamps();
 
             $table->index(['id','created_at']);
@@ -34,10 +33,7 @@ class CreatePiecesTable extends Migration
                 ->on('conventions')
                 ->onDelete('cascade');
 
-            $table->foreign('projet_id')
-                ->references('id')
-                ->on('projets')
-                ->onDelete('cascade');
+
         });
     }
 

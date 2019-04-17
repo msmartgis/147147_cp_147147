@@ -26,7 +26,6 @@ class Demande extends Model
         return $this->belongsToMany('App\PartenaireType', 'partenaire_demande', 'demande_id', 'partenaire_id')->withPivot('montant')->withTimestamps();
     }
 
-
     public function point_desservis()
     {
         return $this->belongsToMany('App\PointDesservi', 'pointdesservi_demande')->withTimestamps();
@@ -61,6 +60,4 @@ class Demande extends Model
     {
         return $this->belongsToMany('App\SourceFinancement', 'sourcefinancement_demande','demande_id', 'sourceFinancement_id')->withPivot('montant')->withTimestamps();
     }
-
-
 }

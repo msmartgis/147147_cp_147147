@@ -95,6 +95,7 @@ class DemandesController extends BaseController
     public function accordOrAffectation(Request $request)
     {
         $demande = Demande::find($request->id);
+
         if($request->affecter == '0')
         {
             //update demande
@@ -145,7 +146,6 @@ class DemandesController extends BaseController
             $convention_id = Convention::max('id') + 1;
             //$numero_ordre_cnv = Convention::max('num_ordre') + 1;
             $convention = new Convention;
-            $projet = new Projet;
 
 
             $demande = Demande::find($request->id);
@@ -154,8 +154,6 @@ class DemandesController extends BaseController
                 ->where('id', $demande->id)
                 ->update(['is_affecter' => 1, 'decision' => 'affecter', 'etat' => 'sans']);
 
-            //update partenaires
-            //$demande->partenaires()->updateExistingPivot($request->cp_id,array('montant' =>$request->montant_cp));
 
             if (Input::has('partnenaire_type_ids') !== null) {
                 $partnenaire_type_ids = (array)Input::get('partnenaire_type_ids');
@@ -168,6 +166,7 @@ class DemandesController extends BaseController
                 $syncData = array_combine($partnenaire_type_ids,$pivotData);
                 $demande->partenaires()->sync($syncData);
             }
+
 
             //update montant cp
             $demande->partenaires()->updateExistingPivot($request->cp_id,array('montant' =>$request->montant_cp));
@@ -182,22 +181,16 @@ class DemandesController extends BaseController
                 }
             }
 
-            $montant_cnv = $request->montant_global;
+
+            //save to conventions
             $convention->demande_id = $demande->id;
-            //$convention->num_ordre = $numero_ordre_cnv;
-            $convention->montant_global = $montant_cnv;
+            $convention->montant_global = $request->montant_global;
             $convention->save();
 
             if ($convention->save()) {
-                //pivote table with moas
-                $moas_ids = Input::get('moas');
-                $convention->moas()->sync($moas_ids);
+                $convention->moa_id = $request->moas;
             }
 
-            //save in projet
-            $projet->convention_id = $convention_id;
-            $projet->montant_global = $montant_cnv;
-            $projet->save();
             return redirect('/demande')->with('success', 'Demande affectée aux conventions avec succès');
         }
 

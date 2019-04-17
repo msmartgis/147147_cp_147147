@@ -154,4 +154,6 @@ $(document).ready(function () {
         decision_function(datatble_id, name_chechbox, url, method);
     });
 
+
+
 });

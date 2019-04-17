@@ -19,7 +19,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Maître d'ouvrage : </label>
-                                <select class="form-control select2" name="moas[]" style="width: 100%;" >
+                                <select class="form-control select2" name="moas" style="width: 100%;" >
                                     @foreach ($moas as $moa)
                                     <option value="{{$moa->id}}">{{$moa->nom_fr}}</option>
                                     @endforeach
