@@ -264,6 +264,38 @@ class AppelOffreController extends Controller
         //return  $request->porteurporteur_projet;
         $appelOffre->save();
 
+        //update conventions
+        if(Input::get('conventions_ids'))
+        {
+            $conventions_ids_array = Input::get('conventions_ids');
+            //return $conventions_ids_array;
+            for($i = 0 ; $i < count($conventions_ids_array) ; $i++)
+            {
+                $convention = Convention::find($conventions_ids_array[$i]);
+                $convention->appel_offre_id = $appelOffre->id;
+                $convention->save();
+            }
+
+            if(Input::get('conventions_hidden_ids'))
+            {
+                $conventions_hidden_ids_array = Input::get('conventions_hidden_ids');
+                //return $conventions_hidden_ids_array;
+                $dif_array = array_diff($conventions_hidden_ids_array, $conventions_ids_array ) ;
+                //return $dif_array;
+                foreach($dif_array as $dif)
+                {
+                    $convention = Convention::find($dif);
+                    $convention->appel_offre_id = null;
+                    $convention->save();
+                }
+            }
+        }
+
+
+
+
+
+
         return redirect("/appelOffre" . "/" . $appelOffre->id . "/edit")->with('success', 'Appel d\'offre modifier avec succès');
     }
 

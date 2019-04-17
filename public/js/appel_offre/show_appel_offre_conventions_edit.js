@@ -1,4 +1,9 @@
 var checkedelements=[];
+var checkboxData = [];
+var appelOffrId = $('input[name=id]').val();
+var id ;
+var montant;
+var AO ;
 $(document).ready(function () {
 
     var conventionAOTable;
@@ -33,7 +38,6 @@ $(document).ready(function () {
                 d.etat_versement_from = $('select[name=etat_versement_from]').val();
                 d.etat_versement_to = $('select[name=etat_versement_to]').val();
             }
-
         },
 
         columns: [
@@ -123,8 +127,26 @@ $(document).ready(function () {
                 searchable: true,
                 width: '6%'
             }
-
         ],
+        columnDefs: [ {
+            targets: 0,
+            createdCell: function (td, cellData, rowData, row, col) {
+                 checkboxData = cellData.split('-');
+                  id = checkboxData[0].split('_').pop();
+                  montant = checkboxData[1].split('_').pop();
+                  AO = checkboxData[2].split('_').pop();
+                    console.log(appelOffrId);
+                if ( AO == appelOffrId) {
+                    markup = '<input type="checkbox" id="conventionCb_'+id+'" name="conventions_ids[]" class="convention-checkbox chk-col-green" value="'+id+'" data-montant="'+montant+'" data-id="'+id+'" data-ao = "'+AO+'" checked><label for="conventionCb_'+id+'" class="block" ></label><input type="hidden" value="'+id+'" name="conventions_hidden_ids[]">';
+
+                    $(td).html(markup);
+                }else{
+                   markup = '<input type="checkbox" id="conventionCb_'+id+'" name="conventions_ids[]" class="convention-checkbox chk-col-green" value="'+id+'" data-montant="'+montant+'" data-id="'+id+'" data-ao = "'+AO+'" ><label for="conventionCb_'+id+'" class="block" ></label>';
+                    $(td).html(markup);
+                }
+            }
+        } ],
+
         initComplete: function () {
             this.api().columns().every(function () {
                 var column = this;
@@ -159,11 +181,11 @@ $(document).ready(function () {
             {
                 montant_cv = checkedelements[i].data('montant');
                 montant_total += montant_cv;
-                markup = '<input type="hidden" value='+checkedelements[i].data('id')+' name="conventions_ids[]">';
+                //markup = '<input type="hidden" value='+checkedelements[i].data('id')+' name="">';
             }
 
             $('#montant_global_ao').val(montant_total);
-            $('#list_conventions').append(markup);
+            //$('#list_conventions').append(markup);
 
         });
     } );

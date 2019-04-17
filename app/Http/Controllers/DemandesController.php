@@ -165,7 +165,6 @@ class DemandesController extends BaseController
                 for ($i = 0; $i < count($partnenaire_type_ids); $i++) {
                     array_push($pivotData,['montant' => $montant[$i]]);
                 }
-
                 $syncData = array_combine($partnenaire_type_ids,$pivotData);
                 $demande->partenaires()->sync($syncData);
             }

@@ -75,7 +75,6 @@ class Convention extends Model
 
 
 
-
     public function appelOffres()
     {
         return $this->belongsTo('App\AppelOffre', 'appel_offre_id');

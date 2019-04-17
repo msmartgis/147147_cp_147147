@@ -186,7 +186,7 @@
                     </div>
                     <div class="form-group">
                         {{Form::label('','Montant global (DH):')}}
-                        {{Form::text('montant_global',$appelOffre->montant_globale,['class'=>'form-control',''])}}
+                        {{Form::text('montant_global',$appelOffre->montant_globale,['class'=>'form-control','id'=>'montant_global_ao'])}}
                     </div>
 
                     <div class="form-group" >
