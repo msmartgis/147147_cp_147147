@@ -28,7 +28,8 @@ class CreateAppelOffresTable extends Migration
             $table->integer('is_attribuer')->nullable();
             $table->string('etat')->nullable();
             $table->string('ordre_service')->nullable();
-            $table->string('delai_execution')->nullable();
+            $table->date('delai_execution')->nullable();
+            $table->string('duree_execution')->nullable();
             $table->double('montant_adjiducation');
             $table->date('date_commencement');
             $table->timestamps();

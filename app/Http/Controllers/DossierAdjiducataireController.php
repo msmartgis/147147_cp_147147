@@ -43,7 +43,7 @@ class DossierAdjiducataireController extends Controller
 
 
         $piece->save();
-        return response()->json($piece);
+        return response()->json(array('piece' => $piece,'type_piece'=>'dossier_adjiducataire'));
 
 
     }

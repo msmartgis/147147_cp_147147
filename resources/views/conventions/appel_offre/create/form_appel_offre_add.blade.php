@@ -140,7 +140,7 @@
     </div>
 
     <div class="row" style="margin: 0 !important;">
-        <h4>DOSSIER DE L'APPEL D'OFFRE</h4>
+        <h4>DOSSIER DE CONSULTATION DES ENTREPRISES (DCE)</h4>
         <hr>
         <br>
         <div class="table-responsive" style="margin-top: 12px">

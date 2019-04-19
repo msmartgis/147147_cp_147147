@@ -64,7 +64,7 @@ class Convention extends Model
 
     public function piste()
     {
-        return $this->hasOne('App\Piste');
+        return $this->hasOne('App\Piste','convention_id');
     }
 
 

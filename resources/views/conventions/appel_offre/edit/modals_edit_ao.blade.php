@@ -1,5 +1,5 @@
 {{-- add piece --}}
-<div class="modal fade " id="add_modal_piece">
+<div class="modal fade" id="modal_add_piece">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,7 +8,7 @@
                     <span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form action="{{ action('DossierAdjiducataireController@addPiece') }}" method="POST" enctype="multipart/form-data"
+                <form action="" id="add_piece_forme" method="POST" enctype="multipart/form-data"
                     class="form-ulpoad-piece">
                     <input type="hidden" name="appelOffre_id" value="{{$appelOffre->id}}">
                     <input name="_token" type="hidden" value="{{ csrf_token() }}" />

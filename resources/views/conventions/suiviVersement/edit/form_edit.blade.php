@@ -147,7 +147,7 @@
                                                     </td>
                                                     <td style="text-align: center">
                                                         @php
-                                                            echo($montant_verse/($item->pivot->montant)*100);
+                                                            echo(number_format($montant_verse/($item->pivot->montant)*100));
                                                         @endphp
                                                     </td>
 

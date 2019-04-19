@@ -521,6 +521,7 @@ table.dataTable thead .sorting_desc_disabled:after
     background-color: transparent;
     border-color: transparent;
     color: #9fd037;
+    text-decoration: underline;
 
 }
 
@@ -528,8 +529,15 @@ table.dataTable thead .sorting_desc_disabled:after
     color: #686868!important;
     background-color: transparent;
     border-color: transparent;
+    text-decoration: underline !important;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__rendered li {
     font-weight: 600;
+}
+
+
+.cke_chrome
+{
+    box-shadow: unset !important;
 }

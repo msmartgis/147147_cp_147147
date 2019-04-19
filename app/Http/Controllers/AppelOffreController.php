@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Adjiducataire;
 use App\AppelOffre;
 use App\Avancement;
 use App\Commune;
@@ -32,6 +33,20 @@ class AppelOffreController extends Controller
         //formating date time
         $date_to_time = strtotime(str_replace("/",'-',$date));
         return $date_formatted = date('Y-m-d',$date_to_time);
+    }
+
+    public function changeState(Request $request)
+    {
+        $appelOffre = AppelOffre::find($request->id);
+        if($request->state == "reporte")
+        {
+            $appelOffre->date_ouverture_plis =  $this->date_fromatting($request->data);
+        }
+
+        $appelOffre->etat = $request->state;
+        $appelOffre->save();
+        return response()->json();
+
     }
 
 
@@ -120,6 +135,8 @@ class AppelOffreController extends Controller
         $appelOffre->objet_ar = $request->objet_ar;
         $appelOffre->moa_id = $request->moas;
         $appelOffre->etat = $request->etat;
+        $appelOffre->delai_execution = $request->delai_execution;
+        $appelOffre->duree_execution = $request->duree_execution;
 
         $appelOffre->date_ouverture_plis = $this->date_fromatting($request->date_ouverture_plis);
         $appelOffre->date_commencement =  $this->date_fromatting($request->date_commencement);
@@ -172,7 +189,7 @@ class AppelOffreController extends Controller
             }
 
             for ($i = 0; $i < $items_number; $i++) {
-                $piece = new DossierAdjiducataire();
+                $piece = new DCE();
                 $piece->document = $pieces_types_array[$i];
                 $piece->file_name = $piece_file_names[$i];
                 $piece->appel_offre_id = $actu_id;
@@ -215,17 +232,56 @@ class AppelOffreController extends Controller
         $moas_edit = Moa::orderBy('nom_fr')->pluck('nom_fr', 'id');
 
         //for filters
-        $communes = Commune::orderBy('nom_fr')->get();
+        $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
         //point desservis :: localite only
         $localites = PointDesserviCategorie::find(1)->point_desservis;
-        $partenaires_types = PartenaireType::all();
+        $pointdesservis = PointDesservi::orderBy('nom_fr')->pluck('nom_fr', 'id');
+        $partenaires_types = PartenaireType::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $moas = Moa::all();
         $sessions = Session::all();
-        $interventions = Intervention::all();
+        $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
         $porteurs = Porteur::all();
         $programmes = Programme::all();
         $conventions = Convention::with(['communes', 'partenaires', 'point_desservis', 'interventions', 'session'])->get();
-        $appelOffre = AppelOffre::with(['conventions','moas'])->find($appelOffre->id);
+        $appelOffre = AppelOffre::with(['conventions','moas','adjiducataires'])->find($appelOffre->id);
+
+        //interventions concernees
+        $intervention_ids = array();
+        $intervention_ids_looping = array();
+        foreach ($appelOffre->conventions as $cv)
+        {
+          array_push($intervention_ids,$cv->interventions->pluck('id'));
+        }
+
+        foreach($intervention_ids as $ids)
+        {
+
+            for($i=0;$i<count($ids);$i++)
+            {
+                array_push($intervention_ids_looping,$ids[$i]);
+            }
+
+        }
+        $interventions_ids =  array_unique($intervention_ids_looping);
+
+        //communes concernees
+        $all_communes = array();
+        $communes_fetch = array();
+        foreach ($appelOffre->conventions as $cv)
+        {
+            array_push($all_communes,$cv->communes->pluck('id'));
+        }
+
+        foreach($all_communes as $ids)
+        {
+            for($i=0;$i<count($ids);$i++)
+            {
+                array_push($communes_fetch,$ids[$i]);
+            }
+
+        }
+        $communes_concernees =  array_unique($communes_fetch);
+
 
         return view('conventions.appel_offre.edit.index_edit_ao')->with([
             'appelOffre' => $appelOffre,
@@ -240,6 +296,9 @@ class AppelOffreController extends Controller
             'programmes' => $programmes,
             'interventions_edit'=>$interventions_edit,
             'moas_edit' => $moas_edit,
+            'interventions_ids' => $interventions_ids,
+            'communes_concernees'=> $communes_concernees,
+            'pointdesservis'=>$pointdesservis
 
         ]);
     }
@@ -260,9 +319,33 @@ class AppelOffreController extends Controller
         $appelOffre->numero = $request->numero;
         $appelOffre->montant_globale = $request->montant_global;
         $appelOffre->caution_provisoir = $request->caution_provisoir;
-        $appelOffre->etat = $request->etat;
+        if($appelOffre->etat != 'pulbie' || $appelOffre->etat != 'en_preparation')
+        {
+
+        }else{
+            $appelOffre->etat = $request->etat;
+        }
+        $appelOffre->delai_execution = $request->delai_execution;
+        $appelOffre->duree_execution = $request->duree_execution;
+        $appelOffre->montant_adjiducation = $request->montant_adjiducataire;
         //return  $request->porteurporteur_projet;
+
+
+        //add new adjiducataire
+        if(!isset($request->id_adjiducataire))
+        {
+            $adjiducataire = new Adjiducataire();
+            $adjiducataire_id = Adjiducataire::max('id')+1;
+            $appelOffre->adjiducataire_id = $adjiducataire_id;
+            $adjiducataire->nom_fr = $request->adjiducataire;
+            $adjiducataire->save();
+        }else{
+            $adjiducataire = Adjiducataire::find($request->id_adjiducataire);
+            $adjiducataire->nom_fr = $request->adjiducataire;
+            $adjiducataire->save();
+        }
         $appelOffre->save();
+
 
         //update conventions
         if(Input::get('conventions_ids'))
@@ -292,10 +375,6 @@ class AppelOffreController extends Controller
         }
 
 
-
-
-
-
         return redirect("/appelOffre" . "/" . $appelOffre->id . "/edit")->with('success', 'Appel d\'offre modifier avec succès');
     }
 
@@ -307,6 +386,7 @@ class AppelOffreController extends Controller
      */
     public function destroy(AppelOffre $appelOffre)
     {
-        //
+        AppelOffre::destroy($appelOffre->id);
+        return response()->json();
     }
 }

@@ -71,6 +71,12 @@
             margin-top: 0 !important;
             padding: .1em .1em .1em;
         }
+
+        .form-control[readonly]
+        {
+            background-color: #fff !important;
+        }
+
     </style>
 @endsection
 
@@ -145,12 +151,19 @@
 <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
 
 <script src="{{asset('js/functions.js')}}"></script>
-<script src="{{asset('js/appel_offre/show_appel_offre_conventions_edit.js')}}"></script>
 
 
 
 <script>
     $(document).ready(function () {
+
+        $('.add-piece').on('click',function(){
+            $('#add_piece_forme').attr('action', $(this).data('route'));
+
+            $('#modal_add_piece').modal('show');
+        });
+
+
         $(function() {
             $('#etat_selector').change(function(){
                 $('.etat-projet').hide();
@@ -162,6 +175,7 @@
         //files managemnt *********
         //add piece
         $('.form-ulpoad-piece').on('submit', function (e) {
+            $('#modal_add_piece').modal('hide');
             $form = $(this);
             e.preventDefault();
             var markup = '';
@@ -180,19 +194,29 @@
                     console.log(data);
                     markup =
                         '<tr style="text-align: center">'+
-                            '<td>' + data.document + '</td>'+
-                            '<td>' + data.file_name + '</td>'+
+                            '<td>' + data.piece.document + '</td>'+
+                            '<td>' + data.piece.file_name + '</td>'+
                             '<td style="text-align: center">'+
-                            '<a href="/files/download/appel_offres/'+data.appel_offre_id+'/'+data.file_name+'">'+
+                            '<a href="/files/download/appel_offres/'+data.piece.appel_offre_id+'/'+data.file_name+'">'+
                                 '<button class="btn btn-secondary-table delete-piece" ><i class="fa fa-download"></i> Telecharger</button>'+
                             '</td>'+
 
                             '<td style="text-align: center">'+
-                                '<button class="btn btn-danger-table delete-piece" data-id=' + data.id + '><i class="fa fa-close"></i> Supprimer</button>'+
+                                '<button class="btn btn-danger-table delete-piece" data-id=' + data.piece.id + '><i class="fa fa-close"></i> Supprimer</button>'+
                             '</td>'+
-
                         '</tr>';
-                    $(markup).prependTo("#pieces_tbody");
+
+                    if(data.type_piece == "dossier_adjiducataire")
+                    {
+                        $(markup).prependTo("#pieces_tbody_adjiducataire");
+                    }
+
+                    if(data.type_piece == "dce")
+                    {
+                        $(markup).prependTo("#pieces_tbody_dce");
+                    }
+
+
                     $('#add_modal_piece').modal('hide');
                 }
             });
@@ -204,6 +228,8 @@
             var piece_id;
             var directory;
             var file_name;
+            var route;
+            route = $(this).data('route');
             piece_id = $(this).data('id');
             directory = $(this).data('directory');
             file_name = $(this).data('file');
@@ -224,7 +250,7 @@
                 if (isConfirm) {
                     //send an ajax request to the server update decision column
                     $.ajax({
-                        url: '{!! route('dossier_adjiducataire.delete_piece')!!}',
+                        url: route,
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -239,7 +265,6 @@
                                 swal("Réussi!", message_reussi, "success");
                                 setTimeout(location.reload.bind(location), 500);
                             }
-
                         }
                     });
                 } else {
@@ -248,55 +273,36 @@
             });
         });
 
+        //attribuer appel offre
+        $('#attribuer_appel_offre_btn').click(function(){
+            var appelOffre_id = $(this).data('id');
+            var state = "attribue";
 
-        //add partenaire
-        $('.form-add-partenaire-edit').on('submit', function (e) {
-            $form = $(this);
-            e.preventDefault();
-            var markup = '';
-            url = $form.attr('action');
-            type = $form.attr('method');
-            $.ajax({
-                'type': type,
-                'url': url,
-                'data': new FormData(this),
-                // Tell jQuery not to process data or worry about content-type
-                // You *must* include these options!
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    console.log(data);
-                    markup =
-                        "<tr style='text-align: center'>\
-                            <td>" + data.part.nom_fr + "</td>\
-                        <td>" + data.montant + "</td>\
-                        <td>" + data.pourcentage + "</td>\
-                        <td style='text-align: center'>\
-                            <button class='btn btn-secondary edit-partenaire' data-demande'" + data.demande + "' data-partnaire='" + data.id + "' style='visibility : hidden'><i class='fa fa-edit'></i> Editer</button>\
-                            <button type='button' class='btn btn-warning delete-partenaire' data-demande'" + data.demande + "' data-partnaire='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
-                        </td>\
-                        </tr>";
-                    $(markup).prependTo("#partenaire_tbody");
-                    $('#m-add-partenaire-edit').modal('hide');
-                }
-            });
+            changeAppelOffrState(appelOffre_id,state);
         });
 
 
-        //delete partenaire
+        //reporter appel offre
+        $('#reporter_appel_offre_btn').click(function(){
+            var appelOffre_id = $(this).data('id');
+            var state = "reporte";
+            var data = $('#ouverture_plis_input').val();
 
-        $(".delete-partenaire").click(function () {
-            var demande_id;
-            var partenaire_id;
-            demande_id = $(this).data('demande');
-            partenaire_id = $(this).data('partenaire');
-            message_reussi = "Le partenaire a été supprimer avec succès";
-            message_sub_title = "Le partenaire sera supprimé définitivement dans cette demande";
+            changeAppelOffrState(appelOffre_id,state,data);
+        });
 
+        //anuller appel offre
+        $('#annuler_appel_offre_btn').click(function(){
+            var appelOffre_id = $(this).data('id');
+            var state = "annule";
+            changeAppelOffrState(appelOffre_id,state);
+        });
+
+        function changeAppelOffrState(idAO,state,data)
+        {
             swal({
                 title: "Vous êtes sûr?",
-                text: message_sub_title,
+                text: "Cette action va changer l'etat de l'appel d'offre",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
@@ -308,108 +314,19 @@
                 if (isConfirm) {
                     //send an ajax request to the server update decision column
                     $.ajax({
-                        url: '{!! route("delete_partenaire")!!}',
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            demande_id: demande_id,
-                            partenaire_id: partenaire_id
-                        },
-                        dataType: 'JSON',
-                        success: function (data) {
-
-                            if (data.length == 0) {
-                                swal("Réussi!", message_reussi, "success");
-                                setTimeout(location.reload.bind(location), 500);
-                            }
-
-                        }
-                    });
-                } else {
-                    swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
-                }
-            });
-        });
-
-
-        //accord definitif
-        $('#accord_definitif').click(function(){
-            var demande_id =[];
-            demande_id.push($(this).data('id'));
-            //demande_id = $(this).data('id');
-            message_reussi = "Accord définitif avec succès";
-            message_sub_title = "Un accord définitif sera affecté a cette demande!!";
-            url='{!! route('affecterOrAccord')!!}';
-            demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
-
-        });
-
-        //a traiter
-        $('#a_traiter').click(function(){
-            var demande_id =[];
-            demande_id.push($(this).data('id'));
-            //demande_id = $(this).data('id');
-            message_reussi = "A traiter affecté avec succès";
-            message_sub_title = "A traiter sera affecté a cette demande!!";
-            url='{!! route('a_traiter')!!}';
-            demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
-
-        });
-
-
-        //restaurer en cours
-        $('#restaurer').click(function(){
-            var demande_id =[];
-            demande_id.push($(this).data('id'));
-            message_reussi = "Restauration effectuée avec succès";
-            message_sub_title = "Restaurer cette demande!!";
-            url='{!! route('restaurer_demande')!!}';
-            demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
-
-        });
-
-
-
-
-        //supprimer demande
-        $('#supprimer_demande').click(function(){
-            var demande_id = $(this).data('id');
-            message_reussi = "Suppression effectuée avec succès";
-            message_sub_title = "Voulez vous vraiment supprimer cette demande!!";
-            url='{{url("demande")}}'+'/'+demande_id;
-            redirect = "/demande";
-            delete_function(demande_id,url,message_reussi,message_sub_title,redirect);
-        });
-
-
-        //demande_managemnt
-        function demande_mngmnt(id, url, success_message, sub_title_message) {
-            swal({
-                title: "Vous êtes sûr?",
-                text: sub_title_message,
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Oui, je confirme!",
-                cancelButtonText: "Non, annuler!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function (isConfirm) {
-                if (isConfirm) {
-                    //send an ajax request to the server update decision column
-                    $.ajax({
-                        url: url,
+                        url: '{!! route('apppelOffre.changeState')!!}',
                         type: 'POST',
                         data: {
                             "_token": '{{ csrf_token() }}',
-                            "demande_ids": id,
+                            "id": idAO,
+                            "state" : state,
+                            "data" : data
                         },
                         dataType: 'JSON',
                         success: function (data) {
-                            console.log(data);
                             if (data.length == 0) {
-                                swal("Réussi!", success_message, "success");
-                                setTimeout(location.reload.bind(location), 500);
+                                swal("Réussi!", "Opération réusssite", "success");
+                                setTimeout(window.location.replace('/appelOffre/'+idAO+'/edit'), 500);
                             }
                         }
                     });
@@ -417,10 +334,21 @@
                     swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
                 }
             });
+
         }
 
 
-//delete function
+        //supprimer appel offre
+        $('#supprimer_ao').click(function(){
+            var appelOffre_id = $(this).data('id');
+            message_reussi = "Suppression effectuée avec succès";
+            message_sub_title = "Voulez vous vraiment supprimer cet Appel d'offre!!";
+            url='{{url("appelOffre")}}'+'/'+appelOffre_id;
+            redirect = "/appelOffre";
+            delete_function(appelOffre_id,url,message_reussi,message_sub_title,redirect);
+        });
+
+        //delete function
         function delete_function(id, url, success_message, sub_title_message,redirect) {
             swal({
                 title: "Vous êtes sûr?",
@@ -457,68 +385,7 @@
                 }
             });
         }
-        //accord_defintif
-        $("#accord_definitif_edit_btn").click(function () {
-            id_full = $("#accord_definitif_edit_btn").data('id');
-            id = id_full.split('_').pop();
-            titleModal = "ACCORD DEFINITIF";
-            affectOrAccord = 0;
-            accordAndAffectation_modal_edit_data(id,titleModal ,affectOrAccord);
-        });
 
-
-//affectation aux conventions
-        $("#affectation_conventions_edit_btn").click(function () {
-            id_full = $("#accord_definitif_edit_btn").data('id');
-            id = id_full.split('_').pop();
-            titleModal = "AFECTATION AUX CONVENTIONS";
-            affectOrAccord = 1;
-            accordAndAffectation_modal_edit_data(id,titleModal ,affectOrAccord);
-        });
-
-        //affectation and accord defintitf
-        function accordAndAffectation_modal_edit_data(id,titleModal ,affectOrAccord)
-        {
-
-            $.ajax({
-                url: '/demandes/getDemandeData',
-                type: 'GET',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    id : id
-                },
-                dataType: 'JSON',
-                success: function (data) {
-                    //console.log(data);
-                    $('#table_body_partner').empty();
-                    var montant_cp =data.pivot[0].pivot.montant;
-                    var montant_global = data.montantGlobal.montant_global;
-                    $('#modalTitleAccordAndAffect').text(titleModal);
-                    $('#cp_id').val(data.partenaire_id);
-                    $('#id_demande_modal_affect').val(data.id.id);
-                    $('#montant_g').val(montant_global);
-                    $('#affecterORAccord').val(affectOrAccord);
-                    $('#montant_cp').val(montant_cp);
-                    $("#accordAndAffectModal").modal();
-
-                    if(data.pivot_all.length > 0)
-                    {
-                        for( i = 0 ; i < data.pivot_all.length ; i++)
-                        {
-                            $('#table_body_partner').append('<tr style="text-align: center">'+
-                                '<td>'+
-                                '<input type="checkbox" name="record" id="row_'+data.pivot_all[i].id+'">'+
-                                '<label for="row_'+data.pivot_all[i].id+'"></label>'+
-                                '</td>'+
-                                '<td><input type="hidden" name="partnenaire_type_ids[]" value="' + data.pivot_all[i].id + '">'+data.pivot_all[i].nom_fr+'</td>'+
-                                '<td><input type="hidden" name="montant[]" value="' + data.pivot_all[i].pivot.montant + '">'+data.pivot_all[i].pivot.montant+'</td>'+
-                                '<td><input type="hidden" name="pourcentage[]" value="' +(data.pivot_all[i].pivot.montant)/montant_global*100+ '">'+(data.pivot_all[i].pivot.montant)/montant_global*100+'</td>'+
-                                '</tr>');
-                        }
-                    }
-                }
-            });
-        }
     });
 
 </script>

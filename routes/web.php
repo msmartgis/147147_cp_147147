@@ -56,8 +56,8 @@ Route::group(
 
                 //appel offre
                 Route::get('/conventions/showCoventionsAppelOffre', 'ConventionController@getConventionsAppelOffre')->name('appelOffre.showCoventions');
-                Route::get('/conventions/showAppelOffreEdit', 'ConventionController@showAppelOffreEdit')->name('appelOffre.showCoventionsEdit');
                 Route::get('/conventions/showAppelOffre', 'ConventionController@getAppelOffre')->name('appelOffre.show');
+                Route::post('/appelOffre/changeState', 'AppelOffreController@changeState')->name('apppelOffre.changeState');
                 //suivi des versment
                 Route::get('/conventions/showVersement', 'ConventionController@getVersements')->name('versement.show');
                 Route::get('/convention/{convention}/editVersement', 'ConventionController@editVersement');
@@ -102,6 +102,10 @@ Route::group(
 
                 Route::post('/pieces/add_piece_dossier_adjiducataire', 'DossierAdjiducataireController@addPiece')->name('dossier_adjiducataire.add_piece');
                 Route::post('/pieces/delete_piece_dossier_adjiducataire', 'DossierAdjiducataireController@deletePiece')->name('dossier_adjiducataire.delete_piece');
+
+                // DCE
+                Route::post('/pieces/add_piece_dce', 'DCEController@addPiece')->name('dce.add_piece');
+                Route::post('/pieces/delete_piece_dce', 'DCEController@deletePiece')->name('dce.delete_piece');
                 //files
                 Route::get('/files/download/{directory}/{id}/{file_name}', 'FilesController@fileDownload')->name('files.download');
                 //point desservis

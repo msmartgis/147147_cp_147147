@@ -29,4 +29,9 @@ class AppelOffre extends Model
         return $this->belongsTo('App\Adjiducataire', 'adjiducataire_id');
     }
 
+    public function dce()
+    {
+        return $this->hasMany('App\DCE');
+    }
+
 }
