@@ -68,7 +68,6 @@ Route::group(
                 Route::get('/versement/downloadFile', 'SuiviVersementController@downloadFile')->name('versement.download');
 
 
-
                 //SPREADSHEET
                 Route::post('/demandes/demandeSpreadSheetEnCours', 'SpreadSheetController@demandeSpread_en_cours')->name('spread_demande_en_cours');
                 Route::post('/demandes/demandeSpreadSheetATraiter', 'SpreadSheetController@demandeSpread_a_traiter')->name('spread_demande_a_traiter');
@@ -90,8 +89,9 @@ Route::group(
 
 
                 //routes for projets
-                Route::post('/conventions/projetsSpreadSheet', 'SpreadSheetController@projetsSpreadSheet')->name('spreadSheetProjet');
-
+                Route::post('/projets/projetsSpreadSheet', 'SpreadSheetController@projetsSpreadSheet')->name('spreadSheetProjet');
+                Route::get('/projet/create', 'ProjetController@create')->name('createProjet');
+                Route::get('/projets/show', 'ProjetController@getProjets');
 
                 //pieces
                 Route::post('/pieces/add_piece', 'PieceController@addPiece')->name('add_piece');
@@ -106,18 +106,16 @@ Route::group(
                 Route::get('/files/download/{directory}/{id}/{file_name}', 'FilesController@fileDownload')->name('files.download');
                 //point desservis
                 Route::post('/pointDesservi/loadPoint', 'PointDesserviController@loadPoint');
+
+                //etat projet
+                Route::post('/etats/add_etat', 'EtatController@addEtat')->name('add_etat');
+                Route::post('/etats/delete_etat', 'EtatController@deleteEtat')->name('delete_etat');
         }
 );
-
-
-
-
-
-
 
 
 //projets routes
 //edit route test
 /* TODO this route is just for making interface design */
 
-Route::get('/edit_project', 'ProjetController@edit_projet')->name('edit_projet');
+Route::get('/projet/{convention}/edit_projet', 'ProjetController@edit_projet')->name('edit_projet');

@@ -1,6 +1,6 @@
 
-{!! Form::model($convention, ['route' => ['convention.update', $convention->id],'method' => 'PUT']) !!}
-@include('conventions.edit.tabs')
+{!! Form::model($convention, ['route' => ['projet.update', $convention->id],'method' => 'PUT']) !!}
+@include('projets.edit.tabs_projet')
 <div class="row">
     <div class="col-lg-10">
         <div class="row">
@@ -20,7 +20,7 @@
                                             <div class="form-group">
                                                 {{Form::select('moa', $moas, $convention->moas->id,
                                                 [
-                                                'data-placeholder' => 'Selectionner commune(s)',
+                                                'data-placeholder' => 'Selectionner MOA',
                                                 'class'=>'form-control select2',
                                                 'name'=>'moa'
                                                 ]
@@ -88,14 +88,151 @@
                                         </div>
                                     </div>
 
+                                    <div class="row" style="margin-top: 8px">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                {{Form::label('','Communes:')}}
+                                                {{Form::select('communes', $communes, $convention->communes->pluck('id'),
+                                                [
+                                                'data-placeholder' => 'Selectionner commune(s)',
+                                                'class'=>'form-control select2',
+                                                'style'=>'width:100%',
+                                                'multiple'=>'multiple',
+                                                'name'=>'communes[]'
+                                                ]
+                                                )}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                {{Form::label('','Localites:')}}
+                                                {{Form::select('localites', $localites, $convention->point_desservis->pluck('id'),
+                                                [
+                                                'data-placeholder' => 'Selectionner commune(s)',
+                                                'class'=>'form-control select2 ',
+                                                'style'=>'width:100%',
+                                                'multiple'=>'multiple',
+                                                'name'=>'localites[]'
+                                                ]
+                                                )}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h5>LOCALISATION SUR LA CARTE </h5>
+                                    <hr style="color:#2d353c;margin:0">
+                                    <div class="row">
+                                        <div class=" col-12">
+                                            <div id="map" style="border: solid 1px #666666;box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);"></div>
+
+                                            <div class="cmodali active" style=" width: 300px;  height: 100px;left:calc(100% - 320px);top:calc(100% - 72px);z-index:1;">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <img id="satellite_btn" cl class="baselayer_btn active" src="{{asset('images/satellite.png')}}" />
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <img id="hybrid_btn" class="baselayer_btn" src="{{asset('images/hybrid.png')}}" />
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <img id="road_btn" class="baselayer_btn" src="{{asset('images/road.png')}}" />
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <img id="none_btn" class="baselayer_btn" src="{{asset('images/none.png')}}" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h5>SITUATION DU PROJET</h5>
+                                    <hr>
+                                    <div class="row" >
+                                        <div class="table-responsive">
+                                            <table class="table table-piece">
+                                                <tr style="text-align: center;">
+                                                    <th>Nom</th>
+                                                    <th>Upload</th>
+                                                    <th></th>
+                                                </tr>
+                                                <tbody id="etat_tbody">
+                                                @foreach ($convention->etats as $item)
+                                                    <tr>
+                                                        <td style="text-align: center">
+                                                            @switch($item->nom)
+                                                            @case ('programme')
+                                                            Programmé
+                                                            @break
+                                                            @case  ('en_cours_execution')
+                                                            En cours d'execution
+                                                            @break
+                                                            @case ('a.o_pulie')
+                                                            A.O Publi
+                                                            @break
+                                                            @case ('plis_ouvert')
+                                                            Plis ouvert
+                                                            @break
+                                                            @case ('a.o_attribue')
+                                                            A.O Attribué
+                                                            @break
+                                                            @case ('a.o_reporte')
+                                                            A.O Reporté
+                                                            @break
+                                                            @case ('a.o_annule')
+                                                            A.O Annule
+                                                            @break
+                                                            @case ('en_retard')
+                                                            En retard
+                                                            @break
+                                                            @case ('en_etat_arret')
+                                                            En état d'arrêt
+                                                            @break
+                                                            @case ('realise')
+                                                            Réalisé
+                                                            @break
+                                                            @default
+
+                                                            @endswitch
+
+                                                        </td>
+
+                                                        <td style="text-align: center">
+                                                            {{$item->date}}
+                                                        </td>
+
+                                                        <td style="text-align: center">
+                                                            <button type="button" class="btn btn-danger-table delete-etat" data-id="etat_{{$item->id}}"><i class="fa fa-close"></i>
+                                                                Supprimer</button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                <tr>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <div style="text-align: center">
+                                                <a href="#" data-toggle="modal" data-target="#add_modal_etat"> <i class="fa fa-plus"></i>
+                                                    <b> Ajouter Etat</b> </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{--tab localisation de projet--}}
+                            <div class="tab-pane " id="dossier_technique_fincancier_tab" role="tabpanel">
+                                <div class="pad">
                                     <div class="row">
                                         <div class="col-12" style="margin-top : 8px">
-                                            <h5>PIECES TECHNIQUES</h5>
+                                            <h5>DOSSIER TECHNIQUE</h5>
                                             <hr style="color:#2d353c;margin-top:0px;margin-bottom: 4px">
                                             <div class="table-responsive">
                                                 <table class="table table-piece">
                                                     <tr style="text-align: center;">
-                                                        <th>Type</th>
                                                         <th>Nom</th>
                                                         <th>Upload</th>
                                                         <th></th>
@@ -105,34 +242,9 @@
                                                     @foreach ($convention->piece as $item)
                                                         <tr>
                                                             <td style="text-align: center">
-
-                                                                @switch($item->type)
-                                                                @case("etude")
-                                                                Etude
-                                                                @break
-                                                                @case("fiche_technique")
-                                                                Fiche Technique
-                                                                @break
-                                                                @default
-                                                                Etude
-                                                                @endswitch
+                                                                {{strtoupper($item->type)}}
                                                             </td>
-                                                            <td style="text-align: center">
 
-                                                                @switch($item->nom)
-                                                                @case("approuve")
-                                                                Approuvée
-                                                                @break
-                                                                @case("disponible")
-                                                                Disponible
-                                                                @break
-                                                                @case("en_cours_approbation")
-                                                                En cour d'approbation
-                                                                @break
-                                                                @default
-                                                                Approuvée
-                                                                @endswitch
-                                                            </td>
                                                             <td style="text-align: center">
                                                                 {{$item->path}}
                                                             </td>
@@ -141,7 +253,6 @@
                                                                     <button type="button"  class="btn btn-secondary-table " >
                                                                         <i class="fa fa-download"></i>
                                                                         Télécharger</button>
-
                                                                 </a>
                                                             </td>
                                                             <td style="text-align: center">
@@ -150,7 +261,6 @@
                                                             </td>
                                                         </tr>
                                                     @endforeach
-
                                                     <tr>
 
                                                     </tr>
@@ -160,7 +270,6 @@
                                                     <a href="#" data-toggle="modal" data-target="#add_modal_piece"> <i class="fa fa-plus"></i>
                                                         <b> Ajouter Pièce</b> </a>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -168,7 +277,7 @@
 
                                     <div class="row">
                                         <div class="col-12" style="margin-top : 8px">
-                                            <h5>MONTAGE FINANCIER DEFINITIF</h5>
+                                            <h5>MONTAGE FINANCIER</h5>
                                             <hr style="color:#2d353c;margin-top:0px;margin-bottom: 4px">
                                             <div class="table-responsive">
                                                 <table class="table table-piece">
@@ -212,74 +321,28 @@
                                         </div>
                                     </div>
 
-
-                                </div>
-                            </div>
-
-                            {{--tab localisation de projet--}}
-                            <div class="tab-pane " id="localisation_projet_tab" role="tabpanel">
-                                <div class="pad">
-
-                                    <div class="row" style="margin-top: 8px">
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                {{Form::label('','Communes:')}}
-                                                {{Form::select('communes', $communes, $convention->communes->pluck('id'),
-                                                [
-                                                'data-placeholder' => 'Selectionner commune(s)',
-                                                'class'=>'form-control select2',
-                                                'style'=>'width:100%',
-                                                'multiple'=>'multiple',
-                                                'name'=>'communes[]'
-                                                ]
-                                                )}}
-                                            </div>
-                                        </div>
-                                    </div>
-
-
                                     <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                {{Form::label('','Localites:')}}
-                                                {{Form::select('localites', $localites, $convention->point_desservis->pluck('id'),
-                                                [
-                                                'data-placeholder' => 'Selectionner commune(s)',
-                                                'class'=>'form-control select2 ',
-                                                'style'=>'width:100%',
-                                                'multiple'=>'multiple',
-                                                'name'=>'localites[]'
-                                                ]
-                                                )}}
+                                        <h5>GALERIES</h5>
+                                        <hr>
+                                        <div class="container" style="margin-top: 8px">
+                                            <div class="main-img">
+                                                <img src="https://preview.ibb.co/gxVppG/img1.jpg" id="current">
+                                            </div>
+
+                                            <div class="imgs">
+                                                <img src="https://preview.ibb.co/gxVppG/img1.jpg">
+                                                <img src="https://preview.ibb.co/iZ3Lww/img2.jpg">
+                                                <img src="https://preview.ibb.co/iQsPOb/img3.jpg">
+                                                <img src="https://preview.ibb.co/gFFdib/img4.jpg">
+                                                <img src="https://preview.ibb.co/hS5ppG/img5.jpg">
+                                                <img src="https://preview.ibb.co/goKtGw/img6.jpg">
+                                                <img src="https://preview.ibb.co/bSWjOb/img7.jpg">
+                                                <img src="https://preview.ibb.co/i2o9pG/img8.jpg">
                                             </div>
                                         </div>
                                     </div>
 
-                                    <h5>LOCALISATION SUR LA CARTE </h5>
-                                    <hr style="color:#2d353c;margin:0">
-                                    <div class="row">
-                                        <div class=" col-12">
-                                            <div id="map" style="border: solid 1px #666666;box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);"></div>
 
-                                            <div class="cmodali active" style=" width: 300px;  height: 100px;left:calc(100% - 320px);top:calc(100% - 72px);z-index:1;">
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <img id="satellite_btn" cl class="baselayer_btn active" src="{{asset('images/satellite.png')}}" />
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <img id="hybrid_btn" class="baselayer_btn" src="{{asset('images/hybrid.png')}}" />
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <img id="road_btn" class="baselayer_btn" src="{{asset('images/road.png')}}" />
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <img id="none_btn" class="baselayer_btn" src="{{asset('images/none.png')}}" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
                                 </div>
                             </div>
 
@@ -348,7 +411,7 @@
                     <button type="button" class="btn btn-warning col-12" id="supprimer_convention" data-id="{{$convention->id}}" style="margin-top: 8px !important">Supprimer</button>
 
                     {!! Form::model($convention, ['route' => ['convention.fiche', $convention->id],'method' => 'PUT']) !!}
-                    {{Form::submit('Fiche de la convention',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
+                    {{Form::submit('Fiche de projet',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
                     {!! Form::close() !!}
 
                 </div>

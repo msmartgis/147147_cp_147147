@@ -79,4 +79,10 @@ class Convention extends Model
     {
         return $this->belongsTo('App\AppelOffre', 'appel_offre_id');
     }
+
+
+    public function etats()
+    {
+        return $this->hasMany('App\Etat');
+    }
 }
