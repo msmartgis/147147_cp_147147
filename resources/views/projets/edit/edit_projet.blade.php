@@ -70,14 +70,64 @@
             margin-top: 0 !important;
             padding: .1em .1em .1em;
         }
+
+
+        /* IMAGE GALLERY*/
+        :root {
+            /* Set fade in duration */
+            --fade-time: 0.5s;
+        }
+
+
+        .container {
+            max-width: 760px;
+            margin: auto;
+            border: #fff solid 3px;
+            background: #fff;
+        }
+
+        .main-img img,
+        .imgs img {
+            width: 100%;
+        }
+
+        .imgs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 5px;
+        }
+
+        .imgs img {
+            cursor: pointer;
+        }
+
+        /* Fade in animation */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn var(--fade-time) ease-in 1 forwards;
+        }
+
+        /* Media Queries */
+        @media(max-width: 600px) {
+            .imgs {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 @endsection
 
 @section('content')
-    @include('projets.edit.tabs')
-    @include('projets.edit.form_edit')
 
+    @include('projets.edit.form_edit_projet')
 
+    {{-- Modals --}}
+   @include('projets.edit.modals_edit_projet')
 
     {{-- end modals --}}
 @endsection
@@ -135,9 +185,11 @@
 <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
 
+<script src="{{asset('js/demandes/demande.js')}}"></script>
 <script src="{{asset('js/demandes/functions.js')}}"></script>
+<script src="{{asset('js/demandes/edit/demande_edit.js')}}"></script>
 <script src="{{asset('js/functions.js')}}"></script>
-<script src="{{asset('js/projets/projets.js')}}"></script>
+
 
 
 <script>
@@ -164,8 +216,10 @@
                     markup =
                         "<tr style='text-align: center'>\
                             <td>" + data.type + "</td>\
-                        <td>" + data.nom + "</td>\
                         <td>" + data.path + "</td>\
+                        <td style='text-align: center'>\
+                            <button class='btn btn-secondary-table ' data-id='" + data.id + "'><i class='fa fa-download'></i> Telecharger</button>\
+                        </td>\
                         <td style='text-align: center'>\
                             <button class='btn btn-warning delete-piece' data-id='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
                         </td>\
@@ -177,10 +231,13 @@
         });
 
 
+
+
+
         //delete piece
         $(".delete-piece").click(function () {
             var piece_id;
-            piece_id = $(this).data('id');
+            piece_id = $(this).data('id').split('_').pop();
             message_reussi = "La piéce a été supprimer avec succès";
             message_sub_title = "Le document sera supprimé définitivement";
 
@@ -221,6 +278,119 @@
         });
 
 
+        // add etat
+        $('.form-add-etat').on('submit', function (e) {
+            alert('submitted');
+            $form = $(this);
+            e.preventDefault();
+            var markup = '';
+            url = $form.attr('action');
+            type = $form.attr('method');
+            $.ajax({
+                'type': type,
+                'url': url,
+                'data': new FormData(this),
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    var nom = '';
+                    switch(data.nom) {
+                        case 'programme':
+                            nom= 'Programmé'
+                            break;
+                        case 'en_cours_execution':
+                            nom= 'En cours d\'execution'
+                            break;
+                        case 'a.o_pulie':
+                            nom= 'A.O Publi'
+                            break;
+                        case 'plis_ouvert':
+                            nom= 'Plis ouvert'
+                            break;
+                        case 'a.o_attribue':
+                            nom= 'A.O Attribué'
+                            break;
+                        case 'a.o_reporte':
+                            nom= 'A.O Reporté'
+                            break;
+                        case 'a.o_annule':
+                            nom= 'A.O Annule'
+                            break;
+                        case 'en_retard':
+                            nom=  'En retard'
+                            break;
+                        case 'en_etat_arret':
+                            nom= 'En état d\'arrêt'
+                            break;
+                        case 'realise':
+                            nom= 'Réalisé'
+                            break;
+                    }
+                    markup =
+                        '<tr>' +
+                                '<td style="text-align: center">' +
+                                nom +
+                                '</td>' +
+                                '<td style="text-align: center">' +
+                                data.date +
+                                '</td>' +
+                                '<td style="text-align: center">' +
+                                '<button class="btn btn-danger-table delete-etat" data-id="etat_' + data.id + '"><i class="fa fa-close"></i> Supprimer</button>' +
+                        '</tr>' +
+                        '' +
+                        '';
+
+
+                    $(markup).appendTo("#etat_tbody");
+                    $('#add_modal_etat').modal('hide');
+                }
+            });
+        });
+
+
+        $(".delete-etat").click(function () {
+            var etat_id;
+            etat_id = $(this).data('id').split('_').pop();
+            message_reussi = "La piéce a été supprimer avec succès";
+            message_sub_title = "Le document sera supprimé définitivement";
+
+            swal({
+                title: "Vous êtes sûr?",
+                text: message_sub_title,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Oui, je confirme!",
+                cancelButtonText: "Non, annuler!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    //send an ajax request to the server update decision column
+                    $.ajax({
+                        url: '{!! route('delete_etat')!!}',
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            etat_id: etat_id
+                        },
+                        dataType: 'JSON',
+                        success: function (data) {
+
+                            if (data.length == 0) {
+                                swal("Réussi!", message_reussi, "success");
+                                setTimeout(location.reload.bind(location), 500);
+                            }
+                        }
+                    });
+                } else {
+                    swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
+                }
+            });
+        });
+
+
         //add partenaire
         $('.form-add-partenaire-edit').on('submit', function (e) {
             $form = $(this);
@@ -245,8 +415,7 @@
                         <td>" + data.montant + "</td>\
                         <td>" + data.pourcentage + "</td>\
                         <td style='text-align: center'>\
-                            <button class='btn btn-secondary edit-partenaire' data-demande'" + data.demande + "' data-partnaire='" + data.id + "' style='visibility : hidden'><i class='fa fa-edit'></i> Editer</button>\
-                            <button type='button' class='btn btn-warning delete-partenaire' data-demande'" + data.demande + "' data-partnaire='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
+                            <button type='button' class='btn btn-warning-table delete-partenaire' data-demande'" + data.demande + "' data-partnaire='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
                         </td>\
                         </tr>";
                     $(markup).prependTo("#partenaire_tbody");
@@ -255,24 +424,16 @@
             });
         });
 
-        //edite partenaire
-        // $(document).on('click', '.edit-partenaire', function () {
-        //     var montant_part = ($(this).data('montant'));
-        //     var id_partenaire = ($(this).data('partenaire'));
-        //     //alert(id_partenaire);
-        //     //alert(montant_part);
-        //     $("input[name='montant']").val(montant_part);
-        //     $("#partenaire_type_edit").val(id_partenaire).change();
-        //     $('#m-edite-partenaire').modal('show');
-        // });
 
         //delete partenaire
 
         $(".delete-partenaire").click(function () {
-            var demande_id;
+            var convention_partenaire = $(this).data('id').split('_');
+            var convention_id;
             var partenaire_id;
-            demande_id = $(this).data('demande');
-            partenaire_id = $(this).data('partenaire');
+
+            convention_id = convention_partenaire[0];
+            partenaire_id = convention_partenaire[1];
             message_reussi = "Le partenaire a été supprimer avec succès";
             message_sub_title = "Le partenaire sera supprimé définitivement dans cette demande";
 
@@ -290,11 +451,11 @@
                 if (isConfirm) {
                     //send an ajax request to the server update decision column
                     $.ajax({
-                        url: '{!! route("delete_partenaire")!!}',
+                        url: '{!! route("delete_partenaire_convention")!!}',
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
-                            demande_id: demande_id,
+                            convention_id: convention_id,
                             partenaire_id: partenaire_id
                         },
                         dataType: 'JSON',
@@ -304,66 +465,12 @@
                                 swal("Réussi!", message_reussi, "success");
                                 setTimeout(location.reload.bind(location), 500);
                             }
-
                         }
                     });
                 } else {
                     swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
                 }
             });
-        });
-
-
-        //accord definitif
-        $('#accord_definitif').click(function(){
-            var demande_id =[];
-            demande_id.push($(this).data('id'));
-            //demande_id = $(this).data('id');
-            message_reussi = "Accord définitif avec succès";
-            message_sub_title = "Un accord définitif sera affecté a cette demande!!";
-            url='{!! route('accord_definitif')!!}';
-            demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
-
-        });
-
-        //a traiter
-        $('#a_traiter').click(function(){
-            var demande_id =[];
-            demande_id.push($(this).data('id'));
-            //demande_id = $(this).data('id');
-            message_reussi = "A traiter affecté avec succès";
-            message_sub_title = "A traiter sera affecté a cette demande!!";
-            url='{!! route('a_traiter')!!}';
-            demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
-
-        });
-
-
-        //restaurer en cours
-        $('#restaurer').click(function(){
-            var demande_id =[];
-            demande_id.push($(this).data('id'));
-            message_reussi = "Restauration effectuée avec succès";
-            message_sub_title = "Restaurer cette demande!!";
-            url='{!! route('restaurer_demande')!!}';
-            demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
-
-        });
-
-
-        //affectation aux convention
-        $('#affect_aux_convention_btn').click(function(){
-            var demande_id = $(this).data('id');
-            var numero_ordre = $(this).data('numero');
-            $('#id_demande_modal_affect').val(demande_id);
-            $('.modal-title').text('Affectation aux conventions la demande numero : ' + numero_ordre);
-            $('#affecter_aux_cnv').modal('show');
-
-            // message_reussi = "Restauration effectuée avec succès";
-            // message_sub_title = "Restaurer cette demande!!";
-            // url='{!! route('restaurer_demande')!!}';
-            // decision_edit(demande_id,'',url,message_reussi,message_sub_title);
-
         });
 
 
@@ -377,46 +484,7 @@
             delete_function(demande_id,url,message_reussi,message_sub_title,redirect);
         });
 
-
-        //demande_managemnt
-        function demande_mngmnt(id, url, success_message, sub_title_message) {
-            swal({
-                title: "Vous êtes sûr?",
-                text: sub_title_message,
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Oui, je confirme!",
-                cancelButtonText: "Non, annuler!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function (isConfirm) {
-                if (isConfirm) {
-                    //send an ajax request to the server update decision column
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: {
-                            "_token": '{{ csrf_token() }}',
-                            "demande_ids": id,
-                        },
-                        dataType: 'JSON',
-                        success: function (data) {
-                            console.log(data);
-                            if (data.length == 0) {
-                                swal("Réussi!", success_message, "success");
-                                setTimeout(location.reload.bind(location), 500);
-                            }
-                        }
-                    });
-                } else {
-                    swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
-                }
-            });
-        }
-
-
-//delete function
+        //delete function
         function delete_function(id, url, success_message, sub_title_message,redirect) {
             swal({
                 title: "Vous êtes sûr?",
@@ -455,9 +523,34 @@
         }
 
 
+        //image guallery
+        const current = document.querySelector('#current');
+        const imgs = document.querySelector('.imgs');
+        const img = document.querySelectorAll('.imgs img');
+        const opacity = 0.6;
+
+// Set first img opacity
+        img[0].style.opacity = opacity;
+
+        imgs.addEventListener('click', imgClick);
+
+        function imgClick(e) {
+            // Reset the opacity
+            img.forEach(img => (img.style.opacity = 1));
+
+            // Change current image to src of clicked image
+            current.src = e.target.src;
+
+            // Add fade in class
+            current.classList.add('fade-in');
+
+            // Remove fade-in class after .5 seconds
+            setTimeout(() => current.classList.remove('fade-in'), 500);
+
+            // Change the opacity to opacity var
+            e.target.style.opacity = opacity;
+        }
 
     });
-
 </script>
-
 @endpush

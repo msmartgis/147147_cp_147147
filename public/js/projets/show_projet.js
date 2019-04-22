@@ -16,7 +16,7 @@ $(document).ready(function () {
         },
 
         ajax: {
-            url: 'conventions/show',
+            url: 'projets/show',
             type: 'GET',
             data: function (d) {
                 d.communes = $('select[name=communes]').val();
@@ -47,69 +47,66 @@ $(document).ready(function () {
                 data: 'checkbox',
                 name: 'checkbox',
                 orderable: false,
-                searchable: false
+                searchable: false,
+                width : '1%'
             },
 
             {
                 data: 'num_ordre',
                 name: 'conventions.num_ordre',
                 orderable: true,
-                searchable: true
-            },
-            {
-                data: 'objet_fr',
-                name: 'conventions.objet_fr',
-                orderable: true,
-                searchable: true
+                searchable: true,
+                width: '1%'
             },
             {
                 data: 'point_desservis',
                 name: 'point_desservis.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width: '25%'
             },
             {
                 data: 'communes',
                 name: 'communes.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width: '20%'
+            },
+            {
+                data: 'longueur',
+                name: 'piste.longueur',
+                orderable: true,
+                searchable: true,
+                width: '5%'
             },
 
             {
                 data: 'moas',
                 name: 'moas.nom_fr',
                 orderable: true,
-                searchable: true
-            },
-            {
-                data: 'interventions',
-                name: 'interventions.nom',
-                orderable: true,
-                searchable: true
+                searchable: true,
+                width: '6%'
             },
             {
                 data: 'partenaires',
                 name: 'partenaires.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '10%'
             },
             {
                 data: 'programme',
                 name: 'programme.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '4%'
             },
             {
-                data: 'montant_global',
-                name: 'montant_global',
+                data: 'etats',
+                name: 'etats.nom',
                 orderable: true,
-                searchable: true
-            },
-            {
-                data: 'montantCP',
-                name: 'montantCP',
-                orderable: true,
-                searchable: true
+                searchable: true,
+                width: '5%'
             }
         ],
         initComplete: function () {
@@ -123,7 +120,6 @@ $(document).ready(function () {
             });
         }
     });
-
 
 
     $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#programmes_filter,#moas_filter').on('change paste keyup', function (e) {

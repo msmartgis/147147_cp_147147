@@ -25,7 +25,8 @@ class CreateConventionsTable extends Migration
             $table->double('montant_global')->nullable();
             $table->text('observation')->nullable();
             $table->string('decision')->nullable();
-            $table->tinyInteger('is_affecter')->nullable();
+            $table->tinyInteger('is_project')->nullable(); // to know if it is project version cp or version partner
+            $table->string('annee')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

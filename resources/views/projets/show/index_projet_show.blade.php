@@ -52,34 +52,86 @@
         label {
             margin-top: 0.2rem;
         }
+
+
+        [type=checkbox]+label:before,
+        [type=checkbox]:not(.filled-in)+label:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 12px;
+            z-index: 0;
+            border: 1.5px solid #ff8740;
+            border-radius: 1px;
+            margin-top: 0px;
+            -webkit-transition: .2s;
+            -o-transition: .2s;
+            transition: .2s;
+        }
+
+
+        [type=checkbox]+label {
+            font-weight: 0;
+            position: relative;
+            padding-left: 0px;
+            cursor: pointer;
+            display: inline-block;
+            height: 16px;
+            line-height: 25px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -ms-user-select: none;
+        }
+
+        [type=checkbox]:checked.chk-col-green+label:before {
+            border-right: 2px solid #2fbc26;
+            border-bottom: 2px solid #2fbc26;
+        }
+
+
+        [type=checkbox]:checked+label:before {
+            top: -4px;
+            left: 0px;
+            width: 9px;
+            height: 18px;
+            border-top: 2px solid transparent;
+            border-left: 2px solid transparent;
+            border-right: 2px solid #398bf7;
+            border-bottom: 2px solid #398bf7;
+            -webkit-transform: rotate(40deg);
+            -ms-transform: rotate(40deg);
+            transform: rotate(40deg);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform-origin: 100% 100%;
+            -ms-transform-origin: 100% 100%;
+            transform-origin: 100% 100%
+        }
     </style>
 @endsection
 
 @section('content')
-    <div class="box">
+    <div class="row">
+        <div class="col-12">
+            <div class="box">
 
-        <!-- /.box-header -->
-        <div class="box-body">
-        @include('projets.show.tabs')
-        <!-- Tab panes -->
-            <div class="tab-content">
-                @include('projets.show.tab_programme')
-                {{-- a traiter --}}
-                @include('projets.show.tab_en_cours')
-                {{-- affectees tab --}}
-                @include('projets.show.tab_en_retard')
-                {{-- accord_definitif --}}
-                @include('projets.show.tab_realise')
-
+                <!-- /.box-header -->
+                <div class="box-body">
+                    @include('projets.show.filters_projet_show')
+                    @include('projets.show.datatable_projet_show')
+                </div>
+                <!-- /.box-body -->
             </div>
+            <!-- /.box -->
         </div>
-        <!-- /.box-body -->
     </div>
-
 @endsection
 
 @push('added_scripts')
-<script src="css/datatable/datatables.min.js"></script>
+<script src="{{asset('css/datatable/datatables.min.js')}}"></script>
 
 <!-- iCheck 1.0.1 -->
 <script src="{{asset('vendor_plugins/iCheck/icheck.min.js')}}"></script>
@@ -98,22 +150,14 @@
 <script src="{{asset('vendor_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
 <!-- Form validator JavaScript -->
 <script src="{{asset('js/validation.js')}}"></script>
-
-
 <!-- Formatter -->
 <script src="{{asset('vendor_components/formatter/formatter.js')}}"></script>
 <script src="{{asset('vendor_components/formatter/jquery.formatter.js')}}"></script>
-
 <script src="{{asset('js/formatter.js')}}"></script>
-<script src="{{asset('js/functions.js')}}"></script>
-
+<script src="{{asset('js/projets/show_projet.js')}}"></script>
 <!-- Sweet-Alert  -->
 <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
-
-<script>
-
-
-</script>
+<script src="{{asset('js/functions/functions.js')}}"></script>
 
 @endpush

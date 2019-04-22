@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Projet extends Model
 {
-    protected $fillable = ['num_ordre', 'objet_fr', 'objet_ar', 'montant_global', 'observation'];
-    use SoftDeletes;
-    protected $dates = ['deleted_at'];
+
 
     public function communes()
     {

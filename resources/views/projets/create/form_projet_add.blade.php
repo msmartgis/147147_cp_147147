@@ -1,6 +1,6 @@
 {{--TODO add remove option when adding partner or document--}}
 
-{!! Form::model($convention,['action' => 'ConventionController@store','method'=>'POST','class'=>'tab-wizard
+{!! Form::model($convention,['action' => 'ProjetController@store','method'=>'POST','class'=>'tab-wizard
         wizard-circle form-create','enctype' => 'multipart/form-data']) !!}
 
 <!-- Step 1 -->
@@ -14,67 +14,49 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div class="form-group">
-                {{Form::label('','Session:')}}
-                {{Form::select(
-                'size',
-                 array(
-                 '1' => 'Janvier',
-                  '2' => 'Fevrier',
-                  '3' => 'Mars',
-                  '4' => 'Avril',
-                  '5' => 'Mai',
-                  '6' => 'Juin',
-                  '7' => 'Juillet',
-                  '8' => 'Aout',
-                  '9' => 'Septembre',
-                  '10' => 'Octobre',
-                  '11' => 'Novembre',
-                  '12' => 'Decembre',
-                  ),
-                  '1',
-                ['class'=>'form-control']
-                )}}
+                <div class="form-group">
+                    {{Form::label('','Longueur :')}}
+                    {{Form::text('longueur','',['class'=>'form-control'])}}
+                </div>
+        </div>
 
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <div class="form-group">
+                {{Form::label('','Annee :')}}
+                {{Form::text('annee','',['class'=>'form-control'])}}
             </div>
         </div>
 
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
             <div class="form-group">
-                {{Form::label('','Commune:')}}
-                {{Form::select('communes', $communes, null,
+                {{Form::label('','MOA:')}}
+                {{Form::select('moas', $moas, null,
                 [
                 'data-placeholder' => 'Selectionner commune(s)',
                 'class'=>'form-control select2',
-                'multiple'=>'multiple',
-                'name'=>'communes[]'
+                'name'=>'moas'
                 ]
                 )}}
             </div>
         </div>
+
+
     </div>
     <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <div class="form-group">
-                {{Form::label('','Longueur :')}}
-                {{Form::text('longueur','',['class'=>'form-control'])}}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    {{Form::label('','Commune:')}}
+                    {{Form::select('communes', $communes, null,
+                    [
+                    'data-placeholder' => 'Selectionner commune(s)',
+                    'class'=>'form-control select2',
+                    'multiple'=>'multiple',
+                    'name'=>'communes[]'
+                    ]
+                    )}}
+                </div>
             </div>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <div class="form-group">
-                {{Form::label('','Progamme:')}}
-                {{Form::select('programme', $programmes, null,
-                [
-                'data-placeholder' => 'Selectionner commune(s)',
-                'class'=>'form-control select2',
-                'name'=>'programme'
-                ]
-                )}}
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 
-        </div>
 
         <div class="col-lg-12 col-md-4 col-sm-12 col-xs-12">
             <div id="map" style="border: solid 1px #666666;box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);"></div>
@@ -112,24 +94,22 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+        <div class="col-lg-6">
             <div class="form-group">
-                {{Form::label('','MOA:')}}
-                {{Form::select('moas', $moas, null,
+                {{Form::label('','Progamme:')}}
+                {{Form::select('programme', $programmes, null,
                 [
                 'data-placeholder' => 'Selectionner commune(s)',
                 'class'=>'form-control select2',
-                'name'=>'moas'
+                'name'=>'programme'
                 ]
                 )}}
             </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-
-        </div>
     </div>
+
+
 </section>
 <!-- Step 2 -->
 <h6>Informations techniques</h6>
@@ -198,47 +178,35 @@
         <div class="table-responsive" style="margin-top: 12px">
             <table class="table table-piece">
                 <tr style="text-align: center;">
-                    <th>Type</th>
-                    <th>Nom</th>
+                    <th></th>
+                    <th>Document</th>
                     <th>Upload</th>
                 </tr>
-                <tbody>
+                <tbody id="pieces_tbody">
                 <tr>
                     <td>
                         <div class="form-group">
-
-                            {{Form::select('piece_type',
-                            [
-                            'etude' => 'Etude',
-                            'fiche_technique' => 'Fiche technique'
-                            ],
-                            'etude',
-                            [
-                            'data-placeholder' => 'Document',
-                            'class'=>'form-control document',
-                            'style'=>'width : 100%',
-                            'name'=>'pieces_types[]'
-                            ]
-                            )
-                            }}
+                            <div class="checkbox">
+                                <input type="checkbox" id="row_0" name="record">
+                                <label for="row_0"></label>
+                            </div>
                         </div>
                     </td>
                     <td>
-                        <div class="form-group ">
-
-                            {{Form::select('piece_nom',
+                        <div class="form-group">
+                            {{Form::select('piece_type',
                             [
-                            'approuve' => 'Approuvée',
-                            'disponible' => 'Disponible',
-                            'en_cours_approbation' => 'En cours d\'approbation'
+                            'Etude' => 'Etude',
+                            'RC' => 'RC',
+                             'Levé topographique' => 'Levé topographique',
+                             'CPS' => 'CPS',
+                             'CPS+RC' => 'CPS+RC'
                             ],
-                            'approuve',
+                            'etude',
                             [
-                            'data-placeholder' => 'Document',
-                            'class'=>'form-control etat',
+                            'class'=>'form-control document',
                             'style'=>'width : 100%',
-                            'name'=>'pieces_noms[]',
-
+                            'name'=>'pieces_types[]'
                             ]
                             )
                             }}
@@ -259,14 +227,15 @@
                     <b> Ajouter Pièce</b>
                 </a>
             </div>
+            <button type="button" class="btn btn-warning delete-row"><i class="fa fa-close"></i> Supprimer Document</button>
         </div>
     </div>
 
-
-    <div class="row">
+    <h5>TYPE D'INTERVENTIONS</h5>
+    <hr>
+    <div class="row" style="margin-top: 8px">
         <div class="col-6">
             <div class="form-group">
-                {{Form::label('','Type d\'interventions:')}}
                 {{Form::select('inertventions', $interventions, null,
                 [
                 'data-placeholder' => 'Selectionner interventions(s)',
@@ -304,7 +273,7 @@
     </div>
     <br>
     <div class="row" style="margin: 0 !important;">
-        <h5>MONTAGE FINANCIER</h5>
+        <h5>MONTAGE FINANCIER </h5>
         <hr>
         <div class="col-12" style="margin-top: 8px">
             <div class="table-responsive">
