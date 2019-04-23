@@ -114,12 +114,17 @@ Route::group(
                 //etat projet
                 Route::post('/etats/add_etat', 'EtatController@addEtat')->name('add_etat');
                 Route::post('/etats/delete_etat', 'EtatController@deleteEtat')->name('delete_etat');
+
+
+                //projets routes
+                //edit route test
+                /* TODO this route is just for making interface design */
+
+                Route::get('/projet/{convention}/edit_projet', 'ProjetController@edit_projet')->name('edit_projet');
+                Route::put('/projet_update/{convention}', 'ProjetController@update_projet')->name('projet.update_projet');
+
+
+                //guallery
+                Route::post('/gallery/delete_image_gallery', 'GalleryController@deleteImage')->name('delete_gallery_image');
         }
 );
-
-
-//projets routes
-//edit route test
-/* TODO this route is just for making interface design */
-
-Route::get('/projet/{convention}/edit_projet', 'ProjetController@edit_projet')->name('edit_projet');

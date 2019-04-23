@@ -7,6 +7,7 @@ use App\Avancement;
 use App\Commune;
 use App\Convention;
 use App\Demande;
+use App\Gallery;
 use App\Intervention;
 use App\Moa;
 use App\PartenaireType;
@@ -30,7 +31,7 @@ class ProjetController extends Controller
 
     public function getProjets(Request $request)
     {
-        $conventions = Convention::with( 'communes', 'interventions', 'partenaires','point_desservis','programme','moas','etats');
+        $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'etats');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($conventions)
                 ->addColumn('communes', function (Convention $convention) {
@@ -79,20 +80,18 @@ class ProjetController extends Controller
                 })
 
                 ->addColumn('num_ordre', function ($conventions) {
-                    if($conventions->is_project == 1)
-                    {
-                        return '<a href="projet/'.$conventions->id.'/edit_projet">'.$conventions->num_ordre.'</a>';
-                    }else{
-                        return '<a href="convention/'.$conventions->id.'/edit">'.$conventions->num_ordre.'</a>';
+                    if ($conventions->is_project == 1) {
+                        return '<a href="projet/' . $conventions->id . '/edit_projet">' . $conventions->num_ordre . '</a>';
+                    } else {
+                        return '<a href="convention/' . $conventions->id . '/edit">' . $conventions->num_ordre . '</a>';
                     }
                 })
-                ->rawColumns(['checkbox','num_ordre']);
+                ->rawColumns(['checkbox', 'num_ordre']);
         }
 
         //filter with communes
         if ($communes_id = $request->get('communes')) {
-            if ($communes_id == "all") {
-            } else {
+            if ($communes_id == "all") { } else {
                 $conventions->whereHas('communes', function ($query) use ($communes_id) {
                     $query->where('communes.id', '=', $communes_id);
                 });
@@ -104,8 +103,7 @@ class ProjetController extends Controller
 
         //filter with partenaire
         if ($partenaires_id = $request->get('partenaires')) {
-            if ($partenaires_id == "all") {
-            } else {
+            if ($partenaires_id == "all") { } else {
                 $conventions->whereHas('partenaires', function ($query) use ($partenaires_id) {
                     $query->where('partenaires_types.id', '=', $partenaires_id);
                 });
@@ -114,24 +112,21 @@ class ProjetController extends Controller
 
         //moa filter
         if ($moas_id = $request->get('moas')) {
-            if ($moas_id == "all") {
-            } else {
+            if ($moas_id == "all") { } else {
                 $conventions->where('moa_id', '=', $moas_id);
             }
         }
 
         //programme filter
         if ($programmes_id = $request->get('programmes')) {
-            if ($programmes_id == "all") {
-            } else {
+            if ($programmes_id == "all") { } else {
                 $conventions->where('programme_id', '=', $programmes_id);
             }
         }
 
         //filter with localites
         if ($localites = $request->get('localites')) {
-            if ($localites == "all") {
-            } else {
+            if ($localites == "all") { } else {
                 $conventions->whereHas('point_desservis', function ($query) use ($localites) {
                     $query->where('point_desservis.nom_fr', '=', $localites);
                 });
@@ -140,8 +135,7 @@ class ProjetController extends Controller
 
         //filter with session
         if ($session_id = $request->get('session')) {
-            if ($session_id == "all") {
-            } else {
+            if ($session_id == "all") { } else {
                 $conventions->where('mois', '=', $session_id);
             }
         }
@@ -149,15 +143,13 @@ class ProjetController extends Controller
 
         //filter with intervention
         if ($interventions_id = $request->get('interventions')) {
-            if ($interventions_id == "all") {
-            } else {
+            if ($interventions_id == "all") { } else {
                 $conventions->whereHas('interventions', function ($query) use ($interventions_id) {
                     $query->where('interventions.id', '=', $interventions_id);
                 });
             }
         }
         return $datatables->make(true);
-
     }
 
 
@@ -243,7 +235,7 @@ class ProjetController extends Controller
         //get the localites
         $localites = $request->input('localites');
         //get the last id of conventions
-        $actu_id_convention = Convention::max('id')+ 1;
+        $actu_id_convention = Convention::max('id') + 1;
 
         //create convention
         $convention = new Convention();
@@ -314,10 +306,11 @@ class ProjetController extends Controller
 
                     array_push($piece_file_names, $fileNameToStore);
                     // Upload Image
-                    $path = $file->storeAs('local/uploaded_files/conventions/'.$actu_id_convention, $fileNameToStore);
+                    $path = $file->storeAs('public/uploaded_files/conventions/' . $actu_id_convention, $fileNameToStore);
                 }
-
             }
+
+
 
             for ($i = 0; $i < $items_number; $i++) {
                 $piece = new Piece;
@@ -327,14 +320,23 @@ class ProjetController extends Controller
                 $piece->save();
                 //array_push($array_combination_piece, $piece);
             }
+
+
+
+            /* foreach ($array_combination_piece as $p) {
+                 $piec = new Piece;
+                 $piec->type = $p->type;
+                 $piec->nom = $p->nom;
+                 $piec->path = $p->path;
+
+
+             }*/
         }
 
 
         //save data in porteur de demande and add it as partenaire_type *****
         $partenaire_type = new PartenaireType;
         $moa_from_porteur = new Moa;
-
-
 
         //redirecting with success message
         return redirect('/projet')->with('success', 'Convention créee avec succès');
@@ -358,9 +360,7 @@ class ProjetController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Projet $convention)
-    {
-
-    }
+    { }
 
     public function edit_projet(Convention $convention)
     {
@@ -371,7 +371,7 @@ class ProjetController extends Controller
         $programmes = Programme::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $partenaires_types = PartenaireType::all();
         $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
-        $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis',  'interventions', 'piece','programme','moas'])->find($convention->id);
+        $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis',  'interventions', 'piece', 'programme', 'moas'])->find($convention->id);
         //return $convention;
 
         return view('projets.edit.edit_projet')->with([
@@ -393,9 +393,65 @@ class ProjetController extends Controller
      * @param  \App\Projet  $projet
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Convention $projet)
+    public function update(Request $request, Convention $convention)
+    { }
+
+
+    public function update_projet(Request $request, Convention $convention)
     {
-        //
+        //$request->validate($request, ['num_ordre' => 'required']);
+        $convention_to_update = Convention::find($convention->id);
+        $convention_to_update->moa_id = $request->moa;
+        $convention_to_update->programme_id = $request->programme;
+        $convention_to_update->objet_fr = $request->objet_fr;
+        $convention_to_update->objet_ar = $request->objet_ar;
+        $convention_to_update->observation = $request->observation;
+        //return  $request->porteurporteur_projet;
+        $convention_to_update->save();
+        //update interventions
+        $intervention_ids = Input::get('interventions');
+        $convention->interventions()->sync($intervention_ids);
+        //update communes
+        $communes_ids = Input::get('communes');
+        $convention->communes()->sync($communes_ids);
+
+        //update pistes
+        Piste::where('id', $request->id_pist)
+            ->update(['longueur' => $request->longueur]);
+
+        //update localites
+        $localites_ids = Input::get('localites');
+        $convention->point_desservis()->sync($localites_ids);
+
+
+        //gallery
+        $actu_id_convention = $convention->id;
+        $gallery = new Gallery();
+        if (Input::has('imagesToUpload')) {
+            $files = $request->file('imagesToUpload');
+
+            //files uploaded get path
+            if ($request->hasFile('imagesToUpload')) {
+                foreach ($files as $file) {
+                    // Get filename with the extension
+                    $filenameWithExt = $file->getClientOriginalName();
+                    // Get just filename
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    // Get just ext
+                    $extension = $file->getClientOriginalExtension();
+                    // Filename to store
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+
+                    // Upload Image
+                    $path = $file->storeAs('public/uploaded_files/galleries/' . $actu_id_convention, $fileNameToStore);
+                    $gallery->convention_id = $actu_id_convention;
+                    $gallery->filename = $fileNameToStore;
+                    $gallery->save();
+                }
+            }
+        }
+
+        return redirect("/projet" . "/" . $convention->id . "/edit_projet")->with('success', 'Projet modifier avec succès');
     }
 
     /**

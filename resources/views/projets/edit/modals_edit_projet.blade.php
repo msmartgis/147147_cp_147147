@@ -102,7 +102,7 @@
 <!-- /.modal -->
 
 
-{{--Add Etat projet--}}}
+{{--Add Etat projet--}}
 <div class="modal fade" id="add_modal_etat">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

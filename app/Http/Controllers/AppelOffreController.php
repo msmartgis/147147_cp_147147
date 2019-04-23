@@ -184,7 +184,7 @@ class AppelOffreController extends Controller
 
                     array_push($piece_file_names, $fileNameToStore);
                     // Upload Image
-                    $path = $file->storeAs('local/uploaded_files/appel_offres/'.$actu_id, $fileNameToStore);
+                    $path = $file->storeAs('public/uploaded_files/appel_offres/'.$actu_id, $fileNameToStore);
                 }
             }
 

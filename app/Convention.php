@@ -85,4 +85,9 @@ class Convention extends Model
     {
         return $this->hasMany('App\Etat');
     }
+
+    public function galleries()
+    {
+        return $this->hasMany('App\Gallery');
+    }
 }

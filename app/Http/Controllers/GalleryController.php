@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Piece;
+use App\Gallery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
-use Validator;
-use response;
 
-use Image;
-
-class PieceController extends Controller
+class GalleryController extends Controller
 {
-    public function addPiece(Request $request)
+
+    public function addImage(Request $request)
     {
+
         $path_file = "";
-        // $this->validate($request, [
-        //     'piece_upload' => 'required|max:1999'
-        // ]);
+        $this->validate($request, [
+            'piece_upload' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
 
         // Handle File Upload
         if ($request->hasFile('piece_upload')) {
@@ -64,12 +63,19 @@ class PieceController extends Controller
 
         $piece->save();
         return response()->json($piece);
+
     }
 
-    public function deletePiece(Request $req)
+    // delete
+    public function deleteImage(Request $request)
     {
-        $piece = Piece::find($req->piece_id)->delete();
-         //redirecting with success message
+        $path = $request->path;
+        $convention_id = $request->id_convention;
+        unlink(storage_path("app/public/uploaded_files/galleries/projets_partenaire/thumbnail/".$convention_id.'/'.$path));
+        unlink(storage_path("app/public/uploaded_files/galleries/projets_partenaire/".$convention_id.'/'.$path));
+        $gallery_img = Gallery::where('filename','=',$request->path)->delete();
+
+        //redirecting with success message
         return response()->json();
     }
     /**
@@ -106,10 +112,10 @@ class PieceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Piece  $piece
+     * @param  \App\Gallery  $gallery
      * @return \Illuminate\Http\Response
      */
-    public function show(Piece $piece)
+    public function show(Gallery $gallery)
     {
         //
     }
@@ -117,10 +123,10 @@ class PieceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Piece  $piece
+     * @param  \App\Gallery  $gallery
      * @return \Illuminate\Http\Response
      */
-    public function edit(Piece $piece)
+    public function edit(Gallery $gallery)
     {
         //
     }
@@ -129,10 +135,10 @@ class PieceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Piece  $piece
+     * @param  \App\Gallery  $gallery
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Piece $piece)
+    public function update(Request $request, Gallery $gallery)
     {
         //
     }
@@ -140,13 +146,11 @@ class PieceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Piece  $piece
+     * @param  \App\Gallery  $gallery
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Piece $piece)
+    public function destroy(Gallery $gallery)
     {
-        Piece::find($piece)->delete();
-         //redirecting with success message
-        return "OK";
+        //
     }
 }

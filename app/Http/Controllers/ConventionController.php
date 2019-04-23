@@ -743,7 +743,7 @@ class ConventionController extends Controller
 
                     array_push($piece_file_names, $fileNameToStore);
                     // Upload Image
-                    $path = $file->storeAs('local/uploaded_files/conventions/'.$actu_id_convention, $fileNameToStore);
+                    $path = $file->storeAs('public/uploaded_files/conventions/'.$actu_id_convention, $fileNameToStore);
                 }
 
             }
@@ -884,6 +884,7 @@ class ConventionController extends Controller
         //update localites
         $localites_ids = Input::get('localites');
         $convention->point_desservis()->sync($localites_ids);
+
         return redirect("/convention" . "/" . $convention->id . "/edit")->with('success', 'Convention modifier avec succès');
     }
 

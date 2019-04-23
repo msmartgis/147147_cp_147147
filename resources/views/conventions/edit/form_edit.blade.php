@@ -319,8 +319,6 @@
                     </div>
 
 
-
-
                     <div class="form-group">
                         {{Form::label('','Montant global DH:')}}
                         {{Form::text('montant_global',$convention->montant_global,['class'=>'form-control'])}}

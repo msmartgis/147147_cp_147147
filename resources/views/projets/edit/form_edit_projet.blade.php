@@ -1,5 +1,5 @@
 
-{!! Form::model($convention, ['route' => ['projet.update', $convention->id],'method' => 'PUT']) !!}
+{!! Form::model($convention, ['route' => ['projet.update_projet', $convention->id],'method' => 'PUT','enctype' => 'multipart/form-data']) !!}
 @include('projets.edit.tabs_projet')
 <div class="row">
     <div class="col-lg-10">
@@ -321,28 +321,37 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <h5>GALERIES</h5>
-                                        <hr>
-                                        <div class="container" style="margin-top: 8px">
-                                            <div class="main-img">
-                                                <img src="https://preview.ibb.co/gxVppG/img1.jpg" id="current">
-                                            </div>
 
-                                            <div class="imgs">
-                                                <img src="https://preview.ibb.co/gxVppG/img1.jpg">
-                                                <img src="https://preview.ibb.co/iZ3Lww/img2.jpg">
-                                                <img src="https://preview.ibb.co/iQsPOb/img3.jpg">
-                                                <img src="https://preview.ibb.co/gFFdib/img4.jpg">
-                                                <img src="https://preview.ibb.co/hS5ppG/img5.jpg">
-                                                <img src="https://preview.ibb.co/goKtGw/img6.jpg">
-                                                <img src="https://preview.ibb.co/bSWjOb/img7.jpg">
-                                                <img src="https://preview.ibb.co/i2o9pG/img8.jpg">
+                                    <h5>GALERIES</h5>
+                                    <hr>
+                                    <div class="row">
+                                        <br>
+                                        <br>
+                                        @if(count($convention->galleries) != null)
+                                            <div class="container" style="margin-top: 8px">
+                                                <div class="main-img">
+                                                    <img src="{{ url('storage/uploaded_files/galleries/projets_partenaire/'.$convention->id.'/'.$convention->galleries[0]['filename']) }}" id="current" data-convention = "{{$convention->id}}" data-filename ="{{$convention->galleries[0]['filename']}}">
+                                                    <a href="#" class="main-img-download" style="margin-left: 8px"><img src="{{asset('images/svg/download.svg')}}" style="width:50px;height:50px;"></a>
+                                                    <a href="#" class="main-img-delete" style="margin-left: 8px"><img src="{{asset('images/svg/delete.svg')}}" style="width:50px;height:50px;"></a>
+                                                </div>
+                                                <div class="imgs" style="margin-top: 8px;">
+                                                    @foreach($convention->galleries as $image)
+                                                        <img class="m-img" data-id="{{$convention->id}}" src="{{ url('storage/uploaded_files/galleries/projets_partenaire/thumbnail/'.$convention->id.'/'.$image->filename) }}">
+                                                    @endforeach
+                                                </div>
                                             </div>
-                                        </div>
+                                        @else
+                                            <p style="padding : 8px">Aucune image Actuellement</p>
+                                        @endif
                                     </div>
 
-
+                                    <br>
+                                    <div class="row" style="margin-top: 8px">
+                                        <div class="col-lg-2">
+                                            <label for="">Ajouter Images</label>
+                                        </div>
+                                        <input name="imagesToUpload[]" accept="image/*" id="imagesToUpload" type="file" multiple="" />
+                                    </div>
                                 </div>
                             </div>
 
@@ -350,14 +359,11 @@
                             {{--tab observation et remarques--}}
                             <div class="tab-pane" id="observation_remarques_tab" role="tabpanel">
                                 <div class="pad">
-
                                     <div class="col-12" style="margin-top : 8px">
                                         <div class="form-group">
-
                                             {{Form::textarea('observation', $convention->observation, ['id' => 'editor1', 'class' => 'form-control', 'placeholder' => 'Body Text'])}}
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
 
@@ -377,7 +383,7 @@
 
 
                     <div class="form-group">
-                        {{Form::label('','Demande N°:')}}
+                        {{Form::label('','N°:')}}
                         {{Form::text('num_ordre',$convention->num_ordre,['class'=>'form-control','disabled'])}}
                     </div>
 
@@ -404,7 +410,7 @@
                     <br>
                     <br>
 
-                    {{Form::submit('Modifier',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
+                    {{Form::submit('Modifier/Telecharger image',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
                     {!! Form::close() !!}
 
 
