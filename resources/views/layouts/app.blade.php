@@ -116,15 +116,15 @@
                     <!-- User Account -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{asset('images/avatar.png')}}" class="user-image rounded-circle" alt="User Image">
+                            <img src="{{asset('images/svg/manager.svg')}}" class="user-image rounded-circle" style="border: #fff solid 1.5px;" alt="User Image">
                         </a>
                         <ul class="dropdown-menu scale-up">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="{{asset('images/avatar.png')}}" class="float-left rounded-circle" alt="User Image">
+                                <img src="{{asset('images/svg/manager.svg')}}" class="float-left rounded-circle" alt="User Image" style="width : 50px;height : 50px">
 
                                 <p>
-                                    Juliya Brus
+                                    {{ Auth::user()->username }}
                                     <small class="mb-5">jb@gmail.com</small>
                                     <a href="#" class="btn btn-danger btn-sm btn-rounded">View Profile</a>
                                 </p>

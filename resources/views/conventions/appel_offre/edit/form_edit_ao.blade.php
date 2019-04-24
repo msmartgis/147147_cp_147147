@@ -149,28 +149,31 @@
                                             ?>
 
                                         @endforeach
-                                        <h5>PROJET {{$prj_number}} : </h5>
-                                        <hr>
-                                        <div class="row" style="margin-top:8px">
-                                            <div class="col-lg-1 col-md-1">
-                                                <label style="margin-top: 8px;font-size: 11px;">
-                                                    Liaison routière :
-                                                </label>
-                                            </div>
-                                            <div class="col-lg-11 col-md-11">
-                                                <div class="form-group">
-                                                    {{Form::select('liaison_routiere', $pointdesservis,$point_desservis_ids,
-                                                    [
-                                                    'data-placeholder' => 'Selectionner commune(s)',
-                                                    'class'=>'form-control select2',
-                                                    'multiple'=>'multiple',
-                                                    'name'=>'liaison_routiere[]',
-                                                    'disabled' => true
-                                                    ]
-                                                    )}}
+                                            <br>
+
+
+                                            <h5 style="color : #e7430f !important;">PROJET {{$prj_number}} : </h5>
+                                            <hr style="background-color : #e7430f !important;">
+                                            <div class="row" style="margin-top:18px">
+                                                <div class="col-lg-1 col-md-1">
+                                                    <label style="margin-top: 8px;">
+                                                        L.Routière :
+                                                    </label>
+                                                </div>
+                                                <div class="col-lg-11 col-md-11">
+                                                    <div class="form-group">
+                                                        {{Form::select('liaison_routiere', $pointdesservis,$point_desservis_ids,
+                                                        [
+                                                        'data-placeholder' => 'Selectionner commune(s)',
+                                                        'class'=>'form-control select2',
+                                                        'multiple'=>'multiple',
+                                                        'name'=>'liaison_routiere[]',
+                                                        'disabled' => true
+                                                        ]
+                                                        )}}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
                                             <div class="row" style="margin-top:8px">
                                                 <div class="col-lg-1">
@@ -193,7 +196,6 @@
                                                 </div>
                                             </div>
 
-
                                             <div class="row" style="margin-top:8px">
                                                 <div class="col-lg-1">
                                                     <label for="">
@@ -202,7 +204,7 @@
                                                 </div>
                                                 <div class="col-lg-2">
                                                     <div class="form-group">
-                                                        {{Form::text('',$cv->montant_global,['class'=>'form-control','readonly'])}}
+                                                        {{Form::text('',$cv->montant_global,['class'=>'form-control','readonly','style'=>'border : 0 !important'])}}
                                                     </div>
                                                 </div>
 
@@ -215,7 +217,7 @@
                                                     <div class="form-group">
                                                         @foreach($cv->partenaires as $part)
                                                             @if($part->id  == 1)
-                                                                {{Form::text('',$part->pivot->montant,['class'=>'form-control','readonly'])}}
+                                                                {{Form::text('',$part->pivot->montant,['class'=>'form-control','readonly','style'=>'border : 0 !important'])}}
                                                             @endif
                                                         @endforeach
                                                     </div>
@@ -232,38 +234,39 @@
                                                 @endforeach
                                                 <div class="col-lg-2">
                                                     <div class="form-group">
-                                                            {{Form::text('',$montant_verse,['class'=>'form-control','readonly'])}}
+                                                        {{Form::text('',$montant_verse,['class'=>'form-control','readonly','style'=>'border : 0 !important'])}}
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-1">
                                                     <label for="">
-                                                       Etat(%):
+                                                        Etat(%):
                                                     </label>
                                                 </div>
                                                 <?php $etat = 0 ?>
                                                 <div class="col-lg-2">
                                                     <div class="form-group">
 
-                                                           <?php $etat =  ($montant_verse/$cv->montant_global)*100 ?>
+                                                        <?php $etat =  ($montant_verse/$cv->montant_global)*100 ?>
 
-                                                        {{Form::text('',number_format($etat),['class'=>'form-control','readonly'])}}
+                                                        {{Form::text('',number_format($etat),['class'=>'form-control','readonly','style'=>'border : 0 !important'])}}
                                                     </div>
                                                 </div>
 
                                             </div>
 
 
-                                                <button class="btn btn-secondary-table-table pull-right" style="margin-top: 12px;margin-bottom: 18px;text-decoration: underline !important;">
-                                                    <i class="fa fa-mail-forward"></i>
-                                                    <a href="/convention/{{$cv->id}}/edit">
-                                                        Basculer vers les details
-                                                    </a>
-                                                </button>
+                                            <br>
+                                            <hr>
+                                            <button class="btn btn-secondary-table-table pull-right" style="margin-top: 12px;margin-bottom: 18px;text-decoration: underline !important;">
+                                                <i class="fa fa-mail-forward"></i>
+                                                <a href="/convention/{{$cv->id}}/edit">
+                                                    Basculer vers les details
+                                                </a>
+                                            </button>
 
                                         <?php $prj_number++ ?>
                                     @endforeach
-
 
                                 </div>
                             </div>

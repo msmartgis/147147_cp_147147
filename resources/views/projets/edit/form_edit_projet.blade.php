@@ -235,8 +235,10 @@
                                                     <tr style="text-align: center;">
                                                         <th>Nom</th>
                                                         <th>Upload</th>
-                                                        <th></th>
-                                                        <th></th>
+                                                        @if(Auth::user()->organisation_id == $convention->organisation_id )
+                                                            <th></th>
+                                                            <th></th>
+                                                        @endif
                                                     </tr>
                                                     <tbody id="pieces_tbody">
                                                     @foreach ($convention->piece as $item)
@@ -248,17 +250,19 @@
                                                             <td style="text-align: center">
                                                                 {{$item->path}}
                                                             </td>
-                                                            <td style="text-align: center;">
-                                                                <a href="/files/download/conventions/{{$convention->id}}/{{$item->path}}">
-                                                                    <button type="button"  class="btn btn-secondary-table " >
-                                                                        <i class="fa fa-download"></i>
-                                                                        Télécharger</button>
-                                                                </a>
-                                                            </td>
-                                                            <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-piece" data-id="conventionPiece_{{$item->id}}"><i class="fa fa-close"></i>
-                                                                    Supprimer</button>
-                                                            </td>
+                                                            @if(Auth::user()->organisation_id == $convention->organisation_id )
+                                                                <td style="text-align: center;">
+                                                                    <a href="/files/download/conventions/{{$convention->id}}/{{$item->path}}">
+                                                                        <button type="button"  class="btn btn-secondary-table " >
+                                                                            <i class="fa fa-download"></i>
+                                                                            Télécharger</button>
+                                                                    </a>
+                                                                </td>
+                                                                <td style="text-align: center">
+                                                                    <button type="button" class="btn btn-danger-table delete-piece" data-id="conventionPiece_{{$item->id}}"><i class="fa fa-close"></i>
+                                                                        Supprimer</button>
+                                                                </td>
+                                                            @endif
                                                         </tr>
                                                     @endforeach
                                                     <tr>
@@ -266,10 +270,12 @@
                                                     </tr>
                                                     </tbody>
                                                 </table>
-                                                <div style="text-align: center">
-                                                    <a href="#" data-toggle="modal" data-target="#add_modal_piece"> <i class="fa fa-plus"></i>
-                                                        <b> Ajouter Pièce</b> </a>
-                                                </div>
+                                                @if(Auth::user()->organisation_id == $convention->organisation_id )
+                                                    <div style="text-align: center">
+                                                        <a href="#" data-toggle="modal" data-target="#add_modal_piece"> <i class="fa fa-plus"></i>
+                                                            <b> Ajouter Pièce</b> </a>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -285,7 +291,9 @@
                                                         <th>Nom partenaire</th>
                                                         <th>Montant(DH)</th>
                                                         <th>Pourcentage(%)</th>
-                                                        <th></th>
+                                                        @if(Auth::user()->organisation_id == $convention->organisation_id )
+                                                            <th></th>
+                                                        @endif
                                                     </tr>
                                                     <tbody id="partenaire_tbody">
                                                     @foreach ($convention->partenaires as $item)
@@ -300,10 +308,12 @@
                                                             <td style="text-align: center">
                                                                 {{number_format($item->pivot->montant/($convention->montant_global)*100,2)}}
                                                             </td>
-                                                            <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-partenaire" data-id="{{$convention->id}}_{{$item->id}}"><i class="fa fa-close"></i>
-                                                                    Supprimer</button>
-                                                            </td>
+                                                            @if(Auth::user()->organisation_id == $convention->organisation_id )
+                                                                <td style="text-align: center">
+                                                                    <button type="button" class="btn btn-danger-table delete-partenaire" data-id="{{$convention->id}}_{{$item->id}}"><i class="fa fa-close"></i>
+                                                                        Supprimer</button>
+                                                                </td>
+                                                            @endif
                                                         </tr>
                                                     @endforeach
                                                     <tr>
@@ -311,12 +321,14 @@
                                                     </tr>
                                                     </tbody>
                                                 </table>
-                                                <div style="text-align: center">
-                                                    <a href="#" data-toggle="modal" data-target="#m-add-partenaire-edit">
-                                                        <i class="fa fa-plus"></i>
-                                                        <b> Ajouter Partenaire</b>
-                                                    </a>
-                                                </div>
+                                                @if(Auth::user()->organisation_id == $convention->organisation_id )
+                                                    <div style="text-align: center">
+                                                        <a href="#" data-toggle="modal" data-target="#m-add-partenaire-edit">
+                                                            <i class="fa fa-plus"></i>
+                                                            <b> Ajouter Partenaire</b>
+                                                        </a>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -329,15 +341,35 @@
                                         <br>
                                         @if(count($convention->galleries) != null)
                                             <div class="container" style="margin-top: 8px">
-                                                <div class="main-img">
-                                                    <img src="{{ url('storage/uploaded_files/galleries/projets_partenaire/'.$convention->id.'/'.$convention->galleries[0]['filename']) }}" id="current" data-convention = "{{$convention->id}}" data-filename ="{{$convention->galleries[0]['filename']}}">
-                                                    <a href="#" class="main-img-download" style="margin-left: 8px"><img src="{{asset('images/svg/download.svg')}}" style="width:50px;height:50px;"></a>
-                                                    <a href="#" class="main-img-delete" style="margin-left: 8px"><img src="{{asset('images/svg/delete.svg')}}" style="width:50px;height:50px;"></a>
-                                                </div>
-                                                <div class="imgs" style="margin-top: 8px;">
-                                                    @foreach($convention->galleries as $image)
-                                                        <img class="m-img" data-id="{{$convention->id}}" src="{{ url('storage/uploaded_files/galleries/projets_partenaire/thumbnail/'.$convention->id.'/'.$image->filename) }}">
-                                                    @endforeach
+                                                <div class="row">
+                                                    <div class="col-lg-10">
+                                                        <div class="main-img" style="border: #b0acac solid 1px;width:100%">
+                                                            <img src="{{ url('storage/uploaded_files/galleries/projets_partenaire/'.$convention->id.'/'.$convention->galleries[0]['filename']) }}" id="current" data-convention = "{{$convention->id}}" data-filename ="{{$convention->galleries[0]['filename']}}">
+                                                            @if(Auth::user()->organisation_id == $convention->organisation_id )
+                                                                <a href="#" class="main-img-download" style="margin-left: 8px"><img src="{{asset('images/svg/download.svg')}}" style="width:50px;height:50px;"></a>
+                                                                <a href="#" class="main-img-delete" style="margin-left: 8px"><img src="{{asset('images/svg/delete.svg')}}" style="width:50px;height:50px;"></a>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2">
+                                                        <div class="imgs" style="margin-left: 8px;width : 100% !important;">
+                                                            <table>
+                                                                <tr>
+                                                                    <th></th>
+                                                                </tr>
+
+                                                            @foreach($convention->galleries as $image)
+                                                                <tr>
+                                                                    <td>
+                                                                        <img class="m-img" data-id="{{$convention->id}}" src="{{ url('storage/uploaded_files/galleries/projets_partenaire/thumbnail/'.$convention->id.'/'.$image->filename) }}" style="vertical-align: middle;width: 100px;height: 100px">
+                                                                    </td>
+                                                                </tr>
+
+                                                            @endforeach
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         @else
@@ -387,9 +419,6 @@
                         {{Form::text('num_ordre',$convention->num_ordre,['class'=>'form-control','disabled'])}}
                     </div>
 
-
-
-
                     <div class="form-group">
                         {{Form::label('','Montant global DH:')}}
                         {{Form::text('montant_global',$convention->montant_global,['class'=>'form-control'])}}
@@ -402,7 +431,7 @@
                     </div>
                     <br>
 
-                    @if(Auth::user()->organisation_id == 1)
+                    @if($convention->is_project  != 1)
                         <div class="form-group">
                             {{Form::label('','Date publication:')}}
                             {{Form::text('date_publication',$convention->appelOffres->date_publication,['class'=>'form-control','readonly'])}}
@@ -434,7 +463,6 @@
                         </div>
                     @endif
 
-
                     <br>
                     <br>
                     <br>
@@ -444,13 +472,14 @@
                     <br>
                     <br>
                     <br>
-
-                    {{Form::submit('Modifier/Telecharger image',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
+                    @if(Auth::user()->organisation_id == $convention->organisation_id )
+                        {{Form::submit('Modifier/Telecharger image',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
+                    @endif
                     {!! Form::close() !!}
 
-
-                    <button type="button" class="btn btn-warning col-12" id="supprimer_convention" data-id="{{$convention->id}}" style="margin-top: 8px !important">Supprimer</button>
-
+                    @if(Auth::user()->organisation_id == $convention->organisation_id )
+                        <button type="button" class="btn btn-warning col-12" id="supprimer_convention" data-id="{{$convention->id}}" style="margin-top: 8px !important">Supprimer</button>
+                    @endif
                     {!! Form::model($convention, ['route' => ['convention.fiche', $convention->id],'method' => 'PUT']) !!}
                     {{Form::submit('Fiche de projet',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
                     {!! Form::close() !!}

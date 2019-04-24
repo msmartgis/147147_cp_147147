@@ -685,6 +685,7 @@ class ConventionController extends Controller
         $convention->session_id = $request->input('session');
         $convention->programme_id = $request->input('programme');
         $convention->moa_id = $request->input('moas');
+        $convention->organisation_id = Auth::user()->organisation_id;
         $convention->save();
 
         //partenaire *****

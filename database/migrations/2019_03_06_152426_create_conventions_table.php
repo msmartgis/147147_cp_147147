@@ -27,6 +27,7 @@ class CreateConventionsTable extends Migration
             $table->string('decision')->nullable();
             $table->tinyInteger('is_project')->nullable(); // to know if it is project version cp or version partner
             $table->string('annee')->nullable();
+            $table->bigInteger('organisation_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
 
@@ -45,6 +46,11 @@ class CreateConventionsTable extends Migration
             $table->foreign('appel_offre_id')
                 ->references('id')
                 ->on('appel_offres')
+                ->onDelete('cascade');
+
+            $table->foreign('organisation_id')
+                ->references('id')
+                ->on('organisations')
                 ->onDelete('cascade');
 
 

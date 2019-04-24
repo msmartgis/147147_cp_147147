@@ -248,6 +248,7 @@ class ProjetController extends Controller
         $convention->moa_id = $request->input('moas');
         $convention->is_project = 1;
         $convention->annee = $request->annee;
+        $convention->organisation_id = Auth::user()->organisation_id;
         $convention->save();
 
         //partenaire *****

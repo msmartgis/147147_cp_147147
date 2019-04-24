@@ -106,11 +106,7 @@
             width: 100%;
         }
 
-        .imgs {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-gap: 5px;
-        }
+
 
         .imgs img {
             cursor: pointer;

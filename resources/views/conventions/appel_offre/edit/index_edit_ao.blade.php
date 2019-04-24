@@ -77,6 +77,12 @@
             background-color: #fff !important;
         }
 
+        .select2-container--default .select2-selection--multiple
+        {
+            border: 0;
+        }
+
+
     </style>
 @endsection
 
