@@ -18,7 +18,6 @@ Route::group(
         ['middleware' => 'auth'],
         function () {
                 Route::resources([
-                        'convention' => 'ConventionController',
                         'projet' => 'ProjetController',
                         'pointDesservi' => 'PointDesserviController',
                         'pDesserviCateg' => 'PointDesserviCategorieController',
@@ -26,8 +25,6 @@ Route::group(
                         'demande' => 'DemandesController',
                         'piece' => 'PieceController',
                         'cartographie' => 'CartographieController',
-                        'suivi_versement' => 'SuiviVersementController',
-                        'appelOffre' => 'AppelOffreController'
                 ]);
 
                 Route::get('/demande/create', 'DemandesController@create')->name('createDemande');
@@ -35,10 +32,7 @@ Route::group(
 
                 Route::get('/projet', 'ProjetController@index')->name('indexProjet');
 
-                Route::get('/convention', 'ConventionController@index')->name('indexConvention');
-                Route::get('/suiviVersement', 'SuiviVersementController@index')->name('indexSuiviVersement');
 
-                Route::get('/appelOffre', 'AppelOffreController@index')->name('indexAppelOffre');
 
                 //demandes
                 Route::get('/demandes/getDemandeData', 'DemandesController@getDemandeData');
@@ -48,24 +42,6 @@ Route::group(
                 Route::get('/demandes/tab_is_affecter', 'DemandesController@getDemandesAffectees')->name('get.demandes.affectees');
                 Route::get('/demandes/tab_programmee', 'DemandesController@getDemandesProgrammee')->name('get.demandes.programmee');
                 Route::get('/demandes/tab_realisee', 'DemandesController@getDemandesRealisee');
-
-
-                //conventions
-                Route::get('/conventions/show', 'ConventionController@getConventions');
-                Route::get('/convention/create', 'ConventionController@create')->name('createConvention');
-
-                //appel offre
-                Route::get('/conventions/showCoventionsAppelOffre', 'ConventionController@getConventionsAppelOffre')->name('appelOffre.showCoventions');
-                Route::get('/conventions/showAppelOffre', 'ConventionController@getAppelOffre')->name('appelOffre.show');
-                Route::post('/appelOffre/changeState', 'AppelOffreController@changeState')->name('apppelOffre.changeState');
-                //suivi des versment
-                Route::get('/conventions/showVersement', 'ConventionController@getVersements')->name('versement.show');
-                Route::get('/convention/{convention}/editVersement', 'ConventionController@editVersement');
-                Route::get('/convention/{id}/fiche', 'ConventionController@fiche')->name('convention.fiche');
-
-                Route::post('/versement/getVersementData', 'SuiviVersementController@getVersementData')->name('versement.getData');
-                Route::post('/versement/addVersement', 'SuiviVersementController@addVersement')->name('versement.add');
-                Route::get('/versement/downloadFile', 'SuiviVersementController@downloadFile')->name('versement.download');
 
 
                 //SPREADSHEET
@@ -83,9 +59,7 @@ Route::group(
                 Route::post('/demandes/restaurer_from_affectation', 'DemandesController@restaurerDemandeFromAffectation')->name('restaurer_demande_from_affectation');
 
 
-                //Routes for conventions
-                Route::get('/conventions', 'ConventionController@index');
-                Route::post('/conventions/conventionSpreadSheet', 'SpreadSheetController@conventionsSpreadSheet')->name('spreadSheetConvention');
+
 
 
                 //routes for projets
@@ -128,3 +102,44 @@ Route::group(
                 Route::post('/gallery/delete_image_gallery', 'GalleryController@deleteImage')->name('delete_gallery_image');
         }
 );
+
+
+Route::group(
+    ['middleware' => ['auth','cp']],
+    function(){
+        Route::resources([
+            'convention' => 'ConventionController',
+
+            'suivi_versement' => 'SuiviVersementController',
+            'appelOffre' => 'AppelOffreController'
+        ]);
+
+        //conventions
+        Route::get('/conventions/show', 'ConventionController@getConventions');
+        Route::get('/convention/create', 'ConventionController@create')->name('createConvention');
+
+        //appel offre
+        Route::get('/conventions/showCoventionsAppelOffre', 'ConventionController@getConventionsAppelOffre')->name('appelOffre.showCoventions');
+        Route::get('/conventions/showAppelOffre', 'ConventionController@getAppelOffre')->name('appelOffre.show');
+        Route::post('/appelOffre/changeState', 'AppelOffreController@changeState')->name('apppelOffre.changeState');
+        //suivi des versment
+        Route::get('/conventions/showVersement', 'ConventionController@getVersements')->name('versement.show');
+        Route::get('/convention/{convention}/editVersement', 'ConventionController@editVersement');
+        Route::get('/convention/{id}/fiche', 'ConventionController@fiche')->name('convention.fiche');
+
+        Route::post('/versement/getVersementData', 'SuiviVersementController@getVersementData')->name('versement.getData');
+        Route::post('/versement/addVersement', 'SuiviVersementController@addVersement')->name('versement.add');
+        Route::get('/versement/downloadFile', 'SuiviVersementController@downloadFile')->name('versement.download');
+
+        //Routes for conventions
+        Route::get('/conventions', 'ConventionController@index');
+        Route::post('/conventions/conventionSpreadSheet', 'SpreadSheetController@conventionsSpreadSheet')->name('spreadSheetConvention');
+
+        Route::get('/convention', 'ConventionController@index')->name('indexConvention');
+        Route::get('/suiviVersement', 'SuiviVersementController@index')->name('indexSuiviVersement');
+
+        Route::get('/appelOffre', 'AppelOffreController@index')->name('indexAppelOffre');
+    }
+);
+
+
