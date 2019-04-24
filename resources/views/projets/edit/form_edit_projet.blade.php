@@ -350,7 +350,7 @@
                                         <div class="col-lg-2">
                                             <label for="">Ajouter Images</label>
                                         </div>
-                                        <input name="imagesToUpload[]" accept="image/*" id="imagesToUpload" type="file" multiple="" />
+                                       <input type="file"  name="imagesToUpload[]" multiple="multiple" accept="image/*" id="imagesToUpload"/>
                                     </div>
                                 </div>
                             </div>
@@ -400,6 +400,41 @@
                         {{Form::label('','Longueur:')}}
                         {{Form::text('longueur',$convention->piste->longueur,['class'=>'form-control'])}}
                     </div>
+                    <br>
+
+                    @if(Auth::user()->organisation_id == 1)
+                        <div class="form-group">
+                            {{Form::label('','Date publication:')}}
+                            {{Form::text('date_publication',$convention->appelOffres->date_publication,['class'=>'form-control','readonly'])}}
+                        </div>
+
+                        <div class="form-group">
+                            {{Form::label('','Date ouverture des plis:')}}
+                            {{Form::text('date_ouverture_plis',$convention->appelOffres->date_ouverture_plis,['class'=>'form-control','readonly'])}}
+                        </div>
+
+                        <div class="form-group">
+                            {{Form::label('','Caution provisoire(DH):')}}
+                            {{Form::text('caution_provisoir',number_format($convention->appelOffres->caution_provisoir),['class'=>'form-control','readonly'])}}
+                        </div>
+
+                        <div class="form-group">
+                            {{Form::label('','Durée d\'execution:')}}
+                            {{Form::text('duree_execution',$convention->appelOffres->duree_execution,['class'=>'form-control','readonly'])}}
+                        </div>
+
+                        <br>
+                        <div class="form-group">
+                            {{Form::label('','Adjiducataire:')}}
+                            {{Form::text('adjiducataire',$convention->appelOffres->adjiducataires->nom_fr,['class'=>'form-control','readonly'])}}
+                        </div>
+                        <div class="form-group">
+                            {{Form::label('','Montant adjiducation(DH):')}}
+                            {{Form::text('montant_adjiducation',number_format($convention->appelOffres->montant_adjiducation),['class'=>'form-control','readonly'])}}
+                        </div>
+                    @endif
+
+
                     <br>
                     <br>
                     <br>

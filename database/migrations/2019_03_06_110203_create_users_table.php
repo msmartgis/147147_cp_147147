@@ -23,9 +23,16 @@ class CreateUsersTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('role')->nullable();
-            $table->integer('organisme_id')->unsigned()->nullable();
+            $table->integer('organisation_id')->unsigned();
             $table->string('responsablite')->nullable();
             $table->timestamps();
+
+            $table->index(['id', 'created_at','num_ordre']);
+
+            $table->foreign('organisation_id')
+                ->references('id')
+                ->on('organisations')
+                ->onDelete('cascade');
         });
     }
 

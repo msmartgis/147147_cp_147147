@@ -21,7 +21,10 @@ use App\Session;
 use App\SuiviVersement;
 use Illuminate\Http\Request;
 use App\PointDesservi;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+
+use Image;
 
 use DataTables;
 use DB;
@@ -80,11 +83,7 @@ class ProjetController extends Controller
                 })
 
                 ->addColumn('num_ordre', function ($conventions) {
-                    if ($conventions->is_project == 1) {
                         return '<a href="projet/' . $conventions->id . '/edit_projet">' . $conventions->num_ordre . '</a>';
-                    } else {
-                        return '<a href="convention/' . $conventions->id . '/edit">' . $conventions->num_ordre . '</a>';
-                    }
                 })
                 ->rawColumns(['checkbox', 'num_ordre']);
         }
@@ -359,8 +358,6 @@ class ProjetController extends Controller
      * @param  \App\Projet  $projet
      * @return \Illuminate\Http\Response
      */
-    public function edit(Projet $convention)
-    { }
 
     public function edit_projet(Convention $convention)
     {
@@ -371,7 +368,7 @@ class ProjetController extends Controller
         $programmes = Programme::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $partenaires_types = PartenaireType::all();
         $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
-        $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis',  'interventions', 'piece', 'programme', 'moas'])->find($convention->id);
+        $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis',  'interventions', 'piece', 'programme', 'moas','appelOffres'])->find($convention->id);
         //return $convention;
 
         return view('projets.edit.edit_projet')->with([
@@ -393,8 +390,6 @@ class ProjetController extends Controller
      * @param  \App\Projet  $projet
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Convention $convention)
-    { }
 
 
     public function update_projet(Request $request, Convention $convention)
@@ -429,7 +424,6 @@ class ProjetController extends Controller
         $gallery = new Gallery();
         if (Input::has('imagesToUpload')) {
             $files = $request->file('imagesToUpload');
-
             //files uploaded get path
             if ($request->hasFile('imagesToUpload')) {
                 foreach ($files as $file) {
@@ -443,14 +437,23 @@ class ProjetController extends Controller
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;
 
                     // Upload Image
-                    $path = $file->storeAs('public/uploaded_files/galleries/' . $actu_id_convention, $fileNameToStore);
+                    $path = $file->storeAs('public/uploaded_files/galleries/projets_partenaire/' . $actu_id_convention, $fileNameToStore);
+                    $path_t = $file->storeAs('public/uploaded_files/galleries/projets_partenaire/thumbnail/' . $actu_id_convention, $fileNameToStore);
+
+
+                    //Resize image here
+                    $thumbnailpath = storage_path("app/public/uploaded_files/galleries/projets_partenaire/thumbnail/".$actu_id_convention.'/'.$fileNameToStore);
+                    $img = Image::make($thumbnailpath)->resize(300, 200, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                    $img->save($thumbnailpath);
+
                     $gallery->convention_id = $actu_id_convention;
                     $gallery->filename = $fileNameToStore;
                     $gallery->save();
                 }
             }
         }
-
         return redirect("/projet" . "/" . $convention->id . "/edit_projet")->with('success', 'Projet modifier avec succès');
     }
 
