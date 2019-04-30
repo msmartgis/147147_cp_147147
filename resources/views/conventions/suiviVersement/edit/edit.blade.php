@@ -169,9 +169,6 @@
 <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
 <script src="{{asset('js/conventions/create.js')}}"></script>
-<script src="{{asset('js/functions.js')}}"></script>
-
-
 
 <script>
     $(document).ready(function () {

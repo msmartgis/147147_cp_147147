@@ -314,7 +314,7 @@
 
 
                     <div class="form-group">
-                        {{Form::label('','Demande N°:')}}
+                        {{Form::label('','N°:')}}
                         {{Form::text('num_ordre',$convention->num_ordre,['class'=>'form-control','disabled'])}}
                     </div>
 

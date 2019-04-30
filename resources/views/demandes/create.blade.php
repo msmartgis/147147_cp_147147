@@ -70,7 +70,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="example_input_full_name">Montant:</label>
-                            <input type="text" class="form-control" id="montant_partnenaire">
+                            <input type="text" class="form-control currency-input" id="montant_partnenaire">
                         </div>
                     </div>
                 </div>
@@ -140,6 +140,7 @@
 <script src="{{asset('js/demandes/demande.js')}}"></script>
 <script src="{{asset('js/functions/functions.js')}}"></script>
 
+
 <script>
     ! function (window, document, $) {
         "use strict";
@@ -153,26 +154,6 @@
 
 </script>
 <script>
-
-//add point
-// let result= [];
-// function load_point_desservi(type) {
-    
-//         $.ajax({
-//             url: '/loadPoint',
-//             type: 'POST',
-//             data: {
-//                 _token: '{{ csrf_token() }}',
-//                 type: type
-//             },
-
-//             dataType: 'JSON',
-//             success: function (data) {                
-//                result.push(data);
-//             }
-//         });
-//         return result;
-//     }
 $(document).ready(function () {
 
     var switchMarkup;
@@ -257,6 +238,7 @@ $(document).ready(function () {
     $(".delete-row").click(function () {
         removeRowFromTable('table_body_partner');
     });
+
 });
 </script>
 

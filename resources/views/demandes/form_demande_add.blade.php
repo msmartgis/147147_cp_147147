@@ -48,8 +48,8 @@
                         {{Form::select('etat_projet',
                          [
                              'sans' => 'sans',
-                              'realise' => 'Réalisée dans d\'autre programme',
-                              'programme' =>'Programmée dans d\'autre programme'
+                              'realisee' => 'Réalisée dans d\'autre programme',
+                              'programmee' =>'Programmée dans d\'autre programme'
                         ], 
                         'sans',
                          [
@@ -63,7 +63,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="form-group">
                         {{Form::label('','Longueur :')}}
-                        {{Form::text('longueur','',['class'=>'form-control'])}}
+                        {{Form::text('longueur','',['class'=>'form-control currency-input'])}}
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -308,10 +308,8 @@
                         'montant_global',
                         '',
                         [
-                        'class'=>'form-control',
-                        'id'=>'montant_g',
-                        'data-validation-containsnumber-regex'=>'(\d)+',
-                        'data-validation-containsnumber-message'=>'Veuillez saisir des numeros seulement'
+                        'class'=>'form-control currency-input' ,
+                        'id'=>'montant_g'
                         ]
                         )}}
                     </div>

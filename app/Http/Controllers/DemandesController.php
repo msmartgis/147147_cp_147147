@@ -252,11 +252,7 @@ class DemandesController extends BaseController
                 ->addColumn('date_reception', function ($demandes) {
                     return $demandes->date_reception->format('d-m-Y');
                 })
-                ->rawColumns(['checkbox','num_ordre'])
-
-                ->setRowClass(function ($demandes) {
-                    return 'center-data';
-                });
+                ->rawColumns(['checkbox','num_ordre']);
 
 
         }
@@ -392,10 +388,7 @@ class DemandesController extends BaseController
                     return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
                 })
                 ->rawColumns(['checkbox','num_ordre'])
-                ->editColumn('id', '{{$id}}')
-                ->setRowClass(function ($demandes) {
-                    return 'center-data';
-                });
+                ->editColumn('id', '{{$id}}');
         }
 
         //filter with communes
@@ -522,10 +515,7 @@ class DemandesController extends BaseController
                     return $demandes->date_reception->format('d-m-Y');
                 })
                 ->rawColumns(['checkbox','num_ordre'])
-                ->editColumn('id', '{{$id}}')
-                ->setRowClass(function ($demandes) {
-                    return 'center-data';
-                });
+                ->editColumn('id', '{{$id}}');
         }
 
         //filter with communes
@@ -648,10 +638,7 @@ class DemandesController extends BaseController
                     return $demandes->date_reception->format('d-m-Y');
                 })
                 ->rawColumns(['checkbox'])
-                ->editColumn('id', '{{$id}}')
-                ->setRowClass(function ($demandes) {
-                    return 'center-data';
-                });
+                ->editColumn('id', '{{$id}}');
         }
 
         //filter with communes
@@ -725,7 +712,7 @@ class DemandesController extends BaseController
 
     public function getDemandesRealisee(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['decision','=','sans'],['etat','=','realisee'],['is_affecter','=',0]]);
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['etat','=','realisee'],['is_affecter','=',0]]);
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -771,10 +758,7 @@ class DemandesController extends BaseController
                     return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_programmee" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
                 })
                 ->rawColumns(['checkbox'])
-                ->editColumn('id', '{{$id}}')
-                ->setRowClass(function ($demandes) {
-                    return 'center-data';
-                });
+                ->editColumn('id', '{{$id}}');
         }
 
         //filter with communes
@@ -894,10 +878,7 @@ class DemandesController extends BaseController
                     return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_programmee" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
                 })
                 ->rawColumns(['checkbox'])
-                ->editColumn('id', '{{$id}}')
-                ->setRowClass(function ($demandes) {
-                    return 'center-data';
-                });
+                ->editColumn('id', '{{$id}}');
         }
 
         //filter with communes
@@ -1067,7 +1048,7 @@ class DemandesController extends BaseController
         $demande->date_reception = $date_formatted;
         $demande->objet_fr = $request->input('objet_fr');
         $demande->objet_ar = $request->input('objet_ar');
-        $demande->montant_global = $request->input('montant_global');
+        $demande->montant_global = str_replace(',','',$request->input('montant_global')) ;
         $demande->observation = $request->input('observation');
         $demande->etat = $request->input('etat');
         $demande->session_id = $request->input('session');
@@ -1081,7 +1062,7 @@ class DemandesController extends BaseController
             $partenaires_ids = (array)Input::get('partnenaire_type_ids');
             $montant_partenaire = (array)Input::get('montant');
             for ($i = 0; $i < count($partenaires_ids); $i++) {
-                $demande->partenaires()->attach($partenaires_ids[$i], ['montant' => $montant_partenaire[$i]]);
+                $demande->partenaires()->attach($partenaires_ids[$i], ['montant' => str_replace(',','',$montant_partenaire[$i])]);
             }
         }
 

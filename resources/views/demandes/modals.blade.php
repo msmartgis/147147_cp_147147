@@ -23,7 +23,6 @@
                                     @foreach ($moas as $moa)
                                     <option value="{{$moa->id}}">{{$moa->nom_fr}}</option>
                                     @endforeach
-
                                 </select>
                             </div>
                             <!-- /.form-group -->
@@ -36,7 +35,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Montant Global TTC:</label>
-                                <input type="text" class="form-control" name="montant_global" id="montant_g">
+                                <input type="text" class="form-control " name="montant_global" id="montant_g">
                             </div>
                         </div>
 
@@ -145,7 +144,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="example_input_full_name">Montant:</label>
-                                <input type="text" class="form-control" id="montant_partnenaire">
+                                <input type="text"  class="form-control currency-input" id="montant_partnenaire">
                             </div>
                         </div>
                     </div>

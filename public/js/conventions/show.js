@@ -29,63 +29,59 @@ $(document).ready(function () {
             }
 
         },
-        columnDefs: [{
-            width: 20,
-            targets: 1
-        },
-            {
-                width: 30,
-                targets: 2
-            },
-            {
-                width: 300,
-                targets: 3
-            }
+        columnDefs: [
         ],
         columns: [
             {
                 data: 'checkbox',
                 name: 'checkbox',
                 orderable: false,
-                searchable: false
+                searchable: false,
+                width : '1%'
             },
 
             {
                 data: 'num_ordre',
                 name: 'conventions.num_ordre',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '5%'
             },
             {
                 data: 'objet_fr',
                 name: 'conventions.objet_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '15%'
             },
             {
                 data: 'point_desservis',
                 name: 'point_desservis.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '15%'
             },
             {
                 data: 'communes',
                 name: 'communes.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '15%'
             },
 
             {
                 data: 'moas',
                 name: 'moas.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '10%'
             },
             {
                 data: 'interventions',
                 name: 'interventions.nom',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '15%'
             },
             {
                 data: 'partenaires',
@@ -97,19 +93,22 @@ $(document).ready(function () {
                 data: 'programme',
                 name: 'programme.nom_fr',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '5%'
             },
             {
                 data: 'montant_global',
                 name: 'montant_global',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '5%'
             },
             {
                 data: 'montantCP',
                 name: 'montantCP',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '5%'
             }
         ],
         initComplete: function () {

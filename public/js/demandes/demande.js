@@ -158,6 +158,8 @@ $(document).ready(function () {
         var partenair_type_text = $("#partenaire_type :selected").text();
         var partenair_type_id = $("#partenaire_type").val();
         var montant_partnenaire = $("#montant_partnenaire").val();
+        //console.log(montant_partnenaire);
+        var pourcent = (parseFloat(montant_partnenaire.replace(/,/g, '')) / parseFloat(montant_g.replace(/,/g, '')) ) * 100;
 
         var markup = '<tr>'+
             '<td style=\'text-align:center\'>'+
@@ -170,7 +172,7 @@ $(document).ready(function () {
             '</td>'+
             '<td style = \'text-align:center\'><input type="hidden" name="partnenaire_type_ids[]" value="' + partenair_type_id + '">' + partenair_type_text + '</td>'+
             '<td style=\'text-align:center\'><input type="hidden" name="montant[]" value="' + montant_partnenaire + '">' + montant_partnenaire + '</td>'+
-            '<td style=\'text-align:center\'><input type="hidden" name="pourcentage[]" value="' + (montant_partnenaire / montant_g) * 100 + '">' + (montant_partnenaire / montant_g) * 100 + '</td>'+
+            '<td style=\'text-align:center\'><input type="hidden" name="pourcentage[]" value="' + pourcent + '">' +  pourcent.toFixed(2) + '</td>'+
             '</tr>';
 
         $('#table_body_partner > tr:last').before(markup);
@@ -179,6 +181,4 @@ $(document).ready(function () {
         $("#m-add-partenaire").modal('toggle');
         item_partenaire++;
     });
-
-
 });

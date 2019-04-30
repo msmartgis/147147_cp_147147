@@ -146,80 +146,81 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <h5>SITUATION DU PROJET</h5>
-                                    <hr>
-                                    <div class="row" >
-                                        <div class="table-responsive">
-                                            <table class="table table-piece">
-                                                <tr style="text-align: center;">
-                                                    <th>Nom</th>
-                                                    <th>Upload</th>
-                                                    <th></th>
-                                                </tr>
-                                                <tbody id="etat_tbody">
-                                                @foreach ($convention->etats as $item)
-                                                    <tr>
-                                                        <td style="text-align: center">
-                                                            @switch($item->nom)
-                                                            @case ('programme')
-                                                            Programmé
-                                                            @break
-                                                            @case  ('en_cours_execution')
-                                                            En cours d'execution
-                                                            @break
-                                                            @case ('a.o_pulie')
-                                                            A.O Publi
-                                                            @break
-                                                            @case ('plis_ouvert')
-                                                            Plis ouvert
-                                                            @break
-                                                            @case ('a.o_attribue')
-                                                            A.O Attribué
-                                                            @break
-                                                            @case ('a.o_reporte')
-                                                            A.O Reporté
-                                                            @break
-                                                            @case ('a.o_annule')
-                                                            A.O Annule
-                                                            @break
-                                                            @case ('en_retard')
-                                                            En retard
-                                                            @break
-                                                            @case ('en_etat_arret')
-                                                            En état d'arrêt
-                                                            @break
-                                                            @case ('realise')
-                                                            Réalisé
-                                                            @break
-                                                            @default
-
-                                                            @endswitch
-
-                                                        </td>
-
-                                                        <td style="text-align: center">
-                                                            {{$item->date}}
-                                                        </td>
-
-                                                        <td style="text-align: center">
-                                                            <button type="button" class="btn btn-danger-table delete-etat" data-id="etat_{{$item->id}}"><i class="fa fa-close"></i>
-                                                                Supprimer</button>
-                                                        </td>
+                                    @if($convention->is_project != 0 )
+                                        <h5>SITUATION DU PROJET</h5>
+                                        <hr>
+                                        <div class="row" >
+                                            <div class="table-responsive">
+                                                <table class="table table-piece">
+                                                    <tr style="text-align: center;">
+                                                        <th>Nom</th>
+                                                        <th>Upload</th>
+                                                        <th></th>
                                                     </tr>
-                                                @endforeach
-                                                <tr>
+                                                    <tbody id="etat_tbody">
+                                                    @foreach ($convention->etats as $item)
+                                                        <tr>
+                                                            <td style="text-align: center">
+                                                                @switch($item->nom)
+                                                                @case ('programme')
+                                                                Programmé
+                                                                @break
+                                                                @case  ('en_cours_execution')
+                                                                En cours d'execution
+                                                                @break
+                                                                @case ('a.o_pulie')
+                                                                A.O Publi
+                                                                @break
+                                                                @case ('plis_ouvert')
+                                                                Plis ouvert
+                                                                @break
+                                                                @case ('a.o_attribue')
+                                                                A.O Attribué
+                                                                @break
+                                                                @case ('a.o_reporte')
+                                                                A.O Reporté
+                                                                @break
+                                                                @case ('a.o_annule')
+                                                                A.O Annule
+                                                                @break
+                                                                @case ('en_retard')
+                                                                En retard
+                                                                @break
+                                                                @case ('en_etat_arret')
+                                                                En état d'arrêt
+                                                                @break
+                                                                @case ('realise')
+                                                                Réalisé
+                                                                @break
+                                                                @default
 
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                            <div style="text-align: center">
-                                                <a href="#" data-toggle="modal" data-target="#add_modal_etat"> <i class="fa fa-plus"></i>
-                                                    <b> Ajouter Etat</b> </a>
+                                                                @endswitch
+
+                                                            </td>
+
+                                                            <td style="text-align: center">
+                                                                {{$item->date}}
+                                                            </td>
+
+                                                            <td style="text-align: center">
+                                                                <button type="button" class="btn btn-danger-table delete-etat" data-id="etat_{{$item->id}}"><i class="fa fa-close"></i>
+                                                                    Supprimer</button>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    <tr>
+
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div style="text-align: center">
+                                                    <a href="#" data-toggle="modal" data-target="#add_modal_etat"> <i class="fa fa-plus"></i>
+                                                        <b> Ajouter Etat</b> </a>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                    </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -280,6 +281,105 @@
                                         </div>
                                     </div>
 
+                                    @if(!empty($convention->appelOffres))
+                                        <div class="row">
+                                            <div class="col-12" style="margin-top : 8px">
+                                            <h5>DOSSIER DE CONSULTATION DES ENTREPRISES (DCE)</h5>
+                                            <hr style="color:#2d353c;margin-top:0px;margin-bottom: 4px">
+                                            <div class="table-responsive">
+                                                <table class="table table-piece">
+                                                    <tr style="text-align: center;">
+                                                        <th>Type</th>
+                                                        <th>Nom</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                    <tbody id="pieces_tbody_dce_projet">
+                                                    @foreach ($convention->appelOffres->dce as $item)
+                                                        <tr>
+                                                            <td style="text-align: center">
+                                                                {{strtoupper($item->document)}}
+                                                            </td>
+                                                            <td style="text-align: center">
+                                                                {{$item->file_name}}
+                                                            </td>
+
+                                                            <td style="text-align: center;">
+                                                                <a href="/files/download/appel_offres/{{$convention->appelOffres->id}}/{{$item->file_name}}">
+                                                                    <button type="button"  class="btn btn-secondary-table " >
+                                                                        <i class="fa fa-download"></i>
+                                                                        Télécharger</button>
+                                                                </a>
+                                                            </td>
+
+                                                            <td style="text-align: center">
+                                                                <button type="button" class="btn btn-danger-table delete-piece-projet" data-route="{!! route('dce.delete_piece')!!}" data-directory="appel_offres" data-file="{{$item->file_name}}" data-id="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                    Supprimer</button>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    <tr>
+
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div style="text-align: center">
+                                                    <a href="#" class="add-piece-projet" data-route="/pieces/add_piece_dce"> <i class="fa fa-plus"></i>
+                                                        <b> Ajouter Pièce</b> </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-12" style="margin-top : 8px">
+                                                <h5>DOSSIER DE L'ADJIDUCATAIRE</h5>
+                                                <hr style="color:#2d353c;margin-top:0px;margin-bottom: 4px">
+                                                <div class="table-responsive">
+                                                    <table class="table table-piece">
+                                                        <tr style="text-align: center;">
+                                                            <th>Type</th>
+                                                            <th>Nom</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                        <tbody id="pieces_tbody_adjiducataire_projet">
+                                                        @foreach ($convention->appelOffres->dossierAdjiducataire as $item)
+                                                            <tr>
+                                                                <td style="text-align: center">
+                                                                    {{strtoupper($item->document)}}
+                                                                </td>
+                                                                <td style="text-align: center">
+                                                                    {{$item->file_name}}
+                                                                </td>
+
+                                                                <td style="text-align: center;">
+                                                                    <a href="/files/download/appel_offres/{{$convention->appelOffres->id}}/{{$item->file_name}}">
+                                                                        <button type="button"  class="btn btn-secondary-table " >
+                                                                            <i class="fa fa-download"></i>
+                                                                            Télécharger</button>
+                                                                    </a>
+                                                                </td>
+
+                                                                <td style="text-align: center">
+                                                                    <button type="button" class="btn btn-danger-table delete-piece-projet" data-route="{!! route('dossier_adjiducataire.delete_piece')!!}" data-directory="appel_offres" data-file="{{$item->file_name}}" data-id="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                        Supprimer</button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                        <tr>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div style="text-align: center">
+                                                        <a href="#" class="add-piece-projet"  data-route="/pieces/add_piece_dossier_adjiducataire"> <i class="fa fa-plus"></i>
+                                                            <b> Ajouter Pièce</b> </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
 
                                     <div class="row">
                                         <div class="col-12" style="margin-top : 8px">
@@ -413,6 +513,16 @@
             <div class="box bg-transparent no-border no-shadow ">
                 <div class="box-body no-padding mailbox-nav ">
 
+                    @if(empty($convention->appelOffres))
+                        <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                            PROGRAMME
+                        </h5>
+                    @else
+                        <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                            APPEL D'OFFRE
+                        </h5>
+                    @endif
+
 
                     <div class="form-group">
                         {{Form::label('','N°:')}}
@@ -431,7 +541,7 @@
                     </div>
                     <br>
 
-                    @if($convention->is_project  != 1)
+                    @if(Auth::user()->organisation_id == $convention->organisation_id  && !empty($convention->appelOffres))
                         <div class="form-group">
                             {{Form::label('','Date publication:')}}
                             {{Form::text('date_publication',$convention->appelOffres->date_publication,['class'=>'form-control','readonly'])}}
@@ -453,15 +563,25 @@
                         </div>
 
                         <br>
+
                         <div class="form-group">
                             {{Form::label('','Adjiducataire:')}}
                             {{Form::text('adjiducataire',$convention->appelOffres->adjiducataires->nom_fr,['class'=>'form-control','readonly'])}}
                         </div>
+
                         <div class="form-group">
                             {{Form::label('','Montant adjiducation(DH):')}}
                             {{Form::text('montant_adjiducation',number_format($convention->appelOffres->montant_adjiducation),['class'=>'form-control','readonly'])}}
                         </div>
+
+                        <button class="btn btn-secondary-table-table pull-right" style="margin-top: 12px;margin-bottom: 18px;text-decoration: underline !important;">
+                            <i class="fa fa-mail-forward"></i>
+                            <a href="/appelOffre/{{$convention->appel_offre_id}}/edit">
+                                Basculer vers les details de l'appel d'offre
+                            </a>
+                        </button>
                     @endif
+
 
                     <br>
                     <br>
@@ -472,6 +592,7 @@
                     <br>
                     <br>
                     <br>
+
                     @if(Auth::user()->organisation_id == $convention->organisation_id )
                         {{Form::submit('Modifier/Telecharger image',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
                     @endif

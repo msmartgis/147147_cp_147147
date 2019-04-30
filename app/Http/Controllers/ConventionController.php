@@ -19,6 +19,7 @@ use App\Session;
 use App\SuiviVersement;
 use Illuminate\Http\Request;
 use App\PointDesservi;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
 use DataTables;
@@ -39,7 +40,7 @@ class ConventionController extends Controller
      */
     public function getConventions(Request $request)
     {
-        $conventions = Convention::with( 'communes', 'interventions', 'partenaires','point_desservis','programme','moas');
+        $conventions = Convention::with( 'communes', 'interventions', 'partenaires','point_desservis','programme','moas')->where('is_project','=','0');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($conventions)
                 ->addColumn('communes', function (Convention $convention) {
@@ -680,12 +681,13 @@ class ConventionController extends Controller
         $convention->num_ordre = $request->input('num_ordre');
         $convention->objet_fr = $request->input('objet_fr');
         $convention->objet_ar = $request->input('objet_ar');
-        $convention->montant_global = $request->input('montant_global');
+        $convention->montant_global = str_replace(',','',$request->input('montant_global'));
         $convention->observation = $request->input('observation');
         $convention->session_id = $request->input('session');
         $convention->programme_id = $request->input('programme');
         $convention->moa_id = $request->input('moas');
         $convention->organisation_id = Auth::user()->organisation_id;
+        $convention->is_project = 0;
         $convention->save();
 
         //partenaire *****
@@ -693,7 +695,7 @@ class ConventionController extends Controller
             $partenaires_ids = (array)Input::get('partnenaire_type_ids');
             $montant_partenaire = (array)Input::get('montant');
             for ($i = 0; $i < count($partenaires_ids); $i++) {
-                $convention->partenaires()->attach($partenaires_ids[$i], ['montant' => $montant_partenaire[$i]]);
+                $convention->partenaires()->attach($partenaires_ids[$i], ['montant' => str_replace(',','',$montant_partenaire[$i])]);
             }
         }
 

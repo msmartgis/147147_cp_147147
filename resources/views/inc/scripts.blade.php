@@ -39,6 +39,9 @@
 	<!-- Fab Admin for advanced form element -->
 <script src="{{asset('js/advanced-form-element.js')}}"></script>
 
+ <script src="{{asset('js/jquery.price_format.js')}}"></script>
+ <script src="{{asset('js/functions/functions.js')}}"></script>
+
 
 
 {{-- <script>

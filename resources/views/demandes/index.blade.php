@@ -188,6 +188,8 @@
 
 <script src="{{asset('js/functions/functions.js')}}"></script>
 
+<script src="{{asset('js/jquery.masknumber.js')}}"></script>
+
 
 <script>
 
@@ -385,6 +387,9 @@
      }
      });
      }
+
+
+
 </script>
 
 @endpush

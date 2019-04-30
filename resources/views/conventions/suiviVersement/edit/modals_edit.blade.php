@@ -46,7 +46,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <input type="text" name="part_partenaire" id="part_partenaire" class="form-control" readonly >
+                                <input type="text" name="part_partenaire" id="part_partenaire" class="form-control currency-input" readonly >
                             </div>
                         </div>
 
@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group ">
-                                <input type="text" name="montant_verse" class="form-control" readonly >
+                                <input type="text" name="montant_verse" class="form-control currency-input" readonly >
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group ">
-                                <input type="text" id="rest_a_verser" name="rest_a_verser"  class="form-control" readonly >
+                                <input type="text" id="rest_a_verser" name="rest_a_verser"  class="form-control currency-input" readonly >
                             </div>
                         </div>
                     </div>
@@ -92,7 +92,7 @@
                             <label >Montant de versement:</label>
                         </div>
                         <div class="col-lg-3">
-                                <input type="text" name="montant_de_versement" class="form-control">
+                            <input type="text" name="montant_de_versement" class="form-control currency-input">
                         </div>
                     </div>
                     <br>
@@ -100,7 +100,6 @@
                     <h4>DOCUMENT</h4>
                     <hr>
                     <br>
-
                     <div class="row" style="padding:8px">
                         <div class="table-responsive">
                             <table class="table table-piece">

@@ -19,7 +19,7 @@ class CheckCP
 
         if( Auth::user()->organisation_id != 1)
         {
-            return response('not authorized',401);
+            return response('unauthorized',401);
         }else {
             return $next($request);
         }

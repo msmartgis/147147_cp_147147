@@ -144,7 +144,6 @@
     {{-- Modals --}}
    @include('projets.edit.modals_edit_projet')
 
-
 @endsection
 
 @push('added_scripts')
@@ -200,10 +199,7 @@
 <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
 
-<script src="{{asset('js/demandes/demande.js')}}"></script>
-<script src="{{asset('js/demandes/functions.js')}}"></script>
-<script src="{{asset('js/demandes/edit/demande_edit.js')}}"></script>
-<script src="{{asset('js/functions.js')}}"></script>
+
 <script src="{{asset('js/projets/projets.js')}}"></script>
 
 
@@ -435,6 +431,113 @@
                 }
             });
         }
+
+
+
+        //add piece to dce
+        $('.add-piece-projet').on('click',function(){
+            $('#add_piece_forme').attr('action', $(this).data('route'));
+
+            $('#modal_add_piece_projet').modal('show');
+        });
+
+        //files managemnt *********
+        //add piece
+        $('.form-ulpoad-piece-projet').on('submit', function (e) {
+            $('#modal_add_piece_projet').modal('hide');
+            $form = $(this);
+            e.preventDefault();
+            var markup = '';
+            url = $form.attr('action');
+            type = $form.attr('method');
+            $.ajax({
+                'type': type,
+                'url': url,
+                'data': new FormData(this),
+                // Tell jQuery not to process data or worry about content-type
+                // You *must* include these options!
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    console.log(data);
+                    markup =
+                        '<tr style="text-align: center">'+
+                        '<td>' + data.piece.document + '</td>'+
+                        '<td>' + data.piece.file_name + '</td>'+
+                        '<td style="text-align: center">'+
+                        '<a href="/files/download/appel_offres/'+data.piece.appel_offre_id+'/'+data.file_name+'">'+
+                        '<button class="btn btn-secondary-table delete-piece" ><i class="fa fa-download"></i> Telecharger</button>'+
+                        '</td>'+
+
+                        '<td style="text-align: center">'+
+                        '<button class="btn btn-danger-table delete-piece-projet" data-id=' + data.piece.id + '><i class="fa fa-close"></i> Supprimer</button>'+
+                        '</td>'+
+                        '</tr>';
+
+                    if(data.type_piece == "dossier_adjiducataire_projet")
+                    {
+                        $(markup).prependTo("#pieces_tbody_adjiducataire_projet");
+                    }
+
+                    if(data.type_piece == "dce")
+                    {
+                        $(markup).prependTo("#pieces_tbody_dce_projet");
+                    }
+                    $('#add_modal_piece-projet').modal('hide');
+                }
+            });
+        });
+
+        //delete piece
+        $(".delete-piece-projet").click(function () {
+            var piece_id;
+            var directory;
+            var file_name;
+            var route;
+            route = $(this).data('route');
+            piece_id = $(this).data('id');
+            directory = $(this).data('directory');
+            file_name = $(this).data('file');
+            message_reussi = "La piéce a été supprimer avec succès";
+            message_sub_title = "Le document sera supprimé définitivement";
+
+            swal({
+                title: "Vous êtes sûr?",
+                text: message_sub_title,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Oui, je confirme!",
+                cancelButtonText: "Non, annuler!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    //send an ajax request to the server update decision column
+                    $.ajax({
+                        url: route,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            piece_id: piece_id,
+                            directory: directory,
+                            file_name: file_name
+                        },
+                        dataType: 'JSON',
+                        success: function (data) {
+
+                            if (data.length == 0) {
+                                swal("Réussi!", message_reussi, "success");
+                                setTimeout(location.reload.bind(location), 500);
+                            }
+                        }
+                    });
+                } else {
+                    swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
+                }
+            });
+        });
 
     });
 </script>

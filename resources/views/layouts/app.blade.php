@@ -32,7 +32,6 @@
              font-weight: bold;
          }
 
-
          body,
          h1,
          h2,

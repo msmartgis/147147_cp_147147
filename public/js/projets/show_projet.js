@@ -29,18 +29,8 @@ $(document).ready(function () {
             }
 
         },
-        columnDefs: [{
-            width: 20,
-            targets: 1
-        },
-            {
-                width: 30,
-                targets: 2
-            },
-            {
-                width: 300,
-                targets: 3
-            }
+        columnDefs: [
+
         ],
         columns: [
             {

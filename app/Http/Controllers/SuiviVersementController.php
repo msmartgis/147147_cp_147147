@@ -51,19 +51,20 @@ class SuiviVersementController extends Controller
         $convention_id = $request->convention_id;
         if($request->montant_de_versement <= $request->rest_a_verse_hidden )
         {
-
             $versement = new SuiviVersement();
             $versement_id = SuiviVersement::max('id') + 1;
             $versement->partenaire_id = $request->partenaire_id;
             $versement->convention_id = $request->convention_id;
-            $versement->montant = $request->montant_de_versement;
+            $versement->montant = str_replace(',','',$request->montant_de_versement);
             $versement->prise_en_charge = $request->pris_en_charge;
 
-            $date_formatted = str_replace("/",'-',$request->date_versement);
-            $versement->date_versement = Carbon::parse($date_formatted)->format('Y-m-d');
+
+            $date_to_time = strtotime(str_replace("/",'-',$request->date_versement));
+            $date_formatted = date('Y-m-d',$date_to_time);
+            $versement->date_versement =  $date_formatted;
+
+
             $versement->document = $request->nom_document;
-
-
             // Handle File Upload
             if($request->hasFile('versement_file')){
                 // Get filename with the extension
@@ -75,7 +76,7 @@ class SuiviVersementController extends Controller
                 // Filename to store
                 $fileNameToStore= $filename.'_'.time().'.'.$extension;
                 // Upload Image
-                $path = $request->file('versement_file')->storeAs('local/uploaded_files/versements/'.$versement_id, $fileNameToStore);
+                $path = $request->file('versement_file')->storeAs('public/uploaded_files/versements/'.$versement_id, $fileNameToStore);
             }
 
 

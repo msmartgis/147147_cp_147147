@@ -73,6 +73,16 @@ function onRowClick(idRow,page)
 }
 
 
+$(document).ready(function(){
+    //currency mask
+    $('.currency-input').priceFormat({
+        prefix : '',
+        thousandsSeparator : ',',
+        centsLimit : 0
+    });
+});
+
+
 
 
 

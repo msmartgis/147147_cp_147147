@@ -26,7 +26,7 @@ class DCEController extends Controller
             $fileNameToStore = $filename . '_' . time() . '.' . $extension;
             // Upload Image
 
-            $path_file ="local/uploaded_files/appel_offres/".$request->appelOffre_id;
+            $path_file ="public/uploaded_files/appel_offres/".$request->appelOffre_id;
 
 
             $path = $request->file('piece_upload')->storeAs($path_file, $fileNameToStore);
@@ -52,7 +52,7 @@ class DCEController extends Controller
         $directory = $req->directory;
         $id =  $req->piece_id;
 
-        $local_path = 'local/uploaded_files/appel_offres/';
+        $local_path = 'public/uploaded_files/appel_offres/';
         //unlink($local_path.$id.'/'.$file_name);
         //File::disk('local')->delete($local_path.$id.'/'.$file_name);
         Storage::disk('local')->delete($local_path.$id.'/'.$file_name);

@@ -39,7 +39,30 @@
             </div>
         </div>
 
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+            <div class="form-group">
+                {{Form::label('','Longueur :')}}
+                {{Form::text('longueur','',['class'=>'form-control currency-input'])}}
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+            <div class="form-group">
+                {{Form::label('','Progamme:')}}
+                {{Form::select('programme', $programmes, null,
+                [
+                'data-placeholder' => 'Selectionner commune(s)',
+                'class'=>'form-control select2',
+                'name'=>'programme'
+                ]
+                )}}
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
             <div class="form-group">
                 {{Form::label('','Commune:')}}
                 {{Form::select('communes', $communes, null,
@@ -52,27 +75,8 @@
                 )}}
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <div class="form-group">
-                {{Form::label('','Longueur :')}}
-                {{Form::text('longueur','',['class'=>'form-control'])}}
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <div class="form-group">
-                {{Form::label('','Progamme:')}}
-                {{Form::select('programme', $programmes, null,
-                [
-                'data-placeholder' => 'Selectionner commune(s)',
-                'class'=>'form-control select2',
-                'name'=>'programme'
-                ]
-                )}}
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 
         </div>
 
@@ -293,10 +297,8 @@
                 'montant_global',
                 '',
                 [
-                'class'=>'form-control input-element',
-                'id'=>'montant_g',
-                'data-validation-containsnumber-regex'=>'(\d)+',
-                'data-validation-containsnumber-message'=>'Veuillez saisir des numeros seulement'
+                'class'=>'form-control input-element currency-input',
+                'id'=>'montant_g'
                 ]
                 )}}
             </div>

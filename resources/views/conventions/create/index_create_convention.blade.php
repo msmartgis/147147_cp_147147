@@ -70,7 +70,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="example_input_full_name">Montant:</label>
-                                    <input type="text" class="form-control" id="montant_partnenaire">
+                                    <input type="text" class="form-control currency-input" id="montant_partnenaire">
                                 </div>
                             </div>
                         </div>

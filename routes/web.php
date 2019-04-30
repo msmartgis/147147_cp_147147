@@ -26,13 +26,9 @@ Route::group(
                         'piece' => 'PieceController',
                         'cartographie' => 'CartographieController',
                 ]);
-
                 Route::get('/demande/create', 'DemandesController@create')->name('createDemande');
                 Route::get('/demande', 'DemandesController@index')->name('indexDemande');
-
                 Route::get('/projet', 'ProjetController@index')->name('indexProjet');
-
-
 
                 //demandes
                 Route::get('/demandes/getDemandeData', 'DemandesController@getDemandeData');
@@ -42,7 +38,6 @@ Route::group(
                 Route::get('/demandes/tab_is_affecter', 'DemandesController@getDemandesAffectees')->name('get.demandes.affectees');
                 Route::get('/demandes/tab_programmee', 'DemandesController@getDemandesProgrammee')->name('get.demandes.programmee');
                 Route::get('/demandes/tab_realisee', 'DemandesController@getDemandesRealisee');
-
 
                 //SPREADSHEET
                 Route::post('/demandes/demandeSpreadSheetEnCours', 'SpreadSheetController@demandeSpread_en_cours')->name('spread_demande_en_cours');
