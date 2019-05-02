@@ -32,10 +32,8 @@ class FilesController extends Controller
 
 
         $id =  $request->id;
-
         if(Storage::exists($local_path.$id.'/'.$file_name))
         {
-
             return Storage::download($local_path.$id.'/'.$file_name);
         }else{
             return Redirect::back()->with('success','Fichier non trouvé');

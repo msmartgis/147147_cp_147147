@@ -91,7 +91,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="example_input_full_name">Montant:</label>
-                                <input type="text" name="montant" class="form-control" id="montant_partenaire">
+                                <input type="text" name="montant" class="form-control currency-input" id="montant_partenaire">
                             </div>
                         </div>
                     </div>
@@ -109,17 +109,15 @@
     </div>
     <!-- /.modal -->
 
-
-    {{-- edite partenaire --}}
-    {{-- <div class="modal fade" id="m-edite-partenaire">
-        <div class="modal-dialog" role="document">            
-            <form action="{{ action('PartenaireTypeController@addPartenaire') }}" method="POST" class="form-edit-partenaire">
-                    <input type="hidden" name="demande_id" value="{{$demande->id}}">
-                    <input type="hidden" name="montant_global" value="{{$demande->montant_global}}">
-                    <input name="_token" type="hidden" value="{{ csrf_token() }}" />
+{{--add source fincancement--}}
+<div class="modal fade" id="m-add-src-edit">
+    <div class="modal-dialog" role="document">
+        <form action="{{ action('SourceFinancementController@addSourceFinancement') }}" method="POST" class="form-add-src-edit">
+            <input type="hidden" name="demande_id" value="{{$demande->id}}">
+            <input name="_token" type="hidden" value="{{ csrf_token() }}" />
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Modifier le partenaire</h4>
+                    <h4 class="modal-title">Nouveau partenaire</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
                 </div>
@@ -127,10 +125,10 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Partenaire</label>
-                                <select class="form-control select2" style="width: 100%;" name="partnenaire_type_id" id="partenaire_type_edit">
-                                    @foreach ($partenaires_types as $type)
-                                    <option value="{{$type->id}}">{{$type->nom_fr}}</option>
+                                <label>Source financement</label>
+                                <select class="form-control select2" style="width: 100%;" name="source_financement_id" id="source_financement">
+                                    @foreach ($sourceFincancement as $src)
+                                        <option value="{{$src->id}}">{{$src->source }} : {{$src->reference }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -138,20 +136,19 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="example_input_full_name">Montant:</label>
-                            <input type="text" name="montant"  class="form-control" id="montant_partnenaire">
+                                <input type="text" name="montant" class="form-control currency-input" id="montant_source">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-success float-right" >Ajouter à la
+                    <button type="submit" class="btn btn-success float-right" id="add_src_to_list_edit">Ajouter à la
                         liste</button>
                 </div>
             </div>
         </form>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div> --}}
-    <!-- /.modal -->
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

@@ -368,14 +368,14 @@ class ProjetController extends Controller
         $moas = Moa::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $programmes = Programme::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $partenaires_types = PartenaireType::all();
-        $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
+        $point_desservis = PointDesservi::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis',  'interventions', 'piece', 'programme', 'moas','appelOffres'])->find($convention->id);
         //return $convention;
 
         return view('projets.edit.edit_projet')->with([
             'convention' => $convention,
             'interventions' => $interventions,
-            'localites' => $localites,
+            'point_desservis' => $point_desservis,
             'partenaires_types' => $partenaires_types,
             'moas' => $moas,
             'communes' => $communes,
@@ -415,9 +415,9 @@ class ProjetController extends Controller
         Piste::where('id', $request->id_pist)
             ->update(['longueur' => $request->longueur]);
 
-        //update localites
-        $localites_ids = Input::get('localites');
-        $convention->point_desservis()->sync($localites_ids);
+        //update $point_desservis
+        $point_desservis = Input::get('point_desservis');
+        $convention->point_desservis()->sync($point_desservis);
 
 
         //gallery

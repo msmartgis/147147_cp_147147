@@ -90,4 +90,9 @@ class Convention extends Model
     {
         return $this->hasMany('App\Gallery');
     }
+
+    public function sourceFinancement()
+    {
+        return $this->belongsToMany('App\SourceFinancement', 'sourcefinancement_demande','id_convention', 'sourceFinancement_id')->withPivot('montant')->withTimestamps();
+    }
 }

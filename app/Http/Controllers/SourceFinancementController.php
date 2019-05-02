@@ -2,11 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Demande;
 use App\SourceFinancement;
 use Illuminate\Http\Request;
 
 class SourceFinancementController extends Controller
 {
+
+    public function addSourceFinancement(Request $req)
+    {
+        $src = SourceFinancement::find($req->source_financement_id);
+
+        if(isset($req->demande_id))
+        {
+            $src->demandes()->attach($req->demande_id, ['montant' => str_replace(',','',$req->montant) ]);
+            return response()->json(array('src' => $src, 'montant' => str_replace(',','',$req->montant) , 'demande' => $req->demande_id));
+        }
+
+    }
+
+
+    public function deleteSourceFinancement(Request $req)
+    {
+        $demande = Demande::find($req->demande_id);
+        $demande->sourceFinancement()->detach($req->src_id);
+        return response()->json();
+    }
+
     /**
      * Display a listing of the resource.
      *

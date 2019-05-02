@@ -199,34 +199,35 @@
 
                                     @if($demande->decision == 'accord_definitif' || $demande->is_affecter == '1')
                                     <div class="row" style="margin-top:8px">
-                                        <h5>MONTAGE FINANCIER PROPOSE</h5>
-                                        <hr style="color:#2d353c;margin-top:0px;margin-bottom: 4px">
+
                                         <div class="col-12">
+                                            <h5>SOURCE DE FINANCEMENT</h5>
+                                            <hr style="color:#2d353c;margin-top:0px;margin-bottom: 4px">
                                             <table class="table table-hover" style="margin-top: 8px">
                                                 <tr>
-                                                    <th>#</th>
                                                     <th>Source</th>
                                                     <th>Reference</th>
                                                     <th>Montant Total</th>
+                                                    <th></th>
                                                 </tr>
                                                 <tbody id="table_body_source">
                                                 <tr>
 
                                                 </tr>
-                                                @foreach ($demande->partenaires as $item)
+                                                @foreach ($demande->sourceFinancement as $item)
                                                     <tr>
                                                         <td style="text-align: center">
-                                                            {{$item->nom_fr}}
+                                                            {{$item->source}}
                                                         </td>
                                                         <td style="text-align: center">
-                                                            {{number_format($item->pivot->montant,2)}}
+                                                            {{$item->reference}}
 
                                                         </td>
                                                         <td style="text-align: center">
-                                                            {{number_format($item->pivot->montant/($demande->montant_global)*100,2)}}
+                                                            {{number_format($item->pivot->montant,2)}}
                                                         </td>
                                                         <td style="text-align: center">
-                                                            <button type="button" class="btn btn-warning delete-partenaire" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}"><i class="fa fa-close"></i>
+                                                            <button type="button" class="btn btn-danger-table delete-src" data-demande="{{$demande->id}}" data-src="{{$item->id}}"><i class="fa fa-close"></i>
                                                                 Supprimer</button>
                                                         </td>
                                                     </tr>
@@ -234,7 +235,7 @@
                                                 </tbody>
                                             </table>
                                             <div class="col-12" style="text-align: center">
-                                                <a href="#" id="add_source" data-toggle="modal" data-target="#m-add-source-financement">
+                                                <a href="#" id="add_source" data-toggle="modal" data-target="#m-add-src-edit">
                                                     <i class="fa fa-plus"></i>
                                                     <b>Ajouter Source</b>
                                                 </a>
@@ -270,14 +271,14 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                {{Form::label('','Localites:')}}
-                                                {{Form::select('localites', $localites, $demande->point_desservis->pluck('id'),
+                                                {{Form::label('','POINTS DESSERVIS:')}}
+                                                {{Form::select('point_desservis', $point_desservis, $demande->point_desservis->pluck('id'),
                                                 [
                                                 'data-placeholder' => 'Selectionner commune(s)',
                                                 'class'=>'form-control select2 ',
                                                 'style'=>'width:100%',
                                                 'multiple'=>'multiple',
-                                                'name'=>'localites[]'
+                                                'name'=>'point_desservis[]'
                                                 ]
                                                 )}}
                                             </div>
@@ -340,20 +341,26 @@
         <div class="h-p100  bg-light bg-secondary-gradient" style="padding-right: 5px">
             <div class="box bg-transparent no-border no-shadow ">
                 <div class="box-body no-padding mailbox-nav ">
-                    <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
-                        @switch($demande->decision)
-                        @case("en_cours")
-                        En cours
-                        @break
-                        @case("a_traiter")
-                        A traiter
-                        @break
-                        @case("accord_definitif")
-                        Accord définitif
-                        @break
-                        @default
-                        @endswitch
-                    </h5>
+                    @if($demande->is_affecter != '1')
+                        <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                            @switch($demande->decision)
+                            @case("en_cours")
+                            En cours
+                            @break
+                            @case("a_traiter")
+                            A traiter
+                            @break
+                            @case("accord_definitif")
+                            Accord définitif
+                            @break
+                            @default
+                            @endswitch
+                        </h5>
+                        @else()
+                        <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                            AFFECTEE AUX CONVENTIONS
+                        </h5>
+                    @endif
 
                     <div class="form-group">
                         {{Form::label('','Demande N°:')}}
@@ -423,10 +430,11 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-secondary col-12" id="restaurer" data-id="{{$demande->id}}" style="margin-top: 8px !important" @if ($demande->decision == "en_cours")
-                        disabled
-                    @endif>Restaurer (En cours)</button>
-
+                    @if($demande->is_affecter != 1)
+                        <button type="button" class="btn btn-secondary col-12" id="restaurer" data-id="{{$demande->id}}" style="margin-top: 8px !important" @if ($demande->decision == "en_cours")
+                            disabled
+                        @endif>Restaurer (En cours)</button>
+                    @endif
                     <button type="button" class="btn btn-warning col-12" id="supprimer_demande" data-id="{{$demande->id}}" style="margin-top: 8px !important">Supprimer</button>
                 
                 </div>

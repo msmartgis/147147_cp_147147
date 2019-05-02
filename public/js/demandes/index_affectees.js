@@ -137,14 +137,15 @@ $(document).ready(function () {
     });
 
     //Affectation aux conventions
-    $("#affecter_btn_accord_definitif").click(function () {
+   /* $("#affecter_btn_accord_definitif").click(function () {
+
         datatbleId = "demandes_datatables_accord_definitif";
         nameCheckbox = "checkbox_accord_definitif";
         titleModal = "AFFECTER AUX CONVENTIONS";
         affectOrAccord = 1;
         accordAndAffectation_modal_data(titleModal,datatbleId ,nameCheckbox,affectOrAccord);
     });
-
+*/
 
     $("#restaurer_affecte_btn").click(function () {
         url = "demandes/restaurer_from_affectation";

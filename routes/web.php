@@ -54,9 +54,6 @@ Route::group(
                 Route::post('/demandes/restaurer_from_affectation', 'DemandesController@restaurerDemandeFromAffectation')->name('restaurer_demande_from_affectation');
 
 
-
-
-
                 //routes for projets
                 Route::post('/projets/projetsSpreadSheet', 'SpreadSheetController@projetsSpreadSheet')->name('spreadSheetProjet');
                 Route::get('/projet/create', 'ProjetController@create')->name('createProjet');
@@ -95,6 +92,10 @@ Route::group(
 
                 //guallery
                 Route::post('/gallery/delete_image_gallery', 'GalleryController@deleteImage')->name('delete_gallery_image');
+
+                //add source
+                 Route::post('/source_financement/add_src', 'SourceFinancementController@addSourceFinancement')->name('add_src');
+                 Route::post('/source_financement/delete_src', 'SourceFinancementController@deleteSourceFinancement')->name('delete_src');
         }
 );
 

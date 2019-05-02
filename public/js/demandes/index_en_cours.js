@@ -201,6 +201,7 @@ $(document).ready(function () {
 //item to make id checkbox unique
     var item_partenaire = 0;
     $("#add_partner_to_list").click(function () {
+
         var montant_g = $('#montant_g').val();
         var partenair_type_text = $("#partenaire_type :selected").text();
         var partenair_type_id = $("#partenaire_type").val();
@@ -210,17 +211,17 @@ $(document).ready(function () {
             '<td style=\'text-align:center\'>'+
             '<div class=\"form-group\">'+
             '<div class=\"checkbox\">'+
-            '<input type=\"checkbox\" id=\"row_' + item_partenaire + '\" name=\"record\">'+
-            '<label for="row_' + item_partenaire + '"></label>'+
+            '<input type=\"checkbox\" id=\"row_part_' + item_partenaire + '\" name=\"record\">'+
+            '<label for="row_part_' + item_partenaire + '"></label>'+
             '</div>'+
             '</div>'+
             '</td>'+
             '<td style = \'text-align:center\'><input type="hidden" name="partnenaire_type_ids[]" value="' + partenair_type_id + '">' + partenair_type_text + '</td>'+
             '<td style=\'text-align:center\'><input type="hidden" name="montant[]" value="' + montant_partnenaire + '">' + montant_partnenaire + '</td>'+
-            '<td style=\'text-align:center\'><input type="hidden" name="pourcentage[]" value="' + (montant_partnenaire / montant_g) * 100 + '">' + (montant_partnenaire / montant_g) * 100 + '</td>'+
+            '<td style=\'text-align:center\'><input type="hidden" name="pourcentage[]" value="' + ( parseFloat(montant_partnenaire.replace(/,/g, ''))  / parseFloat(montant_g.replace(/,/g, ''))  ) * 100 + '">' + (parseFloat(montant_partnenaire.replace(/,/g, ''))  / parseFloat(montant_g.replace(/,/g, '')) ) * 100 + '</td>'+
             '</tr>';
 
-        $('#table_body_partner > tr:last').before(markup);
+        $('#table_body_partner').append(markup);
         $("#montant_partnenaire").val('');
         $("#partenaire_type :selected").remove();
         $("#m-add-partenaire").modal('toggle');
@@ -237,13 +238,12 @@ $(document).ready(function () {
         var source_id = $("#sourceFinancement").val();
         var montant_source = $("#montant_sourceFinancement").val();
 
-
         var markup_source = '<tr>'+
             '<td style="text-align:center">'+
             '<div class="form-group">'+
             '<div class="checkbox">'+
-            '<input type="checkbox" id="row_' + item_source + '\" name="record">'+
-            '<label for="row_' + item_source + '"></label>'+
+            '<input type="checkbox" id="row_src_' + item_source + '\" name="record">'+
+            '<label for="row_src_' + item_source + '"></label>'+
             '</div>'+
             '</div>'+
             '</td>'+
@@ -253,7 +253,7 @@ $(document).ready(function () {
             '</tr>';
 
 
-        $('#table_body_source > tr:last').before(markup_source);
+        $('#table_body_source').append(markup_source);
         $("#montant_sourceFinancement").val('');
         $("#sourceFinancement :selected").remove();
         $("#m-add-source-financement").modal('toggle');

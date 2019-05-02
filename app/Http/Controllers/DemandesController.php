@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use DataTables;
 use DB;
 
@@ -48,10 +49,14 @@ class DemandesController extends BaseController
         $pivot_all =  $demande->partenaires()
             ->get();
 
+        $pivot_source_financement =  $demande->sourceFinancement()
+            ->get();
+
        $pivot =  $demande->partenaires()->where('partenaire_id','=',1)
            ->get();
 
-       return response()->json(['id'=>$demande_id,'montantGlobal'=>$montant_global,'partenaire_id'=>$partenaire_id,'pivot'=>$pivot,'pivot_all' => $pivot_all]);
+
+       return response()->json(['id'=>$demande_id,'montantGlobal'=>$montant_global,'partenaire_id'=>$partenaire_id,'pivot'=>$pivot,'pivot_all' => $pivot_all,'pivot_source_financement' => $pivot_source_financement]);
     }
 
 
@@ -95,12 +100,11 @@ class DemandesController extends BaseController
     public function accordOrAffectation(Request $request)
     {
         $demande = Demande::find($request->id);
-
         if($request->affecter == '0')
         {
             //update demande
             Demande::where('id', $request->id)
-                 ->update(['montant_global' => $request->montant_global]);
+                 ->update(['montant_global' =>str_replace(',','',$request->montant_global) ]);
 
 
             //update decision
@@ -109,7 +113,7 @@ class DemandesController extends BaseController
 
 
             //update montant cp
-            $demande->partenaires()->updateExistingPivot($request->cp_id,array('montant' =>$request->montant_cp));
+            $demande->partenaires()->updateExistingPivot($request->cp_id,array('montant' =>str_replace(',','',$request->montant_cp)));
 
             //insert source de finacnement *****
             if (Input::has('source_financement_ids') !== null) {
@@ -117,7 +121,7 @@ class DemandesController extends BaseController
                 //return $source_financement_ids;
                 $montant_source = (array)Input::get('montant_source');
                 for ($i = 0; $i < count($source_financement_ids); $i++) {
-                    $demande->sourceFinancement()->attach($source_financement_ids[$i], ['montant' => $montant_source[$i]]);
+                    $demande->sourceFinancement()->attach($source_financement_ids[$i], ['montant' => str_replace(',','',$montant_source[$i]) ]);
                 }
             }
 
@@ -130,12 +134,14 @@ class DemandesController extends BaseController
                 $montant = (array)Input::get('montant');
                 $pivotData = array();
                 for ($i = 0; $i < count($partnenaire_type_ids); $i++) {
-                    array_push($pivotData,['montant' => $montant[$i]]);
+                    array_push($pivotData,['montant' => str_replace(',','',$montant[$i])]);
                 }
 
                 $syncData = array_combine($partnenaire_type_ids,$pivotData);
                 $demande->partenaires()->sync($syncData);
             }
+
+
 
             return redirect('/demande')->with('success', 'Accord definititf  avec succès');
         }
@@ -143,48 +149,90 @@ class DemandesController extends BaseController
         //affectation aux convntion
         if($request->affecter == '1')
         {
-            $convention_id = Convention::max('id') + 1;
-            //$numero_ordre_cnv = Convention::max('num_ordre') + 1;
+            $convention_id = Convention::max('id')+1;
             $convention = new Convention;
 
 
-            $demande = Demande::find($request->id);
+            $demande = Demande::with('communes','interventions','partenaires','point_desservis','piste','porteur','piece','sourceFinancement')
+                ->find($request->id);
+
+
             //update demande is_affecter
             DB::table('demandes')
                 ->where('id', $demande->id)
                 ->update(['is_affecter' => 1, 'decision' => 'affecter', 'etat' => 'sans']);
 
 
-            if (Input::has('partnenaire_type_ids') !== null) {
-                $partnenaire_type_ids = (array)Input::get('partnenaire_type_ids');
-                //return $source_financement_ids;
-                $montant = (array)Input::get('montant');
-                $pivotData = array();
-                for ($i = 0; $i < count($partnenaire_type_ids); $i++) {
-                    array_push($pivotData,['montant' => $montant[$i]]);
+            //affect data to convention
+            $convention->num_ordre = $demande->num_ordre;
+            $convention->objet_fr =  $demande->objet_fr;
+            $convention->objet_ar =  $demande->objet_ar;
+            $convention->montant_global =  $demande->montant_global;
+            $convention->observation =  $demande->observation;
+            $convention->session_id =  $demande->session_id;
+            $convention->organisation_id = Auth::user()->organisation_id;
+            $convention->is_project = 0;
+            $convention->demande_id = $demande->id;
+            $convention->save();
+
+            $convention->interventions()->attach($demande->interventions);
+            $convention->communes()->attach($demande->communes);
+            $convention->point_desservis()->attach($demande->point_desservis);
+
+
+            //pieces management
+            if(count($demande->piece) > 0 )
+            {
+                foreach($demande->piece as $piece)
+                {
+                    $new_piece = new Piece();
+                    $new_piece->type = $piece->type;
+                    $new_piece->nom = $piece->nom;
+                    $new_piece->path = $piece->path;
+                    $new_piece->convention_id = $convention_id;
+                    //Storage::disk('public')->copy("storage/app/public/uploaded_files/demandes/".$demande->id."/".$piece->path, "storage/app/public/uploaded_files/conventions/".$convention_id."/".$piece->path);
+                    //rename(storage_path("app/public/uploaded_files/demandes/".$demande->id."/".$piece->path),storage_path("app/public/uploaded_files/conventions/".$convention_id."/".$piece->path));
+                    $new_piece->save();
                 }
-                $syncData = array_combine($partnenaire_type_ids,$pivotData);
-                $demande->partenaires()->sync($syncData);
+            }
+
+            //new piste for convention
+            $piste = new Piste();
+            $piste->longueur = $demande->piste->longueur;
+            $piste->convention_id = $convention_id;
+            $piste->save();
+
+
+            //partenaire *****
+            if (Input::has('partnenaire_type_ids')) {
+                $partenaires_ids = (array)Input::get('partnenaire_type_ids');
+                $montant_partenaire = (array)Input::get('montant');
+                for ($i = 0; $i < count($partenaires_ids); $i++) {
+                    $convention->partenaires()->attach($partenaires_ids[$i], ['montant' => str_replace(',','',$montant_partenaire[$i])]);
+                }
             }
 
 
-            //update montant cp
-            $demande->partenaires()->updateExistingPivot($request->cp_id,array('montant' =>$request->montant_cp));
-
             //insert source de finacnement *****
-            if (Input::has('source_financement_ids') !== null) {
+            if (Input::has('source_financement_ids')) {
                 $source_financement_ids = (array)Input::get('source_financement_ids');
                 //return $source_financement_ids;
                 $montant_source = (array)Input::get('montant_source');
+
+
+                //detaching
+                    $demande->sourceFinancement()->detach();
+
+                //attaching
                 for ($i = 0; $i < count($source_financement_ids); $i++) {
-                    $demande->sourceFinancement()->attach($source_financement_ids[$i], ['montant' => $montant_source[$i]]);
+                    $demande->sourceFinancement()->attach($source_financement_ids[$i], ['montant' =>str_replace(',','',$montant_source[$i]) ]);
                 }
             }
 
 
             //save to conventions
             $convention->demande_id = $demande->id;
-            $convention->montant_global = $request->montant_global;
+            $convention->montant_global = str_replace(',','',$request->montant_global) ;
             $convention->save();
 
             if ($convention->save()) {
@@ -237,7 +285,7 @@ class DemandesController extends BaseController
 
 
                 ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="demandeEnCoursCb_' . $demandes->id . '" name="checkbox" class="demande-en-cours-checkbox" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="demandeEnCoursCb_' . $demandes->id . '" class="block" ></label>';
+                    return '<input type="checkbox" id="demandeEnCoursCb_' . $demandes->id . '" name="checkbox" class="demande-en-cours-checkbox" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" data-id="' . $demandes->id . '" class="chk-col-green"><label for="demandeEnCoursCb_' . $demandes->id . '" class="block" ></label>';
                 })
 
 
@@ -253,8 +301,6 @@ class DemandesController extends BaseController
                     return $demandes->date_reception->format('d-m-Y');
                 })
                 ->rawColumns(['checkbox','num_ordre']);
-
-
         }
 
         //filter with communes
@@ -631,13 +677,16 @@ class DemandesController extends BaseController
                 ->addColumn('checkbox', function ($demandes) {
                     return '<input type="checkbox" id="demandeAffecteCb_' . $demandes->id . '" name="checkbox_affectees" value="' . $demandes->id . '" data-id="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="demandeAffecteCb_' . $demandes->id . '" class="block" ></label>';
                 })
+                ->addColumn('num_ordre', function ($demandes) {
+                    return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
+                })
                 ->addColumn('montant_global', function ($demandes) {
                     return number_format($demandes->montant_global);
                 })
                 ->addColumn('date_reception', function ($demandes) {
                     return $demandes->date_reception->format('d-m-Y');
                 })
-                ->rawColumns(['checkbox'])
+                ->rawColumns(['checkbox','num_ordre'])
                 ->editColumn('id', '{{$id}}');
         }
 
@@ -1180,7 +1229,8 @@ class DemandesController extends BaseController
         $partenaires_types = PartenaireType::all();
         $sourceFincancement = SourceFinancement::all();
         $porteur_projet = Porteur::orderBy('nom_porteur_fr')->pluck('nom_porteur_fr', 'id');
-        $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
+        //$localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
+        $point_desservis = PointDesservi::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $demande = Demande::with(['communes', 'partenaires', 'piste', 'point_desservis', 'porteur', 'interventions', 'session', 'piece','sourceFinancement'])->find($demande->id);
 
 
@@ -1188,7 +1238,7 @@ class DemandesController extends BaseController
         return view('demandes.edit.edit')->with([
             'demande' => $demande,
             'interventions' => $interventions,
-            'localites' => $localites,
+            'point_desservis' => $point_desservis,
             'partenaires_types' => $partenaires_types,
             'moas' => $moas,
             'communes' => $communes,
@@ -1231,9 +1281,9 @@ class DemandesController extends BaseController
             ->update(['longueur' => $request->longueur]);
 
 
-         //update localites
-        $localites_ids = Input::get('localites');
-        $demande->point_desservis()->sync($localites_ids);
+         //update points desservis
+        $point_desservis = Input::get('point_desservis');
+        $demande->point_desservis()->sync($point_desservis);
         return redirect("/demande" . "/" . $demande->id . "/edit")->with('success', 'Demande modifier avec succès');
     }
 

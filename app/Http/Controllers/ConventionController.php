@@ -667,16 +667,11 @@ class ConventionController extends Controller
     {
         $this->validate($request, ['num_ordre' => 'required']);
         //find the communes for this convention and put them in an array
-        $communes = $request->input('communes');
 
-        $interventions = $request->input('interventions');
-
-        //get the localites
-        $localites = $request->input('localites');
         //get the last id of conventions
         $actu_id_convention = Convention::max('id')+ 1;
-
         //create convention
+
         $convention = new Convention();
         $convention->num_ordre = $request->input('num_ordre');
         $convention->objet_fr = $request->input('objet_fr');
@@ -811,13 +806,13 @@ class ConventionController extends Controller
         $moas = Moa::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $programmes = Programme::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $partenaires_types = PartenaireType::all();
-        $localites = PointDesservi::orderBy('nom_fr')->where('categorie_point_id', '=', 1)->pluck('nom_fr', 'id');
+        $point_desservis = PointDesservi::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis',  'interventions', 'piece','programme','moas'])->find($convention->id);
 
         return view('conventions.edit.edit')->with([
             'convention' => $convention,
             'interventions' => $interventions,
-            'localites' => $localites,
+            'point_desservis' => $point_desservis,
             'partenaires_types' => $partenaires_types,
             'moas' => $moas,
             'communes' => $communes,
@@ -864,6 +859,7 @@ class ConventionController extends Controller
         $convention_to_update->moa_id = $request->moa;
         $convention_to_update->programme_id = $request->programme;
         $convention_to_update->objet_fr = $request->objet_fr;
+        $convention_to_update->num_ordre = $request->num_ordre;
         $convention_to_update->objet_ar = $request->objet_ar;
         $convention_to_update->observation = $request->observation;
 
@@ -884,9 +880,8 @@ class ConventionController extends Controller
             ->update(['longueur' => $request->longueur]);
 
 
-        //update localites
-        $localites_ids = Input::get('localites');
-        $convention->point_desservis()->sync($localites_ids);
+        $point_desservis = Input::get('point_desservis');
+        $convention->point_desservis()->sync($point_desservis);
 
         return redirect("/convention" . "/" . $convention->id . "/edit")->with('success', 'Convention modifier avec succès');
     }

@@ -13,19 +13,18 @@ class PartenaireTypeController extends Controller
     public function addPartenaire(Request $req)
     {
         $part = PartenaireType::find($req->partnenaire_type_id);
-        $pourcentage = ($req->montant / $req->montant_global) * 100;
+        $pourcentage = (str_replace(',','',$req->montant) / str_replace(',','',$req->montant_global)) * 100;
         if(isset($req->demande_id))
         {
-            $part->demandes()->attach($req->demande_id, ['montant' => $req->montant]);
-            return response()->json(array('part' => $part, 'montant' => $req->montant, 'pourcentage' => $pourcentage, 'demande' => $req->demande_id));
+            $part->demandes()->attach($req->demande_id, ['montant' => str_replace(',','',$req->montant) ]);
+            return response()->json(array('part' => $part, 'montant' => str_replace(',','',$req->montant) , 'pourcentage' => $pourcentage, 'demande' => $req->demande_id));
         }
 
         if(isset($req->convention_id))
         {
-            $part->conventions()->attach($req->convention_id, ['montant' => $req->montant]);
-            return response()->json(array('part' => $part, 'montant' => $req->montant, 'pourcentage' => $pourcentage, 'convention' => $req->convention_id));
+            $part->conventions()->attach($req->convention_id, ['montant' => str_replace(',','',$req->montant) ]);
+            return response()->json(array('part' => $part, 'montant' => str_replace(',','',$req->montant) , 'pourcentage' => $pourcentage, 'convention' => $req->convention_id));
         }
-
     }
 
     public function deletePartenaire(Request $req)

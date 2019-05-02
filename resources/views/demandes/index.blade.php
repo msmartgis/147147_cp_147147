@@ -185,12 +185,8 @@
 <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
 
-
 <script src="{{asset('js/functions/functions.js')}}"></script>
-
 <script src="{{asset('js/jquery.masknumber.js')}}"></script>
-
-
 <script>
 
     //function for decision
@@ -278,7 +274,7 @@
                 },
                 dataType: 'JSON',
                 success: function (data) {
-                    //console.log(data);
+                    console.log(data);
                     $('#table_body_partner').empty();
                     var montant_cp =data.pivot[0].pivot.montant;
                     var montant_global = data.montantGlobal.montant_global;
@@ -296,12 +292,29 @@
                         {
                             $('#table_body_partner').append('<tr style="text-align: center">'+
                                 '<td>'+
-                                '<input type="checkbox" name="record" id="row_'+data.pivot_all[i].id+'">'+
-                                '<label for="row_'+data.pivot_all[i].id+'"></label>'+
+                                '<input type="checkbox" name="record" id="row_part_'+data.pivot_all[i].id+'">'+
+                                '<label for="row_part_'+data.pivot_all[i].id+'"></label>'+
                                 '</td>'+
                                 '<td><input type="hidden" name="partnenaire_type_ids[]" value="' + data.pivot_all[i].id + '">'+data.pivot_all[i].nom_fr+'</td>'+
                                 '<td><input type="hidden" name="montant[]" value="' + data.pivot_all[i].pivot.montant + '">'+data.pivot_all[i].pivot.montant+'</td>'+
                                 '<td><input type="hidden" name="pourcentage[]" value="' +(data.pivot_all[i].pivot.montant)/montant_global*100+ '">'+(data.pivot_all[i].pivot.montant)/montant_global*100+'</td>'+
+                                '</tr>');
+                        }
+
+                    }
+
+                    if(data.pivot_source_financement.length > 0){
+                        console.log(data.pivot_source_financement.length);
+                        for( j = 0 ; j < data.pivot_source_financement.length ; j++)
+                        {
+                            $('#table_body_source').append('<tr style="text-align: center">'+
+                                '<td>'+
+                                '<input type="checkbox" name="record" id="row_src_'+data.pivot_source_financement[j].id+'">'+
+                                '<label for="row_src_'+data.pivot_source_financement[j].id+'"></label>'+
+                                '</td>'+
+                                '<td><input type="hidden" name="sourceFinancement_ids[]" value="' + data.pivot_source_financement[j].id + '">'+data.pivot_source_financement[j].source+'</td>'+
+                                '<td><input type="hidden" name="references[]" value="' + data.pivot_source_financement[j].id + '">'+data.pivot_source_financement[j].reference+'</td>'+
+                                '<td><input type="hidden" name="montant[]" value="' +data.pivot_source_financement[j].pivot.montant+ '">'+data.pivot_source_financement[j].pivot.montant+'</td>'+
                                 '</tr>');
                         }
                     }
@@ -353,42 +366,40 @@
 
     //demande_managemnt
     function restaurerAccordOrAffectation(id, url, success_message, sub_title_message) {
-     swal({
-     title: "Vous êtes sûr?",
-     text: sub_title_message,
-     type: "warning",
-     showCancelButton: true,
-     confirmButtonColor: "#DD6B55",
-     confirmButtonText: "Oui, je confirme!",
-     cancelButtonText: "Non, annuler!",
-     closeOnConfirm: false,
-     closeOnCancel: false
-     }, function (isConfirm) {
-     if (isConfirm) {
-     //send an ajax request to the server update decision column
-     $.ajax({
-     url: url,
-     type: 'POST',
-     data: {
-     "_token": '{{ csrf_token() }}',
-     "demande_ids": id,
-     },
-     dataType: 'JSON',
-     success: function (data) {
-     console.log(data);
-     if (data.length == 0) {
-     swal("Réussi!", success_message, "success");
-     setTimeout(location.reload.bind(location), 500);
+         swal({
+         title: "Vous êtes sûr?",
+         text: sub_title_message,
+         type: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#DD6B55",
+         confirmButtonText: "Oui, je confirme!",
+         cancelButtonText: "Non, annuler!",
+         closeOnConfirm: false,
+         closeOnCancel: false
+         }, function (isConfirm) {
+         if (isConfirm) {
+         //send an ajax request to the server update decision column
+         $.ajax({
+         url: url,
+         type: 'POST',
+         data: {
+         "_token": '{{ csrf_token() }}',
+         "demande_ids": id,
+         },
+         dataType: 'JSON',
+         success: function (data) {
+         console.log(data);
+         if (data.length == 0) {
+         swal("Réussi!", success_message, "success");
+         setTimeout(location.reload.bind(location), 500);
+         }
+         }
+         });
+         } else {
+         swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
+         }
+         });
      }
-     }
-     });
-     } else {
-     swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
-     }
-     });
-     }
-
-
 
 </script>
 

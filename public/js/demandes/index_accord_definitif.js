@@ -138,7 +138,7 @@ $(document).ready(function () {
     });
 
     //Affectation aux conventions
-    $("#affecter_btn_accord_definitif").click(function () {
+    $("#affecter_cnv_btn_accord_definitif").click(function () {
         datatbleId = "demandes_datatables_accord_definitif";
         nameCheckbox = "checkbox_accord_definitif";
         titleModal = "AFFECTER AUX CONVENTIONS";

@@ -223,7 +223,7 @@
             </table>
 
             <div style="text-align: center">
-                <a href="#" id="add_piece"> <i class="fa fa-plus"></i>
+                <a href="#" id="add_piece_projet_btn"> <i class="fa fa-plus"></i>
                     <b> Ajouter Pièce</b>
                 </a>
             </div>

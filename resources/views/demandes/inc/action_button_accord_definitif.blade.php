@@ -1,6 +1,6 @@
 
 <div class="row" style="margin-top: 4px">
-    <div class="col-lg-6"><button type="button" class="btn btn-secondary pull-left unique-choice-accord-definitif" id="affecter_btn_accord_definitif" style="margin-right : 6px ;background-color: #F2922A !important;border-color: #F2922A !important;" disabled><i class="fa fa-thumbs-o-up" style="margin-right: 6px "></i>Affecter aux conventions</button>
+    <div class="col-lg-6"><button type="button" class="btn btn-secondary pull-left unique-choice-accord-definitif" id="affecter_cnv_btn_accord_definitif" style="margin-right : 6px ;background-color: #F2922A !important;border-color: #F2922A !important;" disabled><i class="fa fa-thumbs-o-up" style="margin-right: 6px "></i>Affecter aux conventions</button>
         <button type="button" class="btn btn-secondary pull-left multiple-choice-accord-definitif" id="restaurer_acccord_definitif_btn" style="margin-right : 6px" disabled><i class="fa fa-arrow-circle-left" style="margin-right: 6px"></i>Restaurer </button>
     </div>
 

@@ -258,11 +258,10 @@ $(document).ready(function () {
                         <td>" + data.montant + "</td>\
                         <td>" + data.pourcentage + "</td>\
                         <td style='text-align: center'>\
-                            <button class='btn btn-secondary edit-partenaire' data-demande'" + data.demande + "' data-partnaire='" + data.id + "' style='visibility : hidden'><i class='fa fa-edit'></i> Editer</button>\
-                            <button type='button' class='btn btn-warning delete-partenaire' data-demande'" + data.demande + "' data-partnaire='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
+                            <button type='button' class='btn btn-danger-table delete-partenaire' data-demande'" + data.demande + "' data-partnaire='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
                         </td>\
                         </tr>";
-                $(markup).prependTo("#partenaire_tbody");
+                $(markup).appendTo("#partenaire_tbody");
                 $('#m-add-partenaire-edit').modal('hide');
             }
         });
@@ -299,6 +298,87 @@ $(document).ready(function () {
                         _token: '{{ csrf_token() }}',
                         demande_id: demande_id,
                         partenaire_id: partenaire_id
+                    },
+                    dataType: 'JSON',
+                    success: function (data) {
+
+                        if (data.length == 0) {
+                            swal("Réussi!", message_reussi, "success");
+                            setTimeout(location.reload.bind(location), 500);
+                        }
+
+                    }
+                });
+            } else {
+                swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
+            }
+        });
+    });
+
+
+    //add source financement
+    $('.form-add-src-edit').on('submit', function (e) {
+        $form = $(this);
+        e.preventDefault();
+        var markup = '';
+        url = $form.attr('action');
+        type = $form.attr('method');
+        $.ajax({
+            'type': type,
+            'url': url,
+            'data': new FormData(this),
+            // Tell jQuery not to process data or worry about content-type
+            // You *must* include these options!
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                console.log(data);
+                markup =
+                    "<tr style='text-align: center'>\
+                        <td>" + data.src.source + "</td>\
+                        \<td>" + data.src.reference + "</td>\
+                        <td>" + data.montant + "</td>\
+                        <td style='text-align: center'>\
+                            <button type='button' class='btn btn-danger-table delete-src' data-demande'" + data.demande + "' data-src='" + data.src.id + "'><i class='fa fa-close'></i> Supprimer</button>\
+                        </td>\
+                        </tr>";
+                $(markup).appendTo("#table_body_source");
+                $('#m-add-src-edit').modal('hide');
+            }
+        });
+    });
+
+
+    //delete source financement
+    $(".delete-src").click(function () {
+        var demande_id;
+        var partenaire_id;
+        demande_id = $(this).data('demande');
+        src_id = $(this).data('src');
+        message_reussi = "La source de financement a été supprimer avec succès";
+        message_sub_title = "La source de financement sera supprimée définitivement dans cette demande";
+
+        swal({
+            title: "Vous êtes sûr?",
+            text: message_sub_title,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Oui, je confirme!",
+            cancelButtonText: "Non, annuler!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                //send an ajax request to the server update decision column
+                $.ajax({
+                    url: '{!! route("delete_src")!!}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        demande_id: demande_id,
+                        src_id: src_id
                     },
                     dataType: 'JSON',
                     success: function (data) {

@@ -18,13 +18,24 @@
                                     <div class="row" style="margin-top: 8px">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                {{Form::select('moa', $moas, $convention->moas->id,
-                                                [
-                                                'data-placeholder' => 'Selectionner commune(s)',
-                                                'class'=>'form-control select2',
-                                                'name'=>'moa'
-                                                ]
-                                                )}}
+                                                @if(!empty($convention->moas))
+                                                    {{Form::select('moa', $moas,$convention->moas->id,
+                                                    [
+                                                        'data-placeholder' => 'Selectionner commune(s)',
+                                                        'class'=>'form-control select2',
+                                                        'name'=>'moa'
+                                                    ]
+                                                    )}}
+                                                @else
+                                                    {{Form::select('moa', $moas,'',
+                                                    [
+                                                        'data-placeholder' => 'Selectionner commune(s)',
+                                                        'class'=>'form-control select2',
+                                                        'name'=>'moa'
+                                                    ]
+                                                    )}}
+                                                @endif
+
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
@@ -37,13 +48,26 @@
                                     <div class="row" style="margin-top: 8px">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                {{Form::select('programme', $programmes, $convention->programme->id,
-                                                [
-                                                'data-placeholder' => 'Selectionner commune(s)',
-                                                'class'=>'form-control select2',
-                                                'name'=>'programme'
-                                                ]
-                                                )}}
+
+                                                @if(!empty($convention->programme))
+                                                    {{Form::select('programme', $programmes, $convention->programme->id,
+                                                    [
+                                                    'data-placeholder' => 'Selectionner commune(s)',
+                                                    'class'=>'form-control select2',
+                                                    'name'=>'programme'
+                                                    ]
+                                                    )}}
+                                                @else
+                                                    {{Form::select('programme', $programmes,'',
+                                                    [
+                                                    'data-placeholder' => 'Selectionner commune(s)',
+                                                    'class'=>'form-control select2',
+                                                    'name'=>'programme'
+                                                    ]
+                                                    )}}
+                                                @endif
+
+
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
@@ -137,12 +161,23 @@
                                                                 {{$item->path}}
                                                             </td>
                                                             <td style="text-align: center;">
-                                                                <a href="/files/download/conventions/{{$convention->id}}/{{$item->path}}">
-                                                                    <button type="button"  class="btn btn-secondary-table " >
-                                                                        <i class="fa fa-download"></i>
-                                                                        Télécharger</button>
+                                                                @if($convention->demande_id != null)
 
-                                                                </a>
+                                                                    <a href="/files/download/demandes/{{$convention->demande_id}}/{{$item->path}}">
+                                                                        <button type="button"  class="btn btn-secondary-table " >
+                                                                            <i class="fa fa-download"></i>
+                                                                            Télécharger</button>
+                                                                    </a>
+
+                                                                @else()
+                                                                    <a href="/files/download/conventions/{{$convention->id}}/{{$item->path}}">
+                                                                        <button type="button"  class="btn btn-secondary-table " >
+                                                                            <i class="fa fa-download"></i>
+                                                                            Télécharger</button>
+                                                                    </a>
+
+                                                                @endif
+
                                                             </td>
                                                             <td style="text-align: center">
                                                                 <button type="button" class="btn btn-danger-table delete-piece" data-id="conventionPiece_{{$item->id}}"><i class="fa fa-close"></i>
@@ -241,14 +276,14 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                {{Form::label('','Localites:')}}
-                                                {{Form::select('localites', $localites, $convention->point_desservis->pluck('id'),
+                                                {{Form::label('','POINTS DESSERVIS:')}}
+                                                {{Form::select('point_desservis', $point_desservis, $convention->point_desservis->pluck('id'),
                                                 [
                                                 'data-placeholder' => 'Selectionner commune(s)',
                                                 'class'=>'form-control select2 ',
                                                 'style'=>'width:100%',
                                                 'multiple'=>'multiple',
-                                                'name'=>'localites[]'
+                                                'name'=>'point_desservis[]'
                                                 ]
                                                 )}}
                                             </div>
@@ -294,10 +329,8 @@
                                             {{Form::textarea('observation', $convention->observation, ['id' => 'editor1', 'class' => 'form-control', 'placeholder' => 'Body Text'])}}
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <!-- /.box-body -->
@@ -310,12 +343,11 @@
     <div class="col-lg-2" style="padding-left: 0px !important;">
         <div class="h-p100  bg-light bg-secondary-gradient" style="padding-right: 5px">
             <div class="box bg-transparent no-border no-shadow ">
-                <div class="box-body no-padding mailbox-nav ">
-
+                <div class="box-body no-padding mailbox-nav">
 
                     <div class="form-group">
                         {{Form::label('','N°:')}}
-                        {{Form::text('num_ordre',$convention->num_ordre,['class'=>'form-control','disabled'])}}
+                        {{Form::text('num_ordre',$convention->num_ordre,['class'=>'form-control'])}}
                     </div>
 
 

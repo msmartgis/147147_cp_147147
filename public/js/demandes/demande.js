@@ -123,6 +123,7 @@ $(document).ready(function () {
     });
 
     $('#add_piece').click(function () {
+
         var markup = '<tr>\
         <td>\
             <div class=\"form-group\">\
@@ -154,12 +155,14 @@ $(document).ready(function () {
     //item to make id checkbox unique
     var item_partenaire = 0;
     $("#add_partner_to_list").click(function () {
+        console.log('clicked');
         var montant_g = $('#montant_g').val();
         var partenair_type_text = $("#partenaire_type :selected").text();
         var partenair_type_id = $("#partenaire_type").val();
         var montant_partnenaire = $("#montant_partnenaire").val();
         //console.log(montant_partnenaire);
         var pourcent = (parseFloat(montant_partnenaire.replace(/,/g, '')) / parseFloat(montant_g.replace(/,/g, '')) ) * 100;
+
 
         var markup = '<tr>'+
             '<td style=\'text-align:center\'>'+

@@ -163,6 +163,7 @@
 
 {{--ADD piece to DCE--}}
 {{-- add piece --}}
+@if(!empty($convention->appelOffres))
 <div class="modal fade" id="modal_add_piece_projet">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -217,4 +218,4 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-
+@endif
