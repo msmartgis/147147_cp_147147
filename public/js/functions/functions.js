@@ -25,7 +25,6 @@ function loading_image(id,div_response)
 //delete row from table
 function removeRowFromTable(tableBody)
 {
-
     $('#'+tableBody).find('input[name="record"]').each(function () {
         if ($(this).is(":checked")) {
             $(this).parents("tr").remove();

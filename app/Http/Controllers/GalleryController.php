@@ -71,8 +71,8 @@ class GalleryController extends Controller
     {
         $path = $request->path;
         $convention_id = $request->id_convention;
-        unlink(storage_path("app/public/uploaded_files/galleries/projets_partenaire/thumbnail/".$convention_id.'/'.$path));
-        unlink(storage_path("app/public/uploaded_files/galleries/projets_partenaire/".$convention_id.'/'.$path));
+        Storage::disk('uploads')->delete('galleries/projets_partenaire/thumbnail/'.$convention_id.'/'.$path);
+        Storage::disk('uploads')->delete('galleries/projets_partenaire/'.$convention_id.'/'.$path);
         $gallery_img = Gallery::where('filename','=',$request->path)->delete();
 
         //redirecting with success message

@@ -68,8 +68,14 @@ class PieceController extends Controller
 
     public function deletePiece(Request $req)
     {
-        $piece = Piece::find($req->piece_id)->delete();
-         //redirecting with success message
+        $file_name = $req->file_name;
+        $directory = $req->directory;
+        $id =  $req->file_id;
+        $object_id = $req->object_id;
+
+        Storage::disk('uploads')->delete($directory.'/'.$object_id.'/'.$file_name);
+        $piece = Piece::find($id)->delete();
+        //redirecting with success message
         return response()->json();
     }
     /**

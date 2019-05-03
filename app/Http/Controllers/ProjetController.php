@@ -24,6 +24,7 @@ use App\PointDesservi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
+use Illuminate\Support\Facades\Storage;
 use Image;
 
 use DataTables;
@@ -466,6 +467,8 @@ class ProjetController extends Controller
      */
     public function destroy(Convention $projet)
     {
-        //
+        Storage::disk('uploads')->deleteDirectory('conventions/'.$projet->id);
+        Convention::destroy($projet->id);
+        return response()->json();
     }
 }

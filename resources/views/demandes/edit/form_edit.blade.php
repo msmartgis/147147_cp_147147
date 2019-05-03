@@ -120,17 +120,18 @@
 
 
                                                             <td style="text-align: center;">
-                                                                <a href="/files/download/demandes/{{$demande->id}}/{{$item->path}}">
-                                                                    <button type="button"  class="btn btn-secondary-table " >
-                                                                        <i class="fa fa-download"></i>
-                                                                        Télécharger</button>
-
-                                                                </a>
+                                                                @if($item->path != '')
+                                                                    <a href="/files/download/demandes/{{$demande->id}}/{{$item->path}}">
+                                                                        <button type="button"  class="btn btn-secondary-table " >
+                                                                            <i class="fa fa-download"></i>
+                                                                            Télécharger</button>
+                                                                    </a>
+                                                                @endif
 
                                                             </td>
 
                                                             <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-piece" data-id="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                <button type="button" class="btn btn-danger-table delete-piece" data-file_name="{{$item->path}}" data-file_id="{{$item->id}}"  data-directory="demandes" data-object_id="{{$demande->id}}"><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
                                                         </tr>

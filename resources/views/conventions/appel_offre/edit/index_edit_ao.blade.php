@@ -200,26 +200,26 @@
                     console.log(data);
                     markup =
                         '<tr style="text-align: center">'+
-                            '<td>' + data.piece.document + '</td>'+
+                            '<td>' + data.piece.document.toUpperCase() + '</td>'+
                             '<td>' + data.piece.file_name + '</td>'+
                             '<td style="text-align: center">'+
                             '<a href="/files/download/appel_offres/'+data.piece.appel_offre_id+'/'+data.file_name+'">'+
-                                '<button class="btn btn-secondary-table delete-piece" ><i class="fa fa-download"></i> Telecharger</button>'+
+                                '<button type="button"  class="btn btn-secondary-table "  ><i class="fa fa-download"></i> Telecharger</button>'+
                             '</td>'+
 
                             '<td style="text-align: center">'+
-                                '<button class="btn btn-danger-table delete-piece" data-id=' + data.piece.id + '><i class="fa fa-close"></i> Supprimer</button>'+
+                                '<button type="button" class="btn btn-danger-table delete-piece" data-route="{{route('dce.delete_piece')}}" data-directory="appel_offres" data-file='+data.piece.file_name+' data-id=' + data.piece.id + ' data-ao='+ data.piece.appel_offre_id +'><i class="fa fa-close"></i> Supprimer</button>'+
                             '</td>'+
                         '</tr>';
 
                     if(data.type_piece == "dossier_adjiducataire")
                     {
-                        $(markup).prependTo("#pieces_tbody_adjiducataire");
+                        $(markup).appendTo("#pieces_tbody_adjiducataire");
                     }
 
                     if(data.type_piece == "dce")
                     {
-                        $(markup).prependTo("#pieces_tbody_dce");
+                        $(markup).appendTo("#pieces_tbody_dce");
                     }
 
 
@@ -235,10 +235,12 @@
             var directory;
             var file_name;
             var route;
+            var ao;
             route = $(this).data('route');
             piece_id = $(this).data('id');
             directory = $(this).data('directory');
             file_name = $(this).data('file');
+            ao = $(this).data('ao')
             message_reussi = "La piéce a été supprimer avec succès";
             message_sub_title = "Le document sera supprimé définitivement";
 
@@ -262,7 +264,8 @@
                             _token: '{{ csrf_token() }}',
                             piece_id: piece_id,
                             directory: directory,
-                            file_name: file_name
+                            file_name: file_name,
+                            ao : ao
                         },
                         dataType: 'JSON',
                         success: function (data) {

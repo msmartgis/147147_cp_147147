@@ -276,22 +276,11 @@
                                                             </td>
                                                             @if(Auth::user()->organisation_id == $convention->organisation_id )
                                                                 <td style="text-align: center;">
-
-                                                                    @if($convention->demande_id != null)
-                                                                        <a href="/files/download/demandes/{{$convention->demande_id}}/{{$item->path}}">
-                                                                            <button type="button"  class="btn btn-secondary-table " >
-                                                                                <i class="fa fa-download"></i>
-                                                                                Télécharger</button>
-                                                                        </a>
-                                                                    @else()
                                                                         <a href="/files/download/conventions/{{$convention->id}}/{{$item->path}}">
                                                                             <button type="button"  class="btn btn-secondary-table " >
                                                                                 <i class="fa fa-download"></i>
                                                                                 Télécharger</button>
                                                                         </a>
-                                                                    @endif
-
-
 
                                                                 </td>
                                                                 <td style="text-align: center">

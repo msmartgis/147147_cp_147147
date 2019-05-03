@@ -161,26 +161,15 @@
                                                                 {{$item->path}}
                                                             </td>
                                                             <td style="text-align: center;">
-                                                                @if($convention->demande_id != null)
-
-                                                                    <a href="/files/download/demandes/{{$convention->demande_id}}/{{$item->path}}">
-                                                                        <button type="button"  class="btn btn-secondary-table " >
-                                                                            <i class="fa fa-download"></i>
-                                                                            Télécharger</button>
-                                                                    </a>
-
-                                                                @else()
                                                                     <a href="/files/download/conventions/{{$convention->id}}/{{$item->path}}">
                                                                         <button type="button"  class="btn btn-secondary-table " >
                                                                             <i class="fa fa-download"></i>
                                                                             Télécharger</button>
                                                                     </a>
 
-                                                                @endif
-
                                                             </td>
                                                             <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-piece" data-id="conventionPiece_{{$item->id}}"><i class="fa fa-close"></i>
+                                                                <button type="button" class="btn btn-danger-table delete-piece" data-file_name="{{$item->path}}" data-file_id="{{$item->id}}"  data-directory="conventions" data-object_id="{{$convention->id}}"><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
                                                         </tr>

@@ -155,6 +155,12 @@
 </script>
 <script>
 $(document).ready(function () {
+    $(document).ready(function(){
+        $("#delete_elemtent_row_demande_btn").click(function () {
+            alert('clicked');
+            removeRowFromTable('piece_demande_tbody');
+        });
+    });
 
     var switchMarkup;
     loading_image('loading-point-desservi','response-div-point-desservi');
@@ -237,6 +243,13 @@ $(document).ready(function () {
 
     $(".delete-row").click(function () {
         removeRowFromTable('table_body_partner');
+    });
+
+    $('#add_partner_demande').click(function(){
+        if($('#montant_g').val() != '' && $('#montant_g').val() != 0)
+        {
+            $('#m-add-partenaire').modal('show');
+        }
     });
 
 });

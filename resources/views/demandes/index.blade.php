@@ -189,6 +189,8 @@
 <script src="{{asset('js/jquery.masknumber.js')}}"></script>
 <script>
 
+
+
     //function for decision
     function decision_function(datatble_id, name_chechbox, url, method) {
         var checked = false;
@@ -400,6 +402,10 @@
          }
          });
      }
+
+
+
+
 
 </script>
 

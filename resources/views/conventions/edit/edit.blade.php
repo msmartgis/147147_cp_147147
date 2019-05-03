@@ -171,11 +171,21 @@
                         <td>" + data.nom + "</td>\
                         <td>" + data.path + "</td>\
                         <td style='text-align: center'>\
-                            <button class='btn btn-warning delete-piece' data-id='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
+                            <a href='/files/download/convention/' + data.convention_id + '/' + data.path + '>'\
+                                <button type='button'  class='btn btn-secondary-table' >\
+                                <i class='fa fa-download'></i>\
+                                Télécharger</button>\
+                            </a>\
+                        </td>\
+                        <td style='text-align: center'>\
+                            <button type='button' class='btn btn-danger-table delete-piece' data-file_name="+data.path+" data-file_id="+data.id+" data-file_id="+data.id+" data-directory='conventions' data-object_id="+data.convention_id+"><i class='fa fa-close'></i> Supprimer</button>\
                         </td>\
                         </tr>";
-                    $(markup).prependTo("#pieces_tbody");
+                    $(markup).appendTo("#pieces_tbody");
                     $('#add_modal_piece').modal('hide');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
                 }
             });
         });
@@ -183,8 +193,15 @@
 
         //delete piece
         $(".delete-piece").click(function () {
-            var piece_id;
-            piece_id = $(this).data('id');
+            var object_id;
+            var file_name;
+            var directory;
+            var file_id;
+            object_id = $(this).data('object_id');
+            file_name = $(this).data('file_name');
+            directory = $(this).data('directory');
+            file_id = $(this).data('file_id');
+
             message_reussi = "La piéce a été supprimer avec succès";
             message_sub_title = "Le document sera supprimé définitivement";
 
@@ -206,7 +223,10 @@
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
-                            piece_id: piece_id
+                            object_id: object_id,
+                            file_name : file_name,
+                            directory : directory,
+                            file_id : file_id
                         },
                         dataType: 'JSON',
                         success: function (data) {
@@ -354,13 +374,13 @@
 
 
         //supprimer demande
-        $('#supprimer_demande').click(function(){
-            var demande_id = $(this).data('id');
+        $('#supprimer_convention').click(function(){
+            var convention_id = $(this).data('id');
             message_reussi = "Suppression effectuée avec succès";
-            message_sub_title = "Voulez vous vraiment supprimer cette demande!!";
-            url='{{url("demandes")}}'+'/'+demande_id;
-            redirect = "/demandes";
-            delete_function(demande_id,url,message_reussi,message_sub_title,redirect);
+            message_sub_title = "Voulez vous vraiment supprimer cette convention!!";
+            url='{{url("convention")}}'+'/'+convention_id;
+            redirect = "/convention";
+            delete_function(convention_id,url,message_reussi,message_sub_title,redirect);
         });
 
 

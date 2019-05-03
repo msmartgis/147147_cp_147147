@@ -190,7 +190,7 @@ class DemandesController extends BaseController
                     $new_piece->nom = $piece->nom;
                     $new_piece->path = $piece->path;
                     $new_piece->convention_id = $convention_id;
-                    //Storage::disk('public')->copy("storage/app/public/uploaded_files/demandes/".$demande->id."/".$piece->path, "storage/app/public/uploaded_files/conventions/".$convention_id."/".$piece->path);
+                    Storage::disk('uploads')->copy("demandes/".$demande->id."/".$piece->path, "conventions/".$convention_id."/".$piece->path);
                     //rename(storage_path("app/public/uploaded_files/demandes/".$demande->id."/".$piece->path),storage_path("app/public/uploaded_files/conventions/".$convention_id."/".$piece->path));
                     $new_piece->save();
                 }
@@ -1076,7 +1076,7 @@ class DemandesController extends BaseController
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['num_ordre' => 'required']);
+        $this->validate($request, ['num_ordre' => 'required','longueur' => 'required']);
         //find the communes for this demande and put them in an array
         $communes = $request->input('communes');
 
@@ -1174,28 +1174,20 @@ class DemandesController extends BaseController
                 $piece = new Piece;
                 $piece->type = $pieces_types_array[$i];
                 $piece->nom = $pieces_noms_array[$i];
-                $piece->path = $piece_file_names[$i];
+                if(count($piece_file_names) > 0)
+                {
+                    $piece->path = $piece_file_names[$i];
+                }else{
+                    $piece->path = '';
+                }
+
                 $piece->demande_id = $actu_id_demande;
                 $piece->save();
                 //array_push($array_combination_piece, $piece);
             }
 
-
-
-           /* foreach ($array_combination_piece as $p) {
-                $piec = new Piece;
-                $piec->type = $p->type;
-                $piec->nom = $p->nom;
-                $piec->path = $p->path;
-
-
-            }*/
         }
-        
 
-        //save data in porteur de demande and add it as partenaire_type *****
-        $partenaire_type = new PartenaireType;
-        $moa_from_porteur = new Moa;
 
 
 
@@ -1295,6 +1287,7 @@ class DemandesController extends BaseController
      */
     public function destroy(Demande $demande)
     {
+        Storage::disk('uploads')->deleteDirectory('demandes/'.$demande->id);
         Demande::destroy($demande->id);
         return response()->json();
     }

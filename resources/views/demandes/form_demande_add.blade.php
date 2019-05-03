@@ -214,15 +214,23 @@
                 <div class="table-responsive" style="margin-top: 12px">
                     <table class="table table-piece">
                         <tr style="text-align: center;">
+                            <th></th>
                             <th>Type</th>
                             <th>Nom</th>
                             <th>Upload</th>
                         </tr>
-                        <tbody>
+                        <tbody id="piece_demande_tbody">
                         <tr>
                             <td>
                                 <div class="form-group">
-
+                                    <div class="checkbox">
+                                        <input type="checkbox" id="row_piece_0" name="record">
+                                        <label for="row_piece_0"></label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
                                     {{Form::select('piece_type',
                                     [
                                     'etude' => 'Etude',
@@ -274,6 +282,7 @@
                             <b> Ajouter Pièce</b>
                         </a>
                     </div>
+                    <button type="button" class="btn btn-warning delete-row" id="delete_elemtent_row_demande_btn"> <i class="fa fa-close"></i> Supprimer Document</button>
                 </div>
             </div>
 
@@ -332,8 +341,8 @@
                             </thead>
                             <tbody id="table_body_partner">
                             <tr>
-                                <td colspan="4" style="text-align: center"><a href="#" id="add_partner"
-                                                                              data-toggle="modal" data-target="#m-add-partenaire"> <i class="fa fa-plus"></i>
+                                <td colspan="4" style="text-align: center"><a href="#" id="add_partner_demande"
+                                                                              > <i class="fa fa-plus"></i>
                                         <b>Ajouter partenaire</b> </a>
                                 </td>
                             </tr>

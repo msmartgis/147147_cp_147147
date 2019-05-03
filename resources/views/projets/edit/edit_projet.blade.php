@@ -385,16 +385,18 @@
         });
 
         //supprimer demande
-        $('#supprimer_demande').click(function(){
-            var demande_id = $(this).data('id');
+        $('#supprimer_convention').click(function(){
+            var convention_id = $(this).data('id');
             message_reussi = "Suppression effectuée avec succès";
-            message_sub_title = "Voulez vous vraiment supprimer cette demande!!";
-            url='{{url("demandes")}}'+'/'+demande_id;
-            redirect = "/demandes";
-            delete_function(demande_id,url,message_reussi,message_sub_title,redirect);
+            message_sub_title = "Voulez vous vraiment supprimer cette convention!!";
+            url='{{url("projet")}}'+'/'+convention_id;
+            redirect = "/projet";
+            delete_function(convention_id,url,message_reussi,message_sub_title,redirect);
         });
 
-        //delete function
+
+
+//delete function
         function delete_function(id, url, success_message, sub_title_message,redirect) {
             swal({
                 title: "Vous êtes sûr?",

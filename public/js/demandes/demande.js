@@ -122,9 +122,15 @@ $(document).ready(function () {
         }
     });
 
+ var item = 1;
     $('#add_piece').click(function () {
-
         var markup = '<tr>\
+        <td><div class="form-group">\
+            <div class="checkbox">\
+            <input type="checkbox" id="row_piece_"+item name="record">\
+            <label for="row_piece_"+item></label>\
+            </div>\
+            </div></td>\
         <td>\
             <div class=\"form-group\">\
                 <select class = \"form-control document\" name="pieces_types[]" style=\"width: 100%;\">\
@@ -148,6 +154,7 @@ $(document).ready(function () {
             </div>\
         </td>\
     </tr>';
+        item++;
         $(".table-piece tr:last").after(markup);
     });
 
@@ -155,7 +162,6 @@ $(document).ready(function () {
     //item to make id checkbox unique
     var item_partenaire = 0;
     $("#add_partner_to_list").click(function () {
-        console.log('clicked');
         var montant_g = $('#montant_g').val();
         var partenair_type_text = $("#partenaire_type :selected").text();
         var partenair_type_id = $("#partenaire_type").val();

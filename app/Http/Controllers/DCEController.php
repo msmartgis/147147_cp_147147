@@ -51,12 +51,9 @@ class DCEController extends Controller
         $file_name = $req->file_name;
         $directory = $req->directory;
         $id =  $req->piece_id;
-
         $local_path = 'public/uploaded_files/appel_offres/';
-        //unlink($local_path.$id.'/'.$file_name);
-        //File::disk('local')->delete($local_path.$id.'/'.$file_name);
-        Storage::disk('local')->delete($local_path.$id.'/'.$file_name);
-
+       // unlink(storage_path($local_path.$req->ao.'/'.$file_name));
+        Storage::disk('uploads')->delete('appel_offres/'.$req->ao.'/'.$file_name);
         $piece = DCE::find($id)->delete();
         //redirecting with success message
         return response()->json();

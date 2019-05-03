@@ -171,18 +171,27 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (data) {
-                console.log(data);
                 markup =
                     "<tr style='text-align: center'>\
                         <td>" + data.type + "</td>\
                         <td>" + data.nom + "</td>\
                         <td>" + data.path + "</td>\
                         <td style='text-align: center'>\
+                            <a href='/files/download/demandes/' + data.id + '/' + data.path + '>'\
+                                <button type='button'  class='btn btn-secondary-table' >\
+                                <i class='fa fa-download'></i>\
+                                Télécharger</button>\
+                            </a>\
+                        </td>\
+                        <td style='text-align: center'>\
                             <button class='btn btn-danger-table delete-piece' data-id='" + data.id + "'><i class='fa fa-close'></i> Supprimer</button>\
                         </td>\
                         </tr>";
-                $(markup).prependTo("#pieces_tbody");
+                $(markup).appendTo("#pieces_tbody");
                 $('#add_modal_piece').modal('hide');
+               // setTimeout(function() {
+                //    location.reload();
+               // }, 2000);
             }
         });
     });
@@ -192,8 +201,15 @@ $(document).ready(function () {
 
     //delete piece
     $(".delete-piece").click(function () {
-        var piece_id;
-        piece_id = $(this).data('id');
+        var object_id;
+        var file_name;
+        var directory;
+        var file_id;
+        object_id = $(this).data('object_id');
+        file_name = $(this).data('file_name');
+        directory = $(this).data('directory');
+        file_id = $(this).data('file_id');
+
         message_reussi = "La piéce a été supprimer avec succès";
         message_sub_title = "Le document sera supprimé définitivement";
 
@@ -215,7 +231,10 @@ $(document).ready(function () {
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
-                        piece_id: piece_id
+                        object_id: object_id,
+                        file_name : file_name,
+                        directory : directory,
+                        file_id : file_id
                     },
                     dataType: 'JSON',
                     success: function (data) {

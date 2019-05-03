@@ -139,7 +139,6 @@
 
 <script src="{{asset('js/projets/create.js')}}"></script>
 <script src="{{asset('js/functions/functions.js')}}"></script>
-<script src="{{asset('js/Cleave.js')}}"></script>
 
 <script>
     ! function (window, document, $) {
@@ -152,11 +151,7 @@
         format: 'dd/mm/yyyy'
     });
 
-    var cleave = new Cleave('.input-element', {
-        date: true,
-        delimiter: '-',
-        datePattern: ['Y', 'm', 'd']
-    });
+
 
 </script>
 <script>

@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Input;
 
 use DataTables;
 use DB;
+use Illuminate\Support\Facades\Storage;
 
 class ConventionController extends Controller
 {
@@ -504,7 +505,7 @@ class ConventionController extends Controller
 
                 ->addColumn('nombre_projet', function ($appelOffres) {
                     $nombre_projet = Convention::where([['appel_offre_id', '=', $appelOffres->id]])
-                        ->distinct('appel_offre_id')->count('appel_offre_id');
+                        ->count('appel_offre_id');
                     return $nombre_projet;
                 })
 
@@ -665,7 +666,7 @@ class ConventionController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['num_ordre' => 'required']);
+        $this->validate($request, ['num_ordre' => 'required','longueur' => 'required']);
         //find the communes for this convention and put them in an array
 
         //get the last id of conventions
@@ -894,6 +895,7 @@ class ConventionController extends Controller
      */
     public function destroy(Convention $convention)
     {
+        Storage::disk('uploads')->deleteDirectory('conventions/'.$convention->id);
         Convention::destroy($convention->id);
         return response()->json();
     }

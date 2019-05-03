@@ -308,7 +308,7 @@
                                                             </td>
 
                                                             <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-piece" data-route="{!! route('dce.delete_piece')!!}" data-directory="appel_offres" data-file="{{$item->file_name}}" data-id="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                <button type="button" class="btn btn-danger-table delete-piece" data-route="{!! route('dce.delete_piece')!!}" data-directory="appel_offres" data-file="{{$item->file_name}}" data-ao="{{$appelOffre->id}}" data-id="{{$item->id}}"><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
                                                         </tr>
@@ -360,7 +360,7 @@
                                                                 </td>
 
                                                                 <td style="text-align: center">
-                                                                    <button type="button" class="btn btn-danger-table delete-piece" data-route="{!! route('dossier_adjiducataire.delete_piece')!!}" data-directory="appel_offres" data-file="{{$item->file_name}}" data-id="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                    <button type="button" class="btn btn-danger-table delete-piece" data-route="{!! route('dossier_adjiducataire.delete_piece')!!}" data-directory="appel_offres" data-file="{{$item->file_name}}" data-id="{{$item->id}}" data-ao="{{$appelOffre->id}}"><i class="fa fa-close"></i>
                                                                         Supprimer</button>
                                                                 </td>
                                                             </tr>
