@@ -144,6 +144,8 @@
         <!-- modals -->
         @include('demandes.modals')
     </div>
+
+
 @endsection
 
 @push('added_scripts')

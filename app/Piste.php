@@ -16,4 +16,9 @@ class Piste extends Model
     {
         return $this->belongsTo('App\Convention', 'convention_id');
     }
+
+    public function geometries()
+    {
+        return $this->hasMany('App\Geometry');
+    }
 }

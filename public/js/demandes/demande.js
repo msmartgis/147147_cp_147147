@@ -1,98 +1,218 @@
 
-var ny = [29.504514364812469, -9.599814615107725];
-// création de la map
-var map = L.map("map").setView(ny, 10);
 
-// création du calque images
-var baselayer = L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 20
+    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
+        map = new L.Map('map', {layers: [osm], center: new L.LatLng(29.504514364812469, -9.599814615107725), zoom: 10});
+
+
+
+    var style1 = {
+        color: "#1e88e5",
+        width: 3,
+        opacity: 1,
+        fillOpacity: 0.2,
+        fillColor: "#1e88e5"
+    };
+    var style2 = {
+        color: "#fc4b6c",
+        width: 3,
+        opacity: 1,
+        fillOpacity: 0.2,
+        fillColor: "#fc4b6c"
+    };
+    var selectedPiste = null;
+    var drawnItems = new L.FeatureGroup();
+    var OldItems = new L.FeatureGroup();
+
+    map.addLayer(drawnItems);
+    map.addLayer(OldItems);
+
+
+    var drawControl = new L.Control.Draw({
+        draw: {
+            polyline: false,
+            polygon: false,
+            circle: false,
+            marker: false,
+            rectangle : false,
+            circlemarker : false
+        },
+        edit: {
+            featureGroup: drawnItems,
+            draw: false,
+            remove: false
+        }
+    });
+    map.addControl(drawControl);
+
+    var stateChangingButton = L.easyButton({
+        states: [{
+            stateName: 'zoom-to-forest',        // name the state
+            icon:      'fa-edit',               // and define its properties
+            title:     'Modifier piste',      // like its title
+            onClick: function(btn, map) {
+                if (selectedPiste != null) {
+                    selectedPiste.editing.enable();
+                }      // and its callback
+
+                btn.state('zoom-to-school');    // change state on click!
+            }
+        }, {
+            stateName: 'zoom-to-school',
+            icon:      'fa-save',
+            title:     'Enregistrer les modifications',
+            onClick: function(btn, map) {
+                selectedPiste.editing.disable();
+                selectedPiste.setStyle(style1);
+                selectedPiste = null;
+                btn.state('zoom-to-forest');
+                btn.disable();
+            }
+        }]
+    });
+    stateChangingButton.addTo(map);
+
+    var stateChangingButtonForAddingPiste = L.easyButton({
+        states: [{
+            stateName: 'zoom-to-forest',        // name the state
+            icon:      'fa-pencil',               // and define its properties
+            title:     'Modifier piste',      // like its title
+            onClick: function(btn, map) {
+                new L.Draw.Polyline(map, {shapeOptions: style2}).enable();
+            }
+        }]
+    });
+    stateChangingButtonForAddingPiste.addTo(map);
+
+    var savePiste = L.easyButton({
+        states: [{
+            stateName: 'zoom-to-forest',        // name the state
+            icon:      'fa-save',               // and define its properties
+            title:     'Enregister piste',      // like its title
+            onClick: function(btn, map) {
+                storePistesDB();
+                console.log(drawnItems.toGeoJSON());
+            }
+        }]
+    });
+    savePiste.addTo(map);
+
+    $(document).ready(function () {
+        getPistes();
+        stateChangingButton.disable();
+
+        map.on('draw:created', function (e) {
+            e.layer.on('click', function() {
+                if (selectedPiste != null) {
+                    selectedPiste.setStyle(style1);
+                }
+                selectedPiste = e.layer;
+                console.log(selectedPiste);
+                e.layer.setStyle(style2);
+                stateChangingButton.enable();
+            });
+            e.layer.setStyle(style1);
+            drawnItems.addLayer(e.layer);
+        });
+    });
+
+
+    function getPistes() {
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: "/api/pistes",
+            success: function(res) {
+                console.log(res);
+                /*
+                for (i = 0; i < res.features.length; i++) {
+                    res.features[i].geometry.coordinates = JSON.parse(res.features[i].geometry.coordinates);
+                }
+
+                L.geoJSON(res, {
+                    onEachFeature: function(feature, layer) {
+                        layer.setStyle(style1);
+                        OldItems.addLayer(layer);
+                        layer.on('click', function() {
+                            if (selectedPiste != null) {
+                                selectedPiste.setStyle(style1);
+                            }
+                            selectedPiste = layer;
+                            console.log(selectedPiste);
+                            layer.setStyle(style2);
+                            stateChangingButton.enable();
+                        });
+                    }
+                });
+                map.fitBounds(OldItems.getBounds());
+                */
+            }
+        });
     }
-).addTo(map);
 
-// map layers changing
+    function storePistesDB(){
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: "/api/pistes",
+            success: function(res) {
+                console.log(res);
 
-$("#hybrid_btn").click(function () {
-    $("#satellite_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    $("#hybrid_btn")
-        .removeClass()
-        .addClass("baselayer_btn active");
-    $("#road_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    $("#none_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    baselayer.remove();
-    baselayer = L.tileLayer(
-        "https://www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}", {
-            maxZoom: 19,
-            attribution: ""
-        }
-    ).addTo(map);
-});
-$("#satellite_btn").click(function () {
-    $("#satellite_btn")
-        .removeClass()
-        .addClass("baselayer_btn active");
-    $("#hybrid_btn")
-        .removeClass()
-        .addClass("baselayer_btn ");
-    $("#road_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    $("#none_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    baselayer.remove();
-    baselayer = L.tileLayer(
-        "https://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}", {
-            maxZoom: 19,
-            attribution: ""
-        }
-    ).addTo(map);
-});
-$("#road_btn").click(function () {
-    $("#satellite_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    $("#hybrid_btn")
-        .removeClass()
-        .addClass("baselayer_btn ");
-    $("#road_btn")
-        .removeClass()
-        .addClass("baselayer_btn active");
-    $("#none_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    baselayer.remove();
-    baselayer = L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 19,
-            attribution: ""
-        }
-    ).addTo(map);
-});
-$("#none_btn").click(function () {
-    $("#satellite_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    $("#hybrid_btn")
-        .removeClass()
-        .addClass("baselayer_btn ");
-    $("#road_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    $("#none_btn")
-        .removeClass()
-        .addClass("baselayer_btn active");
-    baselayer.remove();
-});
+            }
+        });
+    }
+
+    /* // Set the title to show on the polygon button
+     L.drawLocal.draw.toolbar.buttons.polygon = 'Draw a sexy polygon!';
+
+     var drawControl = new L.Control.Draw({
+     position: 'topright',
+     draw: {
+     polyline: false,
+     polygon: false,
+     circle: false,
+     marker: true
+     },
+     edit: {
+     featureGroup: drawnItems,
+     remove: true
+     }
+     });
+     map.addControl(drawControl);
+
+     map.on(L.Draw.Event.CREATED, function (e) {
+     var type = e.layerType,
+     layer = e.layer;
+
+     if (type === 'marker') {
+     layer.bindPopup('A popup!');
+     }
+
+     drawnItems.addLayer(layer);
+     }); */
+
+    map.on(L.Draw.Event.EDITED, function (e) {
+        var layers = e.layers;
+        var countOfEditedLayers = 0;
+        layers.eachLayer(function (layer) {
+            countOfEditedLayers++;
+        });
+        console.log("Edited " + countOfEditedLayers + " layers");
+    });
+
+    /* L.DomUtil.get('changeColor').onclick = function () {
+     drawControl.setDrawingOptions({rectangle: {shapeOptions: {color: '#004a80'}}});
+     }; */
+
+    L.DomUtil.get('saveChanges').onclick = function () {
+        console.log(drawnItems.toGeoJSON());
+    };
 
 
-$(document).ready(function () {
+
+    $(document).ready(function () {
+
     //pieces Mngmnt ************
     //piece change
     $('.table-piece tbody').on('change', '.document', function () {

@@ -18,6 +18,7 @@ class CreatePistesTable extends Migration
             $table->double('longueur');
             $table->bigInteger('demande_id')->unsigned()->nullable();
             $table->bigInteger('convention_id')->unsigned()->nullable();
+            $table->boolean('active')->nullable();
             $table->timestamps();
 
             $table->index(['id','created_at']);

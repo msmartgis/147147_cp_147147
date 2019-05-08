@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Piste;
+use App\Geometry;
+use App\Http\Resources\GeometryResource;
 use Illuminate\Http\Request;
-use App\Http\Resources\PisteRes as PisteResource;
 
-class PisteController extends Controller
+class GeometryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,13 +15,7 @@ class PisteController extends Controller
      */
     public function index()
     {
-       //get pistes
-        $pistes = Piste::with('demande','convention','geometries')
-            ->where('id','=',63)
-            ->orWhere('id','=',66)
-            ->orWhere('id','=',70)
-            ->get();
-        return PisteResource::collection($pistes);
+        //
     }
 
     /**
@@ -48,21 +42,22 @@ class PisteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Piste  $piste
+     * @param  \App\Geometry  $geometry
      * @return \Illuminate\Http\Response
      */
-    public function show(Piste $piste)
+    public function show(Geometry $geometry)
     {
-        //
+        GeometryResource::withoutWrapping();
+        return new GeometryResource($geometry);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Piste  $piste
+     * @param  \App\Geometry  $geometry
      * @return \Illuminate\Http\Response
      */
-    public function edit(Piste $piste)
+    public function edit(Geometry $geometry)
     {
         //
     }
@@ -71,10 +66,10 @@ class PisteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Piste  $piste
+     * @param  \App\Geometry  $geometry
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Piste $piste)
+    public function update(Request $request, Geometry $geometry)
     {
         //
     }
@@ -82,10 +77,10 @@ class PisteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Piste  $piste
+     * @param  \App\Geometry  $geometry
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Piste $piste)
+    public function destroy(Geometry $geometry)
     {
         //
     }

@@ -1,4 +1,6 @@
 <!-- Bootstrap 4.0-->
+
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
 <!-- Bootstrap extend-->
@@ -16,6 +18,8 @@
 <link rel="stylesheet" href="{{asset('css/font-awesome.css')}}" />
 	<!-- horizontal menu style -->
 <link rel="stylesheet" href="{{asset('css/horizontal_menu_style.css')}}">
+
+
 
 		{{-- font awesome --}}
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">

@@ -16,3 +16,13 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//liste of pistes
+Route::get('pistes','PisteController@index')->name('getPistes');
+
+//list single piste
+Route::get('article/{id}','PisteController@show');
+
+
+//create pistes
+Route::post('article','PisteController@store');

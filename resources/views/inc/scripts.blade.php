@@ -1,6 +1,6 @@
  <!-- jQuery 3 -->
 	<script src="{{asset('vendor_components/jquery-3.3.1/jquery-3.3.1.js')}}"></script>
-	
+
 	<!-- jQuery UI 1.11.4 -->
 	<script src="{{asset('vendor_components/jquery-ui/jquery-ui.js')}}"></script>
 	

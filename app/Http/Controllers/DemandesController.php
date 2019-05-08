@@ -1029,7 +1029,6 @@ class DemandesController extends BaseController
 
 
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -1047,7 +1046,7 @@ class DemandesController extends BaseController
         $localites = PointDesserviCategorie::find(1)->point_desservis;
         $categorie_points = PointDesserviCategorie::all();
         $etablissement_scols = PointDesservi::all()->where('type_point', '=', 'etab.scolaire');
-      
+
 
         //find the max numero ordre and increment 
         $max_num_ordre = Demande::max('num_ordre');
@@ -1133,6 +1132,7 @@ class DemandesController extends BaseController
         $piste = new Piste;
         $piste->longueur = $request->input('longueur');
         $piste->demande_id = $actu_id_demande;
+        //return $piste;
         $piste->save();
         
 

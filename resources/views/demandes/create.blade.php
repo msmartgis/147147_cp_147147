@@ -11,9 +11,12 @@
 <!-- iCheck for checkboxes and radio inputs -->
 <link rel="stylesheet" href="{{asset('vendor_plugins/iCheck/all.css')}}" />
 
-{{-- leaflet --}}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
 
+
+{{--mapping css--}}
+<link rel="stylesheet" href="{{asset('mapping/libs/leaflet.css')}}"/>
+<link rel="stylesheet" href="{{asset('mapping/leaflet.draw.css')}}">
+<link rel="stylesheet" href="{{asset('mapping/libs/easy-button.css')}}">
 
 
 <!-- toast CSS -->
@@ -90,6 +93,7 @@
     <!-- modals -->
 </div>
 <!-- /.box -->
+
 @endsection 
 @push('added_scripts')
 <!-- steps -->
@@ -122,8 +126,7 @@
 <!-- bootstrap datepicker -->
 <script src="{{asset('vendor_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
 
-{{-- leaflet --}}
-<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+
 
 <!-- CK Editor -->
 <script src="{{asset('vendor_components/ckeditor/ckeditor.js')}}"></script>
@@ -136,6 +139,42 @@
 <!-- toast -->
 <script src="{{asset('vendor_components/jquery-toast-plugin-master/src/jquery.toast.js')}}"></script>
 <script src="{{asset('js/toastr.js')}}"></script>
+
+<script src="{{asset('mapping/libs/leaflet-src.js')}}"></script>
+<script src="{{asset('mapping/libs/easy-button.js')}}"></script>
+<script src="{{asset('mapping/Leaflet.draw.js')}}"></script>
+<script src="{{asset('mapping/Leaflet.Draw.Event.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.Poly.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.SimpleShape.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.Rectangle.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.Marker.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.CircleMarker.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.Circle.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Feature.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Polyline.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Polygon.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.SimpleShape.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Rectangle.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Circle.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Marker.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.CircleMarker.js')}}"></script>
+<script src="{{asset('mapping/ext/TouchEvents.js')}}"></script>
+<script src="{{asset('mapping/ext/LatLngUtil.js')}}"></script>
+<script src="{{asset('mapping/ext/GeometryUtil.js')}}"></script>
+<script src="{{asset('mapping/ext/LineUtil.Intersect.js')}}"></script>
+<script src="{{asset('mapping/ext/Polyline.Intersect.js')}}"></script>
+<script src="{{asset('mapping/ext/Polygon.Intersect.js')}}"></script>
+<script src="{{asset('mapping/Control.Draw.js')}}"></script>
+<script src="{{asset('mapping/Tooltip.js')}}"></script>
+<script src="{{asset('mapping/Toolbar.js')}}"></script>
+<script src="{{asset('mapping/draw/DrawToolbar.js')}}"></script>
+<script src="{{asset('mapping/edit/EditToolbar.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/EditToolbar.Edit.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/EditToolbar.Delete.js')}}"></script>
+
+
+
+
 
 <script src="{{asset('js/demandes/demande.js')}}"></script>
 <script src="{{asset('js/functions/functions.js')}}"></script>
