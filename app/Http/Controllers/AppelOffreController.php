@@ -127,7 +127,7 @@ class AppelOffreController extends Controller
     {
         $this->validate($request, ['numero' => 'required']);
         $appelOffre = new AppelOffre();
-        $actu_id = AppelOffre::max('id')+1;
+        //$actu_id = AppelOffre::max('id')+1;
         $appelOffre->numero = $request->numero;
         $appelOffre->montant_globale = $request->montant_global;
         $appelOffre->caution_provisoir = $request->caution_provisoire;
@@ -142,6 +142,11 @@ class AppelOffreController extends Controller
         $appelOffre->date_commencement =  $this->date_fromatting($request->date_commencement);
         $appelOffre->observations = $request->observations;
         $appelOffre->save();
+
+        if($appelOffre->save())
+        {
+            $actu_id = $appelOffre->id;
+        }
 
 
         if($appelOffre->save())

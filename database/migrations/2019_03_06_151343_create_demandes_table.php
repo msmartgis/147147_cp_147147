@@ -14,8 +14,7 @@ class CreateDemandesTable extends Migration
     public function up()
     {
         Schema::create('demandes', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('uuid');
+            $table->uuid('id');
             $table->bigInteger('session_id')->unsigned()->nullable();
             $table->integer('num_ordre')->nullable();
             $table->date('date_reception')->nullable();
@@ -31,6 +30,7 @@ class CreateDemandesTable extends Migration
             $table->softDeletes(); // <-- This will add a deleted_at field
             $table->timestamps();
 
+            $table->primary('id');
             $table->index(['session_id', 'created_at','num_ordre']);
 
             $table->foreign('session_id')

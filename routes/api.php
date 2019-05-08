@@ -17,12 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//liste of pistes
-Route::get('pistes','PisteController@index')->name('getPistes');
+Route::get('pistes','PisteController@index');
 
-//list single piste
-Route::get('article/{id}','PisteController@show');
+Route::post('piste','PisteController@store');
 
-
-//create pistes
-Route::post('article','PisteController@store');
+Route::get('piste/{id}','PisteController@show');

@@ -248,7 +248,7 @@ class DemandesController extends BaseController
     //get demandes en cours for index tab en_cours datatables
     public function getDemandes(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis')->where([['decision', '=', 'en_cours'],['etat','=','sans'],['is_affecter','=',0]]);
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis')->where([['decision', '=', 'en_cours'],['etat','=','sans'],['is_affecter','=',0]])->orderBy('num_ordre');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -380,7 +380,7 @@ class DemandesController extends BaseController
 
     public function getDemandesATraiter(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis')->where([['decision', '=', 'a_traiter'],['etat','=','sans'],['is_affecter','=',0]]);
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis')->where([['decision', '=', 'a_traiter'],['etat','=','sans'],['is_affecter','=',0]])->orderBy('num_ordre');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -511,7 +511,7 @@ class DemandesController extends BaseController
 
     public function getDemandesAccordDefinitif(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis')->where([['decision', '=', 'accord_definitif'],['etat','=','sans'],['is_affecter','=',0]]);
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis')->where([['decision', '=', 'accord_definitif'],['etat','=','sans'],['is_affecter','=',0]])->orderBy('num_ordre');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -633,7 +633,7 @@ class DemandesController extends BaseController
      */
     public function getDemandesAffectees(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where('is_affecter', '=', 1);
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where('is_affecter', '=', 1)->orderBy('num_ordre');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -761,7 +761,7 @@ class DemandesController extends BaseController
 
     public function getDemandesRealisee(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['etat','=','realisee'],['is_affecter','=',0]]);
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['etat','=','realisee'],['is_affecter','=',0]])->orderBy('num_ordre');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -881,7 +881,7 @@ class DemandesController extends BaseController
 
     public function getDemandesProgrammee(Request $request)
     {
-        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['decision','=','sans'],['etat','=','programmee'],['is_affecter','=',0]]);
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires', 'session', 'point_desservis')->where([['decision','=','sans'],['etat','=','programmee'],['is_affecter','=',0]])->orderBy('num_ordre');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($demandes)
                 ->addColumn('communes', function (Demande $demande) {
@@ -1084,8 +1084,8 @@ class DemandesController extends BaseController
         //get the localites
         $localites = $request->input('localites');        
         //get the last id of demandes
-        $id_demande = Demande::max('id');
-        $actu_id_demande = $id_demande + 1;
+        //$id_demande = Demande::max('id');
+        //$actu_id_demande = $id_demande + 1;
         //create demande
         $demande = new Demande;
 
@@ -1104,6 +1104,12 @@ class DemandesController extends BaseController
         $demande->porteur_projet_id = $request->input('porteur_projet');
         $demande->decision = 'en_cours';
         $demande->save();
+        if($demande->save())
+        {
+
+            $actu_id_demande = $demande->id;
+        }
+
 
         //partenaire *****
         if (Input::has('partnenaire_type_ids')) {

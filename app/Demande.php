@@ -4,12 +4,23 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Uuids;
+use Webpatser\Uuid\Uuid;
 class Demande extends Model
 {
-    protected $fillable = ['num_ordre', 'date_reception', 'objet_fr', 'objet_ar', 'montant_global', 'observation', 'decision', 'etat', 'is_affecter', 'porteur_projet_id'];
+    protected $fillable = ['id','num_ordre', 'date_reception', 'objet_fr', 'objet_ar', 'montant_global', 'observation', 'decision', 'etat', 'is_affecter', 'porteur_projet_id'];
     use SoftDeletes;
     protected $dates = ['deleted_at','date_reception'];
+    public $incrementing = false;
+
+   public static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->id = (string) Uuid::generate();
+        });
+    }
+
 
     public function communes()
     {

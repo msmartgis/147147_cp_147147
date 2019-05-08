@@ -337,7 +337,7 @@ class ConventionController extends Controller
     public function getConventionsAppelOffre(Request $request)
     {
         $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'versements')
-            ->whereNull('appel_offre_id');
+            ->whereNull('appel_offre_id')->orderBy('created_at');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($conventions)
                 ->addColumn('communes', function (Convention $convention) {
@@ -488,7 +488,7 @@ class ConventionController extends Controller
     // APPEL OFFRES SHOW
     public function getAppelOffre(Request $request)
     {
-        $appelOffres = AppelOffre::with('conventions','moas','adjiducataires')->where('etat','!=','annule');
+        $appelOffres = AppelOffre::with('conventions','moas','adjiducataires')->where('etat','!=','annule')->orderBy('created_at');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($appelOffres)
 
@@ -670,7 +670,7 @@ class ConventionController extends Controller
         //find the communes for this convention and put them in an array
 
         //get the last id of conventions
-        $actu_id_convention = Convention::max('id')+ 1;
+        //$actu_id_convention = Convention::max('id')+ 1;
         //create convention
 
         $convention = new Convention();
@@ -685,6 +685,11 @@ class ConventionController extends Controller
         $convention->organisation_id = Auth::user()->organisation_id;
         $convention->is_project = 0;
         $convention->save();
+
+        if($convention->save())
+        {
+            $actu_id_convention = $convention->id;
+        }
 
         //partenaire *****
         if (Input::has('partnenaire_type_ids')) {
