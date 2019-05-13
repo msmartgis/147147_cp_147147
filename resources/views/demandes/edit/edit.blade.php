@@ -20,9 +20,15 @@
 
  <!--alerts CSS -->
     <link href="{{asset('vendor_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
+
+{{--mapping css--}}
+<link rel="stylesheet" href="{{asset('mapping/libs/leaflet.css')}}"/>
+<link rel="stylesheet" href="{{asset('mapping/leaflet.draw.css')}}">
+<link rel="stylesheet" href="{{asset('mapping/libs/easy-button.css')}}">
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
 <style>
     #map {
-        height: 45vh;
+        height: 70vh;
         margin-top : 8px;
         margin-bottom: 8px;
         z-index: 1;
@@ -140,14 +146,51 @@
 </script>
 
 
+<script src="{{asset('mapping/libs/leaflet-src.js')}}"></script>
+<script src="{{asset('mapping/libs/easy-button.js')}}"></script>
+<script src="{{asset('mapping/Leaflet.draw.js')}}"></script>
+<script src="{{asset('mapping/Leaflet.Draw.Event.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.Poly.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.SimpleShape.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.Rectangle.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.Marker.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.CircleMarker.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.Circle.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Feature.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Polyline.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Polygon.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.SimpleShape.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Rectangle.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Circle.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Marker.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.CircleMarker.js')}}"></script>
+<script src="{{asset('mapping/ext/TouchEvents.js')}}"></script>
+<script src="{{asset('mapping/ext/LatLngUtil.js')}}"></script>
+<script src="{{asset('mapping/ext/GeometryUtil.js')}}"></script>
+<script src="{{asset('mapping/ext/LineUtil.Intersect.js')}}"></script>
+<script src="{{asset('mapping/ext/Polyline.Intersect.js')}}"></script>
+<script src="{{asset('mapping/ext/Polygon.Intersect.js')}}"></script>
+<script src="{{asset('mapping/Control.Draw.js')}}"></script>
+<script src="{{asset('mapping/Tooltip.js')}}"></script>
+<script src="{{asset('mapping/Toolbar.js')}}"></script>
+<script src="{{asset('mapping/draw/DrawToolbar.js')}}"></script>
+<script src="{{asset('mapping/edit/EditToolbar.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/EditToolbar.Edit.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/EditToolbar.Delete.js')}}"></script>
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+
+
 <!-- Sweet-Alert  -->
     <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
     <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
 
+{{--
 <script src="{{asset('js/demandes/demande.js')}}"></script>
-<script src="{{asset('js/demandes/functions.js')}}"></script>
+--}}
+
+
 <script src="{{asset('js/demandes/edit/demande_edit.js')}}"></script>
-<script src="{{asset('js/functions.js')}}"></script>
+
 
 
 
@@ -453,8 +496,6 @@ $(document).ready(function () {
     });
 
 
-
-
           //supprimer demande
             $('#supprimer_demande').click(function(){               
               var demande_id = $(this).data('id');                
@@ -467,7 +508,7 @@ $(document).ready(function () {
 
 
         //demande_managemnt
-function demande_mngmnt(id, url, success_message, sub_title_message) {
+    function demande_mngmnt(id, url, success_message, sub_title_message) {
     swal({
         title: "Vous êtes sûr?",
         text: sub_title_message,
@@ -504,43 +545,44 @@ function demande_mngmnt(id, url, success_message, sub_title_message) {
 }
 
 
-//delete function 
-function delete_function(id, url, success_message, sub_title_message,redirect) {
-    swal({
-        title: "Vous êtes sûr?",
-        text: sub_title_message,
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Oui, je confirme!",
-        cancelButtonText: "Non, annuler!",
-        closeOnConfirm: false,
-        closeOnCancel: false
-    }, function (isConfirm) {
-        if (isConfirm) {
-            //send an ajax request to the server update decision column
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                data: {
-                    "_token": '{{ csrf_token() }}',
-                    "_method": 'DELETE',                  
-                    "id": id,
-                },
-                dataType: 'JSON',
-                success: function (data) {
-                    console.log(data);
-                    if (data.length == 0) {
-                        swal("Réussi!", success_message, "success");
-                        setTimeout(window.location.replace(redirect), 500);
+    //delete function
+    function delete_function(id, url, success_message, sub_title_message,redirect) {
+        swal({
+            title: "Vous êtes sûr?",
+            text: sub_title_message,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Oui, je confirme!",
+            cancelButtonText: "Non, annuler!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                //send an ajax request to the server update decision column
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    data: {
+                        "_token": '{{ csrf_token() }}',
+                        "_method": 'DELETE',
+                        "id": id,
+                    },
+                    dataType: 'JSON',
+                    success: function (data) {
+                        console.log(data);
+                        if (data.length == 0) {
+                            swal("Réussi!", success_message, "success");
+                            setTimeout(window.location.replace(redirect), 500);
+                        }
                     }
-                }
-            });
-        } else {
-            swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
-        }
-    });
-}
+                });
+            } else {
+                swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
+            }
+        });
+    }
+
     //accord_defintif
     $("#accord_definitif_edit_btn").click(function () {
         id_full = $("#accord_definitif_edit_btn").data('id');
@@ -551,7 +593,7 @@ function delete_function(id, url, success_message, sub_title_message,redirect) {
     });
 
 
-//affectation aux conventions
+    //affectation aux conventions
     $("#affectation_conventions_edit_btn").click(function () {
         id_full = $("#accord_definitif_edit_btn").data('id');
         id = id_full.split('_').pop();

@@ -257,6 +257,8 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 		this._mouseMarker.setLatLng(latlng);
 
 		L.DomEvent.preventDefault(e.originalEvent);
+		
+		this._map.fire("edited");
 	},
 
 	_vertexChanged: function (latlng, added) {

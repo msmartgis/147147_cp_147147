@@ -22,6 +22,18 @@ function loading_image(id,div_response)
     });
 }
 
+
+function loadingPopupData(id,div_response)
+{
+    $(document).ajaxStart(function () {
+        $('.'+div_response).hide();
+        $('#'+id).show();
+    }).ajaxStop(function () {
+        $('#'+id).hide();
+        $('.'+div_response).show();
+    });
+}
+
 //delete row from table
 function removeRowFromTable(tableBody)
 {

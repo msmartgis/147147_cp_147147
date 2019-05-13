@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
      <meta name="author" content="">
-    <link rel="icon" href="{{asset('images/favicon.ico')}}">
+    <link rel="icon" href="{{asset('images/favicon.svg')}}">
 
      <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Oswald|Roboto+Condensed" rel="stylesheet">
 	<title>{{config('app.name')}}</title>
@@ -17,13 +17,12 @@
      <style>
          @font-face {
              font-family: Lato;
-             src: url('{{ public_path('fonts/Lato/lato-v11-latin-ext_latin-700.ttf') }}');
+             src: url('{{ asset('fonts/Lato/lato-v11-latin-ext_latin-700.ttf') }}');
          }
-
 
          @font-face {
              font-family: Lato2;
-             src: url('{{ public_path('fonts/Lato/lato-v11-latin-ext_latin-regular.ttf') }}');
+             src: url('{{ asset('fonts/Lato/lato-v11-latin-ext_latin-regular.ttf') }}');
          }
 
          .lato-bold

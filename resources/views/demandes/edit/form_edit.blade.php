@@ -289,10 +289,10 @@
                                     <h5>LOCALISATION SUR LA CARTE </h5>
                                     <hr style="color:#2d353c;margin:0">
                                     <div class="row">
-                                        <div class=" col-12">
+                                        <div class="col-lg-12 col-md-4 col-sm-12 col-xs-12">
                                             <div id="map" style="border: solid 1px #666666;box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);"></div>
-
-                                            <div class="cmodali active" style=" width: 300px;  height: 100px;left:calc(100% - 320px);top:calc(100% - 72px);z-index:1;">
+                                            {{--<button type="button" id="saveChanges">Save</button>--}}
+                                            <div class="cmodali active" style=" width: 300px;  height: 100px;left:calc(100% - 320px);top:calc(100% - 72px);z-index:99998;">
                                                 <div class="row">
                                                     <div class="col-md-3">
                                                         <img id="satellite_btn" cl class="baselayer_btn active" src="{{asset('images/satellite.png')}}" />
@@ -308,6 +308,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
 
                                     </div>
@@ -387,9 +388,10 @@
                     </div>
 
                     <div class="form-group">
-                        {{Form::hidden('id_pist',$demande->piste->id)}}
+                        {{Form::hidden('id_pist',$demande->piste->id,['id' => 'piste_id_input'])}}
+                        {{Form::hidden('geometry','',['id' => 'geometry_input'])}}
                         {{Form::label('','Longueur:')}}
-                        {{Form::text('longueur',$demande->piste->longueur,['class'=>'form-control'])}}
+                        {{Form::text('longueur',$demande->piste->longueur,['class'=>'form-control','id'=>'longueur_input'])}}
                     </div>
                     <br>
                     <br>

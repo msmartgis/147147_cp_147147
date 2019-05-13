@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="{{asset('mapping/libs/leaflet.css')}}"/>
 <link rel="stylesheet" href="{{asset('mapping/leaflet.draw.css')}}">
 <link rel="stylesheet" href="{{asset('mapping/libs/easy-button.css')}}">
+<link href='{{asset('mapping/leaflet.fullscreen.css')}}' rel='stylesheet' />
 
 
 <!-- toast CSS -->
@@ -171,7 +172,7 @@
 <script src="{{asset('mapping/edit/EditToolbar.js')}}"></script>
 <script src="{{asset('mapping/edit/handler/EditToolbar.Edit.js')}}"></script>
 <script src="{{asset('mapping/edit/handler/EditToolbar.Delete.js')}}"></script>
-
+<script src='{{asset('mapping/Leaflet.fullscreen.min.js')}}'></script>
 
 
 
@@ -194,9 +195,10 @@
 </script>
 <script>
 $(document).ready(function () {
+    //send form add demande
+
     $(document).ready(function(){
         $("#delete_elemtent_row_demande_btn").click(function () {
-            alert('clicked');
             removeRowFromTable('piece_demande_tbody');
         });
     });

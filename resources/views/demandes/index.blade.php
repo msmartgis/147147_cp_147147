@@ -6,8 +6,7 @@
     <!-- bootstrap datepicker -->
     <link rel="stylesheet" href="{{asset('vendor_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}" />
 
-    <!--alerts CSS -->
-    <link href="{{asset('vendor_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
+
 
 
     <style>
@@ -183,9 +182,7 @@
 <script src="{{asset('js/demandes/index_realisee.js')}}"></script>
 
 
-<!-- Sweet-Alert  -->
-<script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
-<script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
+
 
 <script src="{{asset('js/functions/functions.js')}}"></script>
 <script src="{{asset('js/jquery.masknumber.js')}}"></script>

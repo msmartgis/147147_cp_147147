@@ -11,7 +11,6 @@ var baselayer = L.tileLayer(
 ).addTo(map);
 
 // map layers changing
-
 $("#hybrid_btn").click(function () {
     $("#satellite_btn")
         .removeClass()

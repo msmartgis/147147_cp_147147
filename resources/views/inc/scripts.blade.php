@@ -42,6 +42,10 @@
  <script src="{{asset('js/jquery.price_format.js')}}"></script>
  <script src="{{asset('js/functions/functions.js')}}"></script>
 
+ <!-- Sweet-Alert  -->
+ <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
+ <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
+
 {{-- <script>
 	$.ajaxSetup({
 			headers: {

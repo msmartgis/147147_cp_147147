@@ -42,11 +42,7 @@ import icon and fonts Styles
 *******************/
 
 /* TODO find a way to access to style url in laravel  */
-@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.4.8/collection/icon/icon.css');
-@import url('https://data.jsdelivr.com/v1/package/gh/lykmapipo/themify-icons/badge)](https://www.jsdelivr.com/package/gh/lykmapipo/themify-icons');
-@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
-@import url('https://fonts.googleapis.com/css?family=Lato');
+
 
 /*
 @import url('/vendor_components/flag-icon/css/flag-icon.css');

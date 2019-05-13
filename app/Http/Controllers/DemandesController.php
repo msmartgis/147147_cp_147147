@@ -1048,10 +1048,21 @@ class DemandesController extends BaseController
         $etablissement_scols = PointDesservi::all()->where('type_point', '=', 'etab.scolaire');
 
 
-        //find the max numero ordre and increment 
-        $max_num_ordre = Demande::max('num_ordre');
-        $current_numero_ordre = $max_num_ordre + 1;
-        $demande = new Demande;
+        //find the max numero ordre and increment
+        $current_numero_ordre = Demande::max('num_ordre') + 1;
+
+        //create a new demande to reserve
+        $demande = new Demande();
+
+        //create a new piste to reserve id
+        $piste = new Piste();
+        $piste->active = 0;
+        $piste->save();
+        if($piste->save())
+        {
+           $piste_id=  $piste->id;
+        }
+
         return view('demandes.create')->with(
             [
                 'demande' => $demande,
@@ -1063,6 +1074,7 @@ class DemandesController extends BaseController
                 'partenaire_types' => $partenaire_types,
                 'porteur_projet' => $porteur_projet,
                 'categorie_points' => $categorie_points,
+                'piste_id' => $piste_id
             ]
         );
     }
@@ -1135,9 +1147,12 @@ class DemandesController extends BaseController
         }
         
         //save data in piste*****
-        $piste = new Piste;
+        $piste = Piste::find($request->piste_id);
         $piste->longueur = $request->input('longueur');
         $piste->demande_id = $actu_id_demande;
+        //get geojson
+        $piste->geometry = $request->geometry;
+        $piste->active = 1;
         //return $piste;
         $piste->save();
         
@@ -1276,7 +1291,7 @@ class DemandesController extends BaseController
 
         //update pistes 
         Piste::where('id', $request->id_pist)
-            ->update(['longueur' => $request->longueur]);
+            ->update(['longueur' => $request->longueur,'geometry'=>$request->geometry]);
 
 
          //update points desservis

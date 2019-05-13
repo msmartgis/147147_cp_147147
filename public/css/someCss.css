@@ -537,3 +537,25 @@ table.dataTable thead .sorting_desc_disabled:after
 {
     box-shadow: unset !important;
 }
+
+
+/*LEAFLET*/
+.leaflet-popup-content
+{
+    margin-left: 8px !important;
+    margin-right: 8px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 3px !important;
+    padding-top: 19px !important;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4) !important;
+}
+
+.title-popup
+{
+    color: #fff !important;
+    text-align: center;
+}

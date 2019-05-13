@@ -6,6 +6,8 @@
         <!-- Step 1 -->
         <h6>Information Général</h6>
         <section>
+
+
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="form-group">
@@ -61,9 +63,12 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <input type="hidden" id="piste_id_input" name="piste_id" value="{{$piste_id}}">
+                    <input type="hidden" id="geometry_input" class="form-control" name="geometry" value="">
                     <div class="form-group">
+
                         {{Form::label('','Longueur :')}}
-                        {{Form::text('longueur','',['class'=>'form-control currency-input'])}}
+                        {{Form::text('longueur','',['class'=>'form-control','id'=>'longueur_input'])}}
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -94,7 +99,23 @@
 
                 <div class="col-lg-12 col-md-4 col-sm-12 col-xs-12">
                     <div id="map" style="border: solid 1px #666666;box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);"></div>
-                    <button type="button" id="saveChanges">Save</button>
+                    {{--<button type="button" id="saveChanges">Save</button>--}}
+                    <div class="cmodali active" style=" width: 300px;  height: 100px;left:calc(100% - 320px);top:calc(100% - 72px);z-index:99998;">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img id="satellite_btn" cl class="baselayer_btn active" src="{{asset('images/satellite.png')}}" />
+                            </div>
+                            <div class="col-md-3">
+                                <img id="hybrid_btn" class="baselayer_btn" src="{{asset('images/hybrid.png')}}" />
+                            </div>
+                            <div class="col-md-3">
+                                <img id="road_btn" class="baselayer_btn" src="{{asset('images/road.png')}}" />
+                            </div>
+                            <div class="col-md-3">
+                                <img id="none_btn" class="baselayer_btn" src="{{asset('images/none.png')}}" />
+                            </div>
+                        </div>
+                    </div>
 
 
                 </div>
@@ -152,7 +173,7 @@
                                     <select class="form-control  type_point select2" name="type_point[]"
                                             style="width : 100%">
                                         @foreach($categorie_points as $categorie_point)
-                                            <option value="{{ $categorie_point->id}}">{{ $categorie_point->nom_fr}}</option>
+                                            <option value="{{ $categorie_point->id}}">{{ ucwords($categorie_point->nom_fr)}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -173,8 +194,6 @@
                         <tr>
                             <td colspan="2" style="text-align: center" >
                             </td>
-
-
                         </tr>
                         </tbody>
                     </table>
@@ -190,7 +209,6 @@
                             <img src="{{asset('images/loader/loader4.gif')}}" >
                         </div>
                     </div>
-
                 </div>
             </div>
 

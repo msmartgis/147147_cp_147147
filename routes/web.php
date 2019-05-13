@@ -23,6 +23,7 @@ Route::group(
             'commune' => 'CommunesController',
             'demande' => 'DemandesController',
             'piece' => 'PieceController',
+            'pistes' => 'PisteController',
             'cartographie' => 'CartographieController',
         ]);
         Route::get('/demande/create', 'DemandesController@create')->name('createDemande');
@@ -80,6 +81,10 @@ Route::group(
         //add source
         Route::post('/source_financement/add_src', 'SourceFinancementController@addSourceFinancement')->name('add_src');
         Route::post('/source_financement/delete_src', 'SourceFinancementController@deleteSourceFinancement')->name('delete_src');
+
+        //piste
+        Route::get('/getPisteDataHtml', 'PisteController@getPisteDataHtml');
+        Route::get('/getPiste', 'PisteController@getPiste');
     }
 );
 Route::group(
