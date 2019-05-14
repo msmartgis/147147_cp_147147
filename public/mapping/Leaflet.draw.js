@@ -132,9 +132,9 @@ L.drawLocal = {
 			polyline: {
 				error: '<strong>Error:</strong> shape edges cannot cross!',
 				tooltip: {
-					start: 'Click to start drawing line.',
-					cont: 'Click to continue drawing line.',
-					end: 'Click last point to finish line.'
+					start: 'Cliquer pour commencer le dessin.',
+					cont: 'Cliquer pour continuer le dessin.',
+					end: 'Cliquer sur le dernier point pour terminer le dessin.'
 				}
 			},
 			rectangle: {

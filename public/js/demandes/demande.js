@@ -2,7 +2,6 @@ var data;
 var geometry;
 $(document).ready(function () {
 
-
     //pieces Mngmnt ************
     //piece change
     $('.table-piece tbody').on('change', '.document', function () {
@@ -104,15 +103,11 @@ $(document).ready(function () {
 
 
 
-
-
-
+// MAPPING ********************
     var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
      baselayer = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
-        map = new L.Map('map', {layers: [baselayer], center: new L.LatLng(29.504514364812469, -9.599814615107725), zoom: 14});
-
-
+        map = new L.Map('map', {layers: [baselayer], center: new L.LatLng(29.504514364812469, -9.599814615107725), zoom: 14,zoomControl: false});
 
 
         // map layers changing
@@ -232,6 +227,7 @@ $(document).ready(function () {
     map.addLayer(OldItems);
 
 
+
     var drawControl = new L.Control.Draw({
         draw: {
             polyline: false,
@@ -250,11 +246,18 @@ $(document).ready(function () {
     map.addControl(drawControl);
     // or, add to an existing map:
     map.addControl(new L.Control.Fullscreen());
+
+    L.control.zoom({
+        position:'topright'
+    }).addTo(map);
+
+
     var stateChangingButton = L.easyButton({
         states: [{
             stateName: 'zoom-to-forest',        // name the state
-            icon:      'fa-edit',               // and define its properties
-            title:     'Modifier piste',      // like its title
+            icon:    'fa fa-edit map-icon-edit',               // and define its properties
+            title:     'Modifier piste',     // like its title
+
             onClick: function(btn, map) {
 
                 if (selectedPiste != null) {
@@ -265,7 +268,7 @@ $(document).ready(function () {
             }
         }, {
             stateName: 'zoom-to-school',
-            icon:      'fa-save',
+            icon:      'fa-save map-icon-save',
             title:     'Enregistrer les modifications',
             onClick: function(btn, map) {
                 selectedPiste.editing.disable();
@@ -292,7 +295,7 @@ $(document).ready(function () {
     var stateChangingButtonForAddingPiste = L.easyButton({
         states: [{
             stateName: 'zoom-to-forest',        // name the state
-            icon:      'fa-pencil',               // and define its properties
+            icon:      'fa fa-pencil map-icon-create',               // and define its properties
             title:     'Modifier piste',      // like its title
             onClick: function(btn, map) {
 
@@ -308,7 +311,7 @@ $(document).ready(function () {
     var stateChangingButtonForDeletePiste = L.easyButton({
         states: [{
             stateName: 'zoom-to-forest',        // name the state
-            icon:      'fa-close',               // and define its properties
+            icon:      'fa fa-trash map-icon-delete',               // and define its properties
             title:     'Supprimer piste',      // like its title
             onClick: function(btn, map) {
                 if (selectedPiste != null) {
@@ -455,11 +458,8 @@ function getPistes() {
 
             L.geoJSON(oldPistes, {
                 onEachFeature: function(feature,layer){
-                    console.log(feature.properties.id_piste);
-
                layer.on('click',function(){
                   var piste_id = feature.properties.id_piste;
-
                     $.ajax({
                         type: "GET",
                         dataType: 'html',
@@ -469,7 +469,6 @@ function getPistes() {
                         },
                         success: function(res) {
                             layer.bindPopup(res);
-
                         }
                     });
                 });
@@ -477,30 +476,9 @@ function getPistes() {
             }).addTo(map);
 
 
+            var groupe = new L.featureGroup(oldPistes);
+            map.fitBounds(groupe.getBounds());
 
-
-            /*
-             for (i = 0; i < res.length; i++) {
-             res.features[i].geometry.coordinates = JSON.parse(res.features[i].geometry.coordinates);
-             }
-
-             L.geoJSON(res, {
-             onEachFeature: function(feature, layer) {
-             layer.setStyle(style1);
-             OldItems.addLayer(layer);
-             layer.on('click', function() {
-             if (selectedPiste != null) {
-             selectedPiste.setStyle(style1);
-             }
-             selectedPiste = layer;
-             console.log(selectedPiste);
-             layer.setStyle(style2);
-             stateChangingButton.enable();
-             });
-             }
-             });
-
-             map.fitBounds(OldItems.getBounds());*/
         }
     });
 }

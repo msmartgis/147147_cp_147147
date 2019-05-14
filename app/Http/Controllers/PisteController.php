@@ -47,20 +47,20 @@ class PisteController extends Controller
                             <table class="table-responsive" > 
                                 <tr> 
                                     <td > 
+                                    <h6>OBJET : </h6>                                    
+                                    </td>                                    
+                                </tr>
+                                <tr> 
+                                    <td>'.$piste->demande->objet_fr. '</td>
+                                </tr>
+                                
+                                <tr> 
+                                    <td > 
                                     <h6>LONGUEUR : </h6>                                    
                                     </td>                                    
                                 </tr>
                                 <tr> 
                                     <td>'.$piste->longueur. ' KM</td>
-                                </tr>
-                                
-                                <tr> 
-                                    <td > 
-                                    <h6>MONTANT GLOBAL : </h6>                                    
-                                    </td>                                    
-                                </tr>
-                                <tr> 
-                                    <td>'.number_format($piste->demande->montant_global). ' DH</td>
                                 </tr>
                                 
                                 <tr> 
