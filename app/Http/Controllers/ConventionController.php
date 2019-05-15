@@ -337,6 +337,7 @@ class ConventionController extends Controller
     public function getConventionsAppelOffre(Request $request)
     {
         $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'versements')
+            ->where('is_project','=',0)
             ->whereNull('appel_offre_id')->orderBy('created_at');
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($conventions)

@@ -384,9 +384,7 @@ function getPistes() {
                 }
             }).addTo(map);
 
-
             map.fitBounds(bounds.getBounds());
-
 
         }
     });

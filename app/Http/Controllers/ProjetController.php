@@ -33,6 +33,14 @@ use DB;
 class ProjetController extends Controller
 {
 
+    public function changeState(Request $request)
+    {
+        $projet = Convention::find($request->id);
+        $projet->realise = $request->state;
+        $projet->save();
+        return response()->json();
+    }
+
     public function getProjets(Request $request)
     {
         $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'etats');
@@ -443,9 +451,10 @@ class ProjetController extends Controller
 
         //gallery
         $actu_id_convention = $convention->id;
-        $gallery = new Gallery();
+
         if (Input::has('imagesToUpload')) {
             $files = $request->file('imagesToUpload');
+            //return $files;
             //files uploaded get path
             if ($request->hasFile('imagesToUpload')) {
                 foreach ($files as $file) {
@@ -470,6 +479,7 @@ class ProjetController extends Controller
                     });
                     $img->save($thumbnailpath);
 
+                    $gallery = new Gallery();
                     $gallery->convention_id = $actu_id_convention;
                     $gallery->filename = $fileNameToStore;
                     $gallery->save();

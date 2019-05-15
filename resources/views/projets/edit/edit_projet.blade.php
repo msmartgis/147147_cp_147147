@@ -373,6 +373,10 @@
             });
         });
 
+
+
+
+
         //delete partenaire
         $(".delete-partenaire").click(function () {
             var convention_partenaire = $(this).data('id').split('_');
@@ -431,6 +435,51 @@
         });
 
 
+        $('#realise_projet_btn').click(function(){
+            var convention_id = $(this).data('projet_id');
+            var realise = 1;
+            changeState(convention_id,1)
+        });
+
+
+
+        function changeState(projet_id,state)
+        {
+            swal({
+                title: "Vous êtes sûr?",
+                text: "Cette action va changer l'etat du projet",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Oui, je confirme!",
+                cancelButtonText: "Non, annuler!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    //send an ajax request to the server update decision column
+                    $.ajax({
+                        url: '{!! route('projet.changeState')!!}',
+                        type: 'POST',
+                        data: {
+                            "_token": '{{ csrf_token() }}',
+                            "id": projet_id,
+                            "state" : state,
+                        },
+                        dataType: 'JSON',
+                        success: function (data) {
+                            if (data.length == 0) {
+                                swal("Réussi!", "Opération réusssite", "success");
+                                setTimeout(window.location.replace('/projet/'+projet_id+'/edit_projet'), 500);
+                            }
+                        }
+                    });
+                } else {
+                    swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
+                }
+            });
+
+        }
 
 //delete function
         function delete_function(id, url, success_message, sub_title_message,redirect) {

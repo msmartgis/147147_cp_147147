@@ -540,12 +540,26 @@
                         <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
                             PROGRAMME
                         </h5>
-                    @else
-                        <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
-                            APPEL D'OFFRE
-                        </h5>
                     @endif
 
+                    @if(!empty($convention->appelOffres) && $convention->realise == 0)
+
+
+                            @if($convention->appelOffres->ordre_service == 1)
+                                <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                    EN COURS D'EXECUTION
+                                </h5>
+                            @else
+                                <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                    APPEL D'OFFRE
+                                </h5>
+
+                            @endif
+                     @else
+                            <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                REALISE
+                            </h5>
+                    @endif
 
                     <div class="form-group">
                         {{Form::label('','N°:')}}
@@ -559,7 +573,7 @@
 
                     <div class="form-group">
                         {{Form::hidden('id_pist',$convention->piste->id,['id' => 'piste_id_input'])}}
-                        {{Form::hidden('geometry','',['id' => 'geometry_input'])}}
+                        {{Form::hidden('geometry',$convention->piste->geometry,['id' => 'geometry_input'])}}
                         {{Form::label('','Longueur:')}}
                         {{Form::text('longueur',$convention->piste->longueur,['class'=>'form-control','id'=>'longueur_input'])}}
                     </div>
@@ -623,6 +637,15 @@
                         {{Form::submit('Enregistrer les modifications',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
                     @endif
                     {!! Form::close() !!}
+
+
+                    @if(!empty($convention->appelOffres))
+                        @if($convention->appelOffres->ordre_service == 0)
+                                <button type="button" class="btn btn-secondary col-12" id="realise_projet_btn" data-projet_id="{{$convention->id}}" style="margin-top: 8px !important"
+
+                                >Affecter Au projets realisés</button>
+                        @endif
+                    @endif
 
                     @if(Auth::user()->organisation_id == $convention->organisation_id )
                         <button type="button" class="btn btn-warning col-12" id="supprimer_convention" data-id="{{$convention->id}}" style="margin-top: 8px !important">Supprimer</button>

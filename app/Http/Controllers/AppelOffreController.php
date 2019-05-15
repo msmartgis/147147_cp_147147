@@ -13,6 +13,7 @@ use App\Moa;
 use App\PartenaireType;
 use App\Piece;
 use App\Piste;
+use App\DCE;
 use App\PointDesserviCategorie;
 use App\Porteur;
 use App\Programme;
@@ -41,6 +42,11 @@ class AppelOffreController extends Controller
         if($request->state == "reporte")
         {
             $appelOffre->date_ouverture_plis =  $this->date_fromatting($request->data);
+        }
+
+        if($request->state == "en_cours_execution")
+        {
+            $appelOffre->ordre_service =  1;
         }
 
         $appelOffre->etat = $request->state;

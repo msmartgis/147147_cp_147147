@@ -174,7 +174,6 @@
 <script src='{{asset('mapping/Leaflet.fullscreen.min.js')}}'></script>
 
 <script src="{{asset('js/demandes/demande.js')}}"></script>
-<script src="{{asset('js/demandes/functions.js')}}"></script>
 <script src="{{asset('js/demandes/edit/demande_edit.js')}}"></script>
 <script src="{{asset('js/conventions/map_convention_edit.js')}}"></script>
 

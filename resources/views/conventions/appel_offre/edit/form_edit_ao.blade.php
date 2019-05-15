@@ -403,25 +403,39 @@
                 <div class="box-body no-padding mailbox-nav ">
 
                     <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
-                        @if($appelOffre->etat == 'publie')
+
+                        @switch($appelOffre->etat)
+                        @case('publie')
                             PUBLIE
-                        @endif
+                        @break
 
-                            @if($appelOffre->etat == 'attribue')
-                                ATTRIBUE
-                            @endif
+                        @case('attribue')
+                            ATTRIBUE
+                        @break
 
-                            @if($appelOffre->etat == 'reporte')
-                                REPORTE
-                            @endif
+                        @case('attribue')
+                            ATTRIBUE
+                        @break
 
-                            @if($appelOffre->etat == 'en_preparation')
-                                EN PREPARATION
-                            @endif
+                        @case('reporte')
+                            REPORTE
+                        @break
 
-                            @if($appelOffre->etat == 'annule')
-                                ANNULE
-                            @endif
+                        @case('en_preparation')
+                        EN PREPARATION
+                        @break
+
+                        @case('annule')
+                        ANNULE
+                        @break
+
+                        @case('en_cours_execution')
+                        EN COURS D'EXECUTION
+                        @break
+
+                        @default
+                        ETAT INCONNU
+                        @endswitch
                     </h5>
 
                     <!--hidden id appel offre-->
@@ -434,7 +448,7 @@
                     </div>
                     <div class="form-group">
                         {{Form::label('','Montant global (DH):')}}
-                        {{Form::text('montant_global',$appelOffre->montant_globale,['class'=>'form-control','id'=>'montant_global_ao'])}}
+                        {{Form::text('montant_global',$appelOffre->montant_globale,['class'=>'form-control currency-input','id'=>'montant_global_ao'])}}
                     </div>
 
                     <div class="form-group" >
@@ -495,7 +509,7 @@
                                                                    pull-right','id'=>'datepicker3'])}}
                             @elseif($appelOffre->delai_execution == null)
                                 {{Form::text('delai_execution','',['class'=>'form-control
-                                   pull-right','id'=>'datepicker3'])}}
+                                   pull-right','id'=>'datepicker'])}}
                             @endif
 
                         </div>
@@ -504,10 +518,7 @@
 
                     <div class="form-group">
                         {{Form::label('','Duree d\'execution:')}}
-                        <div class="input-group date">
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                            </div>
+                        <div class="input-group ">
                             {{Form::text('duree_execution',$appelOffre->duree_execution,['class'=>'form-control
                             pull-right'])}}
                         </div>
@@ -534,11 +545,20 @@
                     <div class="form-group">
                         {{Form::label('','Montant:')}}
                         <div class="input-group ">
-                                {{Form::text('montant_adjiducataire',$appelOffre->montant_adjiducation,['class'=>'form-control pull-right'])}}
-
+                                {{Form::text('montant_adjiducataire',$appelOffre->montant_adjiducation,['class'=>'form-control pull-right currency-input'])}}
                         </div>
                         <!-- /.input group -->
                     </div>
+
+                    @if($appelOffre->etat == 'en_cours_execution')
+                        <div class="form-group date_commencement_input" id="datepicker2" >
+                            {{Form::label('','Date Commencement:')}}
+                            <div class="input-group">
+                                {{Form::text('date_commencement',$appelOffre->date_commencement,['class'=>'form-control pull-right'])}}
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    @endif
 
                     <br>
                     <br>
@@ -565,13 +585,19 @@
                             @endif
                     >Reporter l'appel d'offre</button>
 
-                    <button type="button" class="btn btn-warning col-12 " id="annuler_appel_offre_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important"
+                    <button type="button" class="btn btn-warning col-12 " id="annuler_appel_offre_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important;color: #fff; background-color: #ea3a0a"
                             @if($appelOffre->etat == 'annule')
                             disabled
                             @endif
                     >Annuler l'appel d'offre</button>
 
-                    <button type="button" class="btn btn-warning col-12" id="supprimer_ao" data-id="{{$appelOffre->id}}" style="margin-top: 8px !important">Supprimer</button>
+                    <button type="button"  class="btn  col-12 " id="ordre_service_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important; color: #fff; background-color: #0A246A"
+                            @if($appelOffre->etat == 'en_cours_execution')
+                            disabled
+                            @endif
+                    >Ordre de Service</button>
+
+                    <button type="button" class="btn btn-warning col-12" id="supprimer_ao" data-id="{{$appelOffre->id}}" style="margin-top: 8px !important ;color: #fff; background-color: #ea2b27">Supprimer</button>
 
                  </div>
                 <!-- /.box-body -->

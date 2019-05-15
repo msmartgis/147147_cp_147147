@@ -302,7 +302,7 @@ function insertGeometryInput(geometry,input_id)
 $(document).ready(function () {
     piste_id = $('#piste_id_input').val();
     getPiste();
-    map.fitBounds(selectedItem.getBounds());
+
     stateChangingButton.disable();
 
     map.on('draw:created', function (e) {
@@ -352,6 +352,7 @@ function getPiste() {
                     });
                 }
             });
+            map.fitBounds(bounds.getBounds());
         }
     });
 }

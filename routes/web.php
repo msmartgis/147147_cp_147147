@@ -115,5 +115,7 @@ Route::group(
         Route::get('/convention', 'ConventionController@index')->name('indexConvention');
         Route::get('/suiviVersement', 'SuiviVersementController@index')->name('indexSuiviVersement');
         Route::get('/appelOffre', 'AppelOffreController@index')->name('indexAppelOffre');
+
+        Route::post('/projet/changeState', 'ProjetController@changeState')->name('projet.changeState');
     }
 );

@@ -13,7 +13,7 @@
 .map-icon-edit
 {
     font-size: 30px !important;
-    color : #20cfea  !important;
+    color : #121492 !important;
 }
 
 
@@ -34,6 +34,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #ececec;
 }
 .leaflet-bar button
 {
@@ -69,6 +70,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #ececec;
 }
 .leaflet-fullscreen-on .leaflet-control-fullscreen a
 {

@@ -51,10 +51,17 @@ $(function () {
     );
 
     //Date picker
-    $('#datepicker2,#datepicker').datepicker({
-        autoclose: true
+    $('#datepicker').datepicker({
+        autoclose: true,
     });
 
+    $('#datepicker2').datepicker({
+        autoclose: true,
+    });
+
+    $('#datepicker').datepicker('setDate', 'today');
+
+    $('#datepicker2').datepicker('setDate', 'today');
 
 
     //iCheck for checkbox and radio inputs

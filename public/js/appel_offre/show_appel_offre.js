@@ -51,14 +51,14 @@ $(document).ready(function () {
                 name: 'objet_fr',
                 orderable: true,
                 searchable: true,
-                width: '1%'
+                width: '20%'
             },
             {
                 data: 'moas',
                 name: 'moas',
                 orderable: true,
                 searchable: true,
-                width: '1%'
+                width: '10%'
             },
 
             {
@@ -66,28 +66,28 @@ $(document).ready(function () {
                 name: 'date_publication',
                 orderable: true,
                 searchable: true,
-                width: '1%'
+                width: '10%'
             },
             {
                 data: 'adjiducataire',
                 name: 'adjiducataire',
                 orderable: true,
                 searchable: true,
-                width: '1%'
+                width: '10%'
             },
             {
                 data: 'montant_global',
                 name: 'montant_global',
                 orderable: true,
                 searchable: true,
-                width: '3%'
+                width: '8%'
             },
             {
                 data: 'etat',
                 name: 'etat',
                 orderable: true,
                 searchable: true,
-                width: '3%'
+                width: '8%'
             }
 
         ],

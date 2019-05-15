@@ -123,8 +123,7 @@
 <!-- bootstrap datepicker -->
 <script src="{{asset('vendor_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
 
-{{-- leaflet --}}
-<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+
 
 <!-- CK Editor -->
 <script src="{{asset('vendor_components/ckeditor/ckeditor.js')}}"></script>
@@ -149,6 +148,8 @@
         format: 'dd/mm/yyyy'
     });
 
+
+
 </script>
 
 
@@ -162,6 +163,15 @@
 
 <script>
     $(document).ready(function () {
+
+            $("#ordre_service_btn").click(function () {
+                var appelOffre_id = $(this).data('id');
+                var state = "en_cours_execution";
+                changeAppelOffrState(appelOffre_id,state);
+
+
+            });
+
 
         $('.add-piece').on('click',function(){
             $('#add_piece_forme').attr('action', $(this).data('route'));

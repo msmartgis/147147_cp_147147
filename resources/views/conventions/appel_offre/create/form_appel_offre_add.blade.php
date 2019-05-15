@@ -60,7 +60,7 @@
             <div class="col-lg-6">
                 {{Form::label('','Caution provisoire :')}}
                 <div class="form-group" >
-                    {{Form::text('caution_provisoire','',['class'=>'form-control'])}}
+                    {{Form::text('caution_provisoire','',['class'=>'form-control currency-input'])}}
                 </div>
             </div>
     </div>
