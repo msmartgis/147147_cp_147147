@@ -14,9 +14,11 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <input type="hidden" id="piste_id_input" name="piste_id" value="{{$piste_id}}">
+            <input type="hidden" id="geometry_input" class="form-control" name="geometry" value="">
                 <div class="form-group">
                     {{Form::label('','Longueur :')}}
-                    {{Form::text('longueur','',['class'=>'form-control'])}}
+                    {{Form::text('longueur','',['class'=>'form-control','id'=>'longueur_input'])}}
                 </div>
         </div>
 
@@ -262,10 +264,8 @@
                 'montant_global',
                 '',
                 [
-                'class'=>'form-control input-element',
-                'id'=>'montant_g',
-                'data-validation-containsnumber-regex'=>'(\d)+',
-                'data-validation-containsnumber-message'=>'Veuillez saisir des numeros seulement'
+                'class'=>'form-control input-element currency-input',
+                'id'=>'montant_g'
                 ]
                 )}}
             </div>

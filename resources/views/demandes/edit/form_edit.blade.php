@@ -403,7 +403,7 @@
                     <br>
                     <br>
 
-                    {{Form::submit('Modifier',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
+                    {{Form::submit('Enregistrer les modifications',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
                     {!! Form::close() !!}                    
                 <button type="button" data-id="affectationConventionEditBtn_{{$demande->id}}"  id="affectation_conventions_edit_btn" data-numero="{{$demande->num_ordre}}" class="btn btn-secondary col-12" style="margin-top: 8px !important" @if ($demande->decision != "accord_definitif")
                         disabled

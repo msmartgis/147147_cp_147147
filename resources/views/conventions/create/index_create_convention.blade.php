@@ -19,6 +19,13 @@
     <!-- toast CSS -->
     <link href="{{asset('vendor_components/jquery-toast-plugin-master/src/jquery.toast.css')}}" rel="stylesheet">
 
+    {{--mapping css--}}
+    <link rel="stylesheet" href="{{asset('mapping/libs/leaflet.css')}}"/>
+    <link rel="stylesheet" href="{{asset('mapping/leaflet.draw.css')}}">
+    <link rel="stylesheet" href="{{asset('mapping/libs/easy-button.css')}}">
+    <link href="{{asset('mapping/leaflet.fullscreen.css')}}" rel='stylesheet' />
+    <link rel="stylesheet" href="{{asset('mapping/m-mapping.css')}}">
+
     <style>
         #map {
             height: 75vh;
@@ -32,6 +39,9 @@
         }
 
         #loading-point-desservi { display: none; }
+
+
+
     </style>
 
 @endsection @section('content')
@@ -122,13 +132,11 @@
 <!-- bootstrap datepicker -->
 <script src="{{asset('vendor_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
 
-{{-- leaflet --}}
-<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+
 
 <!-- CK Editor -->
 <script src="{{asset('vendor_components/ckeditor/ckeditor.js')}}"></script>
-<!-- Bootstrap WYSIHTML5 -->
-<script src="{{asset('vendor_plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js')}}"></script>
+
 <!-- Fab Admin for editor -->
 <script src="{{asset('js/editor.js')}}"></script>
 <!-- Form validator JavaScript -->
@@ -137,9 +145,43 @@
 <script src="{{asset('vendor_components/jquery-toast-plugin-master/src/jquery.toast.js')}}"></script>
 <script src="{{asset('js/toastr.js')}}"></script>
 
+<script src="{{asset('mapping/libs/leaflet-src.js')}}"></script>
+<script src="{{asset('mapping/libs/easy-button.js')}}"></script>
+<script src="{{asset('mapping/Leaflet.draw.js')}}"></script>
+<script src="{{asset('mapping/Leaflet.Draw.Event.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.Poly.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.SimpleShape.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.Rectangle.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.Marker.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.CircleMarker.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/Edit.Circle.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Feature.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Polyline.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Polygon.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.SimpleShape.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Rectangle.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Circle.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.Marker.js')}}"></script>
+<script src="{{asset('mapping/draw/handler/Draw.CircleMarker.js')}}"></script>
+<script src="{{asset('mapping/ext/TouchEvents.js')}}"></script>
+<script src="{{asset('mapping/ext/LatLngUtil.js')}}"></script>
+<script src="{{asset('mapping/ext/GeometryUtil.js')}}"></script>
+<script src="{{asset('mapping/ext/LineUtil.Intersect.js')}}"></script>
+<script src="{{asset('mapping/ext/Polyline.Intersect.js')}}"></script>
+<script src="{{asset('mapping/ext/Polygon.Intersect.js')}}"></script>
+<script src="{{asset('mapping/Control.Draw.js')}}"></script>
+<script src="{{asset('mapping/Tooltip.js')}}"></script>
+<script src="{{asset('mapping/Toolbar.js')}}"></script>
+<script src="{{asset('mapping/draw/DrawToolbar.js')}}"></script>
+<script src="{{asset('mapping/edit/EditToolbar.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/EditToolbar.Edit.js')}}"></script>
+<script src="{{asset('mapping/edit/handler/EditToolbar.Delete.js')}}"></script>
+<script src='{{asset('mapping/Leaflet.fullscreen.min.js')}}'></script>
+
 <script src="{{asset('js/conventions/create.js')}}"></script>
+<script src="{{asset('js/conventions/map_convention.js')}}"></script>
 <script src="{{asset('js/functions/functions.js')}}"></script>
-<script src="{{asset('js/Cleave.js')}}"></script>
+
 
 <script>
     ! function (window, document, $) {
@@ -152,34 +194,11 @@
         format: 'dd/mm/yyyy'
     });
 
-    var cleave = new Cleave('.input-element', {
-        date: true,
-        delimiter: '-',
-        datePattern: ['Y', 'm', 'd']
-    });
+
 
 </script>
 <script>
 
-    //add point
-    // let result= [];
-    // function load_point_desservi(type) {
-
-    //         $.ajax({
-    //             url: '/loadPoint',
-    //             type: 'POST',
-    //             data: {
-    //                 _token: '{{ csrf_token() }}',
-    //                 type: type
-    //             },
-
-    //             dataType: 'JSON',
-    //             success: function (data) {
-    //                result.push(data);
-    //             }
-    //         });
-    //         return result;
-    //     }
     $(document).ready(function () {
 
         var switchMarkup;

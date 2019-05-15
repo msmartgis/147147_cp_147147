@@ -40,9 +40,11 @@
         </div>
 
         <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+            <input type="hidden" id="piste_id_input" name="piste_id" value="{{$piste_id}}">
+            <input type="hidden" id="geometry_input" class="form-control" name="geometry" value="">
             <div class="form-group">
                 {{Form::label('','Longueur :')}}
-                {{Form::text('longueur','',['class'=>'form-control currency-input'])}}
+                {{Form::text('longueur','',['class'=>'form-control ','id'=>'longueur_input'])}}
             </div>
         </div>
 

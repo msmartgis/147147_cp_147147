@@ -641,6 +641,15 @@ class ConventionController extends Controller
         $etablissement_scols = PointDesservi::all()->where('type_point', '=', 'etab.scolaire');
         $moas = Moa::orderBy('nom_fr')->pluck('nom_fr', 'id');
 
+        //create a new piste to reserve id
+        $piste = new Piste();
+        $piste->active = 0;
+        $piste->save();
+        if($piste->save())
+        {
+            $piste_id=  $piste->id;
+        }
+
         //creat a new object to send it in form for editing
         $convention = new Convention();
         return view('conventions.create.index_create_convention')->with(
@@ -654,6 +663,7 @@ class ConventionController extends Controller
                 'partenaire_types' => $partenaire_types,
                 'categorie_points' => $categorie_points,
                 'moas' => $moas,
+                'piste_id' => $piste_id
             ]
         );
     }
@@ -714,9 +724,13 @@ class ConventionController extends Controller
         }
 
         //save data in piste*****
-        $piste = new Piste;
+        $piste = Piste::find($request->piste_id);
         $piste->longueur = $request->input('longueur');
         $piste->convention_id = $actu_id_convention;
+        //get geojson
+        $piste->geometry = $request->geometry;
+        $piste->active = 1;
+        //return $piste;
         $piste->save();
 
 
@@ -764,16 +778,6 @@ class ConventionController extends Controller
                 //array_push($array_combination_piece, $piece);
             }
 
-
-
-            /* foreach ($array_combination_piece as $p) {
-                 $piec = new Piece;
-                 $piec->type = $p->type;
-                 $piec->nom = $p->nom;
-                 $piec->path = $p->path;
-
-
-             }*/
         }
 
 
@@ -881,9 +885,10 @@ class ConventionController extends Controller
         $convention->communes()->sync($communes_ids);
 
 
+
         //update pistes
         Piste::where('id', $request->id_pist)
-            ->update(['longueur' => $request->longueur]);
+            ->update(['longueur' => $request->longueur,'geometry'=>$request->geometry]);
 
 
         $point_desservis = Input::get('point_desservis');

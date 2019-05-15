@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="{{asset('mapping/leaflet.draw.css')}}">
 <link rel="stylesheet" href="{{asset('mapping/libs/easy-button.css')}}">
 <link href="{{asset('mapping/leaflet.fullscreen.css')}}" rel='stylesheet' />
+<link rel="stylesheet" href="{{asset('mapping/m-mapping.css')}}">
 
 
 <!-- toast CSS -->
@@ -37,82 +38,7 @@
 
     #loading-point-desservi { display: none; }
 
-    .map-icon-delete
-    {
-        font-size: 30px !important;
-        color : #ff002e  !important;
-    }
 
-    .map-icon-create
-    {
-        font-size: 30px !important;
-        color : #eac50f !important;
-    }
-
-    .map-icon-edit
-    {
-        font-size: 30px !important;
-        color : #20cfea  !important;
-    }
-
-
-    .map-icon-save
-    {
-        font-size: 30px !important;
-        color : #57ff1d !important;
-    }
-
-
-
-
-
-    .easy-button-container{
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .leaflet-bar button
-    {
-        background-color: transparent;
-    }
-
-    .easy-button-button {
-        margin  : 0 !important;
-        padding  : 0 !important;
-    }
-
-    .leaflet-control-fullscreen
-    {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-    }
-
-    .leaflet-bar a, .leaflet-bar a:hover
-    {
-        background-color: transparent;
-    }
-    .leaflet-bar a:hover
-    {
-        background-color: transparent;
-    }
-
-    .leaflet-control-fullscreen
-    {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .leaflet-fullscreen-on .leaflet-control-fullscreen a
-    {
-        background-position: 0;
-    }
 
 </style>
 
@@ -256,6 +182,7 @@
 
 
 <script src="{{asset('js/demandes/demande.js')}}"></script>
+<script src="{{asset('js/demandes/map_demande.js')}}"></script>
 <script src="{{asset('js/functions/functions.js')}}"></script>
 
 

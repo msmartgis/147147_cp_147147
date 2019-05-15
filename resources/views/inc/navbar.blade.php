@@ -8,31 +8,32 @@
                 <span style="vertical-align: middle;" class="lato-bold">TABLEAU DE BORD</span>
             </a>
         </li>
+        @if(Auth::user()->organisation_id == 1)
+            <li class="{{ Request::is('demande') ? 'nav-item active' : '' }}">
+                <a class="nav-link" href="{{ route('indexDemande') }}"><span class="active-item-here"></span>
+                    <img src="{{asset('images/svg/writing.svg')}}" style="width: 1.2em;margin-right: 5px;" />
+                    <span style="vertical-align: middle;" class="lato-bold">DEMANDES</span>
+                </a>
+            </li>
 
-        <li class="{{ Request::is('demande') ? 'nav-item active' : '' }}">
-            <a class="nav-link" href="{{ route('indexDemande') }}"><span class="active-item-here"></span>
-                <img src="{{asset('images/svg/writing.svg')}}" style="width: 1.2em;margin-right: 5px;" />
-                <span style="vertical-align: middle;" class="lato-bold">DEMANDES</span>
-            </a>
-        </li>
+            <li class="{{ Request::is('convention') ? 'nav-item active' : '' }}">
+                <a class="nav-link" href="{{ route('indexConvention') }}"><span class="active-item-here"></span>
+                    <img src="{{asset('images/svg/resume.svg')}}" style="width: 1.2em;margin-right: 5px;" />
+                    <span style="vertical-align: middle;" class="lato-bold">CONVENTIONS</span></a>
+            </li>
 
-        <li class="{{ Request::is('convention') ? 'nav-item active' : '' }}">
-            <a class="nav-link" href="{{ route('indexConvention') }}"><span class="active-item-here"></span>
-                <img src="{{asset('images/svg/resume.svg')}}" style="width: 1.2em;margin-right: 5px;" />
-                <span style="vertical-align: middle;" class="lato-bold">CONVENTIONS</span></a>
-        </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ route('indexSuiviVersement') }}"><span class="active-item-here"></span>
+                    <img src="{{asset('images/svg/coin.svg')}}" style="width: 1.2em;margin-right: 5px;" />
+                    <span style="vertical-align: middle;" class="lato-bold">SUIVI DE VERSEMENT</span></a>
+            </li>
 
-        <li class="nav-item ">
-            <a class="nav-link" href="{{ route('indexSuiviVersement') }}"><span class="active-item-here"></span>
-                <img src="{{asset('images/svg/coin.svg')}}" style="width: 1.2em;margin-right: 5px;" />
-                <span style="vertical-align: middle;" class="lato-bold">SUIVI DE VERSEMENT</span></a>
-        </li>
-
-        <li class="{{ Request::is('appel_offre') ? 'nav-item active' : '' }}">
-            <a class="nav-link" href="{{ route('indexAppelOffre') }}"><span class="active-item-here"></span>
-                <img src="{{asset('images/svg/report.svg')}}" style="width: 1.2em;margin-right: 5px;" />
-                <span style="vertical-align: middle;" class="lato-bold">APPELS D'OFFRES</span></a>
-        </li>
+            <li class="{{ Request::is('appel_offre') ? 'nav-item active' : '' }}">
+                <a class="nav-link" href="{{ route('indexAppelOffre') }}"><span class="active-item-here"></span>
+                    <img src="{{asset('images/svg/report.svg')}}" style="width: 1.2em;margin-right: 5px;" />
+                    <span style="vertical-align: middle;" class="lato-bold">APPELS D'OFFRES</span></a>
+            </li>
+        @endif
 
         <li class="{{ Request::is('projet') ? 'nav-item active' : '' }}">
             <a class="nav-link" href="{{ route('indexProjet') }}"><span class="active-item-here"></span>

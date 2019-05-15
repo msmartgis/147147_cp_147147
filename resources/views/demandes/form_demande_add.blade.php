@@ -99,7 +99,7 @@
 
                 <div class="col-lg-12 col-md-4 col-sm-12 col-xs-12">
                     <div id="map" style="border: solid 1px #666666;box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);"></div>
-                    {{--<button type="button" id="saveChanges">Save</button>--}}
+
                     <div class="cmodali active" style=" width: 300px;  height: 100px;left:calc(100% - 320px);top:calc(100% - 72px);z-index:99998;">
                         <div class="row">
                             <div class="col-md-3">
@@ -116,7 +116,6 @@
                             </div>
                         </div>
                     </div>
-
 
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">

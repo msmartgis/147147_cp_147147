@@ -201,6 +201,15 @@ class ProjetController extends Controller
         $etablissement_scols = PointDesservi::all()->where('type_point', '=', 'etab.scolaire');
         $moas = Moa::orderBy('nom_fr')->pluck('nom_fr', 'id');
 
+        //create a new piste to reserve id
+        $piste = new Piste();
+        $piste->active = 0;
+        $piste->save();
+        if($piste->save())
+        {
+            $piste_id=  $piste->id;
+        }
+
         //creat a new object to send it in form for editing
         $convention = new Convention();
         return view('projets.create.index_create_projet')->with(
@@ -214,6 +223,7 @@ class ProjetController extends Controller
                 'partenaire_types' => $partenaire_types,
                 'categorie_points' => $categorie_points,
                 'moas' => $moas,
+                'piste_id' => $piste_id,
             ]
         );
     }
@@ -235,14 +245,14 @@ class ProjetController extends Controller
         //get the localites
         $localites = $request->input('localites');
         //get the last id of conventions
-        $actu_id_convention = Convention::max('id') + 1;
+        $actu_id_convention = '';
 
         //create convention
         $convention = new Convention();
         $convention->num_ordre = $request->input('num_ordre');
         $convention->objet_fr = $request->input('objet_fr');
         $convention->objet_ar = $request->input('objet_ar');
-        $convention->montant_global = $request->input('montant_global');
+        $convention->montant_global = str_replace(',','',$request->input('montant_global'));
         $convention->observation = $request->input('observation');
         $convention->session_id = $request->input('session');
         $convention->programme_id = $request->input('programme');
@@ -251,6 +261,10 @@ class ProjetController extends Controller
         $convention->annee = $request->annee;
         $convention->organisation_id = Auth::user()->organisation_id;
         $convention->save();
+        if($convention->save())
+        {
+            $actu_id_convention = $convention->id;
+        }
 
         //partenaire *****
         if (Input::has('partnenaire_type_ids')) {
@@ -275,9 +289,14 @@ class ProjetController extends Controller
         }
 
         //save data in piste*****
-        $piste = new Piste;
+        //save data in piste*****
+        $piste = Piste::find($request->piste_id);
         $piste->longueur = $request->input('longueur');
         $piste->convention_id = $actu_id_convention;
+        //get geojson
+        $piste->geometry = $request->geometry;
+        $piste->active = 1;
+        //return $piste;
         $piste->save();
 
 
@@ -412,9 +431,10 @@ class ProjetController extends Controller
         $communes_ids = Input::get('communes');
         $convention->communes()->sync($communes_ids);
 
+
         //update pistes
         Piste::where('id', $request->id_pist)
-            ->update(['longueur' => $request->longueur]);
+            ->update(['longueur' => $request->longueur,'geometry'=>$request->geometry]);
 
         //update $point_desservis
         $point_desservis = Input::get('point_desservis');
