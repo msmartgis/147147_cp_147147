@@ -59,9 +59,7 @@ $(function () {
         autoclose: true,
     });
 
-    $('#datepicker').datepicker('setDate', 'today');
 
-    $('#datepicker2').datepicker('setDate', 'today');
 
 
     //iCheck for checkbox and radio inputs

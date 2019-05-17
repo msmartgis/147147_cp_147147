@@ -308,13 +308,11 @@ $(document).ready(function () {
     stateChangingButton.disable();
 
     map.on('draw:created', function (e) {
-        console.log("create");
         e.layer.on('click', function() {
             if (selectedPiste != null) {
                 selectedPiste.setStyle(style1);
             }
             selectedPiste = e.layer;
-            console.log(selectedPiste);
             e.layer.setStyle(style2);
             stateChangingButton.enable();
         });
@@ -335,14 +333,12 @@ function getPistes() {
         dataType: 'json',
         url: "/pistes",
         success: function(res) {
-            console.log(res);
             var piste_features = [];
             var oldPistes = [];
 
             for(i = 0 ; i < res.length ; i++)
             {
                 piste_features.push(JSON.parse(res[i].geometry));
-                console.log(oldPistes.features);
             }
 
             for(i = 0 ; i < piste_features.length ; i++)
@@ -357,7 +353,6 @@ function getPistes() {
                 "opacity": 0.65
             };
 
-            console.log(oldPistes);
             var bounds =  L.geoJSON(oldPistes, {
                 style: function(feature) {
                     switch (feature.properties.type) {
@@ -383,6 +378,8 @@ function getPistes() {
                     });
                 }
             }).addTo(map);
+
+            console.log(bounds);
 
             map.fitBounds(bounds.getBounds());
 

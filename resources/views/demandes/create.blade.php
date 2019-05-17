@@ -197,6 +197,10 @@
         format: 'dd/mm/yyyy'
     });
 
+    $('#datepicker2').datepicker('setDate', 'today');
+
+    $('#datepicker').datepicker('setDate', 'today');
+
 </script>
 <script>
 $(document).ready(function () {

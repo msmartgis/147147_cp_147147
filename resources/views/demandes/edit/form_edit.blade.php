@@ -16,6 +16,7 @@
                                     <h5>PORTEUR DE PROJET </h5>
                                     <hr style="color:#2d353c;margin:0">
                                     <div class="row" style="margin-top: 8px">
+
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 {{Form::select('porteur_projet', $porteur_projet, $demande->porteur->id,

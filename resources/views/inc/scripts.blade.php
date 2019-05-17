@@ -57,10 +57,6 @@
  <script>
      var assetBaseUrl = "{{ asset('') }}";
 
-     $('#datepicker2').datepicker('setDate', 'today');
-
-     $('#datepicker').datepicker('setDate', 'today');
-
  </script>
 
  @stack('added_scripts')

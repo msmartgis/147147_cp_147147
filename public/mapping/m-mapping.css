@@ -76,3 +76,10 @@
 {
     background-position: 0;
 }
+
+.box-title
+{
+    margin-left: 8px;
+    margin-right: 8px;
+    padding: 4px;
+}

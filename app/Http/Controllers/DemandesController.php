@@ -149,8 +149,14 @@ class DemandesController extends BaseController
         //affectation aux convntion
         if($request->affecter == '1')
         {
-            $convention_id = Convention::max('id')+1;
-            $convention = new Convention;
+
+            $convention_new = new Convention;
+
+            $convention_new->save();
+            if($convention_new->save())
+            {
+                $convention_id = $convention_new->id;
+            }
 
 
             $demande = Demande::with('communes','interventions','partenaires','point_desservis','piste','porteur','piece','sourceFinancement')
@@ -164,6 +170,7 @@ class DemandesController extends BaseController
 
 
             //affect data to convention
+            $convention = Convention::find($convention_new->id);
             $convention->num_ordre = $demande->num_ordre;
             $convention->objet_fr =  $demande->objet_fr;
             $convention->objet_ar =  $demande->objet_ar;
@@ -172,7 +179,7 @@ class DemandesController extends BaseController
             $convention->session_id =  $demande->session_id;
             $convention->organisation_id = Auth::user()->organisation_id;
             $convention->is_project = 0;
-            $convention->demande_id = $demande->id;
+            //$convention->demande_id = $demande->id;
             $convention->save();
 
             $convention->interventions()->attach($demande->interventions);
@@ -197,11 +204,13 @@ class DemandesController extends BaseController
             }
 
             //new piste for convention
-            $piste = new Piste();
+            $piste = Piste::find($demande->piste->id);
+
+            //$piste->demande_id = '';
+            $piste->geometry = str_replace('demande','convention',$piste->geometry);
             $piste->longueur = $demande->piste->longueur;
             $piste->convention_id = $convention_id;
             $piste->save();
-
 
             //partenaire *****
             if (Input::has('partnenaire_type_ids')) {
@@ -231,7 +240,6 @@ class DemandesController extends BaseController
 
 
             //save to conventions
-            $convention->demande_id = $demande->id;
             $convention->montant_global = str_replace(',','',$request->montant_global) ;
             $convention->save();
 

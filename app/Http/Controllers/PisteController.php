@@ -26,8 +26,9 @@ class PisteController extends Controller
         $point_desservis = [];
 
 
-            if($piste->demande != null)
+            if(strpos($piste->geometry,'demande') !== false)
             {
+
                 foreach($piste->demande->communes as $commune){
                        array_push($communes,ucfirst($commune->nom_fr));
                 }
@@ -99,11 +100,15 @@ class PisteController extends Controller
 
 
             //coventions
-        if($piste->convention != null)
+        if(strpos($piste->geometry,'convention') !== false)
         {
+            $moas = '';
+            $programme = '';
+
             foreach($piste->convention->communes as $commune){
                 array_push($communes,ucfirst($commune->nom_fr));
             }
+
 
             foreach($piste->convention->interventions as $interv){
                 array_push($interventions,ucfirst($interv->nom));
@@ -115,14 +120,35 @@ class PisteController extends Controller
             }
 
 
+            if($piste->convention->is_project == 1)
+            {
+                $color = '#434343';
+                $item = 'Projet';
+            }
+            else{
+                $color = '#EA3A0A';
+                $item = 'Convention';
+            }
 
+           // return $piste->convention->programme;
+            if($piste->convention->moas)
+            {
+                $moas = $piste->convention->moas->nom_fr;
+            }else{
+                $moas;
+            }
 
-
+            if($piste->convention->programme)
+            {
+                $programme = $piste->convention->programme->nom_fr;
+            }else{
+                $programme;
+            }
             $markup = '<div class="row" style="margin : 0;padding:0">
                 <div class="col-md-12 col-lg-12" style="margin : 0;padding:0">
-                    <div class="box box-default" style="border: 0;margin:0">
-                        <div style="width: calc(100% + 18px);background:#ff6b10;margin-left:-9px;margin-top:-20px;border-radius: 3px 3px 0px 0px;"> 
-                            <h5 class="box-title title-popup">Convention N° : '.$piste->convention->num_ordre.'</h5>
+                    <div class="box box-default" style="border: 0;margin:0">                    
+                        <div style="width: calc(100% + 18px);background:'.$color.';margin-left:-9px;margin-top:-20px;border-radius: 3px 3px 0px 0px;"> 
+                            <h5 class="box-title title-popup">'.$item .' N° : '.$piste->convention->num_ordre.'</h5>
                         </div>
                         <div class="box-body">                            
                             <p class="box-text" style="margin: 4px 0;">
@@ -133,7 +159,7 @@ class PisteController extends Controller
                                     </td>                                    
                                 </tr>
                                 <tr> 
-                                    <td>'.$piste->convention->moas->nom_fr. '</td>
+                                    <td>'.$moas. '</td>
                                 </tr>
                                 
                                 <tr> 
@@ -152,7 +178,7 @@ class PisteController extends Controller
                                     </td>                                    
                                 </tr>
                                 <tr> 
-                                    <td>'.$piste->convention->programme->nom_fr. '</td>
+                                    <td>'.$programme. '</td>
                                 </tr>
                                 
                                 <tr> 
@@ -192,9 +218,8 @@ class PisteController extends Controller
                             
                              </p>
                              <div style="text-align: center"> 
-                             <a href="/convention/'.$piste->convention->id.'/edit" class="btn btn-secondary-table"><i class="fa fa-info-circle"></i> <b>Basculer vers les details</b> </a>                             
-                             </div>
-                            
+                                <a href="/convention/'.$piste->convention->id.'/edit" class="btn btn-secondary-table"><i class="fa fa-info-circle"></i> <b>Basculer vers les details</b> </a>                             
+                             </div>                            
                         </div>
                         <!-- /.box-body -->
                     </div>
