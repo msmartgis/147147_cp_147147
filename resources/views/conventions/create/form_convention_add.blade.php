@@ -140,6 +140,7 @@
 <!-- Step 2 -->
 <h6>Informations techniques</h6>
 <section>
+    {{--
     <h5>LES POINTS DESSERVIS</h5>
     <hr>
     <div class="row" style="margin: 0 !important;">
@@ -197,7 +198,7 @@
 
         </div>
     </div>
-
+--}}
     <h5>LES PIECES TECHNIQUES</h5>
     <hr>
     <div class="row" style="margin: 0 !important;">

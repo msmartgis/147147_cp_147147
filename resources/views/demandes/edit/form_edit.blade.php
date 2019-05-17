@@ -268,8 +268,7 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
+                                    {{--
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
@@ -285,7 +284,7 @@
                                                 )}}
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>--}}
 
                                     <h5>LOCALISATION SUR LA CARTE </h5>
                                     <hr style="color:#2d353c;margin:0">
