@@ -38,8 +38,6 @@
 
     #loading-point-desservi { display: none; }
 
-
-
 </style>
 
 @endsection @section('content')
@@ -130,8 +128,6 @@
 
 <!-- bootstrap datepicker -->
 <script src="{{asset('vendor_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
-
-
 
 <!-- CK Editor -->
 <script src="{{asset('vendor_components/ckeditor/ckeditor.js')}}"></script>

@@ -10,6 +10,7 @@ class Demande extends Model
 {
     protected $fillable = ['id','num_ordre', 'date_reception', 'objet_fr', 'objet_ar', 'montant_global', 'observation', 'decision', 'etat', 'is_affecter', 'porteur_projet_id'];
     use SoftDeletes;
+
     protected $dates = ['deleted_at','date_reception'];
     public $incrementing = false;
 
@@ -29,7 +30,7 @@ class Demande extends Model
 
     public function interventions()
     {
-        return $this->belongsToMany('App\Intervention', 'intervention_demande')->withTimestamps();
+        return $this->belongsToMany('App\Intervention', 'intervention_demande','demande_id', 'intervention_id')->withTimestamps();
     }
 
     public function partenaires()

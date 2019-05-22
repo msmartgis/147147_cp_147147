@@ -74,8 +74,14 @@
         </li>
 
 
-        <li class="nav-item ">
-            <a class="nav-link" href="#"><span class="active-item-here"></span>
+        <li class="
+            @if( preg_match('(statistics|indexStatistics)', Route::currentRouteName()) === 1 ))
+                                nav-item active
+                                @else
+                            nav-item
+            @endif
+            ">
+            <a class="nav-link" href="{{ route('indexStatistics') }}"><span class="active-item-here"></span>
                 <img src="{{asset('images/svg/statistics.svg')}}" style="width: 1.2em;margin-right: 5px;" />
                 <span style="vertical-align: middle;" class="lato-bold">STATISTIQUES</span></a>
         </li>

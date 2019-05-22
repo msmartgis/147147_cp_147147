@@ -25,10 +25,14 @@ Route::group(
             'piece' => 'PieceController',
             'pistes' => 'PisteController',
             'cartographie' => 'CartographieController',
+            'statistics' => 'StatisticsController',
         ]);
         Route::get('/demande/create', 'DemandesController@create')->name('createDemande');
         Route::get('/demande', 'DemandesController@index')->name('indexDemande');
         Route::get('/projet', 'ProjetController@index')->name('indexProjet');
+        Route::get('/statistics', 'StatisticsController@index')->name('indexStatistics');
+
+
         //demandes
         Route::get('/demandes/getDemandeData', 'DemandesController@getDemandeData');
         Route::get('/demandes/en_cours', 'DemandesController@getDemandes');
@@ -85,6 +89,12 @@ Route::group(
         //piste
         Route::get('/getPisteDataHtml', 'PisteController@getPisteDataHtml');
         Route::get('/getPiste', 'PisteController@getPiste');
+
+
+        //statistics
+        Route::get('/demandesStatistics', 'StatisticsController@getDemandes')->name('statistics.getDemandes');
+        Route::get('/chartDataDemandes', 'StatisticsController@getDemandesDataChart')->name('statistics.getDemandesChart');
+        Route::get('/getCommunesTaux', 'StatisticsController@getCommunesTaux')->name('statistics.getCommunesTaux');
     }
 );
 Route::group(
@@ -115,7 +125,6 @@ Route::group(
         Route::get('/convention', 'ConventionController@index')->name('indexConvention');
         Route::get('/suiviVersement', 'SuiviVersementController@index')->name('indexSuiviVersement');
         Route::get('/appelOffre', 'AppelOffreController@index')->name('indexAppelOffre');
-
         Route::post('/projet/changeState', 'ProjetController@changeState')->name('projet.changeState');
     }
 );

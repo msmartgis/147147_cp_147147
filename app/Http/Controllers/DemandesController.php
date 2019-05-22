@@ -1317,6 +1317,12 @@ class DemandesController extends BaseController
     public function destroy(Demande $demande)
     {
         Storage::disk('uploads')->deleteDirectory('demandes/'.$demande->id);
+        $demande->communes()->detach();
+        $demande->partenaires()->detach();
+        $demande->interventions()->detach();
+        $demande->sourceFinancement()->detach();
+        $demande->piste()->delete();
+        $demande->piece()->delete();
         Demande::destroy($demande->id);
         return response()->json();
     }

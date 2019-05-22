@@ -907,6 +907,16 @@ class ConventionController extends Controller
     public function destroy(Convention $convention)
     {
         Storage::disk('uploads')->deleteDirectory('conventions/'.$convention->id);
+        $convention->communes()->detach();
+        $convention->interventions()->detach();
+        $convention->point_desservis()->detach();
+        $convention->partenaires()->detach();
+        $convention->piste()->delete();
+        $convention->piece()->delete();
+        $convention->versements()->delete();
+        $convention->etats()->delete();
+        $convention->galleries()->delete();
+
         Convention::destroy($convention->id);
         return response()->json();
     }

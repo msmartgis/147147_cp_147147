@@ -498,6 +498,12 @@ class ProjetController extends Controller
     public function destroy(Convention $projet)
     {
         Storage::disk('uploads')->deleteDirectory('conventions/'.$projet->id);
+        $projet->communes()->detach();
+        $projet->interventions()->detach();
+        $projet->point_desservis()->detach();
+        $projet->piece()->delete();
+        $projet->moas()->delete();
+        $projet->partenaires()->detach();
         Convention::destroy($projet->id);
         return response()->json();
     }

@@ -12,7 +12,7 @@
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="form-group">
                         {{Form::label('','N° d\'ordre :')}}
-                        {{Form::text('num_ordre',$current_numero_ordre,['class'=>'form-control'])}}
+                        {{Form::text('num_ordre',$current_numero_ordre,['class'=>'form-control','required'=>'required'  ])}}
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
@@ -68,7 +68,7 @@
                     <div class="form-group">
 
                         {{Form::label('','Longueur :')}}
-                        {{Form::text('longueur','',['class'=>'form-control','id'=>'longueur_input'])}}
+                        {{Form::text('longueur','',['class'=>'form-control','id'=>'longueur_input','required'=>'required'])}}
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
