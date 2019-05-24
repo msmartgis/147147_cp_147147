@@ -355,3 +355,14 @@ function getPiste() {
         }
     });
 }
+
+
+
+$(document).ready(function() {
+    // Tab initialization
+    $( "#tabs_demande_edit" ).tabs({
+        activate: function(event ,ui){
+            map.invalidateSize(true);
+        }
+    });
+});

@@ -1,5 +1,6 @@
 
 {!! Form::model($convention, ['route' => ['convention.update', $convention->id],'method' => 'PUT']) !!}
+<div id="tabs_convention_edit">
 @include('conventions.edit.tabs')
 <div class="row">
     <div class="col-lg-10">
@@ -378,6 +379,7 @@
         </div>
     </div>
     <!-- /.col -->
+</div>
 </div>
 <!-- /.row -->
 

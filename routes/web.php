@@ -93,8 +93,11 @@ Route::group(
 
         //statistics
         Route::get('/demandesStatistics', 'StatisticsController@getDemandes')->name('statistics.getDemandes');
+        Route::get('/demandesStatisticsLongueur', 'StatisticsController@getDemandesLongueur')->name('statistics.getDemandesLongueur');
         Route::get('/chartDataDemandes', 'StatisticsController@getDemandesDataChart')->name('statistics.getDemandesChart');
         Route::get('/getCommunesTaux', 'StatisticsController@getCommunesTaux')->name('statistics.getCommunesTaux');
+        Route::get('/getCommunesTauxLg', 'StatisticsController@getCommunesTauxLg')->name('statistics.getCommunesTauxLg');
+        Route::get('/chartDataDemandesLongeur', 'StatisticsController@getDemandesDataChartLongeur')->name('statistics.getDemandesChartLongeur');
     }
 );
 Route::group(

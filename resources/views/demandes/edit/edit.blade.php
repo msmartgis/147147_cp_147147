@@ -80,10 +80,12 @@
 @endsection
 
 @section('content')
+    <div id="tabs_demande_edit">
+        @include('demandes.edit.tabs')
 
-    @include('demandes.edit.tabs')
+        @include('demandes.edit.form_edit')
+    </div>
 
-    @include('demandes.edit.form_edit')
 
     {{-- Modals --}}
     @include('demandes.modals')

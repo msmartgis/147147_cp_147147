@@ -61,13 +61,67 @@
         }
 
 
-        #map {
-            height: 60vh;
-            margin-top : 8px;
+        #map_nombre {
+            height: 100vh;
             margin-bottom: 8px;
             z-index: 1;
         }
 
+
+
+        #map_demande_lg {
+            height: 100vh;
+            margin-bottom: 8px;
+            z-index: 1;
+        }
+
+        ul#switch_item li {
+            display:inline;
+        }
+
+        .baselayer_btn_demande {
+            border-radius: 50%;
+
+            border: 3px solid #ffda44;
+            filter: grayscale(100%);
+        }
+
+        .baselayer_btn_demande.active {
+            border-radius: 50%;
+
+            border: 3px solid #b2ff59;
+            filter: grayscale(0%);
+        }
+
+        .baselayer_btn_demande_lg {
+            border-radius: 50%;
+
+            border: 3px solid #ffda44;
+            filter: grayscale(100%);
+        }
+
+        .baselayer_btn_demande_lg.active {
+            border-radius: 50%;
+
+            border: 3px solid #b2ff59;
+            filter: grayscale(0%);
+        }
+        .box-body ul li
+        {
+            line-height: 13px !important;
+        }
+        .m-toolTip
+        {
+            background: none;
+            border: none;
+            display: inline-block;
+            box-shadow: none;
+
+        }
+        .tooltip-arrow{
+            background: none;
+            border: none;
+        }
 
     </style>
 @endsection
@@ -163,5 +217,11 @@
 <script src="{{asset('js/statistics/datatable_statistics_demandes.js')}}"></script>
 <script src="{{asset('js/statistics/chart_data_demandes.js')}}"></script>
 
+<script type="text/javascript">
+    jQuery("body").prepend('<div id="preloader">Loading...</div>');
+    jQuery(document).ready(function() {
+        jQuery("#preloader").remove();
+    });
+</script>
 
 @endpush

@@ -4008,7 +4008,7 @@ input[type="color"] {
 }
 
 .vtabs .tabs-vertical {
-    width: 150px;
+    width: 100px;
     border-bottom: 0px;
     border-right: 1px solid rgba(120, 130, 140, 0.13);
     display: table-cell;

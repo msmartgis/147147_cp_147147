@@ -45,7 +45,7 @@ class Demande extends Model
 
     public function piste()
     {
-        return $this->hasOne('App\Piste');
+        return $this->hasOne('App\Piste','demande_id');
     }
 
     public function porteur()

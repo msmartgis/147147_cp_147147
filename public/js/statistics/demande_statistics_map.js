@@ -1,21 +1,300 @@
 
+
 // MAPPING ********************
+
+    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        baselayer = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
+        map_nombre = new L.Map('map_nombre', {layers: [baselayer], center: new L.LatLng(29.504514364812469, -9.599814615107725), zoom: 15,zoomControl: false});
+
+        /*onMapReady(map_nombre: L.Map) {
+            setTimeout(() => {
+                map_nombre.invalidateSize();
+            }, 0);
+        }*/
+// or, add to an existing map:
+    map_nombre.addControl(new L.Control.Fullscreen());
+
+    L.control.zoom({
+        position:'topright'
+    }).addTo(map_nombre);
+
+
+
+// map layers changing
+    $("#hybrid_btn_demande").click(function () {
+        $("#satellite_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande");
+        $("#hybrid_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande active");
+        $("#road_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande");
+        $("#none_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande");
+        baselayer.remove();
+        baselayer = L.tileLayer(
+            "https://www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}", {
+                maxZoom: 19,
+                attribution: ""
+            }
+        ).addTo(map_nombre);
+    });
+    $("#satellite_btn_demande").click(function () {
+        $("#satellite_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande active");
+        $("#hybrid_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande ");
+        $("#road_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande");
+        $("#none_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande");
+        baselayer.remove();
+        baselayer = L.tileLayer(
+            "https://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}", {
+                maxZoom: 19,
+                attribution: ""
+            }
+        ).addTo(map_nombre);
+    });
+    $("#road_btn_demande").click(function () {
+        $("#satellite_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande");
+        $("#hybrid_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande ");
+        $("#road_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande active");
+        $("#none_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande");
+        baselayer.remove();
+        baselayer = L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19,
+                attribution: ""
+            }
+        ).addTo(map_nombre);
+    });
+    $("#none_btn_demande").click(function () {
+        $("#satellite_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande");
+        $("#hybrid_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande ");
+        $("#road_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande");
+        $("#none_btn_demande")
+            .removeClass()
+            .addClass("baselayer_btn_demande active");
+        baselayer.remove();
+    });
+
+    var communes_Style = {
+        color: "#898989",
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.75,
+        fillColor: "#CDCDCD",
+        zIndex : 1000000,
+        weight: 0
+    };
+    var Communes_Layer = new L.GeoJSON.AJAX("/mapping/Communes.geojson",  {
+        onEachFeature: function (feature, layer) {
+            layer.bindTooltip(function (layer) {
+                    //console.log(feature);
+                    return layer.feature.properties.Nom; //merely sets the tooltip text
+                }, {permanent: true, direction:"center",className : 'm-toolTip'}  //then add your options
+            ).addTo(map_nombre);
+            layer.setStyle(communes_Style);
+        }
+    });
+
+    Communes_Layer.addTo(map_nombre);
+
+
+    Communes_Layer.on('data:loaded', function() {
+        colorCommunes();
+        map_nombre.fitBounds(Communes_Layer.getBounds());
+    });
+
+    $('#interventions_demande_filter,#annee_demande_filter').on('change', function (e) {
+
+        var intervention = $("#interventions_demande_filter").val();
+        var annee = $("#annee_demande_filter").val();
+        colorCommunes(intervention,annee);
+    });
+
+    function colorCommunes(intervention,annee)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: 'JSON',
+            url: "/getCommunesTaux",
+            data : {
+                intervention : intervention,
+                annee : annee
+            },
+            success: function(res) {
+
+
+                var communesGeoJson = Communes_Layer.toGeoJSON();
+
+                L.geoJSON(communesGeoJson, {
+
+                    onEachFeature: function (feature, layer) {
+                        layer.bindTooltip(function (layer) {
+
+                         for(var i = 0; i < res.length; i++)
+                         {
+                         if(feature.properties.id == res[i].id)
+                         {
+                         return res[i].taux+'%';
+                         }
+                         }
+                         //merely sets the tooltip text
+                         }, {permanent: true, direction:"bottom",className : 'm-toolTip'}  //then add your options
+                         ).addTo(map_nombre);
+                    },
+
+                    style: function(feature) {
+                        //console.log('id commune geo : '+ feature.properties.id);
+                        for(var i = 0; i < res.length; i++)
+                        {
+                            if(feature.properties.id == res[i].id)
+                            {
+
+                                return {color : "#000",fillColor: setColor(parseFloat(res[i].taux)),opacity: 1,weight: 0.2} ;
+                            }
+                        }
+                    }
+                }).addTo(map_nombre);
+            }
+        });
+    }
+
+
+
+
+
+//LONGEUR DEMANDE***********
 
 var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     baselayer = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
-    map = new L.Map('map', {layers: [baselayer], center: new L.LatLng(29.504514364812469, -9.599814615107725), zoom: 15,zoomControl: false});
+    map_lg = new L.Map('map_demande_lg', {layers: [baselayer], center: new L.LatLng(29.504514364812469, -9.599814615107725), zoom: 10,zoomControl: false});
+
+//map_lg.on('load', console.log('dzdzdz'));
+//setTimeout(map_lg.invalidateSize(), 10000);
+
+
+$(window).on('load', function () {
+    setTimeout(map_lg.invalidateSize(), 2000);
+});
 
 
 // or, add to an existing map:
-map.addControl(new L.Control.Fullscreen());
+map_lg.addControl(new L.Control.Fullscreen());
 
 L.control.zoom({
     position:'topright'
-}).addTo(map);
+}).addTo(map_lg);
 
 
-var communes_Style = {
+
+// map layers changing
+$("#hybrid_btn_demande").click(function () {
+    $("#satellite_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande");
+    $("#hybrid_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande active");
+    $("#road_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande");
+    $("#none_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande");
+    baselayer.remove();
+    baselayer = L.tileLayer(
+        "https://www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}", {
+            maxZoom: 19,
+            attribution: ""
+        }
+    ).addTo(map_lg);
+});
+$("#satellite_btn_demande").click(function () {
+    $("#satellite_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande active");
+    $("#hybrid_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande ");
+    $("#road_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande");
+    $("#none_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande");
+    baselayer.remove();
+    baselayer = L.tileLayer(
+        "https://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}", {
+            maxZoom: 19,
+            attribution: ""
+        }
+    ).addTo(map_lg);
+});
+$("#road_btn_demande").click(function () {
+    $("#satellite_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande");
+    $("#hybrid_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande ");
+    $("#road_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande active");
+    $("#none_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande");
+    baselayer.remove();
+    baselayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution: ""
+        }
+    ).addTo(map_lg);
+});
+$("#none_btn_demande").click(function () {
+    $("#satellite_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande");
+    $("#hybrid_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande ");
+    $("#road_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande");
+    $("#none_btn_demande")
+        .removeClass()
+        .addClass("baselayer_btn_demande active");
+    baselayer.remove();
+});
+
+
+var communes_demande_lg_Style = {
     color: "#898989",
     weight: 2,
     opacity: 1,
@@ -24,61 +303,44 @@ var communes_Style = {
     zIndex : 1000000,
     weight: 0
 };
-var Communes_Layer = new L.GeoJSON.AJAX("/mapping/Communes.geojson",  {
+var Communes_demande_lg_Layer = new L.GeoJSON.AJAX("/mapping/Communes.geojson",  {
     onEachFeature: function (feature, layer) {
         layer.bindTooltip(function (layer) {
                 //console.log(feature);
                 return layer.feature.properties.Nom; //merely sets the tooltip text
             }, {permanent: true, direction:"center"}  //then add your options
-        ).addTo(map);
-        layer.setStyle(communes_Style);
+        ).addTo(map_lg);
+        layer.setStyle(communes_demande_lg_Style);
     }
 });
 
-Communes_Layer.addTo(map);
+Communes_demande_lg_Layer.addTo(map_lg);
 
 
-Communes_Layer.on('data:loaded', function() {
-    colorCommunes();
-    map.fitBounds(Communes_Layer.getBounds());
+
+$('#interventions_demande_lg_filter,#annee_demande_lg_filter').on('change', function (e) {
+
+    var intervention = $("#interventions_demande_lg_filter").val();
+    var annee = $("#annee_demande_lg_filter").val();
+    colorCommunesLg(intervention,annee);
 });
 
-$('#interventions_demande_filter,#annee_demande_filter').on('change', function (e) {
-
-    var intervention = $("#interventions_demande_filter").val();
-    var annee = $("#annee_demande_filter").val();
-    colorCommunes(intervention,annee);
-});
-
-function colorCommunes(intervention,annee)
+function colorCommunesLg(intervention,annee)
 {
     $.ajax({
         type: "GET",
         dataType: 'JSON',
-        url: "/getCommunesTaux",
+        url: "/getCommunesTauxLg",
         data : {
             intervention : intervention,
             annee : annee
         },
         success: function(res) {
-            var communesGeoJson = Communes_Layer.toGeoJSON();
+            var communesLGGeoJson = Communes_demande_lg_Layer.toGeoJSON();
             console.log(res);
-            L.geoJSON(communesGeoJson, {
+            L.geoJSON(communesLGGeoJson, {
 
-                onEachFeature: function (feature, layer) {
-                    layer.bindTooltip(function (layer) {
 
-                            for(var i = 0; i < res.length; i++)
-                            {
-                                if(feature.properties.id == res[i].id)
-                                {
-                                    return res[i].taux+'%';
-                                }
-                            }
-                            //merely sets the tooltip text
-                        }, {permanent: true, direction:"bottom"}  //then add your options
-                    ).addTo(map);
-                },
 
                 style: function(feature) {
                     //console.log('id commune geo : '+ feature.properties.id);
@@ -86,15 +348,15 @@ function colorCommunes(intervention,annee)
                     {
                         if(feature.properties.id == res[i].id)
                         {
-
-                            return {color : "#000",fillColor: setColor(parseFloat(res[i].taux)),opacity: 1,weight: 0.2} ;
+                            return {color : "#000",fillColor: setColor(parseFloat(res[i].taux_lg)),opacity: 1,weight: 0.2} ;
                         }
                     }
                 }
-            }).addTo(map);
+            }).addTo(map_lg);
         }
     });
 }
+
 
 function setColor(taux)
 {
@@ -146,83 +408,11 @@ function setColor(taux)
 }
 
 
-// map layers changing
-$("#hybrid_btn").click(function () {
-    $("#satellite_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    $("#hybrid_btn")
-        .removeClass()
-        .addClass("baselayer_btn active");
-    $("#road_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    $("#none_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    baselayer.remove();
-    baselayer = L.tileLayer(
-        "https://www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}", {
-            maxZoom: 19,
-            attribution: ""
+$(document).ready(function() {
+    // Tab initialization
+    $( "#tabs_demande_lg" ).tabs({
+        activate: function(event ,ui){
+            map_lg.invalidateSize(true);
         }
-    ).addTo(map);
+    });
 });
-$("#satellite_btn").click(function () {
-    $("#satellite_btn")
-        .removeClass()
-        .addClass("baselayer_btn active");
-    $("#hybrid_btn")
-        .removeClass()
-        .addClass("baselayer_btn ");
-    $("#road_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    $("#none_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    baselayer.remove();
-    baselayer = L.tileLayer(
-        "https://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}", {
-            maxZoom: 19,
-            attribution: ""
-        }
-    ).addTo(map);
-});
-$("#road_btn").click(function () {
-    $("#satellite_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    $("#hybrid_btn")
-        .removeClass()
-        .addClass("baselayer_btn ");
-    $("#road_btn")
-        .removeClass()
-        .addClass("baselayer_btn active");
-    $("#none_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    baselayer.remove();
-    baselayer = L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 19,
-            attribution: ""
-        }
-    ).addTo(map);
-});
-$("#none_btn").click(function () {
-    $("#satellite_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    $("#hybrid_btn")
-        .removeClass()
-        .addClass("baselayer_btn ");
-    $("#road_btn")
-        .removeClass()
-        .addClass("baselayer_btn");
-    $("#none_btn")
-        .removeClass()
-        .addClass("baselayer_btn active");
-    baselayer.remove();
-});
-

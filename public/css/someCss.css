@@ -51,6 +51,7 @@
     filter: blur(5px);
 }
 
+
 .flex {
     min-height: 100vh;
     display: flex;

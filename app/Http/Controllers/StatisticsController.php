@@ -13,11 +13,20 @@ use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
+
 class StatisticsController extends Controller
 {
 
     public function getDemandes(Request $request)
     {
+        /*$communes = DB::table('communes')->select(array('id','nom_fr','nom_ar'));
+
+        $total_demandes = Demande::where(function($q){
+            $q->where([['decision', '=', 'accord_definitif'],['is_affecter', '=', 0]])->orWhere('decision', '=', 'en_cours');
+        })->count('id');
+
+        return Datatables::of($communes)->make();*/
+
         $communes = Commune::with('demandes','conventions')->orderBy('nom_fr', 'asc');
         $demandes = Demande::with('communes','interventions');
         $total_demandes = Demande::where(function($q){
@@ -66,6 +75,76 @@ class StatisticsController extends Controller
                     $query->where('interventions.id', '=', $interventions_id);
                 });
             }
+        }
+        return $datatables->make(true);
+    }
+
+
+    public function getDemandesLongueur(Request $request)
+    {
+        $communes = Commune::with('demandes','conventions')->orderBy('nom_fr', 'asc');
+
+        $demandes = Demande::with('piste')->where(function($q){
+            $q->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
+        })->get();
+
+        $longueur_total = 0;
+        foreach($demandes as $demande)
+        {
+            $longueur_total += $demande->piste->longueur;
+        }
+
+        $en_cours_longeur = 0;
+        $accord_def_longeur = 0;
+        $total_row_longeur = 0;
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($communes)
+            ->addColumn('en_cours_longeur', function ($communes) use ($en_cours_longeur) {
+                $en_cours_nombre_demandes = $communes->demandes()->where([['decision', '=', 'en_cours']])->get();
+
+                foreach($en_cours_nombre_demandes as $demande_en_cours)
+                {
+                    $en_cours_longeur += $demande_en_cours->piste->longueur;
+                }
+                return $en_cours_longeur;
+            })
+
+
+            ->addColumn('accord_definitif_longeur', function ($communes) use ($accord_def_longeur) {
+                $accord_def_nombre_demandes = $communes->demandes()->where([['decision', '=', 'accord_definitif']])->get();
+
+                foreach($accord_def_nombre_demandes as $accord_def)
+                {
+                    $accord_def_longeur += $accord_def->piste->longueur;
+                }
+                return $accord_def_longeur;
+            })
+
+            ->addColumn('total_row_longeur', function ($communes) use ($total_row_longeur) {
+                $demandes_row = $communes->demandes()->where(function($q){
+                    $q->where('decision', '=', 'accord_definitif')
+                        ->orWhere('decision', '=', 'en_cours');
+                })->get();
+
+                foreach($demandes_row as $demande_longeur_row)
+                {
+                    $total_row_longeur += $demande_longeur_row->piste->longueur;
+                }
+                return $total_row_longeur;
+            })
+
+            ->addColumn('taux_row_longeur', function ($communes) use ($longueur_total,$total_row_longeur) {
+                $demandes_row = $communes->demandes()->where(function($q){
+                    $q->where('decision', '=', 'accord_definitif')
+                        ->orWhere('decision', '=', 'en_cours');
+                })->get();
+
+                foreach($demandes_row as $demande_longeur_row)
+                {
+                    $total_row_longeur += $demande_longeur_row->piste->longueur;
+                }
+                return number_format(($total_row_longeur/$longueur_total)*100);
+            });
         }
         return $datatables->make(true);
     }
@@ -132,6 +211,89 @@ class StatisticsController extends Controller
 
 
         return response()->json(array('nombre_total_demande'=>$total_demandes,'number_demande_interv' =>$number__demande_interv));
+    }
+
+
+
+    public function getDemandesDataChartLongeur(Request $request)
+    {
+        $demandes = Demande::with('piste')->where(function($q){
+            $q->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
+        })->get();
+
+        $longueur_total = 0;
+        foreach($demandes as $demande)
+        {
+            $longueur_total += $demande->piste->longueur;
+        }
+
+
+
+        $intervention_id = $request->intervention;
+        $annee = $request->annee;
+
+        $longeur_demande_intervention = 0;
+        if($request->intervention == "all" && $request->annee == "all")
+        {
+
+            $demande_interv = Demande::with('interventions')->where(function($q){
+                $q->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
+            })->get();
+
+
+            foreach($demande_interv as $dm_interv)
+            {
+
+                $longeur_demande_intervention += $dm_interv->piste->longueur;
+
+            }
+        }
+
+        if($request->intervention != "all" && $request->annee == "all")
+        {
+            $intervention_id = $request->intervention;
+
+            $demande_interv = Demande::with('piste')->where(function($q){
+                $q->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
+            })->whereHas('interventions',function($query) use ($intervention_id){
+                $query->where('interventions.id','=',$intervention_id);
+            })->get();
+            //return $demande_interv;
+            foreach($demande_interv as $dm_interv)
+            {
+                $longeur_demande_intervention += $dm_interv->piste->longueur;
+            }
+        }
+
+        if($request->intervention == "all" && $request->annee != "all") {
+            $annee_id = $request->annee;
+
+            $demande_interv = Demande::with('piste')->whereYear('date_reception','=',$annee_id)->where(function($query){
+                $query->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
+            })->get();
+
+            foreach($demande_interv as $dm_interv)
+            {
+                $longeur_demande_intervention += $dm_interv->piste->longueur;
+            }
+        }
+
+
+        if($request->intervention != "all" && $request->annee != "all") {
+            $number__demande_interv = DB::table('intervention_demande')
+                ->select(array(DB::raw('COUNT(intervention_demande.demande_id) as number__demande_interv')))
+                ->join('demandes', 'demandes.id', '=', 'intervention_demande.demande_id')
+                ->where(function($q){
+                    $q->where('decision', '=', 'accord_definitif')->where('is_affecter', '=', 0)->orWhere('decision', '=', 'en_cours');
+                })
+                ->where([['intervention_demande.intervention_id','=',$intervention_id]])
+                ->whereYear('demandes.date_reception','=',$annee)
+                ->get();
+        }
+
+
+        return response()->json(array('longueur_total'=>$longueur_total,'longeur_demande_intervention' =>$longeur_demande_intervention));
+
     }
 
 
@@ -293,6 +455,174 @@ class StatisticsController extends Controller
 */
 
 
+
+        return $communes;
+
+    }
+
+
+    public function getCommunesTauxLg(Request $request)
+    {
+
+        $demandes = Demande::with('piste')->where(function($q){
+            $q->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
+        })->get();
+
+        $longueur_total = 0;
+
+        foreach($demandes as $demande)
+        {
+            $longueur_total += $demande->piste->longueur;
+        }
+
+        $communes = Commune::all();
+
+        if(!isset($request->intervention) && !isset($request->annee))
+        {
+            foreach($communes as $commune)
+            {
+                $communes_selected =   $commune->demandes()->where(function($q){
+                    $q->where('decision', '=', 'accord_definitif')->where('is_affecter', '=', 0)->orWhere('decision', '=', 'en_cours');
+                })->get();
+
+                foreach($communes_selected as $commune)
+                {
+                    $longeur_demandes += $communes_selected->piste->longueur;
+
+                }
+
+
+                $commune->taux = number_format(($longeur_demandes/$longueur_total)*100);
+                $commune->nombre_demandes_for_commune = $nombre_demandes_for_commune;
+                $commune->total_demandes = $total_demandes;
+            }
+
+        }
+
+        if(isset($request->intervention) && isset($request->annee)){
+
+            if($request->intervention == "all" && $request->annee == "all")
+            {
+
+                foreach($communes as $commune)
+                {
+                    $longeur_demandes_for_commune = 0;
+                    $commune_id = $commune->id;
+                    $demande_interv = Demande::with('piste')->where(function($q) use ($commune_id){
+                        $q->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
+                    })
+                        ->whereHas('communes',function($query) use ($commune_id){
+                            $query->where('communes.id','=',$commune_id);
+                        })
+                        ->get();
+
+                    foreach($demande_interv as $dm_interv)
+                    {
+                        $longeur_demandes_for_commune += $dm_interv->piste->longueur;
+                    }
+
+                    $commune->taux_lg = number_format(($longeur_demandes_for_commune/$longueur_total)*100);
+
+                    $commune->longeur_demandes_for_commune = $longeur_demandes_for_commune;
+                    $commune->total_longueur = $longueur_total;
+                }
+            }
+
+            if($request->intervention != "all" && $request->annee == "all")
+            {
+                $intervention = $request->intervention;
+                foreach($communes as $commune)
+                {
+                    $longeur_demandes_for_commune = 0;
+                    $commune_id = $commune->id;
+                    $demande_interv = Demande::with('piste')->where(function($q) use ($commune_id){
+                        $q->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
+                    })
+                        ->whereHas('communes',function($query) use ($commune_id){
+                            $query->where('communes.id','=',$commune_id);
+                        })
+                        ->whereHas('interventions',function($query) use ($intervention){
+                            $query->where('interventions.id','=',$intervention);
+                        })
+                        ->get();
+
+                    foreach($demande_interv as $dm_interv)
+                    {
+                        $longeur_demandes_for_commune += $dm_interv->piste->longueur;
+                    }
+
+
+                    $commune->taux_lg = number_format(($longeur_demandes_for_commune/$longueur_total)*100);
+
+                    $commune->longeur_demandes_for_commune = $longeur_demandes_for_commune;
+                    $commune->total_longueur = $longueur_total;
+                }
+            }
+
+
+
+            if($request->intervention == "all" && $request->annee != "all")
+            {
+                $annee = $request->annee;
+                foreach($communes as $commune)
+                {
+                    $longeur_demandes_for_commune = 0;
+                    $commune_id = $commune->id;
+                    $demande_interv = Demande::with('piste')->where(function($q) use ($commune_id){
+                        $q->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
+                    })
+                        ->whereHas('communes',function($query) use ($commune_id){
+                            $query->where('communes.id','=',$commune_id);
+                        })->whereYear('date_reception','=',$annee)
+                        ->get();
+
+                    foreach($demande_interv as $dm_interv)
+                    {
+                        $longeur_demandes_for_commune += $dm_interv->piste->longueur;
+                    }
+
+
+                    $commune->taux_lg = number_format(($longeur_demandes_for_commune/$longueur_total)*100);
+
+                    $commune->longeur_demandes_for_commune = $longeur_demandes_for_commune;
+                    $commune->total_longueur = $longueur_total;
+                }
+            }
+
+            if($request->intervention != "all" && $request->annee != "all")
+            {
+                $intervention = $request->intervention;
+                $annee = $request->annee;
+                foreach($communes as $commune)
+                {
+                    $longeur_demandes_for_commune = 0;
+                    $commune_id = $commune->id;
+                    $demande_interv = Demande::with('piste')->where(function($q) use ($commune_id){
+                        $q->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
+                    })
+                        ->whereHas('communes',function($query) use ($commune_id){
+                            $query->where('communes.id','=',$commune_id);
+                        })
+                        ->whereHas('interventions',function($query) use ($intervention){
+                            $query->where('interventions.id','=',$intervention);
+                        })
+                        ->whereYear('date_reception','=',$annee)
+                        ->get();
+
+                    foreach($demande_interv as $dm_interv)
+                    {
+                        $longeur_demandes_for_commune += $dm_interv->piste->longueur;
+                    }
+
+
+                    $commune->taux_lg = number_format(($longeur_demandes_for_commune/$longueur_total)*100);
+
+                    $commune->longeur_demandes_for_commune = $longeur_demandes_for_commune;
+                    $commune->total_longueur = $longueur_total;
+
+                }
+            }
+        }
 
         return $communes;
 
