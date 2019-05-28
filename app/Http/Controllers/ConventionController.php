@@ -737,7 +737,7 @@ class ConventionController extends Controller
 
         //save data for piece******
         //verify if there is any piece
-        if (Input::has('pieces_types')) {
+        /*if (Input::has('pieces_types')) {
             $array_combination_piece = array();
             $pieces_types_array = array();
             $pieces_noms_array = array();
@@ -774,6 +774,57 @@ class ConventionController extends Controller
                 $piece->type = $pieces_types_array[$i];
                 $piece->nom = $pieces_noms_array[$i];
                 $piece->path = $piece_file_names[$i];
+                $piece->convention_id = $actu_id_convention;
+                $piece->save();
+                //array_push($array_combination_piece, $piece);
+            }
+
+        }*/
+
+
+        if (Input::has('pieces_types')) {
+            $array_combination_piece = array();
+            $pieces_types_array = array();
+            $pieces_noms_array = array();
+            $piece_file_names = array();
+            $pieces_types_array = Input::get('pieces_types');
+            $pieces_noms_array = Input::get('pieces_noms');
+            $items_number = count($pieces_types_array);
+            $files = $request->file('pieces_uploads');
+            //define a new piece
+
+            //files uploaded get path
+            if ($request->hasFile('pieces_uploads')) {
+                foreach ($files as $file) {
+                    // Get filename with the extension
+                    $filenameWithExt = $file->getClientOriginalName();
+                    // Get just filename
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    // Get just ext
+                    $extension = $file->getClientOriginalExtension();
+                    // Filename to store
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+
+                    array_push($piece_file_names, $fileNameToStore);
+                    // Upload Image
+                    $path = $file->storeAs('public/uploaded_files/conventions/'.$actu_id_convention, $fileNameToStore);
+                }
+
+            }
+
+
+
+            for ($i = 0; $i < $items_number; $i++) {
+                $piece = new Piece;
+                $piece->type = $pieces_types_array[$i];
+                $piece->nom = $pieces_noms_array[$i];
+                if(count($piece_file_names) > 0)
+                {
+                    $piece->path = $piece_file_names[$i];
+                }else{
+                    $piece->path = '';
+                }
+
                 $piece->convention_id = $actu_id_convention;
                 $piece->save();
                 //array_push($array_combination_piece, $piece);

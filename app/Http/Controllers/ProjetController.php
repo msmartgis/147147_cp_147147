@@ -7,6 +7,7 @@ use App\Avancement;
 use App\Commune;
 use App\Convention;
 use App\Demande;
+use App\Etat;
 use App\Gallery;
 use App\Intervention;
 use App\Moa;
@@ -309,13 +310,13 @@ class ProjetController extends Controller
 
 
         //save data for piece******
-        //verify if there is any piece
         if (Input::has('pieces_types')) {
             $array_combination_piece = array();
             $pieces_types_array = array();
             $pieces_noms_array = array();
             $piece_file_names = array();
             $pieces_types_array = Input::get('pieces_types');
+            $pieces_noms_array = Input::get('pieces_noms');
             $items_number = count($pieces_types_array);
             $files = $request->file('pieces_uploads');
             //define a new piece
@@ -334,8 +335,9 @@ class ProjetController extends Controller
 
                     array_push($piece_file_names, $fileNameToStore);
                     // Upload Image
-                    $path = $file->storeAs('public/uploaded_files/conventions/' . $actu_id_convention, $fileNameToStore);
+                    $path = $file->storeAs('public/uploaded_files/conventions/'.$actu_id_convention, $fileNameToStore);
                 }
+
             }
 
 
@@ -343,22 +345,19 @@ class ProjetController extends Controller
             for ($i = 0; $i < $items_number; $i++) {
                 $piece = new Piece;
                 $piece->type = $pieces_types_array[$i];
-                $piece->path = $piece_file_names[$i];
+                $piece->nom = $pieces_noms_array[$i];
+                if(count($piece_file_names) > 0)
+                {
+                    $piece->path = $piece_file_names[$i];
+                }else{
+                    $piece->path = '';
+                }
+
                 $piece->convention_id = $actu_id_convention;
                 $piece->save();
                 //array_push($array_combination_piece, $piece);
             }
 
-
-
-            /* foreach ($array_combination_piece as $p) {
-                 $piec = new Piece;
-                 $piec->type = $p->type;
-                 $piec->nom = $p->nom;
-                 $piec->path = $p->path;
-
-
-             }*/
         }
 
 
@@ -400,6 +399,8 @@ class ProjetController extends Controller
         $convention = Convention::with(['communes', 'partenaires', 'piste', 'point_desservis',  'interventions', 'piece', 'programme', 'moas','appelOffres'])->find($convention->id);
         //return $convention;
 
+        $etats = Etat::orderBy('date')->where('convention_id','=',$convention->id)->get();
+
         return view('projets.edit.edit_projet')->with([
             'convention' => $convention,
             'interventions' => $interventions,
@@ -407,7 +408,8 @@ class ProjetController extends Controller
             'partenaires_types' => $partenaires_types,
             'moas' => $moas,
             'communes' => $communes,
-            'programmes' => $programmes
+            'programmes' => $programmes,
+            'etats' => $etats
         ]);
     }
 

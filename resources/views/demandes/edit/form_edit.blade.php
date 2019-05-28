@@ -389,9 +389,9 @@
 
                     <div class="form-group">
                         {{Form::hidden('id_pist',$demande->piste->id,['id' => 'piste_id_input'])}}
-                        {{Form::hidden('geometry','',['id' => 'geometry_input'])}}
+                        {{Form::hidden('geometry','',['id' => 'geometry_input','required'=>'required'])}}
                         {{Form::label('','Longueur:')}}
-                        {{Form::text('longueur',$demande->piste->longueur,['class'=>'form-control','id'=>'longueur_input'])}}
+                        {{Form::text('longueur',$demande->piste->longueur,['class'=>'form-control','id'=>'longueur_input','required'=>'required'])}}
                     </div>
                     <br>
                     <br>

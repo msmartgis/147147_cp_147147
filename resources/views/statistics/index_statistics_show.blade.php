@@ -93,6 +93,35 @@
             filter: grayscale(0%);
         }
 
+        .baselayer_btn_projet {
+            border-radius: 50%;
+
+            border: 3px solid #ffda44;
+            filter: grayscale(100%);
+        }
+
+        .baselayer_btn_projet.active {
+            border-radius: 50%;
+
+            border: 3px solid #b2ff59;
+            filter: grayscale(0%);
+        }
+
+
+        .baselayer_btn_projet_lg {
+            border-radius: 50%;
+
+            border: 3px solid #ffda44;
+            filter: grayscale(100%);
+        }
+
+        .baselayer_btn_projet_lg.active {
+            border-radius: 50%;
+
+            border: 3px solid #b2ff59;
+            filter: grayscale(0%);
+        }
+
         .baselayer_btn_demande_lg {
             border-radius: 50%;
 
@@ -116,6 +145,7 @@
             border: none;
             display: inline-block;
             box-shadow: none;
+            font-family: Lato;
 
         }
         .tooltip-arrow{
@@ -216,6 +246,8 @@
 <script src="{{asset('js/statistics/demande_statistics_map.js')}}"></script>
 <script src="{{asset('js/statistics/datatable_statistics_demandes.js')}}"></script>
 <script src="{{asset('js/statistics/chart_data_demandes.js')}}"></script>
+
+<script src="{{asset('js/statistics/datatable_statistics_projets.js')}}"></script>
 
 <script type="text/javascript">
     jQuery("body").prepend('<div id="preloader">Loading...</div>');

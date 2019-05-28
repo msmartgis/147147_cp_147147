@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
     //image guallery
     const current = document.querySelector('#current');
     const imgs = document.querySelector('.imgs');
@@ -77,74 +78,7 @@ $(document).ready(function(){
 
 
 
-    // add etat
-    $('.form-add-etat').on('submit', function (e) {
-        $form = $(this);
-        e.preventDefault();
-        var markup = '';
-        url = $form.attr('action');
-        type = $form.attr('method');
-        $.ajax({
-            'type': type,
-            'url': url,
-            'data': new FormData(this),
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                var nom = '';
-                switch(data.nom) {
-                    case 'programme':
-                        nom= 'Programmé'
-                        break;
-                    case 'en_cours_execution':
-                        nom= 'En cours d\'execution'
-                        break;
-                    case 'a.o_pulie':
-                        nom= 'A.O Publi'
-                        break;
-                    case 'plis_ouvert':
-                        nom= 'Plis ouvert'
-                        break;
-                    case 'a.o_attribue':
-                        nom= 'A.O Attribué'
-                        break;
-                    case 'a.o_reporte':
-                        nom= 'A.O Reporté'
-                        break;
-                    case 'a.o_annule':
-                        nom= 'A.O Annule'
-                        break;
-                    case 'en_retard':
-                        nom=  'En retard'
-                        break;
-                    case 'en_etat_arret':
-                        nom= 'En état d\'arrêt'
-                        break;
-                    case 'realise':
-                        nom= 'Réalisé'
-                        break;
-                }
-                markup =
-                    '<tr>' +
-                    '<td style="text-align: center">' +
-                    nom +
-                    '</td>' +
-                    '<td style="text-align: center">' +
-                    data.date +
-                    '</td>' +
-                    '<td style="text-align: center">' +
-                    '<button class="btn btn-danger-table delete-etat" data-id="etat_' + data.id + '"><i class="fa fa-close"></i> Supprimer</button>' +
-                    '</tr>' +
-                    '' +
-                    '';
 
-
-                $(markup).appendTo("#etat_tbody");
-                $('#add_modal_etat').modal('hide');
-            }
-        });
-    });
 
 
     //add partenaire

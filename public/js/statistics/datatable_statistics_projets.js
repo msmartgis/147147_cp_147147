@@ -1,9 +1,10 @@
-var demandesTable;
-var demandesTableLongueur;
+var projetsTable;
+var projetsLGTable;
+var projetsTableLongueur;
 var checked_demande_en_cours = 0;
 $(document).ready(function () {
 
-    demandesTable = $('#demandes_statistcs_datatables').DataTable({
+    projetsTable = $('#projets_statistcs_datatables').DataTable({
         processing: true,
         serverSide: true,
         pageLength: 30,
@@ -17,11 +18,11 @@ $(document).ready(function () {
         },
 
         ajax: {
-            url: '/demandesStatistics',
+            url: '/projetsStatistics',
             type: 'GET',
             data: function (d) {
-                d.interventions = $('select[name=intervention_demande]').val();
-                d.annee = $('select[name=annee_demande]').val();
+                d.interventions = $('select[name=intervention_projet]').val();
+                d.annee = $('select[name=annee_projet]').val();
             }
 
         },
@@ -44,38 +45,52 @@ $(document).ready(function () {
                 name: 'communes.nom_fr',
                 orderable: true,
                 searchable: true,
-                width : '30%'
+                width : '45%'
             },
             {
-                data: 'en_cours_nombre',
-                name: 'en_cours_nombre',
+                data: 'programme',
+                name: 'programme',
                 orderable: true,
                 searchable: true,
                 width : '15%'
             },
             {
-                data: 'accord_definitif_nombre',
-                name: 'accord_definitif_nombre',
+                data: 'appel_offre',
+                name: 'appel_offre',
                 orderable: true,
                 searchable: true,
                 width : '25%'
+            },
+            {
+                data: 'en_cours',
+                name: 'en_cours',
+                orderable: true,
+                searchable: true,
+                width : '15%'
+            },
+            {
+                data: 'realise',
+                name: 'realise',
+                orderable: true,
+                searchable: true,
+                width : '5%'
             },
             {
                 data: 'total_row',
                 name: 'total_row',
                 orderable: true,
                 searchable: true,
-                width : '15%'
+                width : '5%'
             },
             {
-                data: 'row_taux',
-                name: 'row_taux',
+                data: 'taux_row',
+                name: 'taux_row',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '5%'
 
             }
         ],
-
 
         initComplete: function () {
             this.api().columns().every(function () {
@@ -90,38 +105,33 @@ $(document).ready(function () {
     });
 
 
-
-    $('#interventions_demande_filter,#annee_demande_filter').on('change paste keyup', function (e) {
-        demandesTable.draw();
+    $('#interventions_projet_filter,#annee_projet_filter').on('change paste keyup', function (e) {
+        projetsTable.draw();
         e.preventDefault();
     });
 
 
 
-
-    //demandes longueur*********
-    /*
-    get demandes statistics longeur
-     */
-    demandesTableLongueur = $('#demandes_longueur_statistcs_datatables').DataTable({
+    //Projet longueur*********
+    projetsLGTable = $('#projets_lg_statistcs_datatables').DataTable({
         processing: true,
         serverSide: true,
         pageLength: 30,
-        bPaginate: false,
         bInfo : false,
         info : false,
+        bPaginate: false,
         bLengthChange : false,
         searching: false,
         language: {
-            processing: '<img src="/images/loader/Preloader_2.gif">'
+            processing: '<img src="/images/loader/Preloader_2.gif" class="loader-datatable">'
         },
 
         ajax: {
-            url: '/demandesStatisticsLongueur',
+            url: '/projetsLGStatistics',
             type: 'GET',
             data: function (d) {
-                d.interventions = $('select[name=intervention_demande_lg]').val();
-                d.annee = $('select[name=annee_demande_lg]').val();
+                d.interventions = $('select[name=intervention_projet_lg]').val();
+                d.annee = $('select[name=annee_projet_lg]').val();
             }
 
         },
@@ -144,38 +154,52 @@ $(document).ready(function () {
                 name: 'communes.nom_fr',
                 orderable: true,
                 searchable: true,
-                width : '30%'
+                width : '45%'
             },
             {
-                data: 'en_cours_longeur',
-                name: 'en_cours_longeur',
+                data: 'programme',
+                name: 'programme',
                 orderable: true,
                 searchable: true,
                 width : '15%'
             },
             {
-                data: 'accord_definitif_longeur',
-                name: 'accord_definitif_longeur',
+                data: 'appel_offre',
+                name: 'appel_offre',
                 orderable: true,
                 searchable: true,
                 width : '25%'
             },
             {
-                data: 'total_row_longeur',
-                name: 'total_row_longeur',
+                data: 'en_cours',
+                name: 'en_cours',
                 orderable: true,
                 searchable: true,
                 width : '15%'
             },
             {
-                data: 'taux_row_longeur',
-                name: 'taux_row_longeur',
+                data: 'realise',
+                name: 'realise',
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : '5%'
+            },
+            {
+                data: 'total_row',
+                name: 'total_row',
+                orderable: true,
+                searchable: true,
+                width : '5%'
+            },
+            {
+                data: 'taux_row',
+                name: 'taux_row',
+                orderable: true,
+                searchable: true,
+                width : '5%'
 
             }
         ],
-
 
         initComplete: function () {
             this.api().columns().every(function () {
@@ -189,13 +213,9 @@ $(document).ready(function () {
         }
     });
 
-
-
-    $('#interventions_demande_lg_filter,#annee_demande_lg_filter').on('change paste keyup', function (e) {
-        demandesTableLongueur.draw();
+    $('#interventions_projet_lg_filter,#annee_projet_lg_filter').on('change paste keyup', function (e) {
+        projetsLGTable.draw();
         e.preventDefault();
     });
-
-
 
 });

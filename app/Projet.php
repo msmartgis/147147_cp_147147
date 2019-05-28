@@ -57,4 +57,9 @@ class Projet extends Model
         return $this->belongsToMany('App\Programme', 'programmes_projet')->withTimestamps();
     }
 
+    public function etat()
+    {
+        return $this->hasMany('App\Etat');
+    }
+
 }

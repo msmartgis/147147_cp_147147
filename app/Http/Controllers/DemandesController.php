@@ -1126,7 +1126,6 @@ class DemandesController extends BaseController
         $demande->save();
         if($demande->save())
         {
-
             $actu_id_demande = $demande->id;
         }
 

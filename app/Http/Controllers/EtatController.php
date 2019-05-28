@@ -11,6 +11,11 @@ class EtatController extends Controller
 
     public function addEtat(Request $request)
     {
+        //return $request->convention_id;
+        $old_etats = Etat::where('convention_id','=',$request->convention_id)->update(['active' => 0]);
+
+
+
         $str_replace = date('Y-m-d');
         $etat  = new Etat();
         $etat->nom = $request->etat;
@@ -18,6 +23,7 @@ class EtatController extends Controller
         $str_replace =  str_replace("/",'-',$request->date);
 
         $etat->date = $str_replace;
+        $etat->active = 1;
         $etat->save();
         return response()->json($etat);
     }

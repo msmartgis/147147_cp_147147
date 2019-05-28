@@ -98,6 +98,9 @@ Route::group(
         Route::get('/getCommunesTaux', 'StatisticsController@getCommunesTaux')->name('statistics.getCommunesTaux');
         Route::get('/getCommunesTauxLg', 'StatisticsController@getCommunesTauxLg')->name('statistics.getCommunesTauxLg');
         Route::get('/chartDataDemandesLongeur', 'StatisticsController@getDemandesDataChartLongeur')->name('statistics.getDemandesChartLongeur');
+
+        Route::get('/projetsStatistics', 'StatisticsController@getProjets')->name('statistics.getProjets');
+        Route::get('/projetsLGStatistics', 'StatisticsController@getProjetsLongueur')->name('statistics.getProjetsLongueur');
     }
 );
 Route::group(

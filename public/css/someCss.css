@@ -561,4 +561,9 @@ table.dataTable thead .sorting_desc_disabled:after
     text-align: center;
 }
 
+.loader-datatable{
+    width: 100px;
+    height: 100px;
+}
+
 

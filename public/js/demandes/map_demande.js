@@ -278,7 +278,7 @@ map.on('draw:created', function (e) {
     {
         longueur_input = (totalDistance/1000).toFixed(1);
     }else{
-        longueur_input = Math.round((totalDistance/1000).toFixed(1));
+        longueur_input = (totalDistance/1000).toFixed(1);
     }
 
     $('#longueur_input').val(longueur_input);

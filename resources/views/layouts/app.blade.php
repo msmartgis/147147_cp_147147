@@ -76,8 +76,8 @@
              width: 100%;
              height: 100%;
              z-index: 9999;
-             background: url(/images/loader/Preloader_2.gif) center no-repeat #fff;
-             /*background-size: 250px 250px;*/
+             background: url(/images/loader/earth-.gif) center no-repeat #fff;
+             background-size: 500px 450px;
          }
 
      </style>

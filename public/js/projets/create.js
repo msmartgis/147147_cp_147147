@@ -25,7 +25,7 @@ $(document).ready(function () {
             '</td>'+
             '<td style = \'text-align:center\'><input type="hidden" name="partnenaire_type_ids[]" value="' + partenair_type_id + '">' + partenair_type_text + '</td>'+
             '<td style=\'text-align:center\'><input type="hidden" name="montant[]" value="' + montant_partnenaire + '">' + montant_partnenaire + '</td>'+
-            '<td style=\'text-align:center\'><input type="hidden" name="pourcentage[]" value="' + pourcent + '">' + pourcent + '</td>'+
+            '<td style=\'text-align:center\'><input type="hidden" name="pourcentage[]" value="' + pourcent.toFixed(2) + '">' + pourcent.toFixed(2) + '</td>'+
             '</tr>';
 
         $('#table_body_partner > tr:last').before(markup);

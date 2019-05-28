@@ -180,7 +180,7 @@
                                                         <th></th>
                                                     </tr>
                                                     <tbody id="etat_tbody">
-                                                    @foreach ($convention->etats as $item)
+                                                    @foreach ($etats as $item)
                                                         <tr>
                                                             <td style="text-align: center">
                                                                 @switch($item->nom)
@@ -191,7 +191,7 @@
                                                                 En cours d'execution
                                                                 @break
                                                                 @case ('a.o_pulie')
-                                                                A.O Publi
+                                                                A.O Publié
                                                                 @break
                                                                 @case ('plis_ouvert')
                                                                 Plis ouvert
@@ -539,12 +539,11 @@
                     @if(empty($convention->appelOffres))
                         <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
                             PROGRAMME
+
                         </h5>
-                    @endif
 
-                    @if(!empty($convention->appelOffres) && $convention->realise == 0)
-
-
+                        @else
+                        @if($convention->realise == 0)
                             @if($convention->appelOffres->ordre_service == 1)
                                 <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
                                     EN COURS D'EXECUTION
@@ -555,11 +554,15 @@
                                 </h5>
 
                             @endif
-                     @else
+                        @else
                             <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
                                 REALISE
                             </h5>
+                        @endif
                     @endif
+
+
+
 
                     <div class="form-group">
                         {{Form::label('','N°:')}}
@@ -639,8 +642,9 @@
                     {!! Form::close() !!}
 
 
+
                     @if(!empty($convention->appelOffres))
-                        @if($convention->appelOffres->ordre_service == 0)
+                        @if($convention->appelOffres->ordre_service == 1)
                                 <button type="button" class="btn btn-secondary col-12" id="realise_projet_btn" data-projet_id="{{$convention->id}}" style="margin-top: 8px !important"
 
                                 >Affecter Au projets realisés</button>

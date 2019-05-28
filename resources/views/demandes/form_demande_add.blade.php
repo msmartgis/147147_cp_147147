@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <input type="hidden" id="piste_id_input" name="piste_id" value="{{$piste_id}}">
-                    <input type="hidden" id="geometry_input" class="form-control" name="geometry" value="">
+                    <input type="hidden" id="geometry_input" class="form-control" name="geometry" value="" required>
                     <div class="form-group">
 
                         {{Form::label('','Longueur :')}}
