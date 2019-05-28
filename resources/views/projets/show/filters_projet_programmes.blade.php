@@ -91,6 +91,23 @@
         </div>
     </div>
 
+    <div class="row" style="margin-top: 4px">
+        <div class="col-lg-1">
+            <label>Année :</label>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <select class="form-control select2" style="width: 100%;" name="annee" id="annee_filter">
+                    <option value="all" selected>Indifferent</option>
+                    @foreach ($moas as $moa)
+                        <option value="{{$moa->id}}">{{$moa->nom_fr}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+    </div>
+
     <hr style="margin:4px">
 
     @include('projets.inc.action_button_projet')
