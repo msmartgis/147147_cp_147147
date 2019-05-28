@@ -120,8 +120,15 @@
 
                 <!-- /.box-header -->
                 <div class="box-body">
-                    @include('projets.show.filters_projet_show')
-                    @include('projets.show.datatable_projet_show')
+                @include('projets.show.tabs')
+                <!-- Tab panes -->
+                    <div class="tab-content" style="margin-top: 15px">
+                        @include('projets.show.tab_programmes')
+
+                        @include('projets.show.tab_appel_offre')
+                        {{--@include('projets.show.tab_en_cours_execution')
+                        @include('projets.show.tab_realise')--}}
+                    </div>
                 </div>
                 <!-- /.box-body -->
             </div>

@@ -2,7 +2,7 @@ var conventionsTable;
 var checked_convention = 0;
 $(document).ready(function () {
 
-    conventionsTable = $('#conventions_datatables').DataTable({
+    conventionsTable = $('#projet_programmes_datatables').DataTable({
         processing: true,
         serverSide: true,
         pageLength: 20,
