@@ -1,12 +1,13 @@
 {!! Form::open(['action' => 'SpreadSheetController@demandeSpread_en_cours','method'=>'POST','class'=>'']) !!}
 <div class="filters" style="margin-bottom: 4px;margin-top: 6px">
+
     <div class="row">
         <div class="col-lg-1">
             <label >Communes :</label>
         </div>
         <div class="col-lg-3">
             <div class="form-group">
-                <select class="form-control select2" style="width: 100%;" name="communes" id="communes_filter">
+                <select class="form-control select2" style="width: 100%;" name="communes_en_cours" id="communes_en_cours_filter">
                     <option value="all" selected>Indifferent</option>
                     @foreach($communes as $commune)
                         <option value="{{$commune->id}}">{{$commune->nom_fr}}</option>
@@ -20,7 +21,7 @@
         </div>
         <div class="col-lg-3">
             <div class="form-group">
-                <select class="form-control select2" style="width: 100%;" name="localites" id="localites_filter">
+                <select class="form-control select2" style="width: 100%;" name="localites_en_cours" id="localites_en_cours_filter">
                     <option value="all" selected>Indifferent</option>
                     @foreach($localites as $localite)
                         <option value="{{$localite->nom_fr}}">{{$localite->nom_fr}}</option>
@@ -35,7 +36,7 @@
         </div>
         <div class="col-lg-3">
             <div class="form-group">
-                <select class="form-control select2" style="width: 100%;" name="partenaires" id="partenaires_filter">
+                <select class="form-control select2" style="width: 100%;" name="partenaires_en_cours" id="partenaires_en_cours_filter">
                     <option value="all" selected>Indifferent</option>
                     @foreach ($partenaires_types as $type_part)
                         <option value="{{$type_part->id}}">{{$type_part->nom_fr}}</option>
@@ -44,7 +45,6 @@
             </div>
             <!-- /.form-group -->
         </div>
-
     </div>
 
     <div class="row" style="margin-top: 4px">
@@ -53,7 +53,7 @@
         </div>
         <div class="col-lg-3">
             <div class="form-group">
-                <select class="form-control select2" style="width: 100%;" name="programmes" id="programmes_filter">
+                <select class="form-control select2" style="width: 100%;" name="programmes_en_cours" id="programmes_en_cours_filter">
                     <option value="all" selected>Indifferent</option>
                     @foreach ($programmes as $pr)
                         <option value="{{$pr->id}}">{{$pr->nom_fr}}</option>
@@ -67,7 +67,7 @@
         </div>
         <div class="col-lg-3">
             <div class="form-group">
-                <select class="form-control select2" style="width: 100%;" name="interventions" id="intervention_filter">
+                <select class="form-control select2" style="width: 100%;" name="interventions_en_cours" id="intervention_en_cours_filter">
                     <option value="all" selected>Indifferent</option>
                     @foreach ($interventions as $intervention)
                         <option value="{{$intervention->id}}">{{$intervention->nom}}</option>
@@ -81,7 +81,7 @@
         </div>
         <div class="col-lg-3">
             <div class="form-group">
-                <select class="form-control select2" style="width: 100%;" name="moas" id="moas_filter">
+                <select class="form-control select2" style="width: 100%;" name="moas_en_cours" id="moas_en_cours_filter">
                     <option value="all" selected>Indifferent</option>
                     @foreach ($moas as $moa)
                         <option value="{{$moa->id}}">{{$moa->nom_fr}}</option>
@@ -97,7 +97,7 @@
         </div>
         <div class="col-lg-3">
             <div class="form-group">
-                <select class="form-control select2" style="width: 100%;" name="annee" id="annee_filter">
+                <select class="form-control select2" style="width: 100%;" name="annee_en_cours" id="annee_en_cours_filter">
                     <option value="all" selected>Indifferent</option>
                     @for($i = 0; $i < 20 ; $i++)
                         <option value="{{$year_number - $i}}">{{$year_number - $i}}</option>

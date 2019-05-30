@@ -64,7 +64,7 @@
                                         </table>
                                     </div>
                                 </div>
-
+{{--
                                 <h5> TAUX DES DEMANDES</h5>
                                 <hr>
                                 <div class="row">
@@ -75,7 +75,7 @@
 
                                     <canvas id="demande_chart" ></canvas>
                                 </div>
-
+--}}
                             </div>
                             <div class="col-lg-7" style="display:table-cell;">
                                 <div id="map_nombre" style="width : 100%;border: solid 1px #666666;box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);"></div>
@@ -160,15 +160,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <h5> TAUX LONGUEURS DES INTERVENTIONS POUR LES DEMANDES : </h5>
-                            <hr>
-                            <div class="row">
-                                <div class="col-lg-12" style="text-align: center">
-                                    <h6>Intervention</h6>
-                                </div>
 
-                                <canvas id="demande_longueur_chart" ></canvas>
-                            </div>
                         </div>
                         <div class="col-lg-7" id="map_longueur_demande_div">
                             <div id="map_container_demande_longueur">

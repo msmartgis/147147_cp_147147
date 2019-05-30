@@ -2,7 +2,7 @@ var conventionsTable;
 var checked_convention = 0;
 $(document).ready(function () {
 
-    conventionsTable = $('#projet_programmes_datatables').DataTable({
+    conventionsTable = $('#projet_part_datatables').DataTable({
         processing: true,
         serverSide: true,
         pageLength: 20,
@@ -16,7 +16,7 @@ $(document).ready(function () {
         },
 
         ajax: {
-            url: 'projets/show',
+            url: 'projetsPartenaire/show',
             type: 'GET',
             data: function (d) {
                 d.communes = $('select[name=communes]').val();
@@ -48,14 +48,14 @@ $(document).ready(function () {
                 name: 'point_desservis.nom_fr',
                 orderable: true,
                 searchable: true,
-                width: '20%'
+                width: '25%'
             },
             {
                 data: 'communes',
                 name: 'communes.nom_fr',
                 orderable: true,
                 searchable: true,
-                width: '10%'
+                width: '20%'
             },
             {
                 data: 'longueur',
@@ -63,14 +63,6 @@ $(document).ready(function () {
                 orderable: true,
                 searchable: true,
                 width: '5%'
-            },
-
-            {
-                data: 'interventions',
-                name: 'interventions',
-                orderable: true,
-                searchable: true,
-                width: '10%'
             },
 
             {
@@ -85,7 +77,7 @@ $(document).ready(function () {
                 name: 'partenaires.nom_fr',
                 orderable: true,
                 searchable: true,
-                width : '15%'
+                width : '10%'
             },
             {
                 data: 'programme',
@@ -95,11 +87,18 @@ $(document).ready(function () {
                 width : '4%'
             },
             {
-                data: 'montant_global',
-                name: 'conventions.montant_global',
+                data: 'date_commencement',
+                name: 'conventions.date_commencement',
                 orderable: true,
                 searchable: true,
                 width : '4%'
+            },
+            {
+                data: 'etats',
+                name: 'etats.nom',
+                orderable: true,
+                searchable: true,
+                width: '5%'
             },
             {
                 data: 'annee',

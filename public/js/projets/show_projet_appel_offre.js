@@ -1,8 +1,8 @@
-var conventionsTable;
+var appelOffreTable;
 var checked_convention = 0;
 $(document).ready(function () {
 
-    conventionsTable = $('#projet_programmes_datatables').DataTable({
+    appelOffreTable = $('#projet_appel_offre_datatables').DataTable({
         processing: true,
         serverSide: true,
         pageLength: 20,
@@ -16,17 +16,17 @@ $(document).ready(function () {
         },
 
         ajax: {
-            url: 'projets/show',
+            url: 'projetsAppelOffre/show',
             type: 'GET',
             data: function (d) {
-                d.communes = $('select[name=communes]').val();
+                d.communes = $('select[name=communes_appel_offre]').val();
                 //d.session = $('select[name=session]').val();
-                d.interventions = $('select[name=interventions]').val();
-                d.partenaires = $('select[name=partenaires]').val();
-                d.localites = $('select[name=localites]').val();
-                d.moas = $('select[name=moas]').val();
-                d.programmes = $('select[name=programmes]').val();
-                d.annee = $('select[name=annee]').val();
+                d.interventions = $('select[name=interventions_appel_offre]').val();
+                d.partenaires = $('select[name=partenaires_appel_offre]').val();
+                d.localites = $('select[name=localites_appel_offre]').val();
+                d.moas = $('select[name=moas_appel_offre]').val();
+                d.programmes = $('select[name=programmes_appel_offre]').val();
+                d.annee = $('select[name=annee_appel_offre]').val();
             }
 
         },
@@ -39,6 +39,13 @@ $(document).ready(function () {
             {
                 data: 'num_ordre',
                 name: 'conventions.num_ordre',
+                orderable: true,
+                searchable: true,
+                width: '1%'
+            },
+            {
+                data: 'num_appel_offre',
+                name: 'num_appel_offre',
                 orderable: true,
                 searchable: true,
                 width: '1%'
@@ -122,8 +129,8 @@ $(document).ready(function () {
     });
 
 
-    $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#programmes_filter,#moas_filter,#annee_filter').on('change paste keyup', function (e) {
-        conventionsTable.draw();
+    $('#communes_appel_offre_filter,#intervention_appel_offre_filter,#partenaires_appel_offre_filter,#localites_appel_offre_filter,#programmes_appel_offre_filter,#moas_appel_offre_filter,#annee_appel_offre_filter').on('change paste keyup', function (e) {
+        appelOffreTable.draw();
         e.preventDefault();
     });
 

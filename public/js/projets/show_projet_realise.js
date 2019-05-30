@@ -1,8 +1,8 @@
-var conventionsTable;
+var realiseTable;
 var checked_convention = 0;
 $(document).ready(function () {
 
-    conventionsTable = $('#projet_programmes_datatables').DataTable({
+    realiseTable = $('#projet_realise_datatables').DataTable({
         processing: true,
         serverSide: true,
         pageLength: 20,
@@ -16,17 +16,17 @@ $(document).ready(function () {
         },
 
         ajax: {
-            url: 'projets/show',
+            url: 'projetsRealise/show',
             type: 'GET',
             data: function (d) {
-                d.communes = $('select[name=communes]').val();
+                d.communes = $('select[name=communes_realise]').val();
                 //d.session = $('select[name=session]').val();
-                d.interventions = $('select[name=interventions]').val();
-                d.partenaires = $('select[name=partenaires]').val();
-                d.localites = $('select[name=localites]').val();
-                d.moas = $('select[name=moas]').val();
-                d.programmes = $('select[name=programmes]').val();
-                d.annee = $('select[name=annee]').val();
+                d.interventions = $('select[name=interventions_realise]').val();
+                d.partenaires = $('select[name=partenaires_realise]').val();
+                d.localites = $('select[name=localites_realise]').val();
+                d.moas = $('select[name=moas_realise]').val();
+                d.programmes = $('select[name=programmes_realise]').val();
+                d.annee = $('select[name=annee_realise]').val();
             }
 
         },
@@ -122,8 +122,8 @@ $(document).ready(function () {
     });
 
 
-    $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#programmes_filter,#moas_filter,#annee_filter').on('change paste keyup', function (e) {
-        conventionsTable.draw();
+    $('#communes_realise_filter,#intervention_realise_filter,#partenaires_realise_filter,#localites_realise_filter,#programmes_realise_filter,#moas_realise_filter,#annee_realise_filter').on('change paste keyup', function (e) {
+        realiseTable.draw();
         e.preventDefault();
     });
 

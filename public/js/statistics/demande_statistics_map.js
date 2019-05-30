@@ -2,7 +2,7 @@
 
 // MAPPING ********************
 
-    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    var osmUrl = 'https://www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}',
         osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         baselayer = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
         map_nombre = new L.Map('map_nombre', {layers: [baselayer], center: new L.LatLng(29.504514364812469, -9.599814615107725), zoom: 15,zoomControl: false});
@@ -191,7 +191,7 @@
 
 //LONGEUR DEMANDE***********
 
-var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+var osmUrl = 'https://www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}',
     osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     baselayer = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
     map_lg = new L.Map('map_demande_lg', {layers: [baselayer], center: new L.LatLng(29.504514364812469, -9.599814615107725), zoom: 10,zoomControl: false});
@@ -312,16 +312,19 @@ var Communes_demande_lg_Layer = new L.GeoJSON.AJAX("/mapping/Communes.geojson", 
             }, {permanent: true, direction:"center",className : 'm-toolTip'}  //then add your options
         ).addTo(map_lg);
         layer.setStyle(communes_demande_lg_Style);
-        colorCommunesLg();
+
     }
 });
 
 Communes_demande_lg_Layer.addTo(map_lg);
 
-
+/*
+Communes_demande_lg_Layer.on('data:loaded', function() {
+    colorCommunesLg();
+    map_lg.fitBounds(Communes_demande_lg_Layer.getBounds());
+});*/
 
 $('#interventions_demande_lg_filter,#annee_demande_lg_filter').on('change', function (e) {
-
     var intervention = $("#interventions_demande_lg_filter").val();
     var annee = $("#annee_demande_lg_filter").val();
     colorCommunesLg(intervention,annee);
@@ -428,6 +431,8 @@ $(document).ready(function() {
     $( "#tabs_demande_lg" ).tabs({
         activate: function(event ,ui){
             map_lg.invalidateSize(true);
+            map_lg.fitBounds(Communes_demande_lg_Layer.getBounds());
+
         }
     });
 });

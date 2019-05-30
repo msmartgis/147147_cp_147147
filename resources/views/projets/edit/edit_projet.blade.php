@@ -237,6 +237,12 @@
 
 <script src="{{asset('js/projets/projets.js')}}"></script>
 <script src="{{asset('js/projets/map_projet_edit.js')}}"></script>
+<script>
+
+    $('#datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    });
+</script>
 
 
 <script>

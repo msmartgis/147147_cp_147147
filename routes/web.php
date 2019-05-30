@@ -57,6 +57,10 @@ Route::group(
         Route::post('/projets/projetsSpreadSheet', 'SpreadSheetController@projetsSpreadSheet')->name('spreadSheetProjet');
         Route::get('/projet/create', 'ProjetController@create')->name('createProjet');
         Route::get('/projets/show', 'ProjetController@getProjets');
+        Route::get('/projetsAppelOffre/show', 'ProjetController@getProjetsAppelOffre');
+        Route::get('/projetsEnCours/show', 'ProjetController@getProjetsEnCours');
+        Route::get('/projetsRealise/show', 'ProjetController@getProjetsRealise');
+        Route::get('/projetsPartenaire/show', 'ProjetController@getProjetsPartenaire');
         //pieces
         Route::post('/pieces/add_piece', 'PieceController@addPiece')->name('add_piece');
         Route::post('/pieces/delete_piece', 'PieceController@deletePiece')->name('delete_piece');
@@ -96,6 +100,8 @@ Route::group(
         Route::get('/demandesStatisticsLongueur', 'StatisticsController@getDemandesLongueur')->name('statistics.getDemandesLongueur');
         Route::get('/chartDataDemandes', 'StatisticsController@getDemandesDataChart')->name('statistics.getDemandesChart');
         Route::get('/getCommunesTaux', 'StatisticsController@getCommunesTaux')->name('statistics.getCommunesTaux');
+        Route::get('/getProjetCommunesTaux', 'StatisticsController@getProjetCommunesTaux')->name('statistics.getProjetCommunesTaux');
+        Route::get('/getProjetLGCommunesTaux', 'StatisticsController@getProjetLGCommunesTaux')->name('statistics.getProjetLGCommunesTaux');
         Route::get('/getCommunesTauxLg', 'StatisticsController@getCommunesTauxLg')->name('statistics.getCommunesTauxLg');
         Route::get('/chartDataDemandesLongeur', 'StatisticsController@getDemandesDataChartLongeur')->name('statistics.getDemandesChartLongeur');
 
@@ -132,5 +138,14 @@ Route::group(
         Route::get('/suiviVersement', 'SuiviVersementController@index')->name('indexSuiviVersement');
         Route::get('/appelOffre', 'AppelOffreController@index')->name('indexAppelOffre');
         Route::post('/projet/changeState', 'ProjetController@changeState')->name('projet.changeState');
+    }
+);
+
+
+Route::group(
+    ['middleware' => ['auth','part']],
+    function(){
+        //conventions
+        Route::post('/projet/create', 'ProjetController@create');
     }
 );

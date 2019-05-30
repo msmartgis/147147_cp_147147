@@ -6,44 +6,52 @@
 <!-- Step 1 -->
 <h6>Information Général</h6>
 <section>
-    <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div class="form-group">
-                {{Form::label('','N° d\'ordre :')}}
-                {{Form::text('num_ordre','',['class'=>'form-control'])}}
+
+
+        <div class="row">
+            <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    {{Form::label('','N° d\'ordre :')}}
+                    {{Form::text('num_ordre','',['class'=>'form-control'])}}
+                </div>
             </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <input type="hidden" id="piste_id_input" name="piste_id" value="{{$piste_id}}">
-            <input type="hidden" id="geometry_input" class="form-control" name="geometry" value="">
+            <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                <input type="hidden" id="piste_id_input" name="piste_id" value="{{$piste_id}}">
+                <input type="hidden" id="geometry_input" class="form-control" name="geometry" value="">
                 <div class="form-group">
                     {{Form::label('','Longueur :')}}
                     {{Form::text('longueur','',['class'=>'form-control','id'=>'longueur_input'])}}
                 </div>
-        </div>
+            </div>
 
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div class="form-group">
-                {{Form::label('','Annee :')}}
-                {{Form::text('annee','',['class'=>'form-control'])}}
+            <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    {{Form::label('','Annee :')}}
+                    {{Form::text('annee','',['class'=>'form-control'])}}
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    {{Form::label('','MOA:')}}
+                    {{Form::select('moas', $moas, null,
+                    [
+                    'data-placeholder' => 'Selectionner commune(s)',
+                    'class'=>'form-control select2',
+                    'name'=>'moas'
+                    ]
+                    )}}
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    {{Form::label('','Date Commencement:')}}
+                    {{Form::text('date_commencement','',['class'=>'form-control','id'=>'datepicker'])}}
+                </div>
             </div>
         </div>
 
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div class="form-group">
-                {{Form::label('','MOA:')}}
-                {{Form::select('moas', $moas, null,
-                [
-                'data-placeholder' => 'Selectionner commune(s)',
-                'class'=>'form-control select2',
-                'name'=>'moas'
-                ]
-                )}}
-            </div>
-        </div>
-
-
-    </div>
     <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="form-group">

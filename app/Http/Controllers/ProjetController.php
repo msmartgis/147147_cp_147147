@@ -20,6 +20,7 @@ use App\Programme;
 use App\Projet;
 use App\Session;
 use App\SuiviVersement;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\PointDesservi;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +45,7 @@ class ProjetController extends Controller
 
     public function getProjets(Request $request)
     {
-        $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'etats');
+        $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'etats')->where('appel_offre_id','=',null);
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($conventions)
                 ->addColumn('communes', function (Convention $convention) {
@@ -56,6 +57,12 @@ class ProjetController extends Controller
                 ->addColumn('point_desservis', function (Convention $convention) {
                     return $convention->point_desservis->map(function ($point_desservi) {
                         return str_limit($point_desservi->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('interventions', function (Convention $convention) {
+                    return $convention->interventions->map(function ($intervention) {
+                        return str_limit($intervention->nom, 30, '...');
                     })->implode(', ');
                 })
 
@@ -87,11 +94,11 @@ class ProjetController extends Controller
                     return $convention->programme ? str_limit($convention->programme->nom_fr, 40, '...') : '';
                 })
 
-
+                /*
                 ->addColumn('checkbox', function ($conventions) {
                     return '<input type="checkbox" id="conventionCb_' . $conventions->id . '" name="checkbox" class="convention-checkbox" value="' . $conventions->id . '"  data-numero ="' . $conventions->num_ordre . '" class="chk-col-green"><label for="conventionCb_' . $conventions->id . '" class="block" ></label>';
                 })
-
+                */
                 ->addColumn('num_ordre', function ($conventions) {
                         return '<a href="projet/' . $conventions->id . '/edit_projet">' . $conventions->num_ordre . '</a>';
                 })
@@ -149,6 +156,563 @@ class ProjetController extends Controller
             }
         }
 
+        //annee
+        if ($annee = $request->get('annee')) {
+            if ($annee == "all") { } else {
+                $conventions->where('annee', '=', $annee);
+            }
+        }
+
+
+        //filter with intervention
+        if ($interventions_id = $request->get('interventions')) {
+            if ($interventions_id == "all") { } else {
+                $conventions->whereHas('interventions', function ($query) use ($interventions_id) {
+                    $query->where('interventions.id', '=', $interventions_id);
+                });
+            }
+        }
+        return $datatables->make(true);
+    }
+
+    public function getProjetsAppelOffre(Request $request)
+    {
+        $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'etats')
+            ->where('appel_offre_id','!=',null)
+            ->whereHas('appelOffres', function($query){
+                $query->where('ordre_service','=',null);
+            });
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($conventions)
+                ->addColumn('communes', function (Convention $convention) {
+                    return $convention->communes->map(function ($commune) {
+                        return str_limit($commune->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('num_appel_offre', function (Convention $convention) {
+                    return $convention->appelOffres->numero;
+                })
+
+                ->addColumn('point_desservis', function (Convention $convention) {
+                    return $convention->point_desservis->map(function ($point_desservi) {
+                        return str_limit($point_desservi->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('interventions', function (Convention $convention) {
+                    return $convention->interventions->map(function ($intervention) {
+                        return str_limit($intervention->nom, 30, '...');
+                    })->implode(', ');
+                })
+
+                // i should have access to show parntenaire type name for every partenaire
+
+                ->addColumn('partenaires', function (Convention $convention) {
+                    return $convention->partenaires->map(function ($partenaire) {
+                        return str_limit($partenaire->nom_fr, 30, '...');
+                    })->implode(', ');
+                })
+
+
+                ->addColumn('moas', function (Convention $convention) {
+                    return $convention->moas ? str_limit($convention->moas->nom_fr, 40, '...') : '';
+                })
+
+                ->addColumn('longueur', function (Convention $convention) {
+                    return $convention->piste ? str_limit($convention->piste->longueur, 40, '...') : '';
+                })
+
+                ->addColumn('etats', function (Convention $convention) {
+                    $collection =  $convention->etats->last();
+
+                    return ucwords($collection['nom']);
+                })
+
+
+                ->addColumn('programme', function (Convention $convention) {
+                    return $convention->programme ? str_limit($convention->programme->nom_fr, 40, '...') : '';
+                })
+
+/*
+                ->addColumn('checkbox', function ($conventions) {
+                    return '<input type="checkbox" id="conventionCb_' . $conventions->id . '" name="checkbox" class="convention-checkbox" value="' . $conventions->id . '"  data-numero ="' . $conventions->num_ordre . '" class="chk-col-green"><label for="conventionCb_' . $conventions->id . '" class="block" ></label>';
+                })
+*/
+                ->addColumn('num_ordre', function ($conventions) {
+                    return '<a href="projet/' . $conventions->id . '/edit_projet">' . $conventions->num_ordre . '</a>';
+                })
+                ->rawColumns(['checkbox', 'num_ordre']);
+        }
+
+        //filter with communes
+        if ($communes_id = $request->get('communes')) {
+            if ($communes_id == "all") { } else {
+                $conventions->whereHas('communes', function ($query) use ($communes_id) {
+                    $query->where('communes.id', '=', $communes_id);
+                });
+            }
+        }
+
+
+
+
+        //filter with partenaire
+        if ($partenaires_id = $request->get('partenaires')) {
+            if ($partenaires_id == "all") { } else {
+                $conventions->whereHas('partenaires', function ($query) use ($partenaires_id) {
+                    $query->where('partenaires_types.id', '=', $partenaires_id);
+                });
+            }
+        }
+
+        //moa filter
+        if ($moas_id = $request->get('moas')) {
+            if ($moas_id == "all") { } else {
+                $conventions->where('moa_id', '=', $moas_id);
+            }
+        }
+
+        //programme filter
+        if ($programmes_id = $request->get('programmes')) {
+            if ($programmes_id == "all") { } else {
+                $conventions->where('programme_id', '=', $programmes_id);
+            }
+        }
+
+        //filter with localites
+        if ($localites = $request->get('localites')) {
+            if ($localites == "all") { } else {
+                $conventions->whereHas('point_desservis', function ($query) use ($localites) {
+                    $query->where('point_desservis.nom_fr', '=', $localites);
+                });
+            }
+        }
+
+        //filter with session
+        if ($session_id = $request->get('session')) {
+            if ($session_id == "all") { } else {
+                $conventions->where('mois', '=', $session_id);
+            }
+        }
+
+        //annee
+        if ($annee = $request->get('annee')) {
+            if ($annee == "all") { } else {
+                $conventions->where('annee', '=', $annee);
+            }
+        }
+
+
+        //filter with intervention
+        if ($interventions_id = $request->get('interventions')) {
+            if ($interventions_id == "all") { } else {
+                $conventions->whereHas('interventions', function ($query) use ($interventions_id) {
+                    $query->where('interventions.id', '=', $interventions_id);
+                });
+            }
+        }
+        return $datatables->make(true);
+
+    }
+
+
+    public function getProjetsEnCours(Request $request)
+    {
+        $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'etats')
+            ->where('appel_offre_id','!=',null)
+            ->where('realise','=',0)
+           ->whereHas('appelOffres',function($query){
+              $query->where('ordre_service','!=',null);
+            })
+        ;
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($conventions)
+                ->addColumn('communes', function (Convention $convention) {
+                    return $convention->communes->map(function ($commune) {
+                        return str_limit($commune->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('point_desservis', function (Convention $convention) {
+                    return $convention->point_desservis->map(function ($point_desservi) {
+                        return str_limit($point_desservi->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('interventions', function (Convention $convention) {
+                    return $convention->interventions->map(function ($intervention) {
+                        return str_limit($intervention->nom, 30, '...');
+                    })->implode(', ');
+                })
+
+                // i should have access to show parntenaire type name for every partenaire
+
+                ->addColumn('partenaires', function (Convention $convention) {
+                    return $convention->partenaires->map(function ($partenaire) {
+                        return str_limit($partenaire->nom_fr, 30, '...');
+                    })->implode(', ');
+                })
+
+
+                ->addColumn('moas', function (Convention $convention) {
+                    return $convention->moas ? str_limit($convention->moas->nom_fr, 40, '...') : '';
+                })
+
+                ->addColumn('longueur', function (Convention $convention) {
+                    return $convention->piste ? str_limit($convention->piste->longueur, 40, '...') : '';
+                })
+
+                ->addColumn('etats', function (Convention $convention) {
+                    $collection =  $convention->etats->last();
+
+                    return ucwords($collection['nom']);
+                })
+
+
+                ->addColumn('programme', function (Convention $convention) {
+                    return $convention->programme ? str_limit($convention->programme->nom_fr, 40, '...') : '';
+                })
+
+/*
+                ->addColumn('checkbox', function ($conventions) {
+                    return '<input type="checkbox" id="conventionCb_' . $conventions->id . '" name="checkbox" class="convention-checkbox" value="' . $conventions->id . '"  data-numero ="' . $conventions->num_ordre . '" class="chk-col-green"><label for="conventionCb_' . $conventions->id . '" class="block" ></label>';
+                })
+*/
+                ->addColumn('num_ordre', function ($conventions) {
+                    return '<a href="projet/' . $conventions->id . '/edit_projet">' . $conventions->num_ordre . '</a>';
+                })
+                ->rawColumns(['checkbox', 'num_ordre']);
+        }
+
+        //filter with communes
+        if ($communes_id = $request->get('communes')) {
+            if ($communes_id == "all") { } else {
+                $conventions->whereHas('communes', function ($query) use ($communes_id) {
+                    $query->where('communes.id', '=', $communes_id);
+                });
+            }
+        }
+
+
+
+
+        //filter with partenaire
+        if ($partenaires_id = $request->get('partenaires')) {
+            if ($partenaires_id == "all") { } else {
+                $conventions->whereHas('partenaires', function ($query) use ($partenaires_id) {
+                    $query->where('partenaires_types.id', '=', $partenaires_id);
+                });
+            }
+        }
+
+        //moa filter
+        if ($moas_id = $request->get('moas')) {
+            if ($moas_id == "all") { } else {
+                $conventions->where('moa_id', '=', $moas_id);
+            }
+        }
+
+        //programme filter
+        if ($programmes_id = $request->get('programmes')) {
+            if ($programmes_id == "all") { } else {
+                $conventions->where('programme_id', '=', $programmes_id);
+            }
+        }
+
+        //filter with localites
+        if ($localites = $request->get('localites')) {
+            if ($localites == "all") { } else {
+                $conventions->whereHas('point_desservis', function ($query) use ($localites) {
+                    $query->where('point_desservis.nom_fr', '=', $localites);
+                });
+            }
+        }
+
+        //filter with session
+        if ($session_id = $request->get('session')) {
+            if ($session_id == "all") { } else {
+                $conventions->where('mois', '=', $session_id);
+            }
+        }
+
+        //annee
+        if ($annee = $request->get('annee')) {
+            if ($annee == "all") { } else {
+                $conventions->where('annee', '=', $annee);
+            }
+        }
+
+
+        //filter with intervention
+        if ($interventions_id = $request->get('interventions')) {
+            if ($interventions_id == "all") { } else {
+                $conventions->whereHas('interventions', function ($query) use ($interventions_id) {
+                    $query->where('interventions.id', '=', $interventions_id);
+                });
+            }
+        }
+        return $datatables->make(true);
+
+    }
+
+
+    public function getProjetsRealise(Request $request)
+    {
+
+        $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'etats')
+            ->where('appel_offre_id','!=',null)
+            ->where('realise','!=',0)
+        ;
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($conventions)
+                ->addColumn('communes', function (Convention $convention) {
+                    return $convention->communes->map(function ($commune) {
+                        return str_limit($commune->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('point_desservis', function (Convention $convention) {
+                    return $convention->point_desservis->map(function ($point_desservi) {
+                        return str_limit($point_desservi->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('interventions', function (Convention $convention) {
+                    return $convention->interventions->map(function ($intervention) {
+                        return str_limit($intervention->nom, 30, '...');
+                    })->implode(', ');
+                })
+
+                // i should have access to show parntenaire type name for every partenaire
+
+                ->addColumn('partenaires', function (Convention $convention) {
+                    return $convention->partenaires->map(function ($partenaire) {
+                        return str_limit($partenaire->nom_fr, 30, '...');
+                    })->implode(', ');
+                })
+
+
+                ->addColumn('moas', function (Convention $convention) {
+                    return $convention->moas ? str_limit($convention->moas->nom_fr, 40, '...') : '';
+                })
+
+                ->addColumn('longueur', function (Convention $convention) {
+                    return $convention->piste ? str_limit($convention->piste->longueur, 40, '...') : '';
+                })
+
+                ->addColumn('etats', function (Convention $convention) {
+                    $collection =  $convention->etats->last();
+
+                    return ucwords($collection['nom']);
+                })
+
+
+                ->addColumn('programme', function (Convention $convention) {
+                    return $convention->programme ? str_limit($convention->programme->nom_fr, 40, '...') : '';
+                })
+
+/*
+                ->addColumn('checkbox', function ($conventions) {
+                    return '<input type="checkbox" id="conventionCb_' . $conventions->id . '" name="checkbox" class="convention-checkbox" value="' . $conventions->id . '"  data-numero ="' . $conventions->num_ordre . '" class="chk-col-green"><label for="conventionCb_' . $conventions->id . '" class="block" ></label>';
+                })
+*/
+                ->addColumn('num_ordre', function ($conventions) {
+                    return '<a href="projet/' . $conventions->id . '/edit_projet">' . $conventions->num_ordre . '</a>';
+                })
+                ->rawColumns(['checkbox', 'num_ordre']);
+        }
+
+        //filter with communes
+        if ($communes_id = $request->get('communes')) {
+            if ($communes_id == "all") { } else {
+                $conventions->whereHas('communes', function ($query) use ($communes_id) {
+                    $query->where('communes.id', '=', $communes_id);
+                });
+            }
+        }
+
+
+
+
+        //filter with partenaire
+        if ($partenaires_id = $request->get('partenaires')) {
+            if ($partenaires_id == "all") { } else {
+                $conventions->whereHas('partenaires', function ($query) use ($partenaires_id) {
+                    $query->where('partenaires_types.id', '=', $partenaires_id);
+                });
+            }
+        }
+
+        //moa filter
+        if ($moas_id = $request->get('moas')) {
+            if ($moas_id == "all") { } else {
+                $conventions->where('moa_id', '=', $moas_id);
+            }
+        }
+
+        //programme filter
+        if ($programmes_id = $request->get('programmes')) {
+            if ($programmes_id == "all") { } else {
+                $conventions->where('programme_id', '=', $programmes_id);
+            }
+        }
+
+        //filter with localites
+        if ($localites = $request->get('localites')) {
+            if ($localites == "all") { } else {
+                $conventions->whereHas('point_desservis', function ($query) use ($localites) {
+                    $query->where('point_desservis.nom_fr', '=', $localites);
+                });
+            }
+        }
+
+        //filter with session
+        if ($session_id = $request->get('session')) {
+            if ($session_id == "all") { } else {
+                $conventions->where('mois', '=', $session_id);
+            }
+        }
+
+        //annee
+        if ($annee = $request->get('annee')) {
+            if ($annee == "all") { } else {
+                $conventions->where('annee', '=', $annee);
+            }
+        }
+
+
+        //filter with intervention
+        if ($interventions_id = $request->get('interventions')) {
+            if ($interventions_id == "all") { } else {
+                $conventions->whereHas('interventions', function ($query) use ($interventions_id) {
+                    $query->where('interventions.id', '=', $interventions_id);
+                });
+            }
+        }
+        return $datatables->make(true);
+
+
+
+    }
+
+    public function getProjetsPartenaire(Request $request)
+    {
+        $conventions = Convention::with('communes', 'interventions', 'partenaires', 'point_desservis', 'programme', 'moas', 'etats');
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($conventions)
+                ->addColumn('communes', function (Convention $convention) {
+                    return $convention->communes->map(function ($commune) {
+                        return str_limit($commune->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('point_desservis', function (Convention $convention) {
+                    return $convention->point_desservis->map(function ($point_desservi) {
+                        return str_limit($point_desservi->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                // i should have access to show parntenaire type name for every partenaire
+
+                ->addColumn('partenaires', function (Convention $convention) {
+                    return $convention->partenaires->map(function ($partenaire) {
+                        return str_limit($partenaire->nom_fr, 30, '...');
+                    })->implode(', ');
+                })
+
+
+                ->addColumn('moas', function (Convention $convention) {
+                    return $convention->moas ? str_limit($convention->moas->nom_fr, 40, '...') : '';
+                })
+
+                ->addColumn('longueur', function (Convention $convention) {
+                    return $convention->piste ? str_limit($convention->piste->longueur, 40, '...') : '';
+                })
+
+                ->addColumn('etats', function (Convention $convention) {
+                    $collection =  $convention->etats->where('active','=',1);
+                    foreach($collection as $cl)
+                    {
+                        return ucwords($cl->nom);
+                    }
+
+                })
+
+
+                ->addColumn('programme', function (Convention $convention) {
+                    return $convention->programme ? str_limit($convention->programme->nom_fr, 40, '...') : '';
+                })
+
+/*
+                ->addColumn('checkbox', function ($conventions) {
+                    return '<input type="checkbox" id="conventionCb_' . $conventions->id . '" name="checkbox" class="convention-checkbox" value="' . $conventions->id . '"  data-numero ="' . $conventions->num_ordre . '" class="chk-col-green"><label for="conventionCb_' . $conventions->id . '" class="block" ></label>';
+                })
+*/
+                ->addColumn('num_ordre', function ($conventions) {
+                    return '<a href="projet/' . $conventions->id . '/edit_projet">' . $conventions->num_ordre . '</a>';
+                })
+                ->rawColumns(['checkbox', 'num_ordre']);
+        }
+
+        //filter with communes
+        if ($communes_id = $request->get('communes')) {
+            if ($communes_id == "all") { } else {
+                $conventions->whereHas('communes', function ($query) use ($communes_id) {
+                    $query->where('communes.id', '=', $communes_id);
+                });
+            }
+        }
+
+
+
+
+        //filter with partenaire
+        if ($partenaires_id = $request->get('partenaires')) {
+            if ($partenaires_id == "all") { } else {
+                $conventions->whereHas('partenaires', function ($query) use ($partenaires_id) {
+                    $query->where('partenaires_types.id', '=', $partenaires_id);
+                });
+            }
+        }
+
+        //moa filter
+        if ($moas_id = $request->get('moas')) {
+            if ($moas_id == "all") { } else {
+                $conventions->where('moa_id', '=', $moas_id);
+            }
+        }
+
+        //programme filter
+        if ($programmes_id = $request->get('programmes')) {
+            if ($programmes_id == "all") { } else {
+                $conventions->where('programme_id', '=', $programmes_id);
+            }
+        }
+
+        //filter with localites
+        if ($localites = $request->get('localites')) {
+            if ($localites == "all") { } else {
+                $conventions->whereHas('point_desservis', function ($query) use ($localites) {
+                    $query->where('point_desservis.nom_fr', '=', $localites);
+                });
+            }
+        }
+
+        //filter with session
+        if ($session_id = $request->get('session')) {
+            if ($session_id == "all") { } else {
+                $conventions->where('mois', '=', $session_id);
+            }
+        }
+
+        //annee
+        if ($annee = $request->get('annee')) {
+            if ($annee == "all") { } else {
+                $conventions->where('annee', '=', $annee);
+            }
+        }
+
 
         //filter with intervention
         if ($interventions_id = $request->get('interventions')) {
@@ -178,6 +742,10 @@ class ProjetController extends Controller
         $interventions = Intervention::all();
         $programmes = Programme::all();
 
+        $actu_time = Carbon::now();
+        $actu_year =  $actu_time->toDateString();
+        $year_number = (int) substr($actu_year,0,4);
+
         $conventions = Convention::with(['communes', 'partenaires', 'point_desservis', 'interventions', 'session'])->get();
         return view('projets.show.index_projet_show')->with([
             'conventions' => $conventions,
@@ -187,6 +755,7 @@ class ProjetController extends Controller
             'moas' => $moas,
             'sessions' => $sessions,
             'interventions' => $interventions,
+            'year_number' => $year_number,
             'programmes' => $programmes,
         ]);
     }
@@ -268,6 +837,11 @@ class ProjetController extends Controller
         $convention->moa_id = $request->input('moas');
         $convention->is_project = 1;
         $convention->annee = $request->annee;
+
+        $date_to_time = strtotime(str_replace("/",'-',$request->date_commencement));
+
+        $date_formatted = date('Y-m-d',$date_to_time);
+        $convention->date_commencement = $date_formatted;
         $convention->organisation_id = Auth::user()->organisation_id;
         $convention->save();
         if($convention->save())
@@ -432,6 +1006,11 @@ class ProjetController extends Controller
         $convention_to_update->objet_fr = $request->objet_fr;
         $convention_to_update->objet_ar = $request->objet_ar;
         $convention_to_update->observation = $request->observation;
+        $convention_to_update->annee = $request->annee;
+
+        $date_formatted = str_replace("/",'-',$request->date_commencement);
+        $convention_to_update->date_commencement = Carbon::parse($date_formatted)->format('Y-m-d');
+
         //return  $request->porteurporteur_projet;
         $convention_to_update->save();
         //update interventions

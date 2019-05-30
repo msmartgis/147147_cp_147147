@@ -1,8 +1,8 @@
-var conventionsTable;
+var en_coursTable;
 var checked_convention = 0;
 $(document).ready(function () {
 
-    conventionsTable = $('#projet_programmes_datatables').DataTable({
+    en_coursTable = $('#projet_en_cours_datatables').DataTable({
         processing: true,
         serverSide: true,
         pageLength: 20,
@@ -16,17 +16,17 @@ $(document).ready(function () {
         },
 
         ajax: {
-            url: 'projets/show',
+            url: 'projetsEnCours/show',
             type: 'GET',
             data: function (d) {
-                d.communes = $('select[name=communes]').val();
+                d.communes = $('select[name=communes_en_cours]').val();
                 //d.session = $('select[name=session]').val();
-                d.interventions = $('select[name=interventions]').val();
-                d.partenaires = $('select[name=partenaires]').val();
-                d.localites = $('select[name=localites]').val();
-                d.moas = $('select[name=moas]').val();
-                d.programmes = $('select[name=programmes]').val();
-                d.annee = $('select[name=annee]').val();
+                d.interventions = $('select[name=interventions_en_cours]').val();
+                d.partenaires = $('select[name=partenaires_en_cours]').val();
+                d.localites = $('select[name=localites_en_cours]').val();
+                d.moas = $('select[name=moas_en_cours]').val();
+                d.programmes = $('select[name=programmes_en_cours]').val();
+                d.annee = $('select[name=annee_en_cours]').val();
             }
 
         },
@@ -122,8 +122,8 @@ $(document).ready(function () {
     });
 
 
-    $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#programmes_filter,#moas_filter,#annee_filter').on('change paste keyup', function (e) {
-        conventionsTable.draw();
+    $('#communes_en_cours_filter,#intervention_en_cours_filter,#partenaires_en_cours_filter,#localites_en_cours_filter,#programmes_en_cours_filter,#moas_en_cours_filter,#annee_en_cours_filter').on('change paste keyup', function (e) {
+        en_coursTable.draw();
         e.preventDefault();
     });
 

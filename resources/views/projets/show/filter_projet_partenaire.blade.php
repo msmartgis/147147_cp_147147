@@ -106,11 +106,26 @@
             </div>
         </div>
 
+
+        <div class="col-lg-1">
+            <label>Etat :</label>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <select class="form-control select2" style="width: 100%;" name="etat" id="etat_filter">
+                    <option value="all" selected>Indifferent</option>
+                    @for($i = 0; $i < 20 ; $i++)
+                        <option value="{{$year_number - $i}}">{{$year_number - $i}}</option>
+                    @endfor
+                </select>
+            </div>
+        </div>
+
     </div>
 
     <hr style="margin:4px">
 
-    @include('projets.inc.action_button_projet')
+    @include('projets.inc.action_button_projet_partenaire')
 
     <hr  style="margin:4px">
 </div>

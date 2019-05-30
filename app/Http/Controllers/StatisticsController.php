@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Convention;
 use App\Demande;
+use App\Moa;
 use App\Programme;
 use Response;
 use App\Commune;
@@ -34,39 +35,39 @@ class StatisticsController extends Controller
             $q->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
         })->count('id');
 
-            if ($request->ajax()) {
-                $datatables = DataTables::eloquent($communes)
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($communes)
 
-                    ->addColumn('en_cours_nombre', function ($communes) {
-                        $en_cours_nombre = $communes->demandes()->where([['decision', '=', 'en_cours']])
-                            ->count('demande_id');
-                        return $en_cours_nombre;
+                ->addColumn('en_cours_nombre', function ($communes) {
+                    $en_cours_nombre = $communes->demandes()->where([['decision', '=', 'en_cours']])
+                        ->count('demande_id');
+                    return $en_cours_nombre;
+                })
+
+                ->addColumn('accord_definitif_nombre', function ($communes) {
+                    $accord_definitif_nombre = $communes->demandes()->where([['decision', '=', 'accord_definitif']])
+                        ->count('demande_id');
+                    return $accord_definitif_nombre;
+                })
+
+                ->addColumn('total_row', function ($communes) {
+                    $total_row = $communes->demandes()->where(function($q){
+                        $q->where('decision', '=', 'accord_definitif')
+                            ->orWhere('decision', '=', 'en_cours');
                     })
+                        ->count('demande_id');
+                    return $total_row;
+                })
 
-                    ->addColumn('accord_definitif_nombre', function ($communes) {
-                        $accord_definitif_nombre = $communes->demandes()->where([['decision', '=', 'accord_definitif']])
-                            ->count('demande_id');
-                        return $accord_definitif_nombre;
+                ->addColumn('row_taux',function ($communes) use($total_demandes) {
+                    $total_row = $communes->demandes()->where(function($q){
+                        $q->where('decision', '=', 'accord_definitif')
+                            ->orWhere('decision', '=', 'en_cours');
                     })
-
-                    ->addColumn('total_row', function ($communes) {
-                        $total_row = $communes->demandes()->where(function($q){
-                            $q->where('decision', '=', 'accord_definitif')
-                                ->orWhere('decision', '=', 'en_cours');
-                        })
-                            ->count('demande_id');
-                        return $total_row;
-                    })
-
-                    ->addColumn('row_taux',function ($communes) use($total_demandes) {
-                        $total_row = $communes->demandes()->where(function($q){
-                            $q->where('decision', '=', 'accord_definitif')
-                                ->orWhere('decision', '=', 'en_cours');
-                        })
-                            ->count('demande_id');
-                        return number_format(($total_row / $total_demandes)*100);
-                    });
-            }
+                        ->count('demande_id');
+                    return number_format(($total_row / $total_demandes)*100);
+                });
+        }
 
 
         if($request->interventions == "all" && $request->annee == "all")
@@ -257,51 +258,51 @@ class StatisticsController extends Controller
         $total_row_longeur = 0;
         if ($request->ajax()) {
             $datatables = DataTables::eloquent($communes)
-            ->addColumn('en_cours_longeur', function ($communes) use ($en_cours_longeur) {
-                $en_cours_nombre_demandes = $communes->demandes()->where([['decision', '=', 'en_cours']])->get();
+                ->addColumn('en_cours_longeur', function ($communes) use ($en_cours_longeur) {
+                    $en_cours_nombre_demandes = $communes->demandes()->where([['decision', '=', 'en_cours']])->get();
 
-                foreach($en_cours_nombre_demandes as $demande_en_cours)
-                {
-                    $en_cours_longeur += $demande_en_cours->piste->longueur;
-                }
-                return $en_cours_longeur;
-            })
+                    foreach($en_cours_nombre_demandes as $demande_en_cours)
+                    {
+                        $en_cours_longeur += $demande_en_cours->piste->longueur;
+                    }
+                    return $en_cours_longeur;
+                })
 
-            ->addColumn('accord_definitif_longeur', function ($communes) use ($accord_def_longeur) {
-                $accord_def_nombre_demandes = $communes->demandes()->where([['decision', '=', 'accord_definitif']])->get();
+                ->addColumn('accord_definitif_longeur', function ($communes) use ($accord_def_longeur) {
+                    $accord_def_nombre_demandes = $communes->demandes()->where([['decision', '=', 'accord_definitif']])->get();
 
-                foreach($accord_def_nombre_demandes as $accord_def)
-                {
-                    $accord_def_longeur += $accord_def->piste->longueur;
-                }
-                return $accord_def_longeur;
-            })
+                    foreach($accord_def_nombre_demandes as $accord_def)
+                    {
+                        $accord_def_longeur += $accord_def->piste->longueur;
+                    }
+                    return $accord_def_longeur;
+                })
 
-            ->addColumn('total_row_longeur', function ($communes) use ($total_row_longeur) {
-                $demandes_row = $communes->demandes()->where(function($q){
-                    $q->where('decision', '=', 'accord_definitif')
-                        ->orWhere('decision', '=', 'en_cours');
-                })->get();
+                ->addColumn('total_row_longeur', function ($communes) use ($total_row_longeur) {
+                    $demandes_row = $communes->demandes()->where(function($q){
+                        $q->where('decision', '=', 'accord_definitif')
+                            ->orWhere('decision', '=', 'en_cours');
+                    })->get();
 
-                foreach($demandes_row as $demande_longeur_row)
-                {
-                    $total_row_longeur += $demande_longeur_row->piste->longueur;
-                }
-                return $total_row_longeur;
-            })
+                    foreach($demandes_row as $demande_longeur_row)
+                    {
+                        $total_row_longeur += $demande_longeur_row->piste->longueur;
+                    }
+                    return $total_row_longeur;
+                })
 
-            ->addColumn('taux_row_longeur', function ($communes) use ($longueur_total,$total_row_longeur) {
-                $demandes_row = $communes->demandes()->where(function($q){
-                    $q->where('decision', '=', 'accord_definitif')
-                        ->orWhere('decision', '=', 'en_cours');
-                })->get();
+                ->addColumn('taux_row_longeur', function ($communes) use ($longueur_total,$total_row_longeur) {
+                    $demandes_row = $communes->demandes()->where(function($q){
+                        $q->where('decision', '=', 'accord_definitif')
+                            ->orWhere('decision', '=', 'en_cours');
+                    })->get();
 
-                foreach($demandes_row as $demande_longeur_row)
-                {
-                    $total_row_longeur += $demande_longeur_row->piste->longueur;
-                }
-                return number_format(($total_row_longeur/$longueur_total)*100);
-            });
+                    foreach($demandes_row as $demande_longeur_row)
+                    {
+                        $total_row_longeur += $demande_longeur_row->piste->longueur;
+                    }
+                    return number_format(($total_row_longeur/$longueur_total)*100);
+                });
         }
 
 
@@ -615,34 +616,34 @@ class StatisticsController extends Controller
             $q->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
         })->count('id');
 
-                $intervention_id = $request->intervention;
-                $annee = $request->annee;
+        $intervention_id = $request->intervention;
+        $annee = $request->annee;
 
 
 
-            if($request->intervention == "all" && $request->annee == "all")
-            {
-                $number__demande_interv = DB::table('intervention_demande')
-                    ->select(array(DB::raw('COUNT(DISTINCT intervention_demande.demande_id) as number__demande_interv')))
-                    ->join('demandes', 'demandes.id', '=', 'intervention_demande.demande_id')
-                    ->where(function($q){
-                        $q->where('decision', '=', 'accord_definitif')->where('is_affecter', '=', 0)->orWhere('decision', '=', 'en_cours');
-                    })
-                    ->get();
-            }
+        if($request->intervention == "all" && $request->annee == "all")
+        {
+            $number__demande_interv = DB::table('intervention_demande')
+                ->select(array(DB::raw('COUNT(DISTINCT intervention_demande.demande_id) as number__demande_interv')))
+                ->join('demandes', 'demandes.id', '=', 'intervention_demande.demande_id')
+                ->where(function($q){
+                    $q->where('decision', '=', 'accord_definitif')->where('is_affecter', '=', 0)->orWhere('decision', '=', 'en_cours');
+                })
+                ->get();
+        }
 
-            if($request->intervention != "all" && $request->annee == "all")
-            {
-                $number__demande_interv = DB::table('intervention_demande')
-                    ->select(array(DB::raw('COUNT(DISTINCT intervention_demande.demande_id) as number__demande_interv')))
-                    ->join('demandes', 'demandes.id', '=', 'intervention_demande.demande_id')
-                    ->where(function($q){
-                        $q->where('decision', '=', 'accord_definitif')->where('is_affecter', '=', 0)->orWhere('decision', '=', 'en_cours');
-                    })
-                    ->where([['intervention_demande.intervention_id','=',$intervention_id]])
-                    ->get();
+        if($request->intervention != "all" && $request->annee == "all")
+        {
+            $number__demande_interv = DB::table('intervention_demande')
+                ->select(array(DB::raw('COUNT(DISTINCT intervention_demande.demande_id) as number__demande_interv')))
+                ->join('demandes', 'demandes.id', '=', 'intervention_demande.demande_id')
+                ->where(function($q){
+                    $q->where('decision', '=', 'accord_definitif')->where('is_affecter', '=', 0)->orWhere('decision', '=', 'en_cours');
+                })
+                ->where([['intervention_demande.intervention_id','=',$intervention_id]])
+                ->get();
 
-            }
+        }
 
         if($request->intervention == "all" && $request->annee != "all") {
             $number__demande_interv = DB::table('intervention_demande')
@@ -671,7 +672,6 @@ class StatisticsController extends Controller
 
         return response()->json(array('nombre_total_demande'=>$total_demandes,'number_demande_interv' =>$number__demande_interv));
     }
-
 
 
     public function getDemandesDataChartLongeur(Request $request)
@@ -772,9 +772,9 @@ class StatisticsController extends Controller
 
             foreach($communes as $commune)
             {
-                 $nombre_demandes_for_commune =   $commune->demandes()->where(function($q){
-                     $q->where('decision', '=', 'accord_definitif')->where('is_affecter', '=', 0)->orWhere('decision', '=', 'en_cours');
-                 })->count();
+                $nombre_demandes_for_commune =   $commune->demandes()->where(function($q){
+                    $q->where('decision', '=', 'accord_definitif')->where('is_affecter', '=', 0)->orWhere('decision', '=', 'en_cours');
+                })->count();
 
                 $commune->taux = number_format(($nombre_demandes_for_commune/$total_demandes)*100);
                 $commune->nombre_demandes_for_commune = $nombre_demandes_for_commune;
@@ -862,72 +862,18 @@ class StatisticsController extends Controller
             }
 
         }
-/*
-        if(isset($request->intervention) && !isset($request->annee))
-        {
-            $intervention = $request->intervention;
-            if($intervention == "all")
-            {
-
-
-            }else{
-
-            }
-        }
-
-        if(!isset($request->intervention) && isset($request->annee))
-        {
-            $annee = $request->annee;
-            if($annee == "all")
-            {
-                foreach($communes as $commune)
-                {
-                    $nombre_demandes_for_commune =   $commune->demandes()->where(function($q){
-                        $q->where('decision', '=', 'accord_definitif')->where('is_affecter', '=', 0)->orWhere('decision', '=', 'en_cours');
-                    })->count();
-
-                    $commune->taux = number_format(($nombre_demandes_for_commune/$total_demandes)*100);
-                    $commune->nombre_demandes_for_commune = $nombre_demandes_for_commune;
-                    $commune->total_demandes = $total_demandes;
-
-                }
-
-            }else{
-                foreach($communes as $commune)
-                {
-                    $nombre_demandes_for_commune =   $commune->demandes()->where(function($q) use ($annee){
-                         $q->where('decision', '=', 'accord_definitif')->whereYear('date_reception',"=",$annee)->where('is_affecter', '=', 0)->orWhere('decision', '=', 'en_cours');
-                     })->count();
-
-
-
-                    array_push($array_nombre_demandes,$nombre_demandes_for_commune);
-
-                    $commune->taux = number_format(($nombre_demandes_for_commune/$total_demandes)*100);
-                    $commune->nombre_demandes_for_commune = $nombre_demandes_for_commune;
-                    $commune->total_demandes = $total_demandes;
-
-                }
-            }
-
-        }
-*/
-
-
-
         return $communes;
-
     }
 
 
     public function getCommunesTauxLg(Request $request)
     {
-
         $demandes = Demande::with('piste')->where(function($q){
             $q->where('decision', '=', 'accord_definitif')->orWhere('decision', '=', 'en_cours');
         })->get();
 
         $longueur_total = 0;
+        $longeur_demandes = 0;
 
         foreach($demandes as $demande)
         {
@@ -935,7 +881,6 @@ class StatisticsController extends Controller
         }
 
         $communes = Commune::all();
-
         if(!isset($request->intervention) && !isset($request->annee))
         {
             foreach($communes as $commune)
@@ -947,13 +892,12 @@ class StatisticsController extends Controller
                 foreach($communes_selected as $commune)
                 {
                     $longeur_demandes += $communes_selected->piste->longueur;
-
                 }
 
 
                 $commune->taux = number_format(($longeur_demandes/$longueur_total)*100);
-                $commune->nombre_demandes_for_commune = $nombre_demandes_for_commune;
-                $commune->total_demandes = $total_demandes;
+                $commune->longueur_demande_for_commune = $longeur_demandes;
+                $commune->total_longueur_demande = $longueur_total;
             }
 
         }
@@ -1017,7 +961,6 @@ class StatisticsController extends Controller
                     $commune->total_longueur = $longueur_total;
                 }
             }
-
 
 
             if($request->intervention == "all" && $request->annee != "all")
@@ -1088,7 +1031,6 @@ class StatisticsController extends Controller
     }
 
 
-
     public function getProjets(Request $request)
     {
         $communes = Commune::with('demandes','conventions')->orderBy('nom_fr', 'asc');
@@ -1131,9 +1073,9 @@ class StatisticsController extends Controller
 
                     foreach($conventions_per_commune as $cnv)
                     {
-                        if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == null)
+                        if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
                         {
-                                $en_cours++;
+                            $en_cours++;
                         }
                     }
                     return $en_cours;
@@ -1144,7 +1086,7 @@ class StatisticsController extends Controller
 
                     foreach($conventions_per_commune as $cnv)
                     {
-                        if($cnv->appel_offre_id != null && $cnv->realise != null)
+                        if($cnv->appel_offre_id != null && $cnv->realise != 0)
                         {
                             $realise++;
                         }
@@ -1165,11 +1107,11 @@ class StatisticsController extends Controller
                         {
                             $appel_offre++;
                         }
-                        if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == null)
+                        if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
                         {
                             $en_cours++;
                         }
-                        if($cnv->appel_offre_id != null && $cnv->realise != null)
+                        if($cnv->appel_offre_id != null && $cnv->realise != 0)
                         {
                             $realise++;
                         }
@@ -1190,11 +1132,11 @@ class StatisticsController extends Controller
                         {
                             $appel_offre++;
                         }
-                        if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == null)
+                        if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
                         {
                             $en_cours++;
                         }
-                        if($cnv->appel_offre_id != null && $cnv->realise != null)
+                        if($cnv->appel_offre_id != null && $cnv->realise != 0)
                         {
                             $realise++;
                         }
@@ -1205,19 +1147,15 @@ class StatisticsController extends Controller
             ;
         }
 
-
-        if($request->interventions == "all" && $request->annee == "all")
+        if($request->interventions == "all")
         {
 
-        }
-
-        if($request->interventions != "all" && $request->annee == "all")
-        {
+        }else{
             $interventions_id =$request->interventions;
             $annee =$request->annee;
             $appel_offre_inter = 0;
             if ($request->ajax()) {
-                $datatables_intervention_annee = DataTables::eloquent($communes)
+                $datatables = DataTables::eloquent($communes)
 
                     ->addColumn('programme', function ($communes) use($interventions_id) {
                         $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
@@ -1241,7 +1179,7 @@ class StatisticsController extends Controller
 
                     ->addColumn('en_cours', function ($communes) use($interventions_id) {
                         $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '=', null]])
+                            ->where([['realise', '=', 0]])
                             ->whereHas('interventions', function($query) use ($interventions_id) {
                                 $query->where('interventions.id','=',$interventions_id);
                             })
@@ -1254,7 +1192,7 @@ class StatisticsController extends Controller
 
                     ->addColumn('realise',function ($communes) use($interventions_id) {
                         $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '!=', null]])
+                            ->where([['realise', '!=', 0]])
                             ->whereHas('interventions', function($query) use ($interventions_id) {
                                 $query->where('interventions.id','=',$interventions_id);
                             })
@@ -1265,14 +1203,14 @@ class StatisticsController extends Controller
 
                     ->addColumn('total_row', function ($communes) use ($interventions_id) {
                         $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '!=', null]])
+                            ->where([['realise', '!=', 0]])
                             ->whereHas('interventions', function($query) use ($interventions_id) {
                                 $query->where('interventions.id','=',$interventions_id);
                             })
                             ->count('convention_id');
 
                         $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '=', null]])
+                            ->where([['realise', '=', 0]])
                             ->whereHas('interventions', function($query) use ($interventions_id) {
                                 $query->where('interventions.id','=',$interventions_id);
                             })
@@ -1302,14 +1240,14 @@ class StatisticsController extends Controller
 
                     ->addColumn('taux_row', function ($communes) use ($interventions_id,$total_projet) {
                         $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '!=', null]])
+                            ->where([['realise', '!=', 0]])
                             ->whereHas('interventions', function($query) use ($interventions_id) {
                                 $query->where('interventions.id','=',$interventions_id);
                             })
                             ->count('convention_id');
 
                         $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '=', null]])
+                            ->where([['realise', '=', 0]])
                             ->whereHas('interventions', function($query) use ($interventions_id) {
                                 $query->where('interventions.id','=',$interventions_id);
                             })
@@ -1337,23 +1275,23 @@ class StatisticsController extends Controller
                         return number_format((($programme+$appel_offre+$en_cours+$realise)/$total_projet)*100);
                     });
             }
-            return $datatables_intervention_annee->make(true);
+
         }
 
+        if($request->annee == "all"){
 
-        if($request->interventions == "all" && $request->annee != "all")
-        {
+        }else{
             $interventions_id = $request->interventions;
             $annee = $request->annee;
 
             if ($request->ajax()) {
-                $datatables_intervention_annee = DataTables::eloquent($communes)
+                $datatables = DataTables::eloquent($communes)
                     ->addColumn('programme', function ($communes) use($annee) {
                         $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
                             ->where('annee','=',$annee)
-                           // ->whereHas('interventions', function($query) use ($interventions_id) {
-                          //      $query->where('interventions.id','=',$interventions_id);
-                           // })
+                            // ->whereHas('interventions', function($query) use ($interventions_id) {
+                            //      $query->where('interventions.id','=',$interventions_id);
+                            // })
                             ->count('convention_id');
                         return $programme;
                     })
@@ -1369,7 +1307,7 @@ class StatisticsController extends Controller
 
                     ->addColumn('en_cours', function ($communes) use($annee) {
                         $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '=', null]])
+                            ->where([['realise', '=', 0]])
                             ->where('annee','=',$annee)
                             ->whereHas('appelOffres',function($query){
                                 $query->where('ordre_service','!=',null);
@@ -1380,7 +1318,7 @@ class StatisticsController extends Controller
 
                     ->addColumn('realise',function ($communes) use($annee) {
                         $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '!=', null]])
+                            ->where([['realise', '!=', 0]])
                             ->where('annee','=',$annee)
                             ->count('convention_id');
                         return $realise;
@@ -1389,12 +1327,12 @@ class StatisticsController extends Controller
 
                     ->addColumn('total_row', function ($communes) use ($annee) {
                         $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '!=', null]])
+                            ->where([['realise', '!=', 0]])
                             ->where('annee','=',$annee)
                             ->count('convention_id');
 
                         $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '=', null]])
+                            ->where([['realise', '=', 0]])
                             ->where('annee','=',$annee)
                             ->whereHas('appelOffres',function($query){
                                 $query->where('ordre_service','!=',null);
@@ -1418,12 +1356,12 @@ class StatisticsController extends Controller
 
                     ->addColumn('taux_row', function ($communes) use ($annee,$total_projet) {
                         $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '!=', null]])
+                            ->where([['realise', '!=', 0]])
                             ->where('annee','=',$annee)
                             ->count('convention_id');
 
                         $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '=', null]])
+                            ->where([['realise', '=', 0]])
                             ->where('annee','=',$annee)
                             ->whereHas('appelOffres',function($query){
                                 $query->where('ordre_service','!=',null);
@@ -1445,31 +1383,29 @@ class StatisticsController extends Controller
                         return number_format((($programme+$appel_offre+$en_cours+$realise)/$total_projet)*100);
                     });
             }
-            return $datatables_intervention_annee->make(true);
+
         }
 
+        if($request->moa == "all"){
 
-        if($request->interventions != "all" && $request->annee != "all")
-        {
-            $interventions_id = $request->interventions;
-            $annee = $request->annee;
-
+        }else{
+            $moa =$request->moa;
+            $appel_offre_inter = 0;
             if ($request->ajax()) {
-                $datatables_intervention_annee = DataTables::eloquent($communes)
-                    ->addColumn('programme', function ($communes) use($annee,$interventions_id) {
+                $datatables = DataTables::eloquent($communes)
+
+                    ->addColumn('programme', function ($communes) use($moa) {
                         $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
-                            ->where('annee','=',$annee)
-                             ->whereHas('interventions', function($query) use ($interventions_id) {
-                                  $query->where('interventions.id','=',$interventions_id);
-                             })
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
                             ->count('convention_id');
                         return $programme;
                     })
-                    ->addColumn('appel_offre', function ($communes) use($annee,$interventions_id) {
+                    ->addColumn('appel_offre', function ($communes) use($moa) {
                         $appel_offre = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where('annee','=',$annee)
-                            ->whereHas('interventions', function($query) use ($interventions_id) {
-                                $query->where('interventions.id','=',$interventions_id);
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
                             })
                             ->whereHas('appelOffres',function($query){
                                 $query->where('ordre_service','=',null);
@@ -1478,12 +1414,11 @@ class StatisticsController extends Controller
                         return $appel_offre;
                     })
 
-                    ->addColumn('en_cours', function ($communes) use($annee,$interventions_id) {
+                    ->addColumn('en_cours', function ($communes) use($moa) {
                         $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '=', null]])
-                            ->where('annee','=',$annee)
-                            ->whereHas('interventions', function($query) use ($interventions_id) {
-                                $query->where('interventions.id','=',$interventions_id);
+                            ->where([['realise', '=', 0]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
                             })
                             ->whereHas('appelOffres',function($query){
                                 $query->where('ordre_service','!=',null);
@@ -1492,32 +1427,29 @@ class StatisticsController extends Controller
                         return $en_cours;
                     })
 
-                    ->addColumn('realise',function ($communes) use($annee,$interventions_id) {
+                    ->addColumn('realise',function ($communes) use($moa) {
                         $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '!=', null]])
-                            ->where('annee','=',$annee)
-                            ->whereHas('interventions', function($query) use ($interventions_id) {
-                                $query->where('interventions.id','=',$interventions_id);
+                            ->where([['realise', '!=', 0]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
                             })
                             ->count('convention_id');
                         return $realise;
                     })
 
 
-                    ->addColumn('total_row', function ($communes) use ($annee,$interventions_id) {
+                    ->addColumn('total_row', function ($communes) use ($moa) {
                         $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '!=', null]])
-                            ->where('annee','=',$annee)
-                            ->whereHas('interventions', function($query) use ($interventions_id) {
-                                $query->where('interventions.id','=',$interventions_id);
+                            ->where([['realise', '!=', 0]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
                             })
                             ->count('convention_id');
 
                         $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '=', null]])
-                            ->where('annee','=',$annee)
-                            ->whereHas('interventions', function($query) use ($interventions_id) {
-                                $query->where('interventions.id','=',$interventions_id);
+                            ->where([['realise', '=', 0]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
                             })
                             ->whereHas('appelOffres',function($query){
                                 $query->where('ordre_service','!=',null);
@@ -1525,9 +1457,8 @@ class StatisticsController extends Controller
                             ->count('convention_id');
 
                         $appel_offre = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where('annee','=',$annee)
-                            ->whereHas('interventions', function($query) use ($interventions_id) {
-                                $query->where('interventions.id','=',$interventions_id);
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
                             })
                             ->whereHas('appelOffres',function($query){
                                 $query->where('ordre_service','=',null);
@@ -1535,9 +1466,8 @@ class StatisticsController extends Controller
                             ->count('convention_id');
 
                         $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
-                            ->where('annee','=',$annee)
-                            ->whereHas('interventions', function($query) use ($interventions_id) {
-                                $query->where('interventions.id','=',$interventions_id);
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
                             })
                             ->count('convention_id');
 
@@ -1545,20 +1475,18 @@ class StatisticsController extends Controller
                     })
 
 
-                    ->addColumn('taux_row', function ($communes) use ($annee,$total_projet,$interventions_id) {
+                    ->addColumn('taux_row', function ($communes) use ($moa,$total_projet) {
                         $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '!=', null]])
-                            ->where('annee','=',$annee)
-                            ->whereHas('interventions', function($query) use ($interventions_id) {
-                                $query->where('interventions.id','=',$interventions_id);
+                            ->where([['realise', '!=', 0]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
                             })
                             ->count('convention_id');
 
                         $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where([['realise', '=', null]])
-                            ->where('annee','=',$annee)
-                            ->whereHas('interventions', function($query) use ($interventions_id) {
-                                $query->where('interventions.id','=',$interventions_id);
+                            ->where([['realise', '=', 0]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
                             })
                             ->whereHas('appelOffres',function($query){
                                 $query->where('ordre_service','!=',null);
@@ -1566,9 +1494,8 @@ class StatisticsController extends Controller
                             ->count('convention_id');
 
                         $appel_offre = $communes->conventions()->where([['appel_offre_id', '!=', null]])
-                            ->where('annee','=',$annee)
-                            ->whereHas('interventions', function($query) use ($interventions_id) {
-                                $query->where('interventions.id','=',$interventions_id);
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
                             })
                             ->whereHas('appelOffres',function($query){
                                 $query->where('ordre_service','=',null);
@@ -1576,9 +1503,8 @@ class StatisticsController extends Controller
                             ->count('convention_id');
 
                         $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
-                            ->where('annee','=',$annee)
-                            ->whereHas('interventions', function($query) use ($interventions_id) {
-                                $query->where('interventions.id','=',$interventions_id);
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
                             })
                             ->count('convention_id');
 
@@ -1586,9 +1512,397 @@ class StatisticsController extends Controller
                         return number_format((($programme+$appel_offre+$en_cours+$realise)/$total_projet)*100);
                     });
             }
-            return $datatables_intervention_annee->make(true);
         }
 
+
+        if($request->programme == "all"){
+
+        }else{
+            $programme =$request->programme;
+            $appel_offre_inter = 0;
+            if ($request->ajax()) {
+                $datatables = DataTables::eloquent($communes)
+
+                    ->addColumn('programme', function ($communes) use($programme) {
+                        $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->count('convention_id');
+                        return $programme;
+                    })
+                    ->addColumn('appel_offre', function ($communes) use($programme) {
+                        $appel_offre = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','=',null);
+                            })
+                            ->count('convention_id');
+                        return $appel_offre;
+                    })
+
+                    ->addColumn('en_cours', function ($communes) use($programme) {
+                        $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '=', 0]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','!=',null);
+                            })
+                            ->count('convention_id');
+                        return $en_cours;
+                    })
+
+                    ->addColumn('realise',function ($communes) use($programme) {
+                        $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '!=', 0]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->count('convention_id');
+                        return $realise;
+                    })
+
+
+                    ->addColumn('total_row', function ($communes) use ($programme) {
+                        $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '!=', 0]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->count('convention_id');
+
+                        $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '=', 0]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','!=',null);
+                            })
+                            ->count('convention_id');
+
+                        $appel_offre = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','=',null);
+                            })
+                            ->count('convention_id');
+
+                        $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->count('convention_id');
+
+                        return $programme+$appel_offre+$en_cours+$realise;
+                    })
+
+
+                    ->addColumn('taux_row', function ($communes) use ($programme,$total_projet) {
+                        $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '!=', 0]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->count('convention_id');
+
+                        $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '=', 0]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','!=',null);
+                            })
+                            ->count('convention_id');
+
+                        $appel_offre = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','=',null);
+                            })
+                            ->count('convention_id');
+
+                        $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->count('convention_id');
+                        return number_format((($programme+$appel_offre+$en_cours+$realise)/$total_projet)*100);
+                    });
+            }
+
+        }
+
+        /*
+
+        if($request->moa == "all")
+        {
+
+        }else{
+            $moa =$request->moa;
+            $appel_offre_inter = 0;
+            if ($request->ajax()) {
+                $datatables_moa = DataTables::eloquent($communes)
+                    ->addColumn('programme', function ($communes) use($moa) {
+                        $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->count('convention_id');
+                        return $programme;
+                    })
+                    ->addColumn('appel_offre',function ($communes) use($moa) {
+                        $appel_offre = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','=',null);
+                            })
+                            ->count('convention_id');
+                        return $appel_offre;
+                    })
+
+                    ->addColumn('en_cours', function ($communes) use($moa) {
+                        $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '=', 0]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','!=',null);
+                            })
+                            ->count('convention_id');
+                        return $en_cours;
+                    })
+
+                    ->addColumn('realise',function ($communes) use($moa) {
+                        $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '!=', 0]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->count('convention_id');
+                        return $realise;
+                    })
+
+
+                    ->addColumn('total_row', function ($communes) use ($moa) {
+                        $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '!=', 0]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->count('convention_id');
+
+                        $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '=', 0]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','!=',null);
+                            })
+                            ->count('convention_id');
+
+                        $appel_offre = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','=',null);
+                            })
+                            ->count('convention_id');
+
+                        $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->count('convention_id');
+
+                        return $programme+$appel_offre+$en_cours+$realise;
+                    })
+
+
+                    ->addColumn('taux_row', function ($communes) use ($moa,$total_projet) {
+                        $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '!=', 0]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->count('convention_id');
+
+                        $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '=', 0]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','!=',null);
+                            })
+                            ->count('convention_id');
+
+                        $appel_offre = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','=',null);
+                            })
+                            ->count('convention_id');
+
+                        $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->count('convention_id');
+
+
+                        return number_format((($programme+$appel_offre+$en_cours+$realise)/$total_projet)*100);
+                    });
+            }
+            return $datatables_moa->make(true);
+        }
+
+
+        if($request->programme == "all")
+        {
+
+        }else {
+            $programme =$request->programme;
+            $appel_offre_inter = 0;
+            if ($request->ajax()) {
+                $datatables_moa = DataTables::eloquent($communes)
+
+                    ->addColumn('programme', function ($communes) use($programme) {
+                        $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->count('convention_id');
+                        return $programme;
+                    })
+                    ->addColumn('appel_offre',function ($communes) use($programme) {
+                        $appel_offre = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','=',null);
+                            })
+                            ->count('convention_id');
+                        return $appel_offre;
+                    })
+
+                    ->addColumn('en_cours', function ($communes) use($programme) {
+                        $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '=', 0]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','!=',null);
+                            })
+                            ->count('convention_id');
+                        return $en_cours;
+                    })
+
+                    ->addColumn('realise',function ($communes) use($programme) {
+                        $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '!=', 0]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->count('convention_id');
+                        return $realise;
+                    })
+
+
+                    ->addColumn('total_row', function ($communes) use ($programme) {
+                        $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '!=', 0]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->count('convention_id');
+
+                        $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '=', 0]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','!=',null);
+                            })
+                            ->count('convention_id');
+
+                        $appel_offre = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','=',null);
+                            })
+                            ->count('convention_id');
+
+                        $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->count('convention_id');
+
+                        return $programme+$appel_offre+$en_cours+$realise;
+                    })
+
+
+                    ->addColumn('taux_row', function ($communes) use ($programme,$total_projet) {
+                        $realise = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '!=', 0]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->count('convention_id');
+
+                        $en_cours = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->where([['realise', '=', 0]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','!=',null);
+                            })
+                            ->count('convention_id');
+
+                        $appel_offre = $communes->conventions()->where([['appel_offre_id', '!=', null]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->whereHas('appelOffres',function($query){
+                                $query->where('ordre_service','=',null);
+                            })
+                            ->count('convention_id');
+
+                        $programme = $communes->conventions()->where([['appel_offre_id', '=', null]])
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->count('convention_id');
+
+
+                        return number_format((($programme+$appel_offre+$en_cours+$realise)/$total_projet)*100);
+                    });
+            }
+            return $datatables_moa->make(true);
+        }*/
 
         return $datatables->make(true);
     }
@@ -1596,7 +1910,6 @@ class StatisticsController extends Controller
 
     public function getProjetsLongueur(Request $request)
     {
-
         $communes = Commune::with('demandes','conventions')->orderBy('nom_fr', 'asc');
         $conventions = Convention::with('piste')->get();
 
@@ -1605,6 +1918,7 @@ class StatisticsController extends Controller
         {
             $longueur_total += $cnv->piste->longueur;
         }
+
 
         $programmes_lg = 0;
         $appel_offre_lg = 0;
@@ -1615,7 +1929,7 @@ class StatisticsController extends Controller
             $datatables = DataTables::eloquent($communes)
                 ->addColumn('programme', function ($communes) use ($programmes_lg) {
                     $conventions_per_commune = $communes->conventions()->get();
-
+                    //return $conventions_per_commune;
                     foreach($conventions_per_commune as $cnv)
                     {
                         if($cnv->appel_offre_id == null)
@@ -1643,7 +1957,7 @@ class StatisticsController extends Controller
 
                     foreach($conventions_per_commune as $cnv)
                     {
-                        if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == null)
+                        if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
                         {
                             $en_cours_lg += $cnv->piste->longueur;
                         }
@@ -1656,7 +1970,7 @@ class StatisticsController extends Controller
 
                     foreach($conventions_per_commune as $cnv)
                     {
-                        if($cnv->appel_offre_id != null && $cnv->realise != null)
+                        if($cnv->appel_offre_id != null && $cnv->realise != 0)
                         {
                             $realise_lg += $cnv->piste->longueur;
                         }
@@ -1677,11 +1991,11 @@ class StatisticsController extends Controller
                         {
                             $appel_offre_lg+= $cnv->piste->longueur;
                         }
-                        if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == null)
+                        if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
                         {
                             $en_cours_lg+= $cnv->piste->longueur;
                         }
-                        if($cnv->appel_offre_id != null && $cnv->realise != null)
+                        if($cnv->appel_offre_id != null && $cnv->realise != 0)
                         {
                             $realise_lg+= $cnv->piste->longueur;
                         }
@@ -1702,11 +2016,11 @@ class StatisticsController extends Controller
                         {
                             $appel_offre_lg+= $cnv->piste->longueur;
                         }
-                        if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == null)
+                        if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
                         {
                             $en_cours_lg+= $cnv->piste->longueur;
                         }
-                        if($cnv->appel_offre_id != null && $cnv->realise != null)
+                        if($cnv->appel_offre_id != null && $cnv->realise != 0)
                         {
                             $realise_lg+= $cnv->piste->longueur;
                         }
@@ -1790,7 +2104,7 @@ class StatisticsController extends Controller
 
                         foreach($convention_interv as $cnv_interv)
                         {
-                            if($cnv_interv->appel_offre_id != null && $cnv_interv->appelOffres->ordre_service != null && $cnv_interv->realise == null)
+                            if($cnv_interv->appel_offre_id != null && $cnv_interv->appelOffres->ordre_service != null && $cnv_interv->realise == 0)
                             {
                                 $en_cours_lg += $cnv_interv->piste->longueur;
                             }
@@ -1811,7 +2125,7 @@ class StatisticsController extends Controller
 
                         foreach($convention_interv as $cnv_interv)
                         {
-                            if($cnv_interv->appel_offre_id != null && $cnv_interv->realise != null)
+                            if($cnv_interv->appel_offre_id != null && $cnv_interv->realise != 0)
                             {
                                 $realise_lg += $cnv_interv->piste->longueur;
                             }
@@ -1841,11 +2155,11 @@ class StatisticsController extends Controller
                             {
                                 $appel_offre_lg+= $cnv->piste->longueur;
                             }
-                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == null)
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
                             {
                                 $en_cours_lg+= $cnv->piste->longueur;
                             }
-                            if($cnv->appel_offre_id != null && $cnv->realise != null)
+                            if($cnv->appel_offre_id != null && $cnv->realise != 0)
                             {
                                 $realise_lg+= $cnv->piste->longueur;
                             }
@@ -1873,11 +2187,11 @@ class StatisticsController extends Controller
                             {
                                 $appel_offre_lg+= $cnv->piste->longueur;
                             }
-                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == null)
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
                             {
                                 $en_cours_lg+= $cnv->piste->longueur;
                             }
-                            if($cnv->appel_offre_id != null && $cnv->realise != null)
+                            if($cnv->appel_offre_id != null && $cnv->realise != 0)
                             {
                                 $realise_lg+= $cnv->piste->longueur;
                             }
@@ -1908,9 +2222,9 @@ class StatisticsController extends Controller
                             ->whereHas('communes',function($query) use ($commune_id){
                                 $query->where('communes.id','=',$commune_id);
                             })
-                           // ->whereHas('interventions', function($query) use ($interventions_id) {
-                           //     $query->where('interventions.id','=',$interventions_id);
-                           // })
+                            // ->whereHas('interventions', function($query) use ($interventions_id) {
+                            //     $query->where('interventions.id','=',$interventions_id);
+                            // })
                             ->get();
 
 
@@ -1955,7 +2269,7 @@ class StatisticsController extends Controller
 
                         foreach($convention_interv as $cnv_interv)
                         {
-                            if($cnv_interv->appel_offre_id != null && $cnv_interv->appelOffres->ordre_service != null && $cnv_interv->realise == null)
+                            if($cnv_interv->appel_offre_id != null && $cnv_interv->appelOffres->ordre_service != null && $cnv_interv->realise == 0)
                             {
                                 $en_cours_lg += $cnv_interv->piste->longueur;
                             }
@@ -1975,7 +2289,7 @@ class StatisticsController extends Controller
 
                         foreach($convention_interv as $cnv_interv)
                         {
-                            if($cnv_interv->appel_offre_id != null && $cnv_interv->realise != null)
+                            if($cnv_interv->appel_offre_id != null && $cnv_interv->realise != 0)
                             {
                                 $realise_lg += $cnv_interv->piste->longueur;
                             }
@@ -2003,11 +2317,11 @@ class StatisticsController extends Controller
                             {
                                 $appel_offre_lg+= $cnv->piste->longueur;
                             }
-                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == null)
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
                             {
                                 $en_cours_lg+= $cnv->piste->longueur;
                             }
-                            if($cnv->appel_offre_id != null && $cnv->realise != null)
+                            if($cnv->appel_offre_id != null && $cnv->realise != 0)
                             {
                                 $realise_lg+= $cnv->piste->longueur;
                             }
@@ -2033,11 +2347,11 @@ class StatisticsController extends Controller
                             {
                                 $appel_offre_lg+= $cnv->piste->longueur;
                             }
-                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == null)
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
                             {
                                 $en_cours_lg+= $cnv->piste->longueur;
                             }
-                            if($cnv->appel_offre_id != null && $cnv->realise != null)
+                            if($cnv->appel_offre_id != null && $cnv->realise != 0)
                             {
                                 $realise_lg+= $cnv->piste->longueur;
                             }
@@ -2068,9 +2382,9 @@ class StatisticsController extends Controller
                             ->whereHas('communes',function($query) use ($commune_id){
                                 $query->where('communes.id','=',$commune_id);
                             })
-                             ->whereHas('interventions', function($query) use ($interventions_id) {
-                                 $query->where('interventions.id','=',$interventions_id);
-                             })
+                            ->whereHas('interventions', function($query) use ($interventions_id) {
+                                $query->where('interventions.id','=',$interventions_id);
+                            })
                             ->get();
 
 
@@ -2121,7 +2435,7 @@ class StatisticsController extends Controller
 
                         foreach($convention_interv as $cnv_interv)
                         {
-                            if($cnv_interv->appel_offre_id != null && $cnv_interv->appelOffres->ordre_service != null && $cnv_interv->realise == null)
+                            if($cnv_interv->appel_offre_id != null && $cnv_interv->appelOffres->ordre_service != null && $cnv_interv->realise == 0)
                             {
                                 $en_cours_lg += $cnv_interv->piste->longueur;
                             }
@@ -2143,7 +2457,7 @@ class StatisticsController extends Controller
 
                         foreach($convention_interv as $cnv_interv)
                         {
-                            if($cnv_interv->appel_offre_id != null && $cnv_interv->realise != null)
+                            if($cnv_interv->appel_offre_id != null && $cnv_interv->realise != 0)
                             {
                                 $realise_lg += $cnv_interv->piste->longueur;
                             }
@@ -2174,11 +2488,11 @@ class StatisticsController extends Controller
                             {
                                 $appel_offre_lg+= $cnv->piste->longueur;
                             }
-                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == null)
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
                             {
                                 $en_cours_lg+= $cnv->piste->longueur;
                             }
-                            if($cnv->appel_offre_id != null && $cnv->realise != null)
+                            if($cnv->appel_offre_id != null && $cnv->realise != 0)
                             {
                                 $realise_lg+= $cnv->piste->longueur;
                             }
@@ -2207,11 +2521,11 @@ class StatisticsController extends Controller
                             {
                                 $appel_offre_lg+= $cnv->piste->longueur;
                             }
-                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == null)
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
                             {
                                 $en_cours_lg+= $cnv->piste->longueur;
                             }
-                            if($cnv->appel_offre_id != null && $cnv->realise != null)
+                            if($cnv->appel_offre_id != null && $cnv->realise != 0)
                             {
                                 $realise_lg+= $cnv->piste->longueur;
                             }
@@ -2223,7 +2537,530 @@ class StatisticsController extends Controller
         }
 
 
+
+        if($request->moa == "all")
+        {
+
+        }else{
+
+            $moa =$request->moa;
+            $appel_offre_inter = 0;
+            $programme_lg = 0;
+            $appel_offre_lg = 0;
+            $en_cours_lg = 0;
+            $realise_lg = 0;
+            if ($request->ajax()) {
+                $datatables_intervention_annee = DataTables::eloquent($communes)
+
+                    ->addColumn('programme', function ($communes) use ($programme_lg,$moa) {
+                        $commune_id = $communes->id;
+                        $convention_interv = Convention::with('piste')
+                            ->whereHas('communes',function($query) use ($commune_id){
+                                $query->where('communes.id','=',$commune_id);
+                            })
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->get();
+
+
+                        foreach($convention_interv as $cnv_interv)
+                        {
+
+                            if($cnv_interv->appel_offre_id == null)
+                            {
+                                $programme_lg += $cnv_interv->piste->longueur;
+                            }
+                        }
+                        return $programme_lg;
+                    })
+                    ->addColumn('appel_offre', function ($communes) use ($appel_offre_lg,$moa) {
+                        $commune_id = $communes->id;
+                        $convention_interv = Convention::with('piste')
+                            ->whereHas('communes',function($query) use ($commune_id){
+                                $query->where('communes.id','=',$commune_id);
+                            })
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->get();
+
+
+                        foreach($convention_interv as $cnv_interv)
+                        {
+                            if($cnv_interv->appel_offre_id != null)
+                            {
+                                $appel_offre_lg += $cnv_interv->piste->longueur;
+                            }
+                        }
+                        return $appel_offre_lg;
+                    })
+
+                    ->addColumn('en_cours', function ($communes) use ($en_cours_lg,$moa) {
+                        $commune_id = $communes->id;
+                        $convention_interv = Convention::with('piste')
+                            ->whereHas('communes',function($query) use ($commune_id){
+                                $query->where('communes.id','=',$commune_id);
+                            })
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->get();
+
+                        foreach($convention_interv as $cnv_interv)
+                        {
+                            if($cnv_interv->appel_offre_id != null && $cnv_interv->appelOffres->ordre_service != null && $cnv_interv->realise == 0)
+                            {
+                                $en_cours_lg += $cnv_interv->piste->longueur;
+                            }
+                        }
+                        return $en_cours_lg;
+                    })
+
+                    ->addColumn('realise',function ($communes) use ($realise_lg,$moa) {
+                        $commune_id = $communes->id;
+                        $convention_interv = Convention::with('piste')
+                            ->whereHas('communes',function($query) use ($commune_id){
+                                $query->where('communes.id','=',$commune_id);
+                            })
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->get();
+
+                        foreach($convention_interv as $cnv_interv)
+                        {
+                            if($cnv_interv->appel_offre_id != null && $cnv_interv->realise != 0)
+                            {
+                                $realise_lg += $cnv_interv->piste->longueur;
+                            }
+                        }
+                        return $realise_lg;
+                    })
+
+
+                    ->addColumn('total_row', function ($communes) use ($en_cours_lg,$programmes_lg,$appel_offre_lg,$realise_lg,$moa) {
+                        $commune_id = $communes->id;
+                        $convention_interv = Convention::with('piste')
+                            ->whereHas('communes',function($query) use ($commune_id){
+                                $query->where('communes.id','=',$commune_id);
+                            })
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->get();
+
+                        foreach($convention_interv as $cnv)
+                        {
+                            if($cnv->appel_offre_id == null)
+                            {
+                                $programmes_lg += $cnv->piste->longueur;
+                            }
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service == null)
+                            {
+                                $appel_offre_lg+= $cnv->piste->longueur;
+                            }
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
+                            {
+                                $en_cours_lg+= $cnv->piste->longueur;
+                            }
+                            if($cnv->appel_offre_id != null && $cnv->realise != 0)
+                            {
+                                $realise_lg+= $cnv->piste->longueur;
+                            }
+                        }
+                        return $realise_lg+$en_cours_lg+$appel_offre_lg+$programmes_lg;
+                    })
+                    ->addColumn('taux_row', function ($communes) use ($en_cours_lg,$programmes_lg,$appel_offre_lg,$realise_lg,$moa,$longueur_total) {
+                        $commune_id = $communes->id;
+                        $convention_interv = Convention::with('piste')
+                            ->whereHas('communes',function($query) use ($commune_id){
+                                $query->where('communes.id','=',$commune_id);
+                            })
+                            ->whereHas('moas', function($query) use ($moa) {
+                                $query->where('id','=',$moa);
+                            })
+                            ->get();
+
+                        foreach($convention_interv as $cnv)
+                        {
+                            if($cnv->appel_offre_id == null)
+                            {
+                                $programmes_lg += $cnv->piste->longueur;
+                            }
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service == null)
+                            {
+                                $appel_offre_lg+= $cnv->piste->longueur;
+                            }
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
+                            {
+                                $en_cours_lg+= $cnv->piste->longueur;
+                            }
+                            if($cnv->appel_offre_id != null && $cnv->realise != 0)
+                            {
+                                $realise_lg+= $cnv->piste->longueur;
+                            }
+                        }
+                        return number_format((($realise_lg+$en_cours_lg+$appel_offre_lg+$programmes_lg)/$longueur_total)*100);
+                    });
+            }
+            return $datatables_intervention_annee->make(true);
+        }
+
+        if($request->programme == "all")
+        {
+
+        }else{
+            $programme =$request->programme;
+            $appel_offre_inter = 0;
+            $programme_lg = 0;
+            $appel_offre_lg = 0;
+            $en_cours_lg = 0;
+            $realise_lg = 0;
+            if ($request->ajax()) {
+                $datatables_intervention_annee = DataTables::eloquent($communes)
+
+                    ->addColumn('programme', function ($communes) use ($programme_lg,$programme) {
+                        $commune_id = $communes->id;
+                        $convention_interv = Convention::with('piste')
+                            ->whereHas('communes',function($query) use ($commune_id){
+                                $query->where('communes.id','=',$commune_id);
+                            })
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->get();
+
+
+                        foreach($convention_interv as $cnv_interv)
+                        {
+
+                            if($cnv_interv->appel_offre_id == null)
+                            {
+                                $programme_lg += $cnv_interv->piste->longueur;
+                            }
+                        }
+                        return $programme_lg;
+                    })
+                    ->addColumn('appel_offre', function ($communes) use ($appel_offre_lg,$programme) {
+                        $commune_id = $communes->id;
+                        $convention_interv = Convention::with('piste')
+                            ->whereHas('communes',function($query) use ($commune_id){
+                                $query->where('communes.id','=',$commune_id);
+                            })
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->get();
+
+
+                        foreach($convention_interv as $cnv_interv)
+                        {
+                            if($cnv_interv->appel_offre_id != null)
+                            {
+                                $appel_offre_lg += $cnv_interv->piste->longueur;
+                            }
+                        }
+                        return $appel_offre_lg;
+                    })
+
+                    ->addColumn('en_cours', function ($communes) use ($en_cours_lg,$programme) {
+                        $commune_id = $communes->id;
+                        $convention_interv = Convention::with('piste')
+                            ->whereHas('communes',function($query) use ($commune_id){
+                                $query->where('communes.id','=',$commune_id);
+                            })
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->get();
+
+                        foreach($convention_interv as $cnv_interv)
+                        {
+                            if($cnv_interv->appel_offre_id != null && $cnv_interv->appelOffres->ordre_service != null && $cnv_interv->realise == 0)
+                            {
+                                $en_cours_lg += $cnv_interv->piste->longueur;
+                            }
+                        }
+                        return $en_cours_lg;
+                    })
+
+                    ->addColumn('realise',function ($communes) use ($realise_lg,$programme) {
+                        $commune_id = $communes->id;
+                        $convention_interv = Convention::with('piste')
+                            ->whereHas('communes',function($query) use ($commune_id){
+                                $query->where('communes.id','=',$commune_id);
+                            })
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->get();
+
+                        foreach($convention_interv as $cnv_interv)
+                        {
+                            if($cnv_interv->appel_offre_id != null && $cnv_interv->realise != 0)
+                            {
+                                $realise_lg += $cnv_interv->piste->longueur;
+                            }
+                        }
+                        return $realise_lg;
+                    })
+
+
+                    ->addColumn('total_row', function ($communes) use ($en_cours_lg,$programmes_lg,$appel_offre_lg,$realise_lg,$programme) {
+                        $commune_id = $communes->id;
+                        $convention_interv = Convention::with('piste')
+                            ->whereHas('communes',function($query) use ($commune_id){
+                                $query->where('communes.id','=',$commune_id);
+                            })
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->get();
+
+                        foreach($convention_interv as $cnv)
+                        {
+                            if($cnv->appel_offre_id == null)
+                            {
+                                $programmes_lg += $cnv->piste->longueur;
+                            }
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service == null)
+                            {
+                                $appel_offre_lg+= $cnv->piste->longueur;
+                            }
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
+                            {
+                                $en_cours_lg+= $cnv->piste->longueur;
+                            }
+                            if($cnv->appel_offre_id != null && $cnv->realise != 0)
+                            {
+                                $realise_lg+= $cnv->piste->longueur;
+                            }
+                        }
+                        return $realise_lg+$en_cours_lg+$appel_offre_lg+$programmes_lg;
+                    })
+                    ->addColumn('taux_row', function ($communes) use ($en_cours_lg,$programmes_lg,$appel_offre_lg,$realise_lg,$programme,$longueur_total) {
+                        $commune_id = $communes->id;
+                        $convention_interv = Convention::with('piste')
+                            ->whereHas('communes',function($query) use ($commune_id){
+                                $query->where('communes.id','=',$commune_id);
+                            })
+                            ->whereHas('programme', function($query) use ($programme) {
+                                $query->where('id','=',$programme);
+                            })
+                            ->get();
+
+                        foreach($convention_interv as $cnv)
+                        {
+                            if($cnv->appel_offre_id == null)
+                            {
+                                $programmes_lg += $cnv->piste->longueur;
+                            }
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service == null)
+                            {
+                                $appel_offre_lg+= $cnv->piste->longueur;
+                            }
+                            if($cnv->appel_offre_id != null && $cnv->appelOffres->ordre_service != null && $cnv->realise == 0)
+                            {
+                                $en_cours_lg+= $cnv->piste->longueur;
+                            }
+                            if($cnv->appel_offre_id != null && $cnv->realise != 0)
+                            {
+                                $realise_lg+= $cnv->piste->longueur;
+                            }
+                        }
+                        return number_format((($realise_lg+$en_cours_lg+$appel_offre_lg+$programmes_lg)/$longueur_total)*100);
+                    });
+            }
+            return $datatables_intervention_annee->make(true);
+
+
+        }
+
         return $datatables->make(true);
+    }
+
+
+
+    public function getProjetCommunesTaux(Request $request)
+    {
+        $total_projet = Convention::all()->count('id');
+
+
+
+        $communes = Commune::all();
+
+        if(!isset($request->intervention) && !isset($request->annee) && !isset($request->moa) && !isset($request->programme))
+        {
+
+            foreach($communes as $commune)
+            {
+                $nombre_projet = 0;
+                $commune_id = $commune->id;
+                $nombre_projet = $commune->conventions()->count('conventions.id');
+
+                $commune->taux = number_format(($nombre_projet/$total_projet)*100);
+                $commune->nombre_convention_for_commune = $nombre_projet;
+                $commune->total_nombre_convention = $total_projet;
+            }
+
+        }
+
+
+        if(isset($request->intervention) && isset($request->annee) && isset($request->moa) && isset($request->programme)){
+            $intervention =  $request->intervention;
+            $annee =  $request->annee;
+            $moa =  $request->moa;
+            $programme =  $request->programme;
+            foreach($communes as $commune)
+            {
+                $nombre_projet =0 ;
+                $commune_id = $commune->id;
+
+                $convtions_for_commune = Convention::whereHas('communes',function($query) use ($commune_id){
+                    $query->where('communes.id','=',$commune_id);
+                });
+                ;
+
+
+                if($request->intervention != "all")
+                {
+                    $convtions_for_commune_inter = $convtions_for_commune->whereHas('interventions', function ($query) use ($intervention) {
+                        $query->where('interventions.id', '=',$intervention);
+                    })->get();
+
+                }
+
+
+                if($request->annee != "all")
+                {
+                    $convtions_for_commune_inter = $convtions_for_commune->where('annee','=',$annee)->get();
+                }
+
+                if($request->moa != "all")
+                {
+                    $convtions_for_commune_inter = $convtions_for_commune->whereHas('moas', function ($query) use ($moa) {
+                        $query->where('id', '=',$moa);
+                    })->get();
+                }
+
+                if($request->programme != "all")
+                {
+                    $convtions_for_commune_inter = $convtions_for_commune->whereHas('programme', function ($query) use ($programme) {
+                        $query->where('id', '=',$programme);
+                    })->get();
+                }
+
+                $nombre_projet = $convtions_for_commune_inter->count('conventions.id');
+
+                $commune->taux = number_format(($nombre_projet/$total_projet)*100);
+                $commune->longueur_convention_for_commune = $nombre_projet;
+                $commune->total_longueur_convention = number_format($total_projet);
+            }
+
+
+        }
+        return $communes;
+    }
+
+
+    public function getProjetLGCommunesTaux(Request $request)
+    {
+        $conventions = Convention::with('piste')->get();
+
+        $longueur_total = 0;
+        foreach($conventions as $cnv)
+        {
+            $longueur_total += $cnv->piste->longueur;
+        }
+
+
+        $communes = Commune::all();
+        $array_nombre_projet = array();
+
+        if(!isset($request->intervention) && !isset($request->annee) && !isset($request->moa) && !isset($request->programme))
+        {
+
+            foreach($communes as $commune)
+            {
+                $longeur_projet = 0;
+                $commune_id = $commune->id;
+                $convtions_for_commune =  Convention::whereHas('communes',function($query) use ($commune_id){
+                    $query->where('communes.id','=',$commune_id);
+                })->get();
+
+
+                foreach($convtions_for_commune as $cnv)
+                {
+                    $longeur_projet += $cnv->piste->longueur;
+                }
+
+
+                $commune->taux = number_format(($longeur_projet/$longueur_total)*100);
+                $commune->longueur_convention_for_commune = $longeur_projet;
+                $commune->total_longueur_convention = $longueur_total;
+            }
+
+        }
+
+
+        if(isset($request->intervention) && isset($request->annee) && isset($request->moa) && isset($request->programme)){
+            $intervention =  $request->intervention;
+            $annee =  $request->annee;
+            $moa =  $request->moa;
+            $programme =  $request->programme;
+            foreach($communes as $commune)
+            {
+                $longeur_conventions =0 ;
+                $commune_id = $commune->id;
+
+                $convtions_for_commune = Convention::whereHas('communes',function($query) use ($commune_id){
+                    $query->where('communes.id','=',$commune_id);
+                });
+                ;
+
+
+                if($request->intervention != "all")
+                {
+                    $convtions_for_commune_inter = $convtions_for_commune->whereHas('interventions', function ($query) use ($intervention) {
+                        $query->where('interventions.id', '=',$intervention);
+                    })->get();
+
+                }
+
+
+                if($request->annee != "all")
+                {
+                    $convtions_for_commune_inter = $convtions_for_commune->where('annee','=',$annee)->get();
+                }
+
+                if($request->moa != "all")
+                {
+                    $convtions_for_commune_inter = $convtions_for_commune->whereHas('moas', function ($query) use ($moa) {
+                        $query->where('id', '=',$moa);
+                    })->get();
+                }
+
+                if($request->programme != "all")
+                {
+                    $convtions_for_commune_inter = $convtions_for_commune->whereHas('programme', function ($query) use ($programme) {
+                        $query->where('id', '=',$programme);
+                    })->get();
+                }
+
+                foreach($convtions_for_commune_inter as $cnv)
+                {
+                    $longeur_conventions += $cnv->piste->longueur;
+                }
+
+                $commune->taux = number_format(($longeur_conventions/$longueur_total)*100);
+                $commune->longueur_convention_for_commune = $longeur_conventions;
+                $commune->total_longueur_convention = number_format($longueur_total);
+            }
+
+
+        }
+        return $communes;
     }
     /**
      * Display a listing of the resource.
@@ -2234,16 +3071,17 @@ class StatisticsController extends Controller
     {
 
         $interventions = Intervention::all();
+        $moas = Moa::all();
+
         $programmes = Programme::all();
         $actu_time = Carbon::now();
         $actu_year =  $actu_time->toDateString();
-
-        $year_number = 0;
         $year_number = (int) substr($actu_year,0,4);
 
         return view('statistics.index_statistics_show')->with([
             'interventions' => $interventions,
             'year_number' => $year_number,
+            'moas' => $moas,
             'programmes' => $programmes
         ]);
     }

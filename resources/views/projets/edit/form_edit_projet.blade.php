@@ -580,6 +580,18 @@
                         {{Form::label('','Longueur:')}}
                         {{Form::text('longueur',$convention->piste->longueur,['class'=>'form-control','id'=>'longueur_input'])}}
                     </div>
+                        @if(Auth::user()->organisation_id != 1 )
+                            <div class="form-group">
+                                {{Form::label('','Année:')}}
+                                {{Form::text('annee',$convention->annee,['class'=>'form-control'])}}
+                            </div>
+
+                            <div class="form-group">
+                                {{Form::label('','Date Commencement:')}}
+                                {{Form::text('date_commencement',date('d/m/Y', strtotime($convention->date_commencement)),['class'=>'form-control
+                            pull-right','id'=>'datepicker'])}}
+                            </div>
+                        @endif
                     <br>
 
                     @if(Auth::user()->organisation_id == $convention->organisation_id  && !empty($convention->appelOffres))

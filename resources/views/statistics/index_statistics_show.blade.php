@@ -62,15 +62,25 @@
 
 
         #map_nombre {
-            height: 100vh;
+            height: 82.5vh;
             margin-bottom: 8px;
             z-index: 1;
         }
 
+        #map_projet_nombre {
+            height: 91.5vh;
+            margin-bottom: 8px;
+            z-index: 1;
+        }
 
+        #map_projet_lg {
+            height: 91.5vh;
+            margin-bottom: 8px;
+            z-index: 1;
+        }
 
         #map_demande_lg {
-            height: 100vh;
+            height: 82.5vh;
             margin-bottom: 8px;
             z-index: 1;
         }
@@ -163,12 +173,14 @@
 
                 <!-- /.box-header -->
                 <div class="box-body">
-                @include('statistics.tabs')
-                <!-- Tab panes -->
-                    <div class="tab-content" style="margin-top: 15px">
-                        @include('statistics.tab_projets')
-                        {{-- a traiter --}}
-                        @include('statistics.tab_demandes')
+                    <div  style="padding: 0;" id="tabs_demande_projet">
+                    @include('statistics.tabs')
+                    <!-- Tab panes -->
+                        <div class="tab-content" style="margin-top: 15px">
+                            @include('statistics.tab_projets')
+                            {{-- a traiter --}}
+                            @include('statistics.tab_demandes')
+                        </div>
                     </div>
                 </div>
                 <!-- /.box-body -->
@@ -244,9 +256,11 @@
 
 
 <script src="{{asset('js/statistics/demande_statistics_map.js')}}"></script>
+<script src="{{asset('js/statistics/projet_statistics_map.js')}}"></script>
 <script src="{{asset('js/statistics/datatable_statistics_demandes.js')}}"></script>
+{{--
 <script src="{{asset('js/statistics/chart_data_demandes.js')}}"></script>
-
+--}}
 <script src="{{asset('js/statistics/datatable_statistics_projets.js')}}"></script>
 
 <script type="text/javascript">

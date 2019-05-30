@@ -120,15 +120,20 @@
 
                 <!-- /.box-header -->
                 <div class="box-body">
-                @include('projets.show.tabs')
-                <!-- Tab panes -->
-                    <div class="tab-content" style="margin-top: 15px">
-                        @include('projets.show.tab_programmes')
+                @if(Auth::user()->organisation_id == 1)
+                    @include('projets.show.tabs')
+                    <!-- Tab panes -->
+                        <div class="tab-content" style="margin-top: 15px">
+                            @include('projets.show.tab_programmes')
 
-                        @include('projets.show.tab_appel_offre')
-                        {{--@include('projets.show.tab_en_cours_execution')
-                        @include('projets.show.tab_realise')--}}
-                    </div>
+                            @include('projets.show.tab_appel_offre')
+                            @include('projets.show.tab_en_cours_execution')
+                            @include('projets.show.tab_realise')
+
+                        </div>
+                @else
+                    @include('projets.show.projet_partenaire')
+                @endif
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -162,9 +167,11 @@
 <script src="{{asset('vendor_components/formatter/jquery.formatter.js')}}"></script>
 <script src="{{asset('js/formatter.js')}}"></script>
 <script src="{{asset('js/projets/show_projet.js')}}"></script>
+<script src="{{asset('js/projets/show_projet_appel_offre.js')}}"></script>
+<script src="{{asset('js/projets/show_projet_en_cours_execution.js')}}"></script>
+<script src="{{asset('js/projets/show_projet_realise.js')}}"></script>
 <!-- Sweet-Alert  -->
 <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
 <script src="{{asset('js/functions/functions.js')}}"></script>
-
 @endpush

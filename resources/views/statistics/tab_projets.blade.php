@@ -51,10 +51,10 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <select class="form-control select2" style="width: 100%;" name="intervention_projet" id="moa_projet_filter">
+                                            <select class="form-control select2" style="width: 100%;" name="moa_projet" id="moa_projet_filter">
                                                 <option value="all" selected>Indifferent</option>
-                                                @foreach($interventions as $intervention)
-                                                    <option value="{{$intervention->id}}">{{$intervention->nom}}</option>
+                                                @foreach($moas as $moa)
+                                                    <option value="{{$moa->id}}">{{$moa->nom_fr}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <select class="form-control select2" style="width: 100%;" name="annee_projet" id="programme_projet_filter">
+                                            <select class="form-control select2" style="width: 100%;" name="programme_projet" id="programme_projet_filter">
                                                 <option value="all" selected>Indifferent</option>
                                                 @foreach($programmes as $prgrm)
                                                     <option value="{{$prgrm->id}}">{{$prgrm->nom_fr}}</option>
@@ -97,16 +97,6 @@
                                     </div>
                                 </div>
 
-                                <h5> TAUX DES PROJETS</h5>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-lg-12" style="text-align: center">
-
-                                        <h6>Intervention</h6>
-                                    </div>
-
-                                    <canvas id="projet_chart" ></canvas>
-                                </div>
 
                             </div>
                             <div class="col-lg-7" style="display:table-cell;">
@@ -128,12 +118,8 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
-
                         </div>
-
                     </div>
                 </div>
                 <div class="tab-pane" id="longueur_projet" role="tabpanel" aria-expanded="true" >
@@ -166,6 +152,38 @@
                                                 @for($i = 0; $i < 20 ; $i++)
                                                     <option value="{{$year_number - $i}}">{{$year_number - $i}}</option>
                                                 @endfor
+                                            </select>
+                                        </div>
+                                        <!-- /.form-group -->
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-top: 8px">
+                                    <div class="col-lg-2">
+                                        <label style="font-size: 12px;">M.O :</label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <select class="form-control select2" style="width: 100%;" name="moa_projet_lg" id="moa_projet_lg_filter">
+                                                <option value="all" selected>Indifferent</option>
+                                                @foreach($moas as $moa)
+                                                    <option value="{{$moa->id}}">{{$moa->nom_fr}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <!-- /.form-group -->
+                                    </div>
+
+                                    <div class="col-lg-2">
+                                        <label style="font-size: 12px;">Programme :</label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <select class="form-control select2" style="width: 100%;" name="programme_projet_lg" id="programme_projet_lg_filter">
+                                                <option value="all" selected>Indifferent</option>
+                                                @foreach($programmes as $prgrm)
+                                                    <option value="{{$prgrm->id}}">{{$prgrm->nom_fr}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <!-- /.form-group -->
