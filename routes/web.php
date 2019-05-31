@@ -10,7 +10,7 @@
 |
  */
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'TBDController@index')->name('home');
 //index
 Route::get('/', 'PagesController@index');
 Route::group(
@@ -107,6 +107,11 @@ Route::group(
 
         Route::get('/projetsStatistics', 'StatisticsController@getProjets')->name('statistics.getProjets');
         Route::get('/projetsLGStatistics', 'StatisticsController@getProjetsLongueur')->name('statistics.getProjetsLongueur');
+
+
+        //TBD
+        Route::get('/TBD', 'TBDController@nombreProjet')->name('TBD.nombreProjet');
+        Route::get('/TBDIntervention', 'TBDController@interventionProjet')->name('TBD.nombreProjet');
     }
 );
 Route::group(
