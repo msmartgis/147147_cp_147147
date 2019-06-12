@@ -41,6 +41,7 @@ $(document).ready(function () {
                 name: 'programmes.nom_fr',
                 orderable: false,
                 searchable: false,
+                className : 'text-styling',
                 width: '20%'
             },
             {
@@ -48,6 +49,7 @@ $(document).ready(function () {
                 name: 'terrassement',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width: '8%'
             },
             {
@@ -55,6 +57,7 @@ $(document).ready(function () {
                 name: 'revetement',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width: '8%'
             },
             {
@@ -62,6 +65,7 @@ $(document).ready(function () {
                 name: 'dallage',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width: '8%'
             },
             {
@@ -69,6 +73,7 @@ $(document).ready(function () {
                 name: 'pave',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width: '8%'
 
             },
@@ -77,6 +82,7 @@ $(document).ready(function () {
                 name: 'recallibrage',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width: '8%'
 
             },
@@ -85,6 +91,7 @@ $(document).ready(function () {
                 name: 'elargissement',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width: '8%'
 
             },
@@ -93,6 +100,7 @@ $(document).ready(function () {
                 name: 'renforcement',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width: '8%'
 
             },
@@ -101,6 +109,7 @@ $(document).ready(function () {
                 name: 'ouvrage',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width: '8%'
 
             },
@@ -109,6 +118,7 @@ $(document).ready(function () {
                 name: 'entretien',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width: '8%'
 
             },
@@ -117,6 +127,7 @@ $(document).ready(function () {
                 name: 'etude',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width: '10%'
 
             }

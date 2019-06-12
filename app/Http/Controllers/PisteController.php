@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Convention;
+use App\Demande;
 use App\Piste;
 use Illuminate\Http\Request;
 
@@ -248,6 +250,48 @@ class PisteController extends Controller
 
         return response()->json($piste);
 
+    }
+
+
+    public function pisteFilter(Request $request)
+    {
+        $name = $request->name;
+        $value = $request->value;
+        //get piste
+        $cnv = Convention::with('piste');
+
+        $pistes = [];
+        if($name  == "programme")
+        {
+            $piste_cnv = $cnv->whereHas('programme',function($query) use ($value){
+                $query->where('id','=',$value);
+            })->get();
+
+
+        }
+        foreach($piste_cnv as $pist_cnv)
+        {
+            array_push($pistes,$pist_cnv->piste);
+
+        }
+
+        return response()->json($pistes);
+    }
+
+
+    public function getpistesCarto(Request $request)
+    {
+        //get pistes
+        $pistes = Piste::with('demande','convention')
+            ->where('active',1)
+            ->get();
+        $conventions = Convention::with('programme','moas','interventions','piste','communes','etats')
+         //   ->whereHas('etats',function($query){
+          //      $query->where('active','=',1);
+        //})
+            ->get();
+        $demandes = Demande::with('interventions','piste','communes')->get();
+        return response()->json(['pistes' => $pistes,'conventions' => $conventions,'demandes'=> $demandes]);
     }
 
     /**

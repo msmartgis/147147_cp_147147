@@ -84,7 +84,7 @@
 
 </head>
 
-<body class="hold-transition skin-blue layout-top-nav">
+<body class="hold-transition skin-blue layout-top-nav has-drawer">
 <div class="se-pre-con"></div>
 
 <div class="wrapper">
@@ -184,7 +184,7 @@
   <div class="content-wrapper">
 
     <!-- Main content -->
-    <section class="content m-content">
+    <section class="content m-content ">
 			@include('inc.messages')
 			@yield('content')
 	        

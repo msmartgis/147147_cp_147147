@@ -2,6 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Commune;
+use App\Intervention;
+use App\Moa;
+use App\PartenaireType;
+use App\PointDesservi;
+use App\PointDesserviCategorie;
+use App\Porteur;
+use App\Programme;
+use App\Session;
+use App\SourceFinancement;
 use Illuminate\Http\Request;
 
 class CartographieController extends Controller
@@ -13,7 +23,29 @@ class CartographieController extends Controller
      */
     public function index()
     {
-        return view('cartographie.index');
+        $communes = Commune::orderBy('nom_fr')->get();
+
+        //point desservis :: localite only
+        $localites = PointDesserviCategorie::find(1)->point_desservis;
+        $partenaires_types = PartenaireType::all();
+        $moas = Moa::all();
+        $sessions = Session::all();
+        $interventions = Intervention::all();
+        $porteurs = Porteur::all();
+        $programmes = Programme::all();
+
+        $sourceFincancement = SourceFinancement::all();
+        return view('cartographie.index')->with([
+            'communes' => $communes,
+            'localites' => $localites,
+            'partenaires_types' => $partenaires_types,
+            'moas' => $moas,
+            'porteurs' => $porteurs,
+            'sessions' => $sessions,
+            'interventions' => $interventions,
+            'programmes' => $programmes,
+            'sourceFincancement'=> $sourceFincancement
+        ]);
     }
 
     /**

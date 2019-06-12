@@ -567,3 +567,8 @@ table.dataTable thead .sorting_desc_disabled:after
 }
 
 
+.text-center
+{
+    text-align: center;
+}
+

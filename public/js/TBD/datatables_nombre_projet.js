@@ -40,11 +40,13 @@ $(document).ready(function () {
                 name: 'programmes.nom_fr',
                 orderable: false,
                 searchable: false,
+                className : 'text-styling',
                 width : '20%'
             },
             {
                 data: 'nbr_projet',
                 name: 'nbr_projet',
+                className: "text-center",
                 orderable: false,
                 searchable: false,
                 width : '10%'
@@ -54,6 +56,7 @@ $(document).ready(function () {
                 name: 'cout',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width : '10%'
             },
             {
@@ -61,6 +64,7 @@ $(document).ready(function () {
                 name: 'realise',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width : '10%'
             },
             {
@@ -68,6 +72,7 @@ $(document).ready(function () {
                 name: 'en_cours',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width : '10%'
 
             },
@@ -75,6 +80,7 @@ $(document).ready(function () {
                 data: 'programmes',
                 name: 'programmes',
                 orderable: false,
+                className: "text-center",
                 searchable: false,
                 width : '10%'
 
@@ -84,6 +90,7 @@ $(document).ready(function () {
                 name: 'total',
                 orderable: false,
                 searchable: false,
+                className: "text-center",
                 width : '10%'
 
             }

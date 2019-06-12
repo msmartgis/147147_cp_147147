@@ -93,6 +93,8 @@ Route::group(
         //piste
         Route::get('/getPisteDataHtml', 'PisteController@getPisteDataHtml');
         Route::get('/getPiste', 'PisteController@getPiste');
+        Route::get('/pisteFilter', 'PisteController@pisteFilter');
+        Route::get('/getpistesCarto', 'PisteController@getpistesCarto');
 
 
         //statistics
