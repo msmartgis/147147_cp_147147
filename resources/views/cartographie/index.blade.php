@@ -25,8 +25,6 @@
     <link rel="stylesheet" href="{{asset('bootstrap-drawer/dist/css/bootstrap-drawer.min.css')}}">
 
 
-
-
     <style>
         #map {
             height: 85vh;
@@ -150,6 +148,14 @@
             height: 16px;
             width: 16px;
         }
+
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
     </style>
 @endsection
 
@@ -169,6 +175,68 @@
                 </div>
 
             <!-- /.box -->
+        </div>
+    </div>
+
+    <!-- modals -->
+    <div class="modal center-modal fade" id="search_carto_modal" tabindex="-1">
+        <div class="modal-dialog m-modal-dim">
+            <div class="modal-content">
+                {{--<div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>--}}
+                <div class="modal-body">
+                    <ul class="nav nav-tabs customtab" role="tablist" style="margin-top:8px;">
+                        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#demandes_carto_tab" role="tab" style="font-size: 13px;"><span class="hidden-sm-up"><i class="ion-home"></i></span> <span class="hidden-xs-down m-font-bold" > DEMANDES</span></a> </li>
+                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#projets_carto_tab" role="tab" style="font-size: 13px;"><span class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down m-font-bold " >PROJETS</span></a> </li>
+                    </ul>
+
+                    <div class="tab-content" style="margin-top: 15px">
+                        <div class="tab-pane active" id="demandes_carto_tab" role="tabpanel">
+                            <div class="pad">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped datatables" id="demandes_carto_datatables" style="width:100% ;" >
+                                        <thead>
+                                            <th style="width: 1% !important">N°</th>
+                                            <th>Date réception</th>
+                                            <th style="width: 1% !important">Objet</th>
+                                            <th >Commune</th>
+                                            <th>L(km)</th>
+                                            <th>Etat</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane " id="projets_carto_tab" role="tabpanel">
+                            <div class="pad">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped datatables" id="projets_carto_datatables" style="width:100% ;" >
+                                        <thead>
+                                            <th >N°</th>
+                                            <th >Objet</th>
+                                            <th >Commune</th>
+                                            <th>L(km)</th>
+                                            <th>Programme</th>
+                                            <th>Etat</th>
+                                            <th>Année</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <hr>
+                <div class="modal-footer modal-footer-uniform">
+                    <button type="button" class="btn btn-bold btn-pure btn-danger-table pull-right" data-dismiss="modal"><i class="fa fa-close"></i><b>Annuler</b></button>
+                </div>
+
+            </div>
         </div>
     </div>
 @endsection
@@ -240,7 +308,16 @@
 <!-- Sweet-Alert  -->
 <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
+
+
+
+
+
+
+
 <script src="{{asset('js/carto/carto.js')}}"></script>
+<script src="{{asset('js/carto/demandes_datatables.js')}}"></script>
+<script src="{{asset('js/carto/projets_datatables.js')}}"></script>
 
 <script>
     $("#Layers-List-Toggle").click(function()

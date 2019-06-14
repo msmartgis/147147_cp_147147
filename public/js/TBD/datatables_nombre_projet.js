@@ -164,7 +164,7 @@ $(document).ready(function () {
             );
 
             $( api.column( 2 ).footer() ).html(
-                cout
+                cout.toFixed(2)
             );
 
             $( api.column( 3 ).footer() ).html(
@@ -172,11 +172,11 @@ $(document).ready(function () {
             );
 
             $( api.column( 4 ).footer() ).html(
-                en_cours
+                en_cours.toFixed(2)
             );
 
             $( api.column( 5 ).footer() ).html(
-                programme
+                programme.toFixed(2)
             );
 
             $( api.column( 6 ).footer() ).html(

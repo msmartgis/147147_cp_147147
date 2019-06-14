@@ -41,6 +41,8 @@ Route::group(
         Route::get('/demandes/tab_is_affecter', 'DemandesController@getDemandesAffectees')->name('get.demandes.affectees');
         Route::get('/demandes/tab_programmee', 'DemandesController@getDemandesProgrammee')->name('get.demandes.programmee');
         Route::get('/demandes/tab_realisee', 'DemandesController@getDemandesRealisee');
+
+
         //SPREADSHEET
         Route::post('/demandes/demandeSpreadSheetEnCours', 'SpreadSheetController@demandeSpread_en_cours')->name('spread_demande_en_cours');
         Route::post('/demandes/demandeSpreadSheetATraiter', 'SpreadSheetController@demandeSpread_a_traiter')->name('spread_demande_a_traiter');
@@ -93,6 +95,7 @@ Route::group(
         //piste
         Route::get('/getPisteDataHtml', 'PisteController@getPisteDataHtml');
         Route::get('/getPiste', 'PisteController@getPiste');
+        Route::get('/getPisteCartoDatatable', 'PisteController@getPisteCartoDatatables');
         Route::get('/pisteFilter', 'PisteController@pisteFilter');
         Route::get('/getpistesCarto', 'PisteController@getpistesCarto');
 
@@ -114,6 +117,10 @@ Route::group(
         //TBD
         Route::get('/TBD', 'TBDController@nombreProjet')->name('TBD.nombreProjet');
         Route::get('/TBDIntervention', 'TBDController@interventionProjet')->name('TBD.nombreProjet');
+
+        //carto
+        Route::get('/carto/demandesCarto', 'DemandesController@getDemandesCarto');
+        Route::get('/carto/projetsCarto', 'ProjetController@getProjetsCarto');
     }
 );
 Route::group(

@@ -252,6 +252,28 @@ class PisteController extends Controller
 
     }
 
+    //get piste with demande or convention id
+    public function getPisteCartoDatatables(Request $request)
+    {
+        if(isset($request->demande_id))
+        {
+            $demande_id = $request->demande_id;
+            //get piste
+            $piste = Piste::where('demande_id','=',$demande_id)->get();
+        }
+
+        if(isset($request->convention_id))
+        {
+            $convention_id = $request->convention_id;
+            //get piste
+            $piste = Piste::where('convention_id','=',$convention_id)->get();
+        }
+
+
+        return response()->json($piste);
+
+    }
+
 
     public function pisteFilter(Request $request)
     {

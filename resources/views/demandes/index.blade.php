@@ -133,7 +133,6 @@
                         @include('demandes.show.tab_programmee')
                         {{-- realisee  --}}
                         @include('demandes.show.tab_realisee')
-
                     </div>
                 </div>
                 <!-- /.box-body -->

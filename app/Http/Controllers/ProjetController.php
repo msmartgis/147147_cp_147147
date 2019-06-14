@@ -726,6 +726,83 @@ class ProjetController extends Controller
     }
 
 
+    //projet for cartographie
+    public function getProjetsCarto(Request $request)
+    {
+        $conventions = Convention::with( 'communes', 'interventions', 'partenaires','point_desservis');
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($conventions)
+                ->addColumn('communes', function (Convention $convention) {
+                    return $convention->communes->map(function ($commune) {
+                        return str_limit($commune->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+                ->addColumn('longueur', function (Convention $convention) {
+                    return $convention->piste ? str_limit($convention->piste->longueur, 40, '...') : '';
+                })
+
+                ->addColumn('programme', function (Convention $convention) {
+                    return $convention->programme ? str_limit($convention->programme->nom_fr, 40, '...') : '';
+                })
+
+
+                ->addColumn('etat', function (Convention $convention) {
+                    $collection =  $convention->etats->where('active','=',1);
+                    foreach($collection as $cl)
+                    {
+                        switch ($cl->nom) {
+
+                            case 'programme':
+                                return 'Programmé';
+                            break;
+                            case 'en_cours_execution':
+                                return 'En cours d\'executions';
+                                break;
+
+                            case 'a.o_pulie':
+                                return 'A.O publié';
+                                break;
+                            case 'plis_ouvert':
+                                return 'Plis ouverts';
+                                break;
+                            case 'a.o_attribue':
+                                return 'A.O attribué';
+                                break;
+
+                            case 'a.o_reporte':
+                                return 'A.O reporté';
+                                break;
+
+                            case 'a.o_annule':
+                                return 'A.O annulé';
+                                break;
+
+                            case 'en_retard':
+                                return 'En retard';
+                                break;
+
+                            case 'en_etat_arret':
+                            return 'En etat d\'arrêt';
+                            break;
+
+                            case 'realise':
+                                return 'Realisé';
+                                break;
+
+                            default:
+                               return  'Porgrammé';
+                        }
+                    }
+
+                })
+            ;
+        }
+
+        return $datatables->make(true);
+    }
+
+
     /**
      * Display a listing of the resource.
      *

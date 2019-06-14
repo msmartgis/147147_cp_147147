@@ -239,7 +239,7 @@ $(document).ready(function () {
             );
 
             $( api.column( 4 ).footer() ).html(
-                pave
+                pave.toFixed(2)
             );
 
             $( api.column( 5 ).footer() ).html(

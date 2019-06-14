@@ -3,6 +3,10 @@
         <a href="#drawerExample"  id="drawer_btn" data-toggle="drawer" aria-foldedopen="false" aria-controls="drawerExample" class="btn btn-primary btn-sm map-toggle">Etendre</a>
     </div>
     <div class="drawer-contents ">
+        <div class="col-lg-12" style="text-align: center">
+            <button type="button" class="btn btn-success-table" data-toggle="modal" data-target="#search_carto_modal"  style="font-size: 16px;font-weight: 600;margin-top: 0"><i class="fa fa-search" style="margin-left: 8px"></i>
+                Rechercher</button>
+        </div>
         <div class="drawer-heading" style="padding: 0px 15px !important;">
             <h3 class="drawer-title" ><img src="{{asset('svg/data_filter.svg')}}" style="width : 30px;height: 30px;margin-right: 6px;    margin-bottom: 8px;">Filtres</h3>
         </div>
@@ -20,6 +24,7 @@
                     </div>
                 </div>
             </div>
+
 
             <div class="row" style="margin-left: 12px;">
                 <div class="col-lg-12">

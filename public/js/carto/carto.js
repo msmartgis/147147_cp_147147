@@ -129,14 +129,13 @@ map.addLayer(douars_markers);
 
 
 
-
+// fit bounds
 Limit_province_Layer.addTo(map);
 
 Limit_province_Layer.on('data:loaded', function() {
-
     map.fitBounds(Limit_province_Layer.getBounds());
-
 });
+
 map.on('layeradd', function() {
 
     Communes_Layer.bringToBack();
@@ -212,13 +211,10 @@ $.ajax({
                                 {
                                     interventions.push(conventions[j].interventions[z].id);
                                 }
-
-
                                 layer.programme = conventions[j].programme.id;
                                 layer.moa = conventions[j].moas.id;
                                 layer.interventions = interventions;
                             }
-
                         }
                     }
                 }
@@ -253,14 +249,11 @@ $.ajax({
                         if(layer.interventions != null)
                         {
                             var array_inter = layer.interventions.slice();
-                            console.log(array_inter);
                             if(array_inter.includes(value))
                             {
-                                console.log(value);
                                 layer.addTo(map);
 
                             }else{
-
                                 layer.remove();
                             }
                         }

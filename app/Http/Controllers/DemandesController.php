@@ -210,6 +210,7 @@ class DemandesController extends BaseController
             $piste->geometry = str_replace('demande','convention',$piste->geometry);
             $piste->longueur = $demande->piste->longueur;
             $piste->convention_id = $convention_id;
+            $piste->convention_id = null;
             $piste->save();
 
             //partenaire *****
@@ -249,8 +250,6 @@ class DemandesController extends BaseController
 
             return redirect('/demande')->with('success', 'Demande affectée aux conventions avec succès');
         }
-
-
     }
 
     //get demandes en cours for index tab en_cours datatables
@@ -289,22 +288,15 @@ class DemandesController extends BaseController
                     })->implode(' ');
                 })
 
-
-
-
                 ->addColumn('checkbox', function ($demandes) {
                     return '<input type="checkbox" id="demandeEnCoursCb_' . $demandes->id . '" name="checkbox" class="demande-en-cours-checkbox" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" data-id="' . $demandes->id . '" class="chk-col-green"><label for="demandeEnCoursCb_' . $demandes->id . '" class="block" ></label>';
                 })
-
-
                 ->addColumn('num_ordre', function ($demandes) {
                     return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
                 })
-
                 ->addColumn('montant_global', function ($demandes) {
                     return number_format($demandes->montant_global);
                 })
-
                 ->addColumn('date_reception', function ($demandes) {
                     return $demandes->date_reception->format('d-m-Y');
                 })
@@ -373,6 +365,74 @@ class DemandesController extends BaseController
                 });
             }
         }
+        return $datatables->make(true);
+    }
+
+
+    //demandes for cartographie
+    public function getDemandesCarto(Request $request)
+    {
+        $demandes = Demande::with('porteur', 'communes', 'interventions', 'partenaires','point_desservis')->orderBy('num_ordre');
+        if ($request->ajax()) {
+            $datatables = DataTables::eloquent($demandes)
+                ->addColumn('communes', function (Demande $demande) {
+                    return $demande->communes->map(function ($commune) {
+                        return str_limit($commune->nom_fr, 15, '...');
+                    })->implode(', ');
+                })
+
+
+                ->addColumn('longueur', function (Demande $demande) {
+                    return $demande->piste ? str_limit($demande->piste->longueur, 40, '...') : '';
+                })
+
+
+                ->addColumn('etat', function (Demande $demande) {
+                    if($demande->is_affecter == 0)
+                    {
+                        if($demande->etat == 'sans')
+                        {
+                            if($demande->decision == 'en_cours')
+                            {
+                                return 'En cours';
+                            }
+
+
+                            if($demande->decision == 'accord_definitif')
+                            {
+                                return 'Accord définitif';
+                            }
+
+                            if($demande->decision == 'a_traiter')
+                            {
+                                return 'A traiter';
+                            }
+
+                            if($demande->decision == 'en_cours')
+                            {
+                                return 'En cours';
+                            }
+
+                        }else{
+                            if($demande->etat == "programme")
+                            {
+                                return 'Programmée';
+                            }
+
+                            if($demande->etat == "realise")
+                            {
+                                return 'Réalisée';
+                            }
+
+                        }
+                    }
+                })
+                ->addColumn('date_reception', function ($demandes) {
+                    return $demandes->date_reception->format('d-m-Y');
+                })
+            ;
+        }
+
         return $datatables->make(true);
     }
 
