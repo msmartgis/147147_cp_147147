@@ -1,6 +1,5 @@
 
-{!! Form::model($demande, ['route' => ['demande.update', $demande->id],'method' => 'PUT']) !!}
-
+{!! Form::model($demande, ['route' => ['demande.update', $demande->id],'id'=>'form_demande_edit','method' => 'PUT']) !!}
 <div class="row">
     <div class="col-lg-10">
         <div class="row">
@@ -23,7 +22,8 @@
                                                 [
                                                 'data-placeholder' => 'Selectionner commune(s)',
                                                 'class'=>'form-control select2',
-                                                'name'=>'porteur_projet'
+                                                'name'=>'porteur_projet',
+                                                'disabled' => 'disabled'
                                                 ]
                                                 )}}
                                             </div>
@@ -40,14 +40,14 @@
                                             <div class="form-group">
 
                                                 <div class="controls">
-                                                    {{Form::textarea('objet_fr',$demande->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
+                                                    {{Form::textarea('objet_fr',$demande->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important' ,'disabled' => 'disabled'])}}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <div class="controls">
-                                                    {{Form::textarea('objet_ar',$demande->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
+                                                    {{Form::textarea('objet_ar',$demande->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
                                                 </div>
                                             </div>
                                         </div>
@@ -63,7 +63,8 @@
                                                 'data-placeholder' => 'Selectionner commune(s)',
                                                 'class'=>'form-control select2',
                                                 'multiple'=>'multiple',
-                                                'name'=>'interventions[]'
+                                                'name'=>'interventions[]',
+                                                'disabled' => 'disabled'
                                                 ]
                                                 )}}
                                             </div>
@@ -123,7 +124,7 @@
                                                             <td style="text-align: center;">
                                                                 @if($item->path != '')
                                                                     <a href="/files/download/demandes/{{$demande->id}}/{{$item->path}}">
-                                                                        <button type="button"  class="btn btn-secondary-table " >
+                                                                        <button type="button"  class="btn btn-secondary-table " disabled>
                                                                             <i class="fa fa-download"></i>
                                                                             Télécharger</button>
                                                                     </a>
@@ -132,7 +133,7 @@
                                                             </td>
 
                                                             <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-piece" data-file_name="{{$item->path}}" data-file_id="{{$item->id}}"  data-directory="demandes" data-object_id="{{$demande->id}}"><i class="fa fa-close"></i>
+                                                                <button type="button" class="btn btn-danger-table delete-piece" data-file_name="{{$item->path}}" data-file_id="{{$item->id}}"  data-directory="demandes" data-object_id="{{$demande->id}}" disabled><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
                                                         </tr>
@@ -144,7 +145,7 @@
                                                     </tbody>
                                                 </table>
                                                 <div style="text-align: center">
-                                                    <a href="#" data-toggle="modal" data-target="#add_modal_piece"> <i class="fa fa-plus"></i>
+                                                    <a href="#" data-toggle="modal" data-target="#add_modal_piece"> <i class="fa fa-plus" ></i>
                                                         <b> Ajouter Pièce</b> </a>
                                                 </div>
 
@@ -179,7 +180,7 @@
                                                                 {{number_format($item->pivot->montant/($demande->montant_global)*100,2)}}
                                                             </td>
                                                             <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-partenaire" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                <button type="button" class="btn btn-danger-table delete-partenaire" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}" disabled><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
                                                         </tr>
@@ -229,7 +230,7 @@
                                                             {{number_format($item->pivot->montant,2)}}
                                                         </td>
                                                         <td style="text-align: center">
-                                                            <button type="button" class="btn btn-danger-table delete-src" data-demande="{{$demande->id}}" data-src="{{$item->id}}"><i class="fa fa-close"></i>
+                                                            <button type="button" class="btn btn-danger-table delete-src" data-demande="{{$demande->id}}" data-src="{{$item->id}}" disabled><i class="fa fa-close"></i>
                                                                 Supprimer</button>
                                                         </td>
                                                     </tr>
@@ -262,7 +263,8 @@
                                                     'class'=>'form-control select2',
                                                     'style'=>'width:100%',
                                                     'multiple'=>'multiple',
-                                                    'name'=>'communes[]'
+                                                    'name'=>'communes[]',
+                                                    'disabled' => 'disabled'
                                                     ]
                                                     )}}
                                                 </div>
@@ -323,7 +325,7 @@
                                     <div class="col-12" style="margin-top : 8px">
                                         <div class="form-group">
 
-                                            {{Form::textarea('observation', $demande->observation, ['id' => 'editor1', 'class' => 'form-control', 'placeholder' => 'Body Text'])}}
+                                            {{Form::textarea('observation', $demande->observation, ['id' => 'editor1', 'class' => 'form-control', 'placeholder' => 'Body Text','disabled' => 'disabled'])}}
                                         </div>
                                     </div>
 
@@ -343,8 +345,11 @@
         <div class="h-p100  bg-light bg-secondary-gradient" style="padding-right: 5px">
             <div class="box bg-transparent no-border no-shadow ">
                 <div class="box-body no-padding mailbox-nav ">
+                    @include('inc.go_back_btn')
+
+
                     @if($demande->is_affecter != '1')
-                        <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                        <h4 class="header-state">
                             @switch($demande->decision)
                             @case("en_cours")
                             En cours
@@ -357,88 +362,133 @@
                             @break
                             @default
                             @endswitch
-                        </h5>
+                        </h4>
                         @else()
                         <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
                             AFFECTEE AUX CONVENTIONS
                         </h5>
                     @endif
-
-                    <div class="form-group">
-                        {{Form::label('','Demande N°:')}}
-                        {{Form::text('num_ordre',$demande->num_ordre,['class'=>'form-control','disabled'])}}
-                    </div>
-                    <div class="form-group">
-                        {{Form::label('','Date de récéption:')}}
-                        <div class="input-group date">
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                            </div>
-                            {{Form::text('date_reception',date('d/m/Y', strtotime($demande->date_reception)),['class'=>'form-control
-                            pull-right','id'=>'datepicker'])}}
+                    <div class="row row-edit">
+                        <div class="col-lg-3">
+                            {{Form::label('','N°:',['style'=> 'font-size : 11px'])}}
                         </div>
-                        <!-- /.input group -->
+                        <div class="col-lg-9">
+                            <div class="form-group form-group-edit">
+                                {{Form::text('num_ordre',$demande->num_ordre,['class'=>'form-control','disabled'])}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-edit">
+                        <div class="col-lg-3">
+                            {{Form::label('','Récéption : ',['style'=> 'font-size : 11px'])}}
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="form-group form-group-edit">
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    {{Form::text('date_reception',date('d/m/Y', strtotime($demande->date_reception)),['class'=>'form-control
+                                    pull-right','id'=>'datepicker','disabled'])}}
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                        </div>
                     </div>
 
 
+                    <div class="row row-edit">
+                        <div class="col-lg-3">
+                            {{Form::label('','M.Total(DH):',['style'=> 'font-size : 11px'])}}
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="form-group form-group-edit">
 
-                    <div class="form-group">
-                        {{Form::label('','Montant global DH:')}}
-                        {{Form::text('montant_global',$demande->montant_global,['class'=>'form-control'])}}
+                                {{Form::text('montant_global',$demande->montant_global,['class'=>'form-control','disabled'])}}
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        {{Form::hidden('id_pist',$demande->piste->id,['id' => 'piste_id_input'])}}
-                        {{Form::hidden('geometry','',['id' => 'geometry_input','required'=>'required'])}}
-                        {{Form::label('','Longueur:')}}
-                        {{Form::text('longueur',$demande->piste->longueur,['class'=>'form-control','id'=>'longueur_input','required'=>'required'])}}
+                    <div class="row row-edit">
+                        <div class="col-lg-3">
+                            {{Form::label('','Longueur(KM):',['style'=> 'font-size : 11px'])}}
+                        </div>
+
+                        <div class="col-lg-9">
+                            <div class="form-group form-group-edit">
+                                {{Form::hidden('id_pist',$demande->piste->id,['id' => 'piste_id_input'])}}
+                                {{Form::hidden('geometry','',['id' => 'geometry_input','required'=>'required'])}}
+
+                                {{Form::text('longueur',$demande->piste->longueur,['class'=>'form-control','id'=>'longueur_input','required'=>'required','disabled'])}}
+                            </div>
+                        </div>
                     </div>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
 
-                    {{Form::submit('Enregistrer les modifications',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
-                    {!! Form::close() !!}                    
-                <button type="button" data-id="affectationConventionEditBtn_{{$demande->id}}"  id="affectation_conventions_edit_btn" data-numero="{{$demande->num_ordre}}" class="btn btn-secondary col-12" style="margin-top: 8px !important" @if ($demande->decision != "accord_definitif")
-                        disabled
-                    @endif>Affectation aux conventions</button>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <h5>Edition : </h5>
+                    <hr>
+                    <button type="button" id="activate_edit_btn" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-edit" style="margin-right: 8px;"></i>Activer la modification</button>
+                    <button type="submit" class="btn  btn-secondary-edit" style="color : #2bc509" ><i class="fa fa-save" style="margin-right: 8px;" disabled></i>Enregistrer</button>
+                    {{--
+                    {{Form::submit('Enregistrer les modifications',['class'=>'btn  btn-secondary-edit col-12','style'=>'margin-top : 8px !important'])}}
+                    --}}
+                    {!! Form::close() !!}
+                    <div class="col-12" style="padding-left: 0">
+                        @if($demande->is_affecter != 1)
+                            <button type="button" class="btn  btn-secondary-edit" id="restaurer" data-id="{{$demande->id}}" style="color : #ea3a0a" @if ($demande->decision == "en_cours")
+                            disabled
+                                    @endif> <i class="fa fa-window-restore" style="margin-right: 8px;"></i>Restaurer </button>
+                        @endif
+                    </div>
 
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle col-md-12" type="button" data-toggle="dropdown" style="margin-top:8px !important">Décision</button>
-                        <div class="dropdown-menu col-md-12">
-                            <button type="button" data-id="accordDefinitifEditBtn_{{$demande->id}}" id="accord_definitif_edit_btn" class="dropdown-item" href="#">
-                                <div
-                                    @if($demande->decision == "a_traiter" || $demande->decision == "en_cours")
+                    <button type="button" class="btn  btn-secondary-edit" id="supprimer_demande" data-id="{{$demande->id}}" style="color : #ff0f0f"><i class="fa fa-trash" style="margin-right: 8px;"></i>Supprimer</button>
+
+
+                    <h5>Décisions : </h5>
+                    <hr>
+                    <div class="row" style="margin-left: 4px;">
+                        <button type="button"  class="btn  btn-secondary-edit " href="#" style="color : #1118C5">
+                            <div
+                                    @if($demande->decision == "accord_definitif" || $demande->decision == "en_cours")
+                                    id="a_traiter"
+                                    @endif
+                                    data-id="{{$demande->id}}">
+                                <i class="fa fa-clock-o"></i>
+                                A traiter
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="row" style="margin-left: 4px;">
+                        <button type="button" data-id="accordDefinitifEditBtn_{{$demande->id}}" style="color : #2bc509" id="accord_definitif_edit_btn" class="btn  btn-secondary-edit" href="#">
+                            <div
+                            @if($demande->decision == "a_traiter" || $demande->decision == "en_cours")
 
                                     @endif ><i class="fa fa-thumbs-up"></i> Accord défintif
-                                </div>
-                            </button>
-                            <button type="button"  class="dropdown-item" href="#" >
-                                <div
-                                        @if($demande->decision == "accord_definitif" || $demande->decision == "en_cours")
-                                            id="a_traiter"
-                                        @endif
-                                        data-id="{{$demande->id}}">
-                                    <i class="fa fa-clock-o"></i>
-                                    A traiter
-                                </div>
-                            </button>
-
-                        </div>
+                            </div>
+                        </button>
                     </div>
 
-                    @if($demande->is_affecter != 1)
-                        <button type="button" class="btn btn-secondary col-12" id="restaurer" data-id="{{$demande->id}}" style="margin-top: 8px !important" @if ($demande->decision == "en_cours")
-                            disabled
-                        @endif>Restaurer (En cours)</button>
-                    @endif
-                    <button type="button" class="btn btn-warning col-12" id="supprimer_demande" data-id="{{$demande->id}}" style="margin-top: 8px !important">Supprimer</button>
+
+
+
+                    <button type="button" data-id="affectationConventionEditBtn_{{$demande->id}}" style="color : #ff0f0f"  id="affectation_conventions_edit_btn" data-numero="{{$demande->num_ordre}}" class="btn  btn-secondary-edit" style="margin-top: 8px !important" @if ($demande->decision != "accord_definitif")
+                        disabled
+                    @endif> <i class="fa fa-long-arrow-right"></i> Affectation aux conventions</button>
+
+
+                    <h5>Documents : </h5>
+                    <hr>
+                    <button type="button" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-file" style="margin-right: 8px;"></i>Fiche de la demande</button>
+                    <br>
                 
                 </div>
                 <!-- /.box-body -->

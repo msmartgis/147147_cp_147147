@@ -122,6 +122,7 @@ $(document).ready(function () {
                             }
                         });
                         $('#search_carto_modal').modal('hide');
+                        sidebar.hide();
                         break;
                     }
                 }

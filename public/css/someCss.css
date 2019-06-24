@@ -331,7 +331,7 @@ th
 
 .bg-secondary-gradient
 {
-    background: linear-gradient(230deg, #fff, #fff) !important;
+    background: linear-gradient(230deg, #F4F4F4, #F4F4F4) !important;
 }
 
 .wrapper
@@ -353,6 +353,7 @@ th
 
 hr{
     background-color : #dce3e6 !important;
+    margin-bottom: 20px !important;
 }
 
 .form-control
@@ -570,5 +571,56 @@ table.dataTable thead .sorting_desc_disabled:after
 .text-center
 {
     text-align: center;
+}
+
+.box{
+    border: 0 !important;
+}
+
+.bg-secondary-gradient
+{
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+    border-left: 1px #c6c4c4 solid;
+}
+
+.btn-go-back
+{
+    background-color: #ED7E40 !important;
+    margin-bottom: 8px;
+}
+
+.go-back-link
+{
+    color: #fff;
+}
+
+.header-state
+{
+    text-align: center;
+    color: #000 !important;
+    border-radius: 2px;
+    padding: 4px;
+    text-decoration: underline;
+}
+
+.row-edit
+{
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-bottom: 12px;
+}
+
+.form-group-edit
+{
+    margin-left: 12px !important;
+}
+
+.btn-secondary-edit
+{
+    margin-left: 8px !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    text-decoration: underline;
 }
 

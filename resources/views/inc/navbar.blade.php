@@ -87,7 +87,7 @@
         </li>
 
         <li class="nav-item ">
-            <a class="nav-link" href="cartographie"><span class="active-item-here"></span>
+            <a class="nav-link" href="/cartographie"><span class="active-item-here"></span>
                 <img src="{{asset('images/svg/layers.svg')}}" style="width: 1.2em;margin-right: 5px;" />
                 <span style="vertical-align: middle;" class="lato-bold">CARTOGRAPHIE</span></a>
         </li>

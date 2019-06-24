@@ -95,4 +95,48 @@ $(document).ready(function () {
         }
     });
 
+
+    $('#projets_carto_datatables tbody').on('click', 'tr', function () {
+        var data = projetsCartoTable.row(this).data();
+        var convention_id = data.id;
+
+        $.ajax({
+            url: "/getPisteCartoDatatable",
+            type: 'get',
+            dataType: 'json',
+            data : {
+                convention_id : convention_id
+            },
+            success: function (res) {
+                console.log(res[0].id);
+                for(var i = 0 ; i < res_piste.length ; i++)
+                {
+                    if(res_piste[i].id == res[0].id)
+                    {
+                        console.log(JSON.parse(res_piste[i].geometry));
+                        var bounds = L.geoJSON(JSON.parse(res_piste[i].geometry),{
+                            style:  {color: "#ff0000"}
+                        }).addTo(map);
+
+                        map.fitBounds(bounds.getBounds());
+                        $.ajax({
+                            type: "GET",
+                            dataType: 'html',
+                            url: "/getPisteDataHtml",
+                            data : {
+                                piste_id : res_piste[i].id
+                            },
+                            success: function(res) {
+                                bounds.bindPopup(res).openPopup();
+                            }
+                        });
+                        $('#search_carto_modal').modal('hide');
+                        break;
+                    }
+                }
+            }
+        });
+
+    } );
+
 });

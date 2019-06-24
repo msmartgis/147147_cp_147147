@@ -82,7 +82,6 @@
 @section('content')
     <div id="tabs_demande_edit">
         @include('demandes.edit.tabs')
-
         @include('demandes.edit.form_edit')
     </div>
 
@@ -196,6 +195,17 @@
 
 <script>
 $(document).ready(function () {
+
+    //disable all input form
+
+    $('#activate_edit_btn').on('click',function(){
+        $("#form_demande_edit :input").prop("disabled", false);
+    });
+   //
+
+    /*
+    $("#enable_edit_btn,#restaurer").prop("disabled", false);*/
+
     //files managemnt *********
     //add piece
     $('.form-ulpoad-piece').on('submit', function (e) {

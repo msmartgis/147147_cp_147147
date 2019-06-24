@@ -81,14 +81,14 @@
 
             <div class="col-xs-6 col-sm-6 col-xl-1 col-md-6 col-lg-2" style="flex: 0 0 20%;max-width: 20%;">
                 <!-- small box -->
-                <div class="small-box bg-primary" style="background-color: #ad13ef !important;">
+                <div class="small-box bg-primary" style="background-color: #22ef49 !important;">
                     <div class="inner" style="background-color: #f1f1f1;">
-                        <h3 style="color: #ad13ef;">{{$nbr_projet_programmes}}</h3>
+                        <h3 style="color: #ad13ef;">{{$appel_offre}}</h3>
 
                         <p style="color: #ad13ef;">Appel d'offre </p>
                     </div>
                     <div class="icon">
-                        <i class="fa fa-calendar" style="color: #ad13ef;"></i>
+                        <i class="fa fa-newspaper-o" style="color: #22ef49;"></i>
                     </div>
                     <a href="/projet" class="small-box-footer" style="z-index: 0;"><b>Voir les details </b> <i class="fa fa-arrow-right"></i></a>
                 </div>

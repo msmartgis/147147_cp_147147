@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AppelOffre;
 use App\Convention;
 use App\Programme;
 use Illuminate\Http\Request;
@@ -24,12 +25,15 @@ class TBDController extends Controller
 
         $cout_total_projets = Convention::all()->sum('montant_global');
 
+        $appel_offre = AppelOffre::all()->count();
+
         $cout_total_projets_MDH =  $cout_total_projets / 1000000;
         return view('dashboard.dashboard')->with([
             'nombre_projet' => $nombre_projet,
             'nbr_projet_realise'=> $nbr_projet_realise,
             'nbr_projet_en_cours' => $nbr_projet_en_cours,
             'nbr_projet_programmes' => $nbr_projet_programmes,
+            'appel_offre' => $appel_offre,
             'cout_total_projets' => $cout_total_projets_MDH
         ]);
     }

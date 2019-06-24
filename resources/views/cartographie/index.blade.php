@@ -23,13 +23,40 @@
     <link rel="stylesheet" href="{{asset('mapping/MarkerCluster.Default.css')}}">
 
     <link rel="stylesheet" href="{{asset('bootstrap-drawer/dist/css/bootstrap-drawer.min.css')}}">
+    <link rel="stylesheet" href="{{asset('mapping/sidebar/L.Control.Sidebar.css')}}" />
 
 
     <style>
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .close{
+            background: #000;
+        }
+
+
         #map {
             height: 85vh;
             z-index: 1;
         }
+
 
 
         .baselayer_btn {
@@ -289,6 +316,8 @@
 
 <script src="{{asset('bootstrap-drawer/dist/js/drawer.js')}}"></script>
 
+<script src="{{asset('mapping/sidebar/L.Control.Sidebar.js')}}"></script>
+
 <!-- bootstrap time picker -->
 <script src="{{asset('vendor_plugins/timepicker/bootstrap-timepicker.min.js')}}"></script>
 
@@ -350,6 +379,11 @@
         }
 
     });
+
+
+    $('#search_carto_modal_show').on('click',function(){
+        $('#search_carto_modal').modal('show');
+    })
 
 </script>
 @endpush

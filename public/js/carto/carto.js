@@ -3,6 +3,7 @@ var res_piste = [];
 var piste_features = [];
 var oldPistes = [];
 var pistesbounds;
+var sidebar;
 var osmUrl = 'https://www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}',
     osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     baselayer = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
@@ -15,7 +16,44 @@ L.control.zoom({
     position:'topright'
 }).addTo(map);
 
+//easy button
+//sidebar
+var sidebar = L.control.sidebar('sidebar', {
+    closeButton: true,
+    position: 'left'
+});
+map.addControl(sidebar);
+setTimeout(function () {
+    sidebar.show();
+}, 500);
 
+
+map.on('click', function () {
+    sidebar.hide();
+})
+var stateChangingButton = L.easyButton({
+    states: [{
+        stateName: 'zoom-to-forest',        // name the state
+        icon:      '<img src="/images/svg/left-arrow.svg">',               // and define its properties
+        title:     'Montrer la barre d\'outils',      // like its title
+        onClick: function(btn, map) {       // and its callback
+
+            btn.state('zoom-to-school');    // change state on click!
+            sidebar.toggle();
+        }
+    }, {
+        stateName: 'zoom-to-school',
+        icon:      '<img src="/images/svg/right-arrow.svg">',
+        title:     'Reduir la barre d\'outils',
+        onClick: function(btn, map) {
+
+            btn.state('zoom-to-forest');
+            sidebar.toggle();
+        }
+    }]
+});
+
+stateChangingButton.addTo(map);
 
 //la couleur pour les pistes
 var default_color = '#fff';
@@ -141,6 +179,11 @@ map.on('layeradd', function() {
     Communes_Layer.bringToBack();
 
 });
+
+
+
+
+
 
 var limit_visible = true;
 var pistes_visible = true;
