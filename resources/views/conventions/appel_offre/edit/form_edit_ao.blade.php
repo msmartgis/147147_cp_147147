@@ -1,5 +1,5 @@
 
-{!! Form::model($appelOffre, ['route' => ['appelOffre.update', $appelOffre->id],'method' => 'PUT']) !!}
+{!! Form::model($appelOffre, ['route' => ['appelOffre.update', $appelOffre->id],'id'=>'form_ao_edit','method' => 'PUT']) !!}
 
 <div class="row">
     <div class="col-lg-10">
@@ -20,14 +20,14 @@
                                             <div class="form-group">
 
                                                 <div class="controls">
-                                                    {{Form::textarea('objet_fr',$appelOffre->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
+                                                    {{Form::textarea('objet_fr',$appelOffre->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled'=>'disabled'])}}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <div class="controls">
-                                                    {{Form::textarea('objet_ar',$appelOffre->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
+                                                    {{Form::textarea('objet_ar',$appelOffre->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled'=>'disabled'])}}
                                                 </div>
                                             </div>
                                         </div>
@@ -43,7 +43,8 @@
                                                 'data-placeholder' => 'Selectionner commune(s)',
                                                 'class'=>'form-control select2',
                                                 'name'=>'moa',
-                                                'style'=> 'width : 100%'
+                                                'style'=> 'width : 100%',
+                                                'disabled'=>'disabled'
                                                 ]
                                                 )}}
                                             </div>
@@ -113,7 +114,7 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="form-group">
-                                                {{Form::text('longueur_total',$longueurTotal,['class'=>'form-control','readonly'])}}
+                                                {{Form::text('longueur_total',$longueurTotal,['class'=>'form-control','readonly','disabled'=>'disabled'])}}
                                             </div>
                                         </div>
 
@@ -125,7 +126,7 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="form-group">
-                                                {{Form::text('montant_total',$montantTotal,['class'=>'form-control','readonly'])}}
+                                                {{Form::text('montant_total',$montantTotal,['class'=>'form-control','readonly','disabled'=>'disabled'])}}
                                             </div>
                                         </div>
 
@@ -168,7 +169,7 @@
                                                         'class'=>'form-control select2',
                                                         'multiple'=>'multiple',
                                                         'name'=>'liaison_routiere[]',
-                                                        'disabled' => true
+                                                        'disabled' => true,'readonly'
                                                         ]
                                                         )}}
                                                     </div>
@@ -189,7 +190,7 @@
                                                         'class'=>'form-control select2',
                                                         'multiple'=>'multiple',
                                                         'name'=>'liaison_routiere[]',
-                                                        'disabled' => true
+                                                        'disabled' => true,'readonly'
                                                         ]
                                                         )}}
                                                     </div>
@@ -204,7 +205,7 @@
                                                 </div>
                                                 <div class="col-lg-2">
                                                     <div class="form-group">
-                                                        {{Form::text('',$cv->montant_global,['class'=>'form-control','readonly','style'=>'border : 0 !important'])}}
+                                                        {{Form::text('',$cv->montant_global,['class'=>'form-control','readonly','style'=>'border : 0 !important','disabled'=>'disabled'])}}
                                                     </div>
                                                 </div>
 
@@ -217,7 +218,7 @@
                                                     <div class="form-group">
                                                         @foreach($cv->partenaires as $part)
                                                             @if($part->id  == 1)
-                                                                {{Form::text('',$part->pivot->montant,['class'=>'form-control','readonly','style'=>'border : 0 !important'])}}
+                                                                {{Form::text('',$part->pivot->montant,['class'=>'form-control','readonly','style'=>'border : 0 !important','disabled'=>'disabled'])}}
                                                             @endif
                                                         @endforeach
                                                     </div>
@@ -234,7 +235,7 @@
                                                 @endforeach
                                                 <div class="col-lg-2">
                                                     <div class="form-group">
-                                                        {{Form::text('',$montant_verse,['class'=>'form-control','readonly','style'=>'border : 0 !important'])}}
+                                                        {{Form::text('',$montant_verse,['class'=>'form-control','readonly','style'=>'border : 0 !important','disabled'=>'disabled'])}}
                                                     </div>
                                                 </div>
 
@@ -249,7 +250,7 @@
 
                                                         <?php $etat =  ($montant_verse/$cv->montant_global)*100 ?>
 
-                                                        {{Form::text('',number_format($etat),['class'=>'form-control','readonly','style'=>'border : 0 !important'])}}
+                                                        {{Form::text('',number_format($etat),['class'=>'form-control','readonly','style'=>'border : 0 !important','disabled'=>'disabled'])}}
                                                     </div>
                                                 </div>
 
@@ -319,7 +320,7 @@
                                                     </tbody>
                                                 </table>
                                                 <div style="text-align: center">
-                                                    <a href="#" class="add-piece" data-route="/pieces/add_piece_dce"> <i class="fa fa-plus"></i>
+                                                    <a href="#" class="add-piece" data-route="/pieces/add_piece_dce" style="display: none"> <i class="fa fa-plus"></i>
                                                         <b> Ajouter Pièce</b> </a>
                                                 </div>
                                             </div>
@@ -382,7 +383,7 @@
                                     <hr>
                                     <div class="col-12" style="margin-top : 8px">
                                         <div class="form-group">
-                                            {{Form::textarea('observation', $appelOffre->observations, ['id' => 'editor1', 'class' => 'form-control', 'placeholder' => 'Body Text'])}}
+                                            {{Form::textarea('observation', $appelOffre->observations, ['id' => 'editor1', 'class' => 'form-control', 'placeholder' => 'Body Text','disabled'=>'disabled'])}}
                                         </div>
                                     </div>
 
@@ -443,17 +444,17 @@
 
                     <div class="form-group">
                         {{Form::label('','Appel d\'offre N°:')}}
-                        {{Form::text('numero',$appelOffre->numero,['class'=>'form-control',''])}}
+                        {{Form::text('numero',$appelOffre->numero,['class'=>'form-control','','disabled'=>'disabled'])}}
 
                     </div>
                     <div class="form-group">
                         {{Form::label('','Montant global (DH):')}}
-                        {{Form::text('montant_global',$appelOffre->montant_globale,['class'=>'form-control currency-input','id'=>'montant_global_ao'])}}
+                        {{Form::text('montant_global',$appelOffre->montant_globale,['class'=>'form-control currency-input','id'=>'montant_global_ao','disabled'=>'disabled'])}}
                     </div>
 
                     <div class="form-group" >
                         {{Form::label('','Caution Provisoire (DH):')}}
-                        {{Form::text('caution_provisoir',$appelOffre->caution_provisoir,['class'=>'form-control',''])}}
+                        {{Form::text('caution_provisoir',$appelOffre->caution_provisoir,['class'=>'form-control','','disabled'=>'disabled'])}}
                     </div>
 
                     <div class="form-group" style="margin-top: 8px;">
@@ -477,7 +478,7 @@
                                         <i class="fa fa-calendar"></i>
                                     </div>
                                     {{Form::text('date_publication',date('d/m/Y', strtotime($appelOffre->date_publication)),['class'=>'form-control
-                                    pull-right','id'=>'datepicker'])}}
+                                    pull-right','id'=>'datepicker','disabled'=>'disabled'])}}
                                 </div>
                                 <!-- /.input group -->
                             </div>
@@ -489,7 +490,7 @@
                                         <i class="fa fa-calendar"></i>
                                     </div>
                                     {{Form::text('date_ouverture_plis',date('d/m/Y', strtotime($appelOffre->date_ouverture_plis)),['class'=>'form-control
-                                    pull-right','id'=>'ouverture_plis_input'])}}
+                                    pull-right','id'=>'ouverture_plis_input','disabled'=>'disabled'])}}
                                 </div>
                                 <!-- /.input group -->
                             </div>
@@ -506,10 +507,10 @@
                             </div>
                             @if($appelOffre->delai_execution != null)
                                 {{Form::text('delai_execution',date('d/m/Y', strtotime($appelOffre->delai_execution)),['class'=>'form-control
-                                                                   pull-right','id'=>'datepicker3'])}}
+                                                                   pull-right','id'=>'datepicker3','disabled'=>'disabled'])}}
                             @elseif($appelOffre->delai_execution == null)
                                 {{Form::text('delai_execution','',['class'=>'form-control
-                                   pull-right','id'=>'datepicker'])}}
+                                   pull-right','id'=>'datepicker','disabled'=>'disabled'])}}
                             @endif
 
                         </div>
@@ -520,7 +521,7 @@
                         {{Form::label('','Duree d\'execution:')}}
                         <div class="input-group ">
                             {{Form::text('duree_execution',$appelOffre->duree_execution,['class'=>'form-control
-                            pull-right'])}}
+                            pull-right','disabled'=>'disabled'])}}
                         </div>
                         <!-- /.input group -->
                     </div>
@@ -533,10 +534,10 @@
                         {{Form::label('','Adjiducataire:')}}
                         <div class="input-group ">
                             @if(!empty($appelOffre->adjiducataires))
-                                {{Form::text('adjiducataire',$appelOffre->adjiducataires->nom_fr,['class'=>'form-control pull-right'])}}
+                                {{Form::text('adjiducataire',$appelOffre->adjiducataires->nom_fr,['class'=>'form-control pull-right','disabled'=>'disabled'])}}
                                 <input type="hidden" name="id_adjiducataire" value="{{$appelOffre->adjiducataires->id}}">
                             @else
-                                {{Form::text('adjiducataire','',['class'=>'form-control pull-right'])}}
+                                {{Form::text('adjiducataire','',['class'=>'form-control pull-right','disabled'=>'disabled'])}}
                             @endif
                         </div>
                         <!-- /.input group -->
@@ -545,7 +546,7 @@
                     <div class="form-group">
                         {{Form::label('','Montant:')}}
                         <div class="input-group ">
-                                {{Form::text('montant_adjiducataire',$appelOffre->montant_adjiducation,['class'=>'form-control pull-right currency-input'])}}
+                                {{Form::text('montant_adjiducataire',$appelOffre->montant_adjiducation,['class'=>'form-control pull-right currency-input','disabled'=>'disabled'])}}
                         </div>
                         <!-- /.input group -->
                     </div>
@@ -554,7 +555,7 @@
                         <div class="form-group date_commencement_input" id="datepicker2" >
                             {{Form::label('','Date Commencement:')}}
                             <div class="input-group">
-                                {{Form::text('date_commencement',$appelOffre->date_commencement,['class'=>'form-control pull-right'])}}
+                                {{Form::text('date_commencement',$appelOffre->date_commencement,['class'=>'form-control pull-right','disabled'=>'disabled'])}}
                             </div>
                             <!-- /.input group -->
                         </div>
@@ -569,35 +570,38 @@
                     <br>
                     <br>
                     <br>
-                    {{Form::submit('Modifier',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
+                    <h5>Edition : </h5>
+                    <hr>
+                    <button type="button" id="activate_edit_btn" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-edit" style="margin-right: 8px;"></i>Activer la modification</button>
+                    <button type="submit" class="btn  btn-secondary-edit" style="color : #2bc509" ><i class="fa fa-save" style="margin-right: 8px;" disabled></i>Enregistrer</button>
                     {!! Form::close() !!}
 
 
-                    <button type="button" class="btn btn-warning col-12 " id="attribuer_appel_offre_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important"
+                    <button type="button" class="btn btn-secondary-edit" id="attribuer_appel_offre_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important;margin-right: 8px;color:#0fff1c"
                     @if($appelOffre->etat == 'attribue')
                         disabled
                             @endif
-                    >Attribuer l'appel d'offre</button>
+                    ><i class="fa fa-thumbs-o-up" style="margin-right: 8px;" disabled></i>Attribuer l'appel d'offre</button>
 
-                    <button type="button" class="btn btn-warning col-12 " id="reporter_appel_offre_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important"
+                    <button type="button" class="btn btn-secondary-edit" id="reporter_appel_offre_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important;color:#ff540a"
                             @if($appelOffre->etat == 'reporte')
                             disabled
                             @endif
-                    >Reporter l'appel d'offre</button>
+                    ><i class="fa fa-clock-o" style="margin-right: 8px;" disabled></i>Reporter l'appel d'offre</button>
 
-                    <button type="button" class="btn btn-warning col-12 " id="annuler_appel_offre_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important;color: #fff; background-color: #ea3a0a"
+                    <button type="button" class="btn btn-secondary-edit" id="annuler_appel_offre_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important;color:#bc1d36"
                             @if($appelOffre->etat == 'annule')
                             disabled
                             @endif
-                    >Annuler l'appel d'offre</button>
+                    ><i class="fa fa-close" style="margin-right: 8px;" disabled></i>Annuler l'appel d'offre</button>
 
-                    <button type="button"  class="btn  col-12 " id="ordre_service_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important; color: #fff; background-color: #0A246A"
+                    <button type="button"  class="btn btn-secondary-edit" id="ordre_service_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important;color:#2bc509"
                             @if($appelOffre->etat == 'en_cours_execution')
                             disabled
                             @endif
-                    >Ordre de Service</button>
+                    ><i class="fa fa-thumb-tack" style="margin-right: 8px;" disabled></i>Ordre de Service</button>
 
-                    <button type="button" class="btn btn-warning col-12" id="supprimer_ao" data-id="{{$appelOffre->id}}" style="margin-top: 8px !important ;color: #fff; background-color: #ea2b27">Supprimer</button>
+                    <button type="button" class="btn btn-secondary-edit " id="supprimer_ao" data-id="{{$appelOffre->id}}" style="margin-top: 8px !important ;color:#ff0f0f"><i class="fa fa-trash" style="margin-right: 8px;" disabled></i>Supprimer</button>
 
                  </div>
                 <!-- /.box-body -->

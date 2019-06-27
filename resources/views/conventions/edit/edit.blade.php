@@ -181,6 +181,12 @@
 
 <script>
     $(document).ready(function () {
+        $('#activate_edit_btn').on('click',function(){
+            $("#form_convention_edit :input").prop("disabled", false);
+            $("a").show();
+        });
+
+
         //files managemnt *********
         //add piece
         $('.form-ulpoad-piece').on('submit', function (e) {

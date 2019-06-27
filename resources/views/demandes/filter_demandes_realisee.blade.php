@@ -44,7 +44,6 @@
             </div>
             <!-- /.form-group -->
         </div>
-
     </div>
 
     <div class="row" style="margin-top: 4px">

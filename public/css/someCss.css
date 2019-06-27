@@ -466,7 +466,7 @@ button:disabled {
 
 .modal-header
 {
-    padding: 0.15rem 1rem !important;
+    padding: 0.95rem 0.75rem !important;
 }
 
 .modal-body
@@ -624,3 +624,19 @@ table.dataTable thead .sorting_desc_disabled:after
     text-decoration: underline;
 }
 
+
+table.dataTable tbody tr.selected, table.dataTable tbody th.selected, table.dataTable tbody td.selected{
+    color: #000;
+}
+
+table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected{
+    background-color: #7699bc !important;
+}
+
+
+.datatables tr { line-height: 25px; }
+
+.form-control:disabled{
+    background-color: #f8f6f6 !important;
+    opacity: 1;
+}

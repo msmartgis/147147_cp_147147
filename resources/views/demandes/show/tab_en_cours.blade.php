@@ -1,16 +1,16 @@
 <div class="tab-pane active" id="en_cours_tab" role="tabpanel">
     <div class="pad">
         @include('demandes.filter_demandes')
-        {{Route::currentRouteName()}}
+
         <div class="table-responsive">
             <table class="table table-hover table-striped datatables" id="demandes_datatables" style="width:100% ;" >
                 <thead>
-                <th style="width: 1% !important"></th>
-                <th style="width: 1% !important">N°ordre</th>
-                <th style="width: 1% !important">D.Réception</th>
+                <th style="width: 1% !important"><input type="checkbox" id="demande_en_cours_th" name="checkbox"   class="chk-col-black" ><label for="demande_en_cours_th" class="block select-all-cb" ></label></th>
+                <th style="width: 1% !important">N°</th>
+                <th style="width: 1% !important">Réception</th>
                 <th >Objet</th>
                 <th>Communes</th>
-                <th>porteur</th>
+                <th>Porteur</th>
                 <th>Interventions</th>
                 <th>Partenaire</th>
                 <th style="width: 1% !important">M.Totol</th>

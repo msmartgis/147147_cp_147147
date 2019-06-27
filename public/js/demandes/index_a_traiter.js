@@ -1,8 +1,11 @@
 var demandeATaiterTable;
+var checkedelementsDemandesAT=[];
 $(document).ready(function () {
+    var checked_demande_a_t = 0;
      demandeATaiterTable = $('#demandes_datatables_a_traiter').DataTable({
         processing: true,
         serverSide: true,
+         pageLength: 2,
         language: {
             search: '', searchPlaceholder: 'Recherche...',
             url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json",
@@ -111,9 +114,24 @@ $(document).ready(function () {
     });
 
     demandeATaiterTable.on('draw', function () {
-        checked = false;
+        for(i=0;i<checkedelementsDemandesAT.length;i++)
+        {
+            $("#demandeATraiterCb_"+checkedelementsDemandesAT[i].data('id')).prop('checked', true);
+        }
+
         $('#demandes_datatables_a_traiter :input[type="checkbox"]').change(function() {
-            number_checked = $('#demandes_datatables_a_traiter :input[type="checkbox"]:checked').length;
+            if(this.checked) {
+                checkedelementsDemandesAT.push($(this));
+            }
+            else {
+                checkedelementsDemandesAT.splice(checkedelementsDemandesAT.indexOf(this),1);
+            }
+
+
+            //get the right button activated
+            number_checked = checkedelementsDemandesAT.length;
+
+
             if(number_checked === 0)
             {
                 $('.multiple-choice-a-traiter,.unique-choice-a-traiter').attr('disabled', true);
@@ -121,7 +139,7 @@ $(document).ready(function () {
 
             if(number_checked === 1)
             {
-                $('.unique-choice-a-traiter,.multiple-choice-a-traiter').removeAttr("disabled");
+                $('.multiple-choice-a-traiter,.unique-choice-a-traiter').removeAttr("disabled");
             }
 
             if(number_checked > 1)
@@ -129,8 +147,10 @@ $(document).ready(function () {
                 $('.multiple-choice-a-traiter').removeAttr('disabled');
                 $('.unique-choice-a-traiter').attr('disabled', true);
             }
+
         });
-    } );
+
+    });
 
 
     $('#communes_filter_a_traiter,#intervention_filter_a_traiter,#partenaires_filter_a_traiter,#localites_filter_a_traiter,#reservation_a_traiter').on('change paste keyup', function (e) {
@@ -144,7 +164,8 @@ $(document).ready(function () {
         datatbleId = "demandes_datatables_a_traiter";
         nameCheckbox = "checkbox_a_traiter";
         titleModal = "ACCORD DEFINITIF";
-        accordAndAffectation_modal_data(titleModal,datatbleId ,nameCheckbox);
+        affectOrAccord = 0;
+        accordAndAffectation_modal_data(titleModal,datatbleId ,nameCheckbox,affectOrAccord);
     });
 
 
@@ -153,7 +174,7 @@ $(document).ready(function () {
         datatble_id = "demandes_datatables_a_traiter";
         name_chechbox = "checkbox_a_traiter";
         method = "POST";
-        decision_function(datatble_id, name_chechbox, url, method);
+        decision_function(datatble_id, checkedelementsDemandesAT, url, method);
     });
 
 

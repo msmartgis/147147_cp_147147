@@ -2,8 +2,7 @@
     <table class="table table-hover table-striped datatables" id="suivi_versment_datatables" style="width:100% ;" >
         <thead>
         <th ></th>
-        <th >N°ordre</th>
-        <th >Liaison Routière</th>
+        <th >N°</th>
         <th >Communes</th>
         <th >Maitre D'ouvrage</th>
         <th >Interventions</th>

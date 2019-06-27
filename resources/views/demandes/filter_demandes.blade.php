@@ -44,7 +44,6 @@
             </div>
             <!-- /.form-group -->
         </div>
-
     </div>
 
     <div class="row" style="margin-top: 4px">
@@ -69,7 +68,7 @@
                     <option value="12">Decembre</option>
                 </select>
             </div>
-            <!-- /.form-group -->
+            <!-- /.form-x -->
         </div>
         <div class="col-lg-1">
             <label>Intervention :</label>
@@ -102,9 +101,7 @@
     </div>
 
     <hr style="margin:4px">
-
     @include('demandes.inc.action_button_en_cours')
-
     <hr  style="margin:4px">
 </div>
 

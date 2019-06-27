@@ -2,11 +2,10 @@
     <table class="table table-hover table-striped datatables" id="conventions_datatables" style="width:100% ;" >
         <thead>
         <th style="width: 1% !important"></th>
-        <th style="width: 1% !important">N°ordre</th>
+        <th style="width: 1% !important">N°</th>
         <th style="width: 10% !important" >Objet</th>
-        <th style="width: 10% !important">Liaison Routière</th>
         <th style="width: 15% !important">Communes</th>
-        <th style="width: 10% !important">Maitre D'ouvrage</th>
+        <th style="width: 10% !important">M.O.A</th>
         <th style="width: 8% !important">Interventions</th>
         <th style="width: 10% !important">Partenaire</th>
         <th style="width: 8% !important">Programme</th>

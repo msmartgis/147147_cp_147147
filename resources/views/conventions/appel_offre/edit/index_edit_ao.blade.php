@@ -164,6 +164,11 @@
 <script>
     $(document).ready(function () {
 
+        $('#activate_edit_btn').on('click',function(){
+            $("#form_ao_edit :input").prop("disabled", false);
+            $("a").show();
+        });
+
             $("#ordre_service_btn").click(function () {
                 var appelOffre_id = $(this).data('id');
                 var state = "en_cours_execution";

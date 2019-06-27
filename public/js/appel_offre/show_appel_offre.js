@@ -44,7 +44,7 @@ $(document).ready(function () {
                 name: 'nombre_projet',
                 orderable: true,
                 searchable: true,
-                width: '1%'
+                width: '8%'
             },
             {
                 data: 'objet_fr',

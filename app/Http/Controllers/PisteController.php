@@ -14,7 +14,7 @@ class PisteController extends Controller
     /*
      *
      *
-     * get of one piste
+     * get  one piste
      * @return Piste
      */
 
@@ -102,7 +102,7 @@ class PisteController extends Controller
 
 
             //coventions
-        if(strpos($piste->geometry,'convention') !== false)
+        if(strpos($piste->geometry,'convention') !== false || strpos($piste->geometry,'projet') !== false)
         {
             $moas = '';
             $programme = '';

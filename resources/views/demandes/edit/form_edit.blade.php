@@ -145,7 +145,7 @@
                                                     </tbody>
                                                 </table>
                                                 <div style="text-align: center">
-                                                    <a href="#" data-toggle="modal" data-target="#add_modal_piece"> <i class="fa fa-plus" ></i>
+                                                    <a href="#" data-toggle="modal" data-target="#add_modal_piece" style="display: none;"> <i class="fa fa-plus" ></i>
                                                         <b> Ajouter Pièce</b> </a>
                                                 </div>
 
@@ -192,7 +192,7 @@
                                                 </table>
                                                 <div style="text-align: center">
                                                     <a href="#" data-toggle="modal"
-                                                       data-target="#m-add-partenaire-edit"> <i class="fa fa-plus"></i>
+                                                       data-target="#m-add-partenaire-edit" style="display: none;"> <i class="fa fa-plus"></i>
                                                         <b> Ajouter Partenaire</b>
                                                     </a>
                                                 </div>
@@ -347,7 +347,6 @@
                 <div class="box-body no-padding mailbox-nav ">
                     @include('inc.go_back_btn')
 
-
                     @if($demande->is_affecter != '1')
                         <h4 class="header-state">
                             @switch($demande->decision)
@@ -417,7 +416,7 @@
                         <div class="col-lg-9">
                             <div class="form-group form-group-edit">
                                 {{Form::hidden('id_pist',$demande->piste->id,['id' => 'piste_id_input'])}}
-                                {{Form::hidden('geometry','',['id' => 'geometry_input','required'=>'required'])}}
+                                {{Form::hidden('geometry',$demande->piste->geometry,['id' => 'geometry_input','required'=>'required'])}}
 
                                 {{Form::text('longueur',$demande->piste->longueur,['class'=>'form-control','id'=>'longueur_input','required'=>'required','disabled'])}}
                             </div>

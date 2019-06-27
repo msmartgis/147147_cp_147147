@@ -15,7 +15,6 @@
             </a>
         </div>
 
-        <a href="{{ route('createDemande') }}" class="btn btn-secondary pull-right" style="margin-right:4px"><i class="fa fa-plus" style="margin-right: 6px"></i>Ajouter
-            une demande</a>
+        <a href="#" class="btn btn-secondary pull-right" style="margin-right:4px;background-color: #ff8740;border-color: #ff8740;"><i class="fa fa-file" style="margin-right: 6px"></i>Fiche de demande</a>
     </div>
 </div>

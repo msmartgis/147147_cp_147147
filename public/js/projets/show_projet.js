@@ -44,13 +44,6 @@ $(document).ready(function () {
                 width: '1%'
             },
             {
-                data: 'point_desservis',
-                name: 'point_desservis.nom_fr',
-                orderable: true,
-                searchable: true,
-                width: '20%'
-            },
-            {
                 data: 'communes',
                 name: 'communes.nom_fr',
                 orderable: true,

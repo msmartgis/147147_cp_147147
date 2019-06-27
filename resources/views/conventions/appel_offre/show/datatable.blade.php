@@ -4,10 +4,10 @@
         <th >N°</th>
         <th>Nombre Projet</th>
         <th >Objet</th>
-        <th >Maitre D'ouvrage</th>
+        <th >M.O.A</th>
         <th >Date publication</th>
-        <th >adjiducataire</th>
-        <th >M.Global</th>
+        <th >Adjiducataire</th>
+        <th >M.Total</th>
         <th >Etat</th>
         </thead>
     </table>

@@ -1,14 +1,18 @@
 var demandesEnCoursTable;
-var checked_demande_en_cours = 0;
+var checkedelementsDemandesEC=[];
+var boxes ;
 $(document).ready(function () {
+
+    var checked_demande_e_c = 0;
 
     demandesEnCoursTable = $('#demandes_datatables').DataTable({
         processing: true,
         serverSide: true,
-        pageLength: 15,
+        pageLength: 2,
         bInfo : false,
         info : false,
         bLengthChange : false,
+        order: [[1, 'asc']],
         language: {
             search: '',
             searchPlaceholder: 'Recherche...',
@@ -30,9 +34,9 @@ $(document).ready(function () {
 
         },
         columnDefs: [{
-                width: 20,
-                targets: 1
-            },
+            width: 20,
+            targets: 1
+        },
             {
                 width: 30,
                 targets: 2
@@ -43,11 +47,12 @@ $(document).ready(function () {
             }
         ],
         columns: [{
-                data: 'checkbox',
-                name: 'checkbox',
-                orderable: false,
-                searchable: false
-            },
+            data: 'checkbox',
+            name: 'checkbox',
+            orderable: false,
+            searchable: false,
+            width : '2%'
+        },
 
             {
                 data: 'num_ordre',
@@ -117,8 +122,27 @@ $(document).ready(function () {
     });
 
     demandesEnCoursTable.on('draw', function () {
+        for(i=0;i<checkedelementsDemandesEC.length;i++)
+        {
+            $("#demandeEnCoursCb_"+checkedelementsDemandesEC[i].data('id')).prop('checked', true);
+        }
+
+
         $('#demandes_datatables :input[type="checkbox"]').change(function() {
-            number_checked = $('#demandes_datatables :input[type="checkbox"]:checked').length;
+
+             boxes = $(":checkbox:checked");
+
+            if(this.checked) {
+                checkedelementsDemandesEC.push($(this));
+            }
+            else {
+                checkedelementsDemandesEC.splice(checkedelementsDemandesEC.indexOf(this),1);
+            }
+
+
+            //get the right button activated
+            number_checked = checkedelementsDemandesEC.length;
+
 
             if(number_checked === 0)
             {
@@ -137,7 +161,10 @@ $(document).ready(function () {
             }
 
         });
-    } );
+
+
+
+    });
 
 
     $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#reservation').on('change paste keyup', function (e) {
@@ -162,7 +189,7 @@ $(document).ready(function () {
         datatble_id = "demandes_datatables";
         name_chechbox = "checkbox";
         method = "POST";
-        decision_function(datatble_id, name_chechbox, url, method);
+        decision_function(datatble_id, checkedelementsDemandesEC, url, method);
     });
 
 

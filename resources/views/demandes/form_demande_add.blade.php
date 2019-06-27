@@ -2,12 +2,9 @@
 
 {!! Form::model($demande,['action' => 'DemandesController@store','method'=>'POST','class'=>'tab-wizard
         wizard-circle form-create','enctype' => 'multipart/form-data']) !!}
-
         <!-- Step 1 -->
         <h6>Information Général</h6>
         <section>
-
-
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="form-group">
@@ -27,7 +24,6 @@
                         <!-- /.input group -->
                     </div>
                 </div>
-
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="form-group">
                         {{Form::label('','Commune:')}}
@@ -45,7 +41,6 @@
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="form-group">
-
                         {{Form::label('','Etat du projet :')}}
                         {{Form::select('etat_projet',
                          [
@@ -59,7 +54,6 @@
                             'class'=>'form-control',
                             'name'=>'etat'
                         ])}}
-
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -93,7 +87,6 @@
                           '1',
                         ['class'=>'form-control']
                         )}}
-
                     </div>
                 </div>
 

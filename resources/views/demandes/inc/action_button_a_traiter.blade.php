@@ -1,5 +1,3 @@
-
-
 <div class="row" style="margin-top: 4px">
     <div class="col-lg-6">
         <button type="button" class="btn btn-secondary pull-left unique-choice-a-traiter" id="accord_definitif_btn_a_traiter" style="margin-right : 6px ;background-color: #F2922A !important;border-color: #F2922A !important;" disabled><i class="fa fa-thumbs-o-up" style="margin-right: 6px "></i>Accord definitif</button>
@@ -17,7 +15,6 @@
                 <div ><i class="fa fa-thumbs-up"></i> Excel </div>
             </a>
         </div>
-        <a href="{{ route('createDemande') }}" class="btn btn-secondary pull-right" style="margin-right:4px"><i class="fa fa-plus" style="margin-right: 6px"></i>Ajouter
-            une demande</a>
+        <a href="#" class="btn btn-secondary pull-right" style="margin-right:4px;background-color: #ff8740;border-color: #ff8740;"><i class="fa fa-file" style="margin-right: 6px"></i>Fiche de demande</a>
     </div>
 </div>

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('added_css')
     <link rel="stylesheet" href="{{asset('css/datatable/datatables.min.css')}}" />
+    <link rel="stylesheet" href="{{asset('css/datatable/select.dataTables.min.css')}}" />
     <!-- Select2 -->
     <link rel="stylesheet" href="{{asset('vendor_components/select2/dist/css/select2.min.css')}}" />
     <!-- bootstrap datepicker -->
@@ -109,6 +110,25 @@
             -ms-transform-origin: 100% 100%;
             transform-origin: 100% 100%
         }
+
+
+
+        [type=checkbox]:checked.chk-select-all+label:before {
+            border-right: 2px solid #bc1b4b;
+            border-bottom: 2px solid #bc1b4b;
+        }
+
+
+        .selected-row-table
+
+        {
+            background-color: #000;
+        }
+
+
+
+
+
     </style>
 @endsection
 
@@ -190,7 +210,8 @@
 
 
     //function for decision
-    function decision_function(datatble_id, name_chechbox, url, method) {
+    function decision_function(datatble_id, checkedelementsDemandesEC, url, method) {
+        console.log(checkedelementsDemandesEC);
         var checked = false;
         var message_sub_title = '';
         var message_reussi = '';
@@ -205,16 +226,23 @@
         }
         var demande_ids = [];
         var numero_ordres = [];
-        $("#" + datatble_id + " > tbody ").find("input[name=" + name_chechbox + " ]").each(function () {
+        if(checkedelementsDemandesEC.length > 0){
+            for(var i = 0;i < checkedelementsDemandesEC.length ; i++)
+            {
+                demande_ids.push(checkedelementsDemandesEC[i].data('id'));
+            }
+
+        }
+       /* $("#" + datatble_id + " > tbody ").find("input[name=" + name_chechbox + " ]").each(function () {
             if ($(this).is(":checked")) {
                 id_demande_full = $(this).val().split('_');
                 demande_ids.push(id_demande_full.pop());
                 numero_ordres.push($(this).data('numero'));
                 checked = true;
             }
-        });
+        });*/
 
-        if (!checked) {
+        if (checkedelementsDemandesEC.length === 0) {
             swal("Veuillez selectionner une demande");
             return false;
         }
@@ -274,7 +302,6 @@
                 },
                 dataType: 'JSON',
                 success: function (data) {
-                    console.log(data);
                     $('#table_body_partner').empty();
                     var montant_cp =data.pivot[0].pivot.montant;
                     var montant_global = data.montantGlobal.montant_global;
@@ -400,9 +427,6 @@
          }
          });
      }
-
-
-
 
 
 </script>

@@ -149,13 +149,14 @@ class DemandesController extends BaseController
         //affectation aux convntion
         if($request->affecter == '1')
         {
-
-            $convention_new = new Convention;
+            $convention_new = new Convention();
 
             $convention_new->save();
+
             if($convention_new->save())
             {
                 $convention_id = $convention_new->id;
+
             }
 
 
@@ -197,7 +198,13 @@ class DemandesController extends BaseController
                     $new_piece->nom = $piece->nom;
                     $new_piece->path = $piece->path;
                     $new_piece->convention_id = $convention_id;
-                    Storage::disk('uploads')->copy("demandes/".$demande->id."/".$piece->path, "conventions/".$convention_id."/".$piece->path);
+
+                    if (Storage::disk('uploads')->exists("demandes/".$demande->id)) {
+                        Storage::disk('uploads')->copy("demandes/".$demande->id."/".$piece->path, "conventions/".$convention_id."/".$piece->path);
+
+                    }
+
+
                     //rename(storage_path("app/public/uploaded_files/demandes/".$demande->id."/".$piece->path),storage_path("app/public/uploaded_files/conventions/".$convention_id."/".$piece->path));
                     $new_piece->save();
                 }
@@ -206,11 +213,10 @@ class DemandesController extends BaseController
             //new piste for convention
             $piste = Piste::find($demande->piste->id);
 
-            //$piste->demande_id = '';
+            $piste->demande_id = '';
             $piste->geometry = str_replace('demande','convention',$piste->geometry);
             $piste->longueur = $demande->piste->longueur;
             $piste->convention_id = $convention_id;
-            $piste->convention_id = null;
             $piste->save();
 
             //partenaire *****
@@ -490,7 +496,7 @@ class DemandesController extends BaseController
                 })
 
                 ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="demandeATraiterCb_' . $demandes->id . '" name="checkbox_a_traiter" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="demandeATraiterCb_' . $demandes->id . '" class="block" ></label>';
+                    return '<input type="checkbox" id="demandeATraiterCb_' . $demandes->id . '" name="checkbox_a_traiter" value="' . $demandes->id . '" data-id="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="demandeATraiterCb_' . $demandes->id . '" class="block" ></label>';
                 })
                 ->addColumn('date_reception', function ($demandes) {
                     return $demandes->date_reception->format('d-m-Y');
@@ -617,7 +623,7 @@ class DemandesController extends BaseController
 
 
                 ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="demandeAccordDefinitifCb_' . $demandes->id . '" name="checkbox_accord_definitif" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="demandeAccordDefinitifCb_' . $demandes->id . '" class="block" ></label>';
+                    return '<input type="checkbox" id="demandeAccordDefinitifCb_' . $demandes->id . '" name="checkbox_accord_definitif" value="' . $demandes->id . '" data-id="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="demandeAccordDefinitifCb_' . $demandes->id . '" class="block" ></label>';
                 })
                 ->addColumn('num_ordre', function ($demandes) {
                     return '<a href="demande/'.$demandes->id.'/edit">'.$demandes->num_ordre.'</a>';
@@ -872,7 +878,7 @@ class DemandesController extends BaseController
                 })
 
                 ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_programmee" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
+                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_programmee" value="' . $demandes->id . '" data-id="' . $demandes->id . '" data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
                 })
                 ->rawColumns(['checkbox'])
                 ->editColumn('id', '{{$id}}');
@@ -992,7 +998,7 @@ class DemandesController extends BaseController
                 })
 
                 ->addColumn('checkbox', function ($demandes) {
-                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_programmee" value="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
+                    return '<input type="checkbox" id="' . $demandes->id . '" name="checkbox_programmee" value="' . $demandes->id . '" data-id="' . $demandes->id . '"  data-numero ="' . $demandes->num_ordre . '" class="chk-col-green"><label for="' . $demandes->id . '" class="block" ></label>';
                 })
                 ->rawColumns(['checkbox'])
                 ->editColumn('id', '{{$id}}');

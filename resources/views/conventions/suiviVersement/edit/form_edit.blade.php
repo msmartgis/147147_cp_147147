@@ -150,7 +150,6 @@
                                                             echo(number_format($montant_verse/($item->pivot->montant)*100));
                                                         @endphp
                                                     </td>
-
                                                 </tr>
                                             @endforeach
                                         <tr>
@@ -255,6 +254,7 @@
         <div class="h-p100  bg-light bg-secondary-gradient" style="padding-right: 5px">
             <div class="box bg-transparent no-border no-shadow">
                 <div class="box-body no-padding mailbox-nav">
+                    @include('inc.go_back_btn')
 
                     <div class="form-group">
                         {{Form::label('','Programme:')}}
@@ -291,7 +291,7 @@
                     <br>
 
                     <a href="/convention/{{$convention->id}}/edit">
-                        <button type="button" class="btn btn-secondary col-12"   style="margin-top: 8px !important"><i class="fa fa-file" style="margin-right: 4px"></i> Accéder aux détails du projet</button>
+                        <button type="button" class="btn btn-secondary-edit col-12"   style="margin-top: 8px !important"><i class="fa fa-file" style="margin-right: 4px"></i> Accéder aux détails du projet</button>
                     </a>
                 </div>
                 <!-- /.box-body -->
