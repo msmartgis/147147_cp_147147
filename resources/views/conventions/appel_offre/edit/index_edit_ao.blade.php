@@ -144,11 +144,14 @@
     }(window, document, jQuery);
 
 
-    $('#datepicker').datepicker({
+    $('#datepicker2').datepicker({
         format: 'dd/mm/yyyy'
     });
 
 
+    $('#datepicker3').datepicker({
+        format: 'dd/mm/yyyy'
+    });
 
 </script>
 
@@ -165,8 +168,7 @@
     $(document).ready(function () {
 
         $('#activate_edit_btn').on('click',function(){
-            $("#form_ao_edit :input").prop("disabled", false);
-            $("a").show();
+            modification_active('form_ao_edit','a');
         });
 
             $("#ordre_service_btn").click(function () {

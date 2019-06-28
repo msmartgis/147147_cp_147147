@@ -235,10 +235,16 @@ class ConventionController extends Controller
 
                 })
                 ->addColumn('etat_versement', function ($conventions) {
-                    $montant_verse = SuiviVersement::where([['convention_id', '=', $conventions->id]])
-                            ->sum('montant') / $conventions->montant_global * 100;
+                    if($conventions->montant_global != 0 )
+                    {
+                        $montant_verse = SuiviVersement::where([['convention_id', '=', $conventions->id]])
+                                ->sum('montant') / $conventions->montant_global * 100;
+                    }else{
+                        $montant_verse = 0;
+                    }
 
-                    return number_format($montant_verse);
+
+                    return  number_format($montant_verse);
 
                 })
                 ->rawColumns(['checkbox', 'num_ordre']);

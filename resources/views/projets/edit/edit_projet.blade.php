@@ -247,6 +247,11 @@
 
 <script>
     $(document).ready(function () {
+        $('#activate_edit_btn').on('click',function(){
+            modification_active('form_projet_edit','button');
+        });
+
+
         //files managemnt *********
         //delete image gallery
         $(".main-img-delete").click(function () {

@@ -182,8 +182,7 @@
 <script>
     $(document).ready(function () {
         $('#activate_edit_btn').on('click',function(){
-            $("#form_convention_edit :input").prop("disabled", false);
-            $("a").show();
+            modification_active('form_convention_edit','a');
         });
 
 

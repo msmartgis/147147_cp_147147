@@ -172,6 +172,21 @@
 
 <script>
     $(document).ready(function () {
+
+        $('#activate_edit_btn').on('click',function(){
+            $("button").show();
+            //notification
+            $.toast({
+                heading: 'Modification des données est activée',
+                text: 'Il faut enregistrer chaque modification',
+                position: 'top-right',
+                loaderBg: '#ff6849',
+                icon: 'info',
+                hideAfter: 4000,
+                stack: 6
+            });
+        });
+
             $(document).ajaxStart(function () {
                 $(".loading_modal").show();
                 $(".form-add-versement myForm :input").prop("disabled", true);

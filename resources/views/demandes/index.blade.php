@@ -207,8 +207,6 @@
 <script src="{{asset('js/jquery.masknumber.js')}}"></script>
 <script>
 
-
-
     //function for decision
     function decision_function(datatble_id, checkedelementsDemandesEC, url, method) {
         console.log(checkedelementsDemandesEC);

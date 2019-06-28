@@ -2,7 +2,7 @@
     <div class="pad">
 
         <div class="vtabs customvtab col-lg-12" style="padding: 0;" id="tabs_projet_lg">
-            <ul class="nav nav-tabs tabs-vertical" role="tablist" id="tab_list_projet">
+            <ul class="nav nav-tabs tabs-vertical" role="tablist" id="tab_list_projet" style="background-color: #F4F4F4;">
                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#nombre_projet" role="tab" aria-expanded="true"><span class="hidden-sm-up"><i class="ion-home"></i></span> <span class="hidden-xs-down">Nombre</span> </a> </li>
                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#longueur_projet" role="tab" aria-expanded="false"><span class="hidden-sm-up"><i class="ion-person"></i></span> <span class="hidden-xs-down">Longueur</span></a> </li>
             </ul>

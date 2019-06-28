@@ -1,5 +1,5 @@
 
-{!! Form::model($convention, ['route' => ['projet.update_projet', $convention->id],'method' => 'PUT','enctype' => 'multipart/form-data']) !!}
+{!! Form::model($convention, ['route' => ['projet.update_projet', $convention->id],'id'=>'form_projet_edit','method' => 'PUT','enctype' => 'multipart/form-data']) !!}
 @include('projets.edit.tabs_projet')
 <div class="row">
     <div class="col-lg-10">
@@ -23,7 +23,8 @@
                                                     [
                                                         'data-placeholder' => 'Selectionner commune(s)',
                                                         'class'=>'form-control select2',
-                                                        'name'=>'moa'
+                                                        'name'=>'moa',
+                                                        'disabled' => 'disabled'
                                                     ]
                                                     )}}
                                                 @else
@@ -31,7 +32,8 @@
                                                     [
                                                         'data-placeholder' => 'Selectionner commune(s)',
                                                         'class'=>'form-control select2',
-                                                        'name'=>'moa'
+                                                        'name'=>'moa',
+                                                        'disabled' => 'disabled'
                                                     ]
                                                     )}}
                                                 @endif
@@ -55,7 +57,8 @@
                                                     [
                                                     'data-placeholder' => 'Selectionner commune(s)',
                                                     'class'=>'form-control select2',
-                                                    'name'=>'programme'
+                                                    'name'=>'programme',
+                                                    'disabled' => 'disabled'
                                                     ]
                                                     )}}
                                                 @else
@@ -63,7 +66,8 @@
                                                     [
                                                     'data-placeholder' => 'Selectionner commune(s)',
                                                     'class'=>'form-control select2',
-                                                    'name'=>'programme'
+                                                    'name'=>'programme',
+                                                    'disabled' => 'disabled'
                                                     ]
                                                     )}}
                                                 @endif
@@ -81,14 +85,14 @@
                                             <div class="form-group">
 
                                                 <div class="controls">
-                                                    {{Form::textarea('objet_fr',$convention->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
+                                                    {{Form::textarea('objet_fr',$convention->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <div class="controls">
-                                                    {{Form::textarea('objet_ar',$convention->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
+                                                    {{Form::textarea('objet_ar',$convention->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
                                                 </div>
                                             </div>
                                         </div>
@@ -104,7 +108,8 @@
                                                 'data-placeholder' => 'Selectionner commune(s)',
                                                 'class'=>'form-control select2',
                                                 'multiple'=>'multiple',
-                                                'name'=>'interventions[]'
+                                                'name'=>'interventions[]',
+                                                'disabled' => 'disabled'
                                                 ]
                                                 )}}
                                             </div>
@@ -121,7 +126,8 @@
                                                 'class'=>'form-control select2',
                                                 'style'=>'width:100%',
                                                 'multiple'=>'multiple',
-                                                'name'=>'communes[]'
+                                                'name'=>'communes[]',
+                                                'disabled' => 'disabled'
                                                 ]
                                                 )}}
                                             </div>
@@ -138,7 +144,8 @@
                                                 'class'=>'form-control select2 ',
                                                 'style'=>'width:100%',
                                                 'multiple'=>'multiple',
-                                                'name'=>'point_desservis[]'
+                                                'name'=>'point_desservis[]',
+                                                'disabled' => 'disabled'
                                                 ]
                                                 )}}
                                             </div>
@@ -225,7 +232,7 @@
                                                             </td>
 
                                                             <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-etat" data-id="etat_{{$item->id}}"><i class="fa fa-close"></i>
+                                                                <button type="button" class="btn btn-danger-table delete-etat" data-id="etat_{{$item->id}}" style="display: none;"><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
                                                         </tr>
@@ -236,7 +243,7 @@
                                                     </tbody>
                                                 </table>
                                                 <div style="text-align: center">
-                                                    <a href="#" data-toggle="modal" data-target="#add_modal_etat"> <i class="fa fa-plus"></i>
+                                                    <a href="#" data-toggle="modal" data-target="#add_modal_etat" style="display: none;"> <i class="fa fa-plus"></i>
                                                         <b> Ajouter Etat</b> </a>
                                                 </div>
                                             </div>
@@ -283,7 +290,7 @@
 
                                                                 </td>
                                                                 <td style="text-align: center">
-                                                                    <button type="button" class="btn btn-danger-table delete-piece" data-id="conventionPiece_{{$item->id}}"><i class="fa fa-close"></i>
+                                                                    <button type="button" class="btn btn-danger-table delete-piece" data-id="conventionPiece_{{$item->id}}" style="display: none;"><i class="fa fa-close"></i>
                                                                         Supprimer</button>
                                                                 </td>
                                                             @endif
@@ -296,7 +303,7 @@
                                                 </table>
                                                 @if(Auth::user()->organisation_id == $convention->organisation_id )
                                                     <div style="text-align: center">
-                                                        <a href="#" data-toggle="modal" data-target="#add_modal_piece"> <i class="fa fa-plus"></i>
+                                                        <a href="#" data-toggle="modal" data-target="#add_modal_piece" style="display: none;"> <i class="fa fa-plus"></i>
                                                             <b> Ajouter Pièce</b> </a>
                                                     </div>
                                                 @endif
@@ -336,7 +343,7 @@
                                                             </td>
 
                                                             <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-piece-projet" data-route="{!! route('dce.delete_piece')!!}" data-directory="appel_offres" data-file="{{$item->file_name}}" data-id="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                <button type="button" class="btn btn-danger-table delete-piece-projet" data-route="{!! route('dce.delete_piece')!!}" data-directory="appel_offres" data-file="{{$item->file_name}}" data-id="{{$item->id}}" style="display: none;"><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
                                                         </tr>
@@ -347,7 +354,7 @@
                                                     </tbody>
                                                 </table>
                                                 <div style="text-align: center">
-                                                    <a href="#" class="add-piece-projet" data-route="/pieces/add_piece_dce"> <i class="fa fa-plus"></i>
+                                                    <a href="#" class="add-piece-projet" data-route="/pieces/add_piece_dce" style="display: none;"> <i class="fa fa-plus"></i>
                                                         <b> Ajouter Pièce</b> </a>
                                                 </div>
                                             </div>
@@ -386,7 +393,7 @@
                                                                 </td>
 
                                                                 <td style="text-align: center">
-                                                                    <button type="button" class="btn btn-danger-table delete-piece-projet" data-route="{!! route('dossier_adjiducataire.delete_piece')!!}" data-directory="appel_offres" data-file="{{$item->file_name}}" data-id="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                    <button type="button" class="btn btn-danger-table delete-piece-projet" data-route="{!! route('dossier_adjiducataire.delete_piece')!!}" data-directory="appel_offres" data-file="{{$item->file_name}}" data-id="{{$item->id}}" style="display: none;"><i class="fa fa-close"></i>
                                                                         Supprimer</button>
                                                                 </td>
                                                             </tr>
@@ -396,7 +403,7 @@
                                                         </tbody>
                                                     </table>
                                                     <div style="text-align: center">
-                                                        <a href="#" class="add-piece-   projet"  data-route="/pieces/add_piece_dossier_adjiducataire"> <i class="fa fa-plus"></i>
+                                                        <a href="#" class="add-piece-projet"  data-route="/pieces/add_piece_dossier_adjiducataire" style="display: none;"> <i class="fa fa-plus"></i>
                                                             <b> Ajouter Pièce</b> </a>
                                                     </div>
                                                 </div>
@@ -433,7 +440,7 @@
                                                             </td>
                                                             @if(Auth::user()->organisation_id == $convention->organisation_id )
                                                                 <td style="text-align: center">
-                                                                    <button type="button" class="btn btn-danger-table delete-partenaire" data-id="{{$convention->id}}_{{$item->id}}"><i class="fa fa-close"></i>
+                                                                    <button type="button" class="btn btn-danger-table delete-partenaire" data-id="{{$convention->id}}_{{$item->id}}" style="display: none;"><i class="fa fa-close"></i>
                                                                         Supprimer</button>
                                                                 </td>
                                                             @endif
@@ -446,7 +453,7 @@
                                                 </table>
                                                 @if(Auth::user()->organisation_id == $convention->organisation_id )
                                                     <div style="text-align: center">
-                                                        <a href="#" data-toggle="modal" data-target="#m-add-partenaire-edit">
+                                                        <a href="#" data-toggle="modal" data-target="#m-add-partenaire-edit" style="display: none;">
                                                             <i class="fa fa-plus"></i>
                                                             <b> Ajouter Partenaire</b>
                                                         </a>
@@ -535,7 +542,7 @@
         <div class="h-p100  bg-light bg-secondary-gradient" style="padding-right: 5px">
             <div class="box bg-transparent no-border no-shadow ">
                 <div class="box-body no-padding mailbox-nav ">
-
+                    @include('inc.go_back_btn')
                     @if(empty($convention->appelOffres))
                         <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
                             PROGRAMME
@@ -564,22 +571,44 @@
 
 
 
-                    <div class="form-group">
-                        {{Form::label('','N°:')}}
-                        {{Form::text('num_ordre',$convention->num_ordre,['class'=>'form-control','disabled'])}}
+                    <div class="row row-edit" style="margin-top: 8px">
+                        <div class="col-lg-3">
+                            {{Form::label('','N°:',['style'=> 'font-size : 11px'])}}
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="form-group form-group-edit">
+                                {{Form::text('num_ordre',$convention->num_ordre,['class'=>'form-control','disabled'])}}
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        {{Form::label('','Montant global DH:')}}
-                        {{Form::text('montant_global',$convention->montant_global,['class'=>'form-control'])}}
+                    <div class="row row-edit" style="margin-top: 8px">
+                        <div class="col-lg-3">
+                            {{Form::label('','M.Total(DHS):',['style'=> 'font-size : 11px'])}}
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="form-group form-group-edit">
+                                {{Form::text('montant_global',$convention->montant_global,['class'=>'form-control','disabled'])}}
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        {{Form::hidden('id_pist',$convention->piste->id,['id' => 'piste_id_input'])}}
-                        {{Form::hidden('geometry',$convention->piste->geometry,['id' => 'geometry_input'])}}
-                        {{Form::label('','Longueur:')}}
-                        {{Form::text('longueur',$convention->piste->longueur,['class'=>'form-control','id'=>'longueur_input'])}}
+
+
+                    <div class="row row-edit" style="margin-top: 8px">
+                        <div class="col-lg-3">
+                            {{Form::label('','Longueur(KM):',['style'=> 'font-size : 11px'])}}
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="form-group form-group-edit">
+                                {{Form::hidden('id_pist',$convention->piste->id,['id' => 'piste_id_input'])}}
+                                {{Form::hidden('geometry',$convention->piste->geometry,['id' => 'geometry_input'])}}
+                                {{Form::text('longueur',$convention->piste->longueur,['class'=>'form-control','disabled'])}}
+                            </div>
+                        </div>
                     </div>
+
+
                         @if(Auth::user()->organisation_id != 1 )
                             <div class="form-group">
                                 {{Form::label('','Année:')}}
@@ -648,8 +677,13 @@
                     <br>
                     <br>
 
+
+
                     @if(Auth::user()->organisation_id == $convention->organisation_id )
-                        {{Form::submit('Enregistrer les modifications',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
+                        <h5>Edition : </h5>
+                        <hr>
+                        <button type="button" id="activate_edit_btn" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-edit" style="margin-right: 8px;"></i>Activer la modification</button>
+                        <button type="submit" class="btn  btn-secondary-edit" style="color : #2bc509" ><i class="fa fa-save" style="margin-right: 8px;" disabled></i>Enregistrer les modifications</button>
                     @endif
                     {!! Form::close() !!}
 
@@ -657,18 +691,19 @@
 
                     @if(!empty($convention->appelOffres))
                         @if($convention->appelOffres->ordre_service == 1)
-                                <button type="button" class="btn btn-secondary col-12" id="realise_projet_btn" data-projet_id="{{$convention->id}}" style="margin-top: 8px !important"
+                                <button type="button" class="btn btn-secondary-edit" id="realise_projet_btn" data-projet_id="{{$convention->id}}" style="margin-top: 8px !important"
 
-                                >Affecter Au projets realisés</button>
+                                ><i class="fa fa-thumbs-o-up" style="margin-right: 8px;" disabled></i>Affecter Au projets realisés</button>
                         @endif
                     @endif
 
                     @if(Auth::user()->organisation_id == $convention->organisation_id )
-                        <button type="button" class="btn btn-warning col-12" id="supprimer_convention" data-id="{{$convention->id}}" style="margin-top: 8px !important">Supprimer</button>
+                        <button type="button" class="btn btn-secondary-edit" id="supprimer_convention" data-id="{{$convention->id}}" style="margin-top: 8px !important;color : #ff0f0f"><i class="fa fa-trash" style="margin-right: 8px;" disabled></i>Supprimer</button>
                     @endif
-                    {!! Form::model($convention, ['route' => ['convention.fiche', $convention->id],'method' => 'PUT']) !!}
-                    {{Form::submit('Fiche de projet',['class'=>'btn btn-secondary col-12','style'=>'margin-top : 8px !important'])}}
-                    {!! Form::close() !!}
+                    <h5>Documents : </h5>
+                    <hr>
+                    <button type="button" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-file" style="margin-right: 8px;"></i>Fiche de la demande</button>
+                    <br>
 
                 </div>
                 <!-- /.box-body -->

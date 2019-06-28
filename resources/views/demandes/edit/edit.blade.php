@@ -195,12 +195,9 @@
 
 <script>
 $(document).ready(function () {
-
     //disable all input form
-
     $('#activate_edit_btn').on('click',function(){
-        $("#form_demande_edit :input").prop("disabled", false);
-        $("a").show();
+        modification_active('form_demande_edit','a');
     });
 
     /*

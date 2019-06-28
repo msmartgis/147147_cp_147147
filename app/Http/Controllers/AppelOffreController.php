@@ -19,6 +19,7 @@ use App\Porteur;
 use App\Programme;
 use App\Session;
 use App\SuiviVersement;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\PointDesservi;
 use Illuminate\Support\Facades\Input;
@@ -330,13 +331,19 @@ class AppelOffreController extends Controller
         $appelOffre->numero = $request->numero;
         $appelOffre->montant_globale = $request->montant_global;
         $appelOffre->caution_provisoir = $request->caution_provisoir;
+
+        $date_formatted = str_replace("/",'-',$request->date_commencement);
+        $appelOffre->date_commencement = Carbon::parse($date_formatted)->format('Y-m-d');
         if($appelOffre->etat != 'pulbie' || $appelOffre->etat != 'en_preparation')
         {
 
         }else{
             $appelOffre->etat = $request->etat;
         }
-        $appelOffre->delai_execution = $request->delai_execution;
+
+        $date_formatted_delai_exec = str_replace("/",'-',$request->delai_execution);
+        $appelOffre->delai_execution = Carbon::parse($date_formatted_delai_exec)->format('Y-m-d');
+        //$appelOffre->delai_execution = $request->delai_execution;
         $appelOffre->duree_execution = $request->duree_execution;
         $appelOffre->montant_adjiducation = $request->montant_adjiducataire;
         //return  $request->porteurporteur_projet;

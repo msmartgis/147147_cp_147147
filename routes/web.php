@@ -26,6 +26,7 @@ Route::group(
             'pistes' => 'PisteController',
             'cartographie' => 'CartographieController',
             'statistics' => 'StatisticsController',
+            'parametres' => 'ParametresController',
         ]);
         Route::get('/demande/create', 'DemandesController@create')->name('createDemande');
         Route::get('/demande', 'DemandesController@index')->name('indexDemande');

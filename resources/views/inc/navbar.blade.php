@@ -86,14 +86,22 @@
                 <span style="vertical-align: middle;" class="lato-bold">STATISTIQUES</span></a>
         </li>
 
-        <li class="nav-item ">
+        <li class="@if( preg_match('(cartographie)', Route::currentRouteName()) === 1 ))
+                                nav-item active
+                                @else
+                nav-item
+@endif">
             <a class="nav-link" href="/cartographie"><span class="active-item-here"></span>
                 <img src="{{asset('images/svg/layers.svg')}}" style="width: 1.2em;margin-right: 5px;" />
                 <span style="vertical-align: middle;" class="lato-bold">CARTOGRAPHIE</span></a>
         </li>
 
-        <li class="nav-item ">
-            <a class="nav-link" href="#"><span class="active-item-here"></span>
+        <li class="@if( preg_match('(parametres)', Route::currentRouteName()) === 1 ))
+                                nav-item active
+                                @else
+                nav-item
+@endif">
+            <a class="nav-link" href="/parametres"><span class="active-item-here"></span>
                 <img src="{{asset('images/svg/settings-gears.svg')}}" style="width: 1.2em;margin-right: 5px;" />
                 <span style="vertical-align: middle;" class="lato-bold">PARAMETRES</span></a>
         </li>

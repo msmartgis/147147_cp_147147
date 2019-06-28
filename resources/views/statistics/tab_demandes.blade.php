@@ -4,9 +4,9 @@
 
 
         <div class="vtabs customvtab col-lg-12" style="padding: 0;" id="tabs_demande_lg">
-            <ul class="nav nav-tabs tabs-vertical" role="tablist" id="tab_list_demande">
-                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#home3" role="tab" aria-expanded="true"><span class="hidden-sm-up"><i class="ion-home"></i></span> <span class="hidden-xs-down">Nombre</span> </a> </li>
-                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#profile3" role="tab" aria-expanded="false"><span class="hidden-sm-up"><i class="ion-person"></i></span> <span class="hidden-xs-down">Longueur</span></a> </li>
+            <ul class="nav nav-tabs tabs-vertical" role="tablist" id="tab_list_demande" style="background-color: #F4F4F4;">
+                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#home3" role="tab" aria-expanded="true" ><span class="hidden-sm-up"><i class="fa fa-sort-numeric-asc"></i></span> <span class="hidden-xs-down">Nombre</span> </a> </li>
+                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#profile3" role="tab" aria-expanded="false"><span class="hidden-sm-up"><i class="fa fa-arrow-left"></i></span> <span class="hidden-xs-down">Longueur</span></a> </li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content" style="margin : 0 !important;margin-top: 0 !important;">

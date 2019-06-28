@@ -640,3 +640,18 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected{
     background-color: #f8f6f6 !important;
     opacity: 1;
 }
+
+
+.customvtab .tabs-vertical li .nav-link.active
+{
+    background: #ff8740;
+    border: 0px;
+    border-right: 2px solid #398bf7;
+    margin-right: -1px;
+    color: #fff;
+}
+
+.leaflet-sidebar
+{
+    padding: 0 !important;
+}

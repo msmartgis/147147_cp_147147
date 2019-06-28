@@ -13,14 +13,14 @@
                                 <div class="form-group">
 
                                     <div class="controls">
-                                        {{Form::textarea('objet_fr',$convention->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
+                                        {{Form::textarea('objet_fr',$convention->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <div class="controls">
-                                        {{Form::textarea('objet_ar',$convention->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important'])}}
+                                        {{Form::textarea('objet_ar',$convention->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
                                     </div>
                                 </div>
                             </div>
@@ -36,7 +36,8 @@
                                     'data-placeholder' => 'Selectionner commune(s)',
                                     'class'=>'form-control select2',
                                     'multiple'=>'multiple',
-                                    'name'=>'interventions[]'
+                                    'name'=>'interventions[]',
+                                    'disabled' => 'disabled'
                                     ]
                                     )}}
                                 </div>
@@ -85,7 +86,7 @@
                                                     @if($montant_verse/($item->pivot->montant)*100 == 100)
                                                         disabled
                                                     @endif
-                                                    >
+                                                    style="display: none">
                                                         <i class="fa fa-plus-circle"></i>
                                                         Ajouter versement</button>
                                                 </td>
@@ -156,7 +157,6 @@
                                         </tr>
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </div>
@@ -228,7 +228,7 @@
                                                 @endif
 
                                                 <td style="text-align: center; width : 15%">
-                                                    <button type="button" class="btn btn-danger-table delete-versement"  data-id="{{$versement->id}}" >
+                                                    <button type="button" class="btn btn-danger-table delete-versement"  data-id="{{$versement->id}}" style="display: none">
                                                         <i class="fa fa-times-circle"></i>
                                                         Supprimer versement</button>
                                                 </td>
@@ -256,24 +256,55 @@
                 <div class="box-body no-padding mailbox-nav">
                     @include('inc.go_back_btn')
 
-                    <div class="form-group">
-                        {{Form::label('','Programme:')}}
-                        {{Form::text('programme',$convention->programme->nom_fr,['class'=>'form-control'])}}
-                    </div>
-                    <div class="form-group">
-                        {{Form::label('','MOA:')}}
-                        {{Form::text('moa',$convention->moas->nom_fr,['class'=>'form-control'])}}
+
+                    <div class="row row-edit">
+                        <div class="col-lg-3">
+                            {{Form::label('','Programme:',['style'=> 'font-size : 11px'])}}
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="form-group form-group-edit">
+
+                                {{Form::text('programme',$convention->programme->nom_fr,['class'=>'form-control','disabled'])}}
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        {{Form::label('','Montant global DH:')}}
-                        {{Form::text('montant_global',$convention->montant_global,['class'=>'form-control'])}}
+
+                    <div class="row row-edit">
+                        <div class="col-lg-3">
+                            {{Form::label('','M.O.A:',['style'=> 'font-size : 11px'])}}
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="form-group form-group-edit">
+
+                                {{Form::text('moa',$convention->moas->nom_fr,['class'=>'form-control','disabled'])}}
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        {{Form::hidden('id_pist',$convention->piste->id)}}
-                        {{Form::label('','Longueur:')}}
-                        {{Form::text('longueur',$convention->piste->longueur,['class'=>'form-control'])}}
+
+                    <div class="row row-edit">
+                        <div class="col-lg-3">
+                            {{Form::label('','M.Total(DHS):',['style'=> 'font-size : 11px'])}}
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="form-group form-group-edit">
+                                {{Form::text('montant_global',$convention->montant_global,['class'=>'form-control','disabled'])}}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row row-edit">
+                        <div class="col-lg-3">
+                            {{Form::label('','Longueur(KM):',['style'=> 'font-size : 11px'])}}
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="form-group form-group-edit">
+                                {{Form::hidden('id_pist',$convention->piste->id)}}
+                                {{Form::text('longueur',$convention->piste->longueur,['class'=>'form-control','disabled'])}}
+                            </div>
+                        </div>
                     </div>
                     <br>
                     <br>
@@ -290,9 +321,14 @@
                     <br>
                     <br>
 
-                    <a href="/convention/{{$convention->id}}/edit">
-                        <button type="button" class="btn btn-secondary-edit col-12"   style="margin-top: 8px !important"><i class="fa fa-file" style="margin-right: 4px"></i> Accéder aux détails du projet</button>
-                    </a>
+                    <h5>Edition : </h5>
+                    <hr>
+                    <button type="button" id="activate_edit_btn" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-edit" style="margin-right: 8px;"></i>Activer la modification</button>
+                    <div  style="margin-right: 8px !important;">
+                        <a href="/convention/{{$convention->id}}/edit">
+                            <button type="button" class="btn btn-secondary-edit col-12"   style="margin-top: 8px !important"><i class="fa fa-file" style="margin-right: 4px"></i> Accéder aux détails du projet</button>
+                        </a>
+                    </div>
                 </div>
                 <!-- /.box-body -->
             </div>

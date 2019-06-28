@@ -62,6 +62,26 @@ $(document).ready(function(){
 
 
 
+function modification_active(form_id,buttons_to_activate){
+    $("#"+form_id+" :input").prop("disabled", false);
+    $(buttons_to_activate).show();
+    $("a").show();
+
+
+    //notification
+    $.toast({
+        heading: 'Modification des données est activée',
+        text: 'Il faut enregistrer chaque modification',
+        position: 'top-right',
+        loaderBg: '#ff0f0f',
+        icon: 'info',
+        hideAfter: 4000,
+        stack: 6
+    });
+}
+
+
+
 
 
 

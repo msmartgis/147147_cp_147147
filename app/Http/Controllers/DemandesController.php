@@ -1349,6 +1349,7 @@ class DemandesController extends BaseController
         $demande_to_update->objet_ar = $request->objet_ar;
         $demande_to_update->observation = $request->observation;
         $date_formatted = str_replace("/",'-',$request->date_reception);
+
         $demande_to_update->date_reception = Carbon::parse($date_formatted)->format('Y-m-d');
 
         //return  $request->porteur_projet;
