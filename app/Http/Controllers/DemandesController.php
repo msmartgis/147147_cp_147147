@@ -926,10 +926,13 @@ class DemandesController extends BaseController
         if ($daterange = $request->get('daterange')) {
             $daterange_splite = explode('-', $daterange);
             $date_start = $daterange_splite[0];
+            $date_start_formatted = date("Y-m-d", strtotime($date_start));
             $date_end = $daterange_splite[1];
+            $date_end_formatted = date("Y-m-d", strtotime($date_end));
+
             $demandes->where([
-                ['date_reception', '>=', trim($date_start)],
-                ['date_reception', '<=', trim($date_end)],
+                ['date_reception', '>=', trim($date_start_formatted)],
+                ['date_reception', '<=', trim($date_end_formatted)],
             ]);
         }
 
@@ -981,13 +984,11 @@ class DemandesController extends BaseController
                 })
 
                 ->addColumn('montantCP', function (Demande $demande) {
-
                     return $demande->partenaires->map(function ($partenaire) {
                         if ($partenaire->id == 1) {
                             return number_format($partenaire->pivot->montant);
                         }
                     })->implode(' ');
-
 
                 })
                 ->addColumn('date_reception', function ($demandes) {
@@ -1046,10 +1047,13 @@ class DemandesController extends BaseController
         if ($daterange = $request->get('daterange')) {
             $daterange_splite = explode('-', $daterange);
             $date_start = $daterange_splite[0];
+            $date_start_formatted = date("Y-m-d", strtotime($date_start));
             $date_end = $daterange_splite[1];
+            $date_end_formatted = date("Y-m-d", strtotime($date_end));
+
             $demandes->where([
-                ['date_reception', '>=', trim($date_start)],
-                ['date_reception', '<=', trim($date_end)],
+                ['date_reception', '>=', trim($date_start_formatted)],
+                ['date_reception', '<=', trim($date_end_formatted)],
             ]);
         }
 
@@ -1188,7 +1192,11 @@ class DemandesController extends BaseController
         $demande->session_id = $request->input('session');
         $demande->is_affecter = 0;
         $demande->porteur_projet_id = $request->input('porteur_projet');
-        $demande->decision = 'en_cours';
+        if($request->input('etat') == 'sans')
+        {
+            $demande->decision = 'en_cours';
+        }
+
         $demande->save();
         if($demande->save())
         {

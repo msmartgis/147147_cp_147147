@@ -107,7 +107,7 @@ $(document).ready(function () {
     });
 
 
-    $('#communes_filter_programmee,#intervention_filter_programmee,#partenaires_filter_programmee,#localites_filter_programmee,#reservation_programmee').on('change paste keyup', function (e) {
+    $('#communes_filter_programmee,#intervention_filter_programmee,#partenaires_filter_programmee,#localites_filter_programmee,#reservation_programme').on('change paste keyup', function (e) {
 
         oTable_programmee.draw();
         e.preventDefault();

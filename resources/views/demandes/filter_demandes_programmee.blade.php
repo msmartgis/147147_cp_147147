@@ -94,7 +94,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" class="form-control pull-right" name="daterange_programmee" id="reservation_programmee" style="font-size: 0.94rem;">
+                    <input type="text" class="form-control pull-right" name="daterange_programmee" id="reservation_programe" style="font-size: 0.94rem;">
                 </div>
             </div>
             <!-- /.form-group -->
@@ -104,7 +104,6 @@
     <hr style="margin:4px">
 
     @include('demandes.inc.action_button_programmee')
-
     <hr  style="margin:4px">
 </div>
 

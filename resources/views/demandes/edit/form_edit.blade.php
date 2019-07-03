@@ -476,13 +476,9 @@
                         </button>
                     </div>
 
-
-
-
                     <button type="button" data-id="affectationConventionEditBtn_{{$demande->id}}" style="color : #ff0f0f"  id="affectation_conventions_edit_btn" data-numero="{{$demande->num_ordre}}" class="btn  btn-secondary-edit" style="margin-top: 8px !important" @if ($demande->decision != "accord_definitif")
                         disabled
                     @endif> <i class="fa fa-long-arrow-right"></i> Affectation aux conventions</button>
-
 
                     <h5>Documents : </h5>
                     <hr>

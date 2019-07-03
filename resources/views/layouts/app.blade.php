@@ -9,7 +9,6 @@
      <meta name="author" content="">
     <link rel="icon" href="{{asset('images/favicon.svg')}}">
 
-     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Oswald|Roboto+Condensed" rel="stylesheet">
 	<title>{{config('app.name')}}</title>
      @include('inc.css_links')
 
@@ -20,6 +19,13 @@
              src: url('{{ asset('fonts/Lato/lato-v11-latin-ext_latin-700.ttf') }}');
          }
 
+
+         @font-face {
+             font-family: Roboto-Condensed;
+             src: url('{{ asset('fonts/roboto/RobotoCondensed-Regular.ttf') }}');
+         }
+
+
          @font-face {
              font-family: Lato2;
              src: url('{{ asset('fonts/Lato/lato-v11-latin-ext_latin-regular.ttf') }}');
@@ -27,7 +33,7 @@
 
          .lato-bold
          {
-             font-family: 'Open Sans';
+             font-family: 'Lato2';
              font-weight: bold;
          }
 
@@ -38,17 +44,17 @@
          h4,
          h5,
          h6 {
-             font-family: 'Roboto Condensed','Open Sans';
+             font-family: 'Roboto-Condensed','Lato2';
 
          }
 
          label{
-             font-family: 'Roboto Condensed','Open Sans';
+             font-family: 'Roboto-Condensed','Lato2';
              font-weight: bold;
          }
          .nav-tabs
          {
-             font-family: 'Roboto Condensed','Open Sans' !important;
+             font-family: 'Roboto-Condensed','Lato2' !important;
              font-weight: bold;
          }
 
@@ -61,7 +67,7 @@
          }
 
          .btn{
-             font-family: Lato,'Open Sans';
+             font-family: Lato,'Lato2';
              font-weight: bold;
              font-size: 12px;
          }
@@ -76,7 +82,7 @@
              width: 100%;
              height: 100%;
              z-index: 9999;
-             background: url(/images/loader/material_design_loading.gif) center no-repeat #fff;
+             background: url(/images/loader/square-load.gif) center no-repeat #fff;
              /*background-size: 350px 300px;*/
          }
 
@@ -135,23 +141,20 @@
 
                                 <p>
                                     {{ Auth::user()->username }}
-                                    <small class="mb-5">jb@gmail.com</small>
-                                    <a href="#" class="btn btn-danger btn-sm btn-rounded">View Profile</a>
+                                    <small class="mb-5">{{ Auth::user()->email }}</small>
+                                    <a href="/profile" class="btn btn-danger btn-sm btn-rounded" style="border-radius: 60px !important;padding: 5px;width: 100%;"> <i class="fa fa-user"></i> Mon profil</a>
                                 </p>
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
                                 <div class="row no-gutters">
-                                    <div class="col-12 text-left">
-                                        <a href="#"><i class="ion ion-person"></i> My Profile</a>
-                                    </div>
 
                                     <div role="separator" class="divider col-12"></div>
                                     <div class="col-12 text-left">
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
+                                          <i class="fa fa-sign-out"></i>  {{ __('Déconnexion') }}
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

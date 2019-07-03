@@ -75,6 +75,24 @@
             margin-top: 0 !important;
             padding: .1em .1em .1em;
         }
+        .nav-tabs {
+            border-bottom: 2px solid #E1B353 !important;
+           /* background-color: #929daf;*/
+        }
+
+        .skin-blue .customtab li a.nav-link.active{
+            border-bottom: 2px solid #ff8740 !important;
+        }
+
+        .nav-tabs .nav-link.active
+        {
+            background-color: unset;
+        }
+
+        .profile-tab li a.nav-link.active, .skin-blue .customtab li a.nav-link.active
+        {
+            color: #ff8740;
+        }
     </style>
 @endsection
 

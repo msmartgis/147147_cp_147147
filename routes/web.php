@@ -27,6 +27,7 @@ Route::group(
             'cartographie' => 'CartographieController',
             'statistics' => 'StatisticsController',
             'parametres' => 'ParametresController',
+            'profile' => 'ProfilesController'
         ]);
         Route::get('/demande/create', 'DemandesController@create')->name('createDemande');
         Route::get('/demande', 'DemandesController@index')->name('indexDemande');
@@ -122,6 +123,14 @@ Route::group(
         //carto
         Route::get('/carto/demandesCarto', 'DemandesController@getDemandesCarto');
         Route::get('/carto/projetsCarto', 'ProjetController@getProjetsCarto');
+
+
+        //profile
+        Route::get('/profile', 'ProfilesController@index');
+
+
+        Route::get('/profile/getUsersData', 'ProfilesController@getUsersData');
+
     }
 );
 Route::group(

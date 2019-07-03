@@ -93,7 +93,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" class="form-control pull-right" name="daterange_realisee" id="reservation_realisee" style="font-size: 0.94rem;">
+                    <input type="text" class="form-control pull-right" name="daterange_realisee" id="reservation_realise" style="font-size: 0.94rem;">
                 </div>
             </div>
             <!-- /.form-group -->

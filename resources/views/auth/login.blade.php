@@ -18,36 +18,85 @@
 
 @font-face {
 	font-family: Lato;
-	src: url('{{ public_path('fonts/Lato/lato-v11-latin-ext_latin-700.ttf') }}');
+	src: url('{{ asset('fonts/Lato/lato-v11-latin-ext_latin-700.ttf') }}');
+}
+
+
+@font-face {
+	font-family: Roboto-Condensed;
+	src: url('{{ asset('fonts/roboto/RobotoCondensed-Regular.ttf') }}');
 }
 
 
 @font-face {
 	font-family: Lato2;
-	src: url('{{ public_path('fonts/Lato/lato-v11-latin-ext_latin-regular.ttf') }}');
+	src: url('{{ asset('fonts/Lato/lato-v11-latin-ext_latin-regular.ttf') }}');
 }
 
 .lato-bold
 {
-	font-family: 'Open Sans';
+	font-family: 'Lato2';
 	font-weight: bold;
 }
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: 'Roboto-Condensed','Lato2';
+
+}
+
+label{
+	font-family: 'Roboto-Condensed','Lato2';
+	font-weight: bold;
+}
+.nav-tabs
+{
+	font-family: 'Roboto-Condensed','Lato2' !important;
+	font-weight: bold;
+}
+
+
+.table th,
+.table thead th {
+	font-family: Lato;
+	font-weight: 600;
+	font-size: 13px;
+}
+
+.btn{
+	font-family: Lato,'Lato2';
+	font-weight: bold;
+	font-size: 12px;
+}
+
+.form-control{
+	height: 35px !important;
+}
+
+.btn{
+	font-size: 15px;
+}
+
 </style>
 </head>
 <body class="hold-transition login-page">
 	
-	<div class="container h-p100" style="margin-top:80px !important;border:0 !important;background: none !important;max-width: none !important;">
+	<div class="container h-p100" style="margin-top:10% !important;border:0 !important;background: none !important;max-width: none !important;">
 		<div class="row align-items-center justify-content-md-center h-p100">
 
 			<div class="col-lg-4 col-md-8 col-12">
 				<div class="login-box">
 				  <div class="login-box-body">
-                      <div style="text-align: center">
-                          <img src="{{asset('images/logo_smartgis.png')}}" alt="">
-                      </div>
+					  <img src="{{asset('images/logo/smart-CP-icon.png')}}" alt="">
 
-                      <h3 class="text-center lato-bold">Bienvenue sur la plateforme CP</h3>
-					<p class="login-box-msg lato-bold">Espace de gestion </p>
+					  <br>
+					  <h4 class="login-box-msg lato-bold" style="color: #fff !important;">Veuillez saisir vos identifiants pour se connecter </h4>
+					  <br>
                       
 
 					<form method="POST" action="{{ route('login') }}">
@@ -73,24 +122,28 @@
 						<span class="ion ion-locked form-control-feedback"></span>
 					  </div>
 					  <div class="row">
-						<div class="col-6">
+						<!--<div class="col-6">
 						  <div class="checkbox">
                               <input class="form-check-input" type="checkbox" id="basic_checkbox_1" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>						
 							<label for="basic_checkbox_1">Remember Me</label>
 						  </div>
-						</div>
+						</div>-->
 						<!-- /.col -->
-						<div class="col-6">
+						<!--<div class="col-6">
 						 <div class="fog-pwd text-right">
 							<a href="javascript:void(0)" class="text-danger"><i class="ion ion-locked"></i> mot de passe oublié?</a><br>
 						  </div>
-						</div>
+						</div>-->
 						<!-- /.col -->
 						<div class="col-12 text-center">
-						  <button type="submit" class="btn btn-info btn-block margin-top-10 lato-bold">Connexion</button>
+						  <button type="submit" class="btn btn-info btn-block margin-top-10 lato-bold">Authentification</button>
 						</div>
 						<!-- /.col -->
 					  </div>
+						<div style="text-align: center;margin-top: 20px">
+							<img src="{{asset('images/logo/logo_smartgis.png')}}" alt="" height="26" width="115" >
+						</div>
+
 					</form>
 
 

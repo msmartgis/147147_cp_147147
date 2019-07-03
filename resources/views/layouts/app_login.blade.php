@@ -12,15 +12,70 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <style>
-    
+        @font-face {
+            font-family: Lato;
+            src: url('{{ asset('fonts/Lato/lato-v11-latin-ext_latin-700.ttf') }}');
+        }
+
+
+        @font-face {
+            font-family: Roboto-Condensed;
+            src: url('{{ asset('fonts/roboto/RobotoCondensed-Regular.ttf') }}');
+        }
+
+
+        @font-face {
+            font-family: Lato2;
+            src: url('{{ asset('fonts/Lato/lato-v11-latin-ext_latin-regular.ttf') }}');
+        }
+
+        .lato-bold
+        {
+            font-family: 'Lato2';
+            font-weight: bold;
+        }
+
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Roboto-Condensed','Lato2';
+
+        }
+
+        label{
+            font-family: 'Roboto-Condensed','Lato2';
+            font-weight: bold;
+        }
+        .nav-tabs
+        {
+            font-family: 'Roboto-Condensed','Lato2' !important;
+            font-weight: bold;
+        }
+
+
+        .table th,
+        .table thead th {
+            font-family: Lato;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .btn{
+            font-family: Lato,'Lato2';
+            font-weight: bold;
+            font-size: 12px;
+        }
+
     </style>
 </head>
 <body>
