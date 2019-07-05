@@ -12,7 +12,7 @@
                             {{--tab informations generales--}}
                             <div class="tab-pane active" id="information_generale_tab" role="tabpanel">
                                 <div class="pad">
-                                    <h5>PORTEUR DE PROJET </h5>
+                                    <h5>PORTEUR DE PROJET</h5>
                                     <hr style="color:#2d353c;margin:0">
                                     <div class="row" style="margin-top: 8px">
 
@@ -347,7 +347,7 @@
                 <div class="box-body no-padding mailbox-nav ">
                     @include('inc.go_back_btn')
 
-                    @if($demande->is_affecter != '1')
+                    @if($demande->is_affecter != '1' && $demande->etat == 'sans')
                         <h4 class="header-state">
                             @switch($demande->decision)
                             @case("en_cours")
@@ -362,10 +362,27 @@
                             @default
                             @endswitch
                         </h4>
-                        @else()
+                    @endif
+
+                    @if($demande->is_affecter == '1' && $demande->etat == 'sans')
                         <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
                             AFFECTEE AUX CONVENTIONS
                         </h5>
+                    @endif
+
+                    @if($demande->etat != 'sans')
+                        @if( $demande->etat == 'realisee')
+                            <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                REALISEE DANS D'AUTRES PROGRAMMES
+                            </h5>
+                            <br>
+                         @else
+                            <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                PROGRAMMEE DANS D'AUTRES PROGRAMMES
+                            </h5>
+                            <br>
+                        @endif
+
                     @endif
                     <div class="row row-edit">
                         <div class="col-lg-3">

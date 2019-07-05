@@ -133,6 +133,8 @@ $(document).ready(function () {
             }
         ],
 
+        order: [[ 10, 'asc' ]],
+
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
 

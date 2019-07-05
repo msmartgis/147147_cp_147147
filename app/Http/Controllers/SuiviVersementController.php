@@ -18,6 +18,7 @@ use App\Programme;
 use App\Session;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Device;
 use App\PointDesservi;
 use Illuminate\Support\Facades\Input;
 use DataTables;
@@ -123,6 +124,7 @@ class SuiviVersementController extends Controller
             'sessions' => $sessions,
             'interventions' => $interventions,
             'programmes' => $programmes,
+            'is_mobile' => Device::Device()
         ]);
 
     }

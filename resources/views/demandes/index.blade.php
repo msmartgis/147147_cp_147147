@@ -75,7 +75,7 @@
         [type=checkbox]+label {
             font-weight: 0;
             position: relative;
-            padding-left: 0px;
+            padding-left: 15px;
             cursor: pointer;
             display: inline-block;
             height: 16px;
@@ -322,7 +322,7 @@
                                 '</td>'+
                                 '<td><input type="hidden" name="partnenaire_type_ids[]" value="' + data.pivot_all[i].id + '">'+data.pivot_all[i].nom_fr+'</td>'+
                                 '<td><input type="hidden" name="montant[]" value="' + data.pivot_all[i].pivot.montant + '">'+data.pivot_all[i].pivot.montant+'</td>'+
-                                '<td><input type="hidden" name="pourcentage[]" value="' +(data.pivot_all[i].pivot.montant)/montant_global*100+ '">'+(data.pivot_all[i].pivot.montant)/montant_global*100+'</td>'+
+                                '<td><input type="hidden" name="pourcentage[]" value="' +(data.pivot_all[i].pivot.montant)/montant_global*100+ '">'+((data.pivot_all[i].pivot.montant)/montant_global*100).toFixed(1)+'</td>'+
                                 '</tr>');
                         }
 

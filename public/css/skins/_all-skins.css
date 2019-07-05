@@ -23,7 +23,8 @@ Project:	Fab Admin - Responsive Admin Template
 /*---Skin: Blue---*/
 .skin-blue .main-header .navbar,
 .skin-blue .main-header {
-    background-color: #363638;
+    /*background-color: #2b2b2d;*/
+    background-image: linear-gradient(to top, #4d4949, #363638);
 }
 
 .skin-blue .main-header .navbar .nav>li>a {

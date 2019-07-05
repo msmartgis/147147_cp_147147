@@ -86,8 +86,16 @@
              /*background-size: 350px 300px;*/
          }
 
-     </style>
+         .mobile-nav
+         {
+             margin-top: 15px !important;
+         }
 
+         .mobile-nav > li
+         {
+             border-bottom: 1px solid !important;
+         }
+     </style>
 </head>
 
 <body class="hold-transition skin-blue layout-top-nav has-drawer">
@@ -101,16 +109,14 @@
         <a href="{{ route('home') }}" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <b class="logo-mini">
-                <span class="light-logo"><img src="{{asset('images/logo.png')}}" alt="logo"></span>
-                <span class="dark-logo"><img src="{{asset('images/logo.png')}}" alt="logo"></span>
+                <span class="light-logo"><img src="{{asset('images/logo/logo_mini_.png')}}" alt="logo" width="48px"></span>
             </b>
             <!-- logo for regular state and mobile devices -->
+            <!--
             <span class="logo-lg">
-			  <img src="{{asset('images/logo.png')}}" alt="logo" class="light-logo">
-			  <img src="{{asset('images/logo.png')}}" alt="logo" class="dark-logo">
-		  </span>
+			  <img src="{{asset('images/logo/logo_lg_.png')}}" alt="logo" class="light-logo">
+		  </span>-->
         </a>
-
 
 
         <!-- Header Navbar -->
@@ -166,7 +172,6 @@
                             </li>
                         </ul>
                     </li>
-
                 </ul>
             </div>
         </nav>

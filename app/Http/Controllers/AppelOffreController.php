@@ -18,6 +18,7 @@ use App\PointDesserviCategorie;
 use App\Porteur;
 use App\Programme;
 use App\Session;
+use App\Device;
 use App\SuiviVersement;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -85,6 +86,7 @@ class AppelOffreController extends Controller
             'sessions' => $sessions,
             'interventions' => $interventions,
             'programmes' => $programmes,
+            'is_mobile' => Device::Device()
         ]);
 
 
@@ -121,6 +123,7 @@ class AppelOffreController extends Controller
             'sessions' => $sessions,
             'interventions' => $interventions,
             'programmes' => $programmes,
+            'is_mobile' => Device::Device()
         ]);
     }
 
@@ -310,7 +313,8 @@ class AppelOffreController extends Controller
             'moas_edit' => $moas_edit,
             'interventions_ids' => $interventions_ids,
             'communes_concernees'=> $communes_concernees,
-            'pointdesservis'=>$pointdesservis
+            'pointdesservis'=>$pointdesservis,
+            'is_mobile' => Device::Device()
 
         ]);
     }

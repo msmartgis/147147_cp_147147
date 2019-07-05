@@ -1,9 +1,8 @@
 
 
-    <ul class="navbar-nav" >
-
-        <li class="{{ Request::is('home') ? 'nav-item active' : '' }}">
-            <a class="nav-link" href="{{ route('home') }}"><span class="active-item-here "></span>
+    <ul class="navbar-nav @if($is_mobile == 1) mobile-nav @endif">
+        <li class="{{ Request::is('home') ? 'nav-item active' : '' }}" >
+            <a class="nav-link" href="{{ route('home') }}" @if($is_mobile == 1) style="padding-left: 1.75rem" @endif><span class="active-item-here"></span>
                 <img src="{{asset('images/svg/home.svg')}}" style="width: 1.2em;margin-right: 5px;" />
                 <span style="vertical-align: middle;" class="lato-bold">TABLEAU DE BORD</span>
             </a>

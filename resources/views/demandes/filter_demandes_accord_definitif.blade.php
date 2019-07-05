@@ -1,5 +1,8 @@
 {!! Form::open(['action' => 'SpreadSheetController@demandeSpread_accord_definitif','method'=>'POST','class'=>'']) !!}
 <div class="filters" style="margin-bottom: 4px;">
+    @if($is_mobile == 1)
+        <h4 style="text-align: center;text-decoration: underline"> ACCORD DEFINITIF</h4>
+    @endif
     <div class="row">
         <div class="col-lg-1">
             <label >Communes :</label>

@@ -96,6 +96,8 @@ $(document).ready(function () {
             }
         ],
 
+        order: [[ 6, 'asc' ]],
+
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
 

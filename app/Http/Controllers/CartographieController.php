@@ -11,6 +11,7 @@ use App\PointDesserviCategorie;
 use App\Porteur;
 use App\Programme;
 use App\Session;
+use App\Device;
 use App\SourceFinancement;
 use Illuminate\Http\Request;
 
@@ -44,7 +45,8 @@ class CartographieController extends Controller
             'sessions' => $sessions,
             'interventions' => $interventions,
             'programmes' => $programmes,
-            'sourceFincancement'=> $sourceFincancement
+            'sourceFincancement'=> $sourceFincancement,
+            'is_mobile' => Device::Device()
         ]);
     }
 

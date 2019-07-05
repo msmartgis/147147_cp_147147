@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App;
 
-use App\Commune;
+use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Http\Request;
-
-class BaseController extends Controller
+class Device extends Model
 {
-
-    public function getCart()
+    public function scopeDevice()
     {
         $is_mobile = 0;
         $useragent=$_SERVER['HTTP_USER_AGENT'];
@@ -20,6 +17,4 @@ class BaseController extends Controller
 
         return $is_mobile;
     }
-
-
 }

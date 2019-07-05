@@ -1,5 +1,6 @@
 <!-- Modal -->
-    <div class="modal center-modal fade" id="accordAndAffectModal" tabindex="-1">
+@if($is_mobile == 0)
+    <div class="modal center-modal fade " id="accordAndAffectModal" tabindex="-1">
         <div class="modal-dialog m-modal-dim">
             <div class="modal-content">
                 <div class="modal-header">
@@ -16,12 +17,12 @@
                     <h4>Informations sur le projet</h4>
                     <hr>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-lg-6 col-xl-6 col-12">
                             <div class="form-group">
                                 <label>Maître d'ouvrage : </label>
                                 <select class="form-control select2" name="moas" style="width: 100%;" >
                                     @foreach ($moas as $moa)
-                                    <option value="{{$moa->id}}">{{$moa->nom_fr}}</option>
+                                        <option value="{{$moa->id}}">{{$moa->nom_fr}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -32,9 +33,9 @@
                     <h4>Financement de projet</h4>
                     <hr>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-lg-6 col-xl-6 col-12">
                             <div class="form-group">
-                                <label>Montant Global TTC:</label>
+                                <label>Montant Total TTC:</label>
                                 <input type="text" class="form-control " name="montant_global" id="montant_g">
                             </div>
                         </div>
@@ -119,7 +120,138 @@
             </div>
         </div>
     </div>
+
+@else
+
+
+    <div class="modal fade" id="accordAndAffectModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="" id="modalTitleAccordAndAffect"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    {!! Form::open(['action' => 'DemandesController@accordOrAffectation','method'=>'post']) !!}
+                        <input type="hidden" name="id" id="id_demande_modal_affect" >
+                        <input type="hidden" name="affecter" id="affecterORAccord">
+                        <input type="hidden" name="cp_id" id="cp_id">
+                        <h5>Informations sur le projet</h5>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xm-12">
+                                <div class="form-group">
+                                    <label>Maître d'ouvrage : </label>
+                                    <select class="form-control select2" name="moas" style="width: 100%;" >
+                                        @foreach ($moas as $moa)
+                                            <option value="{{$moa->id}}">{{$moa->nom_fr}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                        </div>
+
+                        <h5>Financement de projet</h5>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label>Montant Total TTC:</label>
+                                    <input type="text" class="form-control " name="montant_global" id="montant_g">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label>Montant CP :</label>
+                                    <input type="text" class="form-control" name="montant_cp" id="montant_cp">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <h5>SOURCE DE FINANCEMENT (CP) </h5>
+                        <hr>
+                        <div class="row" style="margin-top:8px">
+                            <div class="col-12">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Source</th>
+                                        <th>Reference</th>
+                                        <th>Montant Total</th>
+                                    </tr>
+                                    <tbody id="table_body_source">
+                                    <tr>
+
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                                <div class="col-12" style="text-align: center">
+                                    <a href="#" id="add_source" data-toggle="modal" data-target="#m-add-source-financement">
+                                        <i class="fa fa-plus"></i>
+                                        <b>Ajouter Source</b>
+                                    </a>
+                                </div>
+
+                                <button type="button" class="btn btn-warning " id="delete_source_financement">
+                                    <i class="fa fa-times"></i>
+                                    supprimer source de financement
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <h5>Montage financier définitif</h5>
+                        <hr>
+                        <div class="row" style="margin-top:8px">
+                            <div class="col-12">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Partenaire</th>
+                                        <th>Montant</th>
+                                        <th>Pourcentage</th>
+                                    </tr>
+                                    <tbody id="table_body_partner">
+                                    <tr>
+
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                                <div class="col-12" style="text-align: center">
+                                    <a href="#" id="add_partner" data-toggle="modal" data-target="#m-add-partenaire"> <i class="fa fa-plus"></i>
+                                        <b>Ajouter partenaire</b>
+                                    </a>
+                                </div>
+                                <button type="button" class="btn btn-warning " id="delete_partenaire">
+                                    <i class="fa fa-times"></i>
+                                    supprimer partenaire
+                                </button>
+                            </div>
+                        </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-bold btn-pure btn-warning" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-bold btn-pure btn-success float-right">Affecter</button>
+                </div>
+                {!! Form::close() !!}
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
     <!-- /.modal -->
+
+@endif
 
     <div class="modal fade" id="m-add-partenaire">
         <div class="modal-dialog" role="document">

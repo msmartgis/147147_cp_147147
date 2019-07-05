@@ -19,6 +19,7 @@ use App\Porteur;
 use App\Programme;
 use App\Projet;
 use App\Session;
+use App\Device;
 use App\SuiviVersement;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -834,6 +835,7 @@ class ProjetController extends Controller
             'interventions' => $interventions,
             'year_number' => $year_number,
             'programmes' => $programmes,
+            'is_mobile' => Device::Device()
         ]);
     }
 
@@ -879,6 +881,7 @@ class ProjetController extends Controller
                 'categorie_points' => $categorie_points,
                 'moas' => $moas,
                 'piste_id' => $piste_id,
+                'is_mobile' => Device::Device()
             ]
         );
     }
@@ -1060,7 +1063,8 @@ class ProjetController extends Controller
             'moas' => $moas,
             'communes' => $communes,
             'programmes' => $programmes,
-            'etats' => $etats
+            'etats' => $etats,
+            'is_mobile' => Device::Device()
         ]);
     }
 

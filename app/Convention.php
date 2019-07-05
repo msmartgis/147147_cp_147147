@@ -83,7 +83,10 @@ class Convention extends Model
         return $this->hasMany('App\SuiviVersement', 'convention_id', 'id');
     }
 
-
+    public function porteur()
+    {
+        return $this->belongsTo('App\Porteur', 'porteur_projet_id');
+    }
 
     public function appelOffres()
     {

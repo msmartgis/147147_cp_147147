@@ -6,7 +6,6 @@
                 <thead>
                 <th style="width: 1% !important"></th>
                 <th style="width: 1% !important">N°ordre</th>
-                <th style="width: 1% !important">D.Réception</th>
                 <th >Objet</th>
                 <th>Communes</th>
                 <th>porteur</th>

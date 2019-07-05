@@ -11,6 +11,7 @@ use Response;
 use App\Commune;
 use App\Intervention;
 use Carbon\Carbon;
+use App\Device;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
@@ -3082,7 +3083,8 @@ class StatisticsController extends Controller
             'interventions' => $interventions,
             'year_number' => $year_number,
             'moas' => $moas,
-            'programmes' => $programmes
+            'programmes' => $programmes,
+            'is_mobile' => Device::Device()
         ]);
     }
 

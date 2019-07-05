@@ -48,12 +48,6 @@ $(document).ready(function () {
                 searchable: true
             },
             {
-                data: 'date_reception',
-                name: 'demandes.date_reception',
-                orderable: true,
-                searchable: true
-            },
-            {
                 data: 'objet_fr',
                 name: 'demandes.objet_fr',
                 orderable: true,

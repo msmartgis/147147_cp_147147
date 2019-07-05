@@ -7,19 +7,23 @@ use App\Convention;
 use App\Programme;
 use Illuminate\Http\Request;
 use DataTables;
+use App\Device;
 use DB;
+//use Request;
 class TBDController extends Controller
 {
     public function index(){
+
+
         $nombre_projet = Convention::all()->count();
 
         $nbr_projet_realise = Convention::where('realise','=',1)->count();
         $nbr_projet_en_cours = Convention::where('appel_offre_id','!=',null)
-                ->whereHas('appelOffres',function($query){
-                    $query->where('ordre_service','!=',null);
-                })
-                ->where('realise','=',0)
-                ->count();
+            ->whereHas('appelOffres',function($query){
+                $query->where('ordre_service','!=',null);
+            })
+            ->where('realise','=',0)
+            ->count();
 
         $nbr_projet_programmes = Convention::where('appel_offre_id','=',null)->count();
 
@@ -34,7 +38,8 @@ class TBDController extends Controller
             'nbr_projet_en_cours' => $nbr_projet_en_cours,
             'nbr_projet_programmes' => $nbr_projet_programmes,
             'appel_offre' => $appel_offre,
-            'cout_total_projets' => $cout_total_projets_MDH
+            'cout_total_projets' => $cout_total_projets_MDH,
+            'is_mobile' => Device::Device()
         ]);
     }
 
@@ -72,8 +77,8 @@ class TBDController extends Controller
                         })
                         ->where('realise','=',0)
                         ->whereHas('programme',function($query) use ($programme_id){
-                        $query->where('id','=',$programme_id);
-                    })->get();
+                            $query->where('id','=',$programme_id);
+                        })->get();
                     $longeur_en_cours = 0;
                     foreach($conventions as $cnv)
                     {
@@ -159,7 +164,7 @@ class TBDController extends Controller
                     $programme_id = $programmes->id;
                     return $conventions = Convention::where('realise','=',1)
                         ->whereHas('programme',function($query) use ($programme_id){
-                        $query->where('id','=',$programme_id);
+                            $query->where('id','=',$programme_id);
                         })
                         ->whereHas('interventions',function($query) use ($programme_id){
                             $query->where('interventions.id','=',2);
@@ -171,8 +176,8 @@ class TBDController extends Controller
                 ->addColumn('revetement', function ($programmes) {
                     $programme_id = $programmes->id;
                     return $conventions = Convention::whereHas('programme',function($query) use ($programme_id){
-                            $query->where('id','=',$programme_id);
-                        })
+                        $query->where('id','=',$programme_id);
+                    })
                         ->whereHas('interventions',function($query) use ($programme_id){
                             $query->where('interventions.id','=',2);
                         })
@@ -182,8 +187,8 @@ class TBDController extends Controller
                 ->addColumn('dallage', function ($programmes) {
                     $programme_id = $programmes->id;
                     return $conventions = Convention::whereHas('programme',function($query) use ($programme_id){
-                            $query->where('id','=',$programme_id);
-                        })
+                        $query->where('id','=',$programme_id);
+                    })
                         ->whereHas('interventions',function($query) use ($programme_id){
                             $query->where('interventions.id','=',9);
                         })
@@ -193,8 +198,8 @@ class TBDController extends Controller
                 ->addColumn('pave', function ($programmes) {
                     $programme_id = $programmes->id;
                     return $conventions = Convention::whereHas('programme',function($query) use ($programme_id){
-                            $query->where('id','=',$programme_id);
-                        })
+                        $query->where('id','=',$programme_id);
+                    })
                         ->whereHas('interventions',function($query) use ($programme_id){
                             $query->where('interventions.id','=',4);
                         })
@@ -204,8 +209,8 @@ class TBDController extends Controller
                 ->addColumn('recallibrage', function ($programmes) {
                     $programme_id = $programmes->id;
                     return $conventions = Convention::whereHas('programme',function($query) use ($programme_id){
-                            $query->where('id','=',$programme_id);
-                        })
+                        $query->where('id','=',$programme_id);
+                    })
                         ->whereHas('interventions',function($query) use ($programme_id){
                             $query->where('interventions.id','=',5);
                         })
@@ -215,8 +220,8 @@ class TBDController extends Controller
                 ->addColumn('elargissement', function ($programmes) {
                     $programme_id = $programmes->id;
                     return $conventions = Convention::whereHas('programme',function($query) use ($programme_id){
-                            $query->where('id','=',$programme_id);
-                        })
+                        $query->where('id','=',$programme_id);
+                    })
                         ->whereHas('interventions',function($query) use ($programme_id){
                             $query->where('interventions.id','=',6);
                         })
@@ -227,8 +232,8 @@ class TBDController extends Controller
                 ->addColumn('renforcement', function ($programmes) {
                     $programme_id = $programmes->id;
                     return $conventions = Convention::whereHas('programme',function($query) use ($programme_id){
-                            $query->where('id','=',$programme_id);
-                        })
+                        $query->where('id','=',$programme_id);
+                    })
                         ->whereHas('interventions',function($query) use ($programme_id){
                             $query->where('interventions.id','=',11);
                         })
@@ -239,8 +244,8 @@ class TBDController extends Controller
                 ->addColumn('ouvrage', function ($programmes) {
                     $programme_id = $programmes->id;
                     return $conventions = Convention::whereHas('programme',function($query) use ($programme_id){
-                            $query->where('id','=',$programme_id);
-                        })
+                        $query->where('id','=',$programme_id);
+                    })
                         ->whereHas('interventions',function($query) use ($programme_id){
                             $query->where('interventions.id','=',8);
                         })
@@ -251,8 +256,8 @@ class TBDController extends Controller
                 ->addColumn('entretien', function ($programmes) {
                     $programme_id = $programmes->id;
                     return $conventions = Convention::whereHas('programme',function($query) use ($programme_id){
-                            $query->where('id','=',$programme_id);
-                        })
+                        $query->where('id','=',$programme_id);
+                    })
                         ->whereHas('interventions',function($query) use ($programme_id){
                             $query->where('interventions.id','=',10);
                         })
@@ -262,18 +267,18 @@ class TBDController extends Controller
                 ->addColumn('etude', function ($programmes) {
                     $programme_id = $programmes->id;
                     $nbr_etude = 0;
-                     $conventions = Convention::whereHas('programme',function($query) use ($programme_id){
-                            $query->where('id','=',$programme_id);
+                    $conventions = Convention::whereHas('programme',function($query) use ($programme_id){
+                        $query->where('id','=',$programme_id);
+                    })
+                        ->whereHas('interventions',function($query) use ($programme_id){
+                            $query->where('interventions.id','=',10);
                         })
-                         ->whereHas('interventions',function($query) use ($programme_id){
-                             $query->where('interventions.id','=',10);
-                         })
                         ->get();
-                     foreach ($conventions as $cnv)
-                     {
-                         $nbr_etude++;
-                     }
-                     return $nbr_etude;
+                    foreach ($conventions as $cnv)
+                    {
+                        $nbr_etude++;
+                    }
+                    return $nbr_etude;
                 })
                 ->with('sum_balance', 5556)
             ;
