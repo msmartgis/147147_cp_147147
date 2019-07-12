@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app_mobile')
 
 @section('added_css')
     <link rel="stylesheet" href="{{asset('css/datatable/datatables.min.css')}}" />
@@ -52,9 +52,8 @@
         }
 
 
-        #map {
-            height: 85vh;
-            z-index: 1;
+          #map {
+            height: 95vh;
         }
 
 
@@ -184,55 +183,77 @@
             transform: rotate(270deg);
         }
 
+
+        .leaflet-sidebar .close
+        {
+            z-index: 99999;
+        }
+
+        .m-layer-image
+        {
+            width: 45px;
+            border-radius: 5px;
+            border: 2px solid #898989;
+        }
+
+
+
+         .leaflet-sidebar .close
+         {
+            color :red !important;
+         }
+
+
     </style>
 @endsection
 
 @section('content')
 
-    @include('cartographie.drawer')
 
+    @include('cartographie.drawer')
 
     <div class="row ">
         <div class="col-12">
-                <div class="box ">
-                    <!-- /.box-header -->
-                    <div class="box-body" style="padding : 0">
-                        @include('cartographie.map_carto')
-                    </div>
-                    <!-- /.box-body -->
+            <div class="box ">
+                <!-- /.box-header -->
+                <div class="box-body" style="padding : 0">
+                    @include('cartographie.mobile.map_carto_mobile')
                 </div>
+                <!-- /.box-body -->
+            </div>
 
             <!-- /.box -->
         </div>
     </div>
 
     <!-- modals -->
-    <div class="modal center-modal fade" id="search_carto_modal" tabindex="-1">
-        <div class="modal-dialog m-modal-dim">
+
+    <div class="modal center-modal fade" id="search_carto_modal">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
-                {{--<div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>--}}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                </div>
                 <div class="modal-body">
                     <ul class="nav nav-tabs customtab" role="tablist" style="margin-top:8px;">
-                        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#demandes_carto_tab" role="tab" style="font-size: 13px;"><span class="hidden-sm-up"><i class="ion-home"></i></span> <span class="hidden-xs-down m-font-bold" > DEMANDES</span></a> </li>
-                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#projets_carto_tab" role="tab" style="font-size: 13px;"><span class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down m-font-bold " >PROJETS</span></a> </li>
+                        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#demandes_carto_tab" role="tab" style="font-size: 13px;"><span class="hidden-sm-up"><i><img src="{{asset('images/svg/folder.svg')}}" style="width: 20px;"></i></span> <span class="hidden-xs-down m-font-bold" > DEMANDES</span></a> </li>
+                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#projets_carto_tab" role="tab" style="font-size: 13px;"><span class="hidden-sm-up"><i><img src="{{asset('images/svg/sketch.svg')}}" style="width: 20px;"></i></span> <span class="hidden-xs-down m-font-bold " >PROJETS</span></a> </li>
                     </ul>
 
                     <div class="tab-content" style="margin-top: 15px">
                         <div class="tab-pane active" id="demandes_carto_tab" role="tabpanel">
                             <div class="pad">
+                                <h5 style="text-decoration: underline;text-align: center">DEMANDES</h5>
                                 <div class="table-responsive">
                                     <table class="table table-hover table-striped datatables" id="demandes_carto_datatables" style="width:100% ;" >
                                         <thead>
-                                            <th style="width: 1% !important">N°</th>
-                                            <th>Date réception</th>
-                                            <th style="width: 1% !important">Objet</th>
-                                            <th >Commune</th>
-                                            <th>L(km)</th>
-                                            <th>Etat</th>
+                                        <th style="width: 1% !important">N°</th>
+                                        <th>Date réception</th>
+                                        <th style="width: 1% !important">Objet</th>
+                                        <th >Commune</th>
+                                        <th>L(km)</th>
+                                        <th>Etat</th>
                                         </thead>
                                     </table>
                                 </div>
@@ -241,16 +262,17 @@
 
                         <div class="tab-pane " id="projets_carto_tab" role="tabpanel">
                             <div class="pad">
+                                <h5 style="text-decoration: underline;text-align: center">PROJETS</h5>
                                 <div class="table-responsive">
                                     <table class="table table-hover table-striped datatables" id="projets_carto_datatables" style="width:100% ;" >
                                         <thead>
-                                            <th >N°</th>
-                                            <th >Objet</th>
-                                            <th >Commune</th>
-                                            <th>L(km)</th>
-                                            <th>Programme</th>
-                                            <th>Etat</th>
-                                            <th>Année</th>
+                                        <th >N°</th>
+                                        <th >Objet</th>
+                                        <th >Commune</th>
+                                        <th>L(km)</th>
+                                        <th>Programme</th>
+                                        <th>Etat</th>
+                                        <th>Année</th>
                                         </thead>
                                     </table>
                                 </div>
@@ -259,13 +281,14 @@
                     </div>
 
                 </div>
-                <hr>
-                <div class="modal-footer modal-footer-uniform">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-bold btn-pure btn-danger-table pull-right" data-dismiss="modal"><i class="fa fa-close"></i><b>Annuler</b></button>
                 </div>
-
+                {!! Form::close() !!}
             </div>
+            <!-- /.modal-content -->
         </div>
+        <!-- /.modal-dialog -->
     </div>
 @endsection
 
@@ -345,7 +368,7 @@
 
 
 
-<script src="{{asset('js/carto/carto.js')}}"></script>
+<script src="{{asset('js/carto/carto_mobile.js')}}"></script>
 <script src="{{asset('js/carto/demandes_datatables.js')}}"></script>
 <script src="{{asset('js/carto/projets_datatables.js')}}"></script>
 
@@ -384,7 +407,12 @@
 
     $('#search_carto_modal_show').on('click',function(){
         $('#search_carto_modal').modal('show');
-    })
+    });
+
+
+    $('#search_carto_modal_show').on('click',function(){
+        sidebar.hide();
+    });
 
 </script>
 @endpush

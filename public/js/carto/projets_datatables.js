@@ -4,7 +4,7 @@ $(document).ready(function () {
     projetsCartoTable = $('#projets_carto_datatables').DataTable({
         processing: true,
         serverSide: true,
-        pageLength: 15,
+        pageLength: 10,
         bInfo : false,
         info : false,
         bLengthChange : false,

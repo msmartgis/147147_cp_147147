@@ -6,18 +6,26 @@ var pistesbounds;
 var sidebar;
 var osmUrl = 'https://www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}',
     osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    baselayer = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
+    baselayer = L.tileLayer(osmUrl, {maxZoom: 18, attribution: ''}),
+    hybrid   = L.tileLayer('https://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {maxZoom: 18, attribution: ''}),
+    road   = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
     map = new L.Map('map', {layers: [baselayer], center: new L.LatLng(29.504514364812469, -9.599814615107725), zoom: 15,zoomControl: false});
 
 // or, add to an existing map:
-map.addControl(new L.Control.Fullscreen());
+//map.addControl(new L.Control.Fullscreen());
 
-L.control.zoom({
-    position:'topright'
-}).addTo(map);
+
+var baseMaps = {
+    '<img src="/images/hybrid.png" id="hybrid_btn" class="m-layer-image">' : baselayer,
+    '<img src="/images/satellite.png" id="satellite_btn" class="m-layer-image ">' : hybrid,
+    '<img src="/images/road.png" id="satellite_btn" class="m-layer-image ">' : road
+};
+
+L.control.layers(baseMaps).addTo(map);
 
 //easy button
 //sidebar
+
 var sidebar = L.control.sidebar('sidebar', {
     closeButton: true,
     position: 'left'
@@ -432,45 +440,8 @@ function checkbox_couches(id,checked)
             Routes_Provinciales_Layer.addTo(map);
         }
     }
-
-
-
-
 }
 
-// map layers changing
 
-$("#hybrid_btn").click(function () {
-    $('#satellite_btn').removeClass().addClass('baselayer_btn');
-    $('#hybrid_btn').removeClass().addClass('baselayer_btn active');
-    $('#road_btn').removeClass().addClass('baselayer_btn');
-    $('#none_btn').removeClass().addClass('baselayer_btn');
-    baselayer.remove();
-    baselayer = L.tileLayer('https://www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}', { maxZoom: 19, attribution: '' }).addTo(map);
-});
-$("#satellite_btn").click(function () {
-    $('#satellite_btn').removeClass().addClass('baselayer_btn active');
-    $('#hybrid_btn').removeClass().addClass('baselayer_btn ');
-    $('#road_btn').removeClass().addClass('baselayer_btn');
-    $('#none_btn').removeClass().addClass('baselayer_btn');
-    baselayer.remove();
-    baselayer = L.tileLayer('https://www.google.com/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', { maxZoom: 19, attribution: '' }).addTo(map);
 
-});
-$("#road_btn").click(function () {
-    $('#satellite_btn').removeClass().addClass('baselayer_btn');
-    $('#hybrid_btn').removeClass().addClass('baselayer_btn ');
-    $('#road_btn').removeClass().addClass('baselayer_btn active');
-    $('#none_btn').removeClass().addClass('baselayer_btn');
-    baselayer.remove();
-    baselayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '' }).addTo(map);
-
-});
-$("#none_btn").click(function () {
-    $('#satellite_btn').removeClass().addClass('baselayer_btn');
-    $('#hybrid_btn').removeClass().addClass('baselayer_btn ');
-    $('#road_btn').removeClass().addClass('baselayer_btn');
-    $('#none_btn').removeClass().addClass('baselayer_btn active');
-    baselayer.remove();
-});
 

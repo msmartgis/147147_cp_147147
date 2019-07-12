@@ -1,9 +1,12 @@
 
 <!--SIDEBAR--->
 <div id="sidebar" style="padding: 0">
-    <div class="col-lg-12" style="text-align: center">
-        <button type="button" class="btn btn-success-table" id="search_carto_modal_show" data-toggle="modal" data-target="#search_carto_modal"  style="font-size: 16px;font-weight: 600;margin-top: 0"><i class="fa fa-search" style="margin-left: 8px"></i>
-            Rechercher</button>
+       <div class="row" style="text-align: center">
+        <div class="col-12">
+            <button type="button" class="btn btn-success-table" id="search_carto_modal_show" data-toggle="modal" data-target="#search_carto_modal"  style="font-size: 16px;font-weight: 600;margin-top: 0"><i class="fa fa-search" style="margin-left: 8px"></i>
+                Rechercher
+            </button>
+        </div>
     </div>
     <div class="drawer-heading" style="padding: 0px 15px !important;">
         <h3 class="drawer-title" ><img src="{{asset('svg/data_filter.svg')}}" style="width : 30px;height: 30px;margin-right: 6px;    margin-bottom: 8px;">Filtres</h3>

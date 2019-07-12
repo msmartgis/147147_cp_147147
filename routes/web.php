@@ -125,6 +125,8 @@ Route::group(
         Route::get('/carto/projetsCarto', 'ProjetController@getProjetsCarto');
 
 
+
+
         //profile
         Route::get('/profile', 'ProfilesController@index');
 

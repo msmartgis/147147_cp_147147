@@ -36,18 +36,41 @@ class CartographieController extends Controller
         $programmes = Programme::all();
 
         $sourceFincancement = SourceFinancement::all();
-        return view('cartographie.index')->with([
-            'communes' => $communes,
-            'localites' => $localites,
-            'partenaires_types' => $partenaires_types,
-            'moas' => $moas,
-            'porteurs' => $porteurs,
-            'sessions' => $sessions,
-            'interventions' => $interventions,
-            'programmes' => $programmes,
-            'sourceFincancement'=> $sourceFincancement,
-            'is_mobile' => Device::Device()
-        ]);
+
+        $is_mobile =  Device::Device();
+
+        if($is_mobile == 0)
+        {
+            return view('cartographie.index')->with([
+                'communes' => $communes,
+                'localites' => $localites,
+                'partenaires_types' => $partenaires_types,
+                'moas' => $moas,
+                'porteurs' => $porteurs,
+                'sessions' => $sessions,
+                'interventions' => $interventions,
+                'programmes' => $programmes,
+                'sourceFincancement'=> $sourceFincancement,
+                'is_mobile' => Device::Device()
+            ]);
+        }
+        else{
+            return view('cartographie.mobile.index_mobile')->with([
+                'communes' => $communes,
+                'localites' => $localites,
+                'partenaires_types' => $partenaires_types,
+                'moas' => $moas,
+                'porteurs' => $porteurs,
+                'sessions' => $sessions,
+                'interventions' => $interventions,
+                'programmes' => $programmes,
+                'sourceFincancement'=> $sourceFincancement,
+                'is_mobile' => Device::Device()
+            ]);
+        }
+
+
+
     }
 
     /**
