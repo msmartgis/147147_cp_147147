@@ -1,5 +1,5 @@
 
-var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+var osmUrl = 'https://www.google.com/maps/vt?lyrs=y@189&gl=cn&x={x}&y={y}&z={z}',
     osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     baselayer = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
     map = new L.Map('map', {layers: [baselayer], center: new L.LatLng(29.504514364812469, -9.599814615107725), zoom: 14,zoomControl: false});

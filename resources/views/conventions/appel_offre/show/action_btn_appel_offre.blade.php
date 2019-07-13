@@ -14,11 +14,11 @@
                 <div ><i class="fa fa-thumbs-up"></i> Excel </div>
             </a>
         </div>
-
+        @if($is_mobile == 0)
         <a href="{{ route('appelOffre.create') }}" class="btn btn-secondary pull-right" style="margin-right:4px"><i class="fa fa-plus" style="margin-right: 6px"></i>
             Ajouter Appel d'Offre
             </a>
-
+        @endif
     </div>
 
 

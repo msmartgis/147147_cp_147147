@@ -1,5 +1,8 @@
 <div class="tab-pane " id="realises_tab_panel" role="tabpanel">
     <div class="pad">
+        @if($is_mobile == 1)
+            <h4 style="text-align: center;text-decoration: underline">REALISES</h4>
+        @endif
         @include('projets.show.filters_projet_realise')
         <div class="table-responsive">
             <table class="table table-hover table-striped datatables" id="projet_realise_datatables" style="width:100% ;" >

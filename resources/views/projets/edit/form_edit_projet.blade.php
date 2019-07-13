@@ -8,6 +8,33 @@
                 <div class="box" style="border-top: 0;border-bottom: 0">
                     <!-- /.box-header -->
                     <div class="box-body">
+                    @if($is_mobile == 1)
+                        @include('inc.go_back_btn_mobile')
+                            @if(empty($convention->appelOffres))
+                                <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                    PROGRAMME
+
+                                </h5>
+
+                            @else
+                                @if($convention->realise == 0)
+                                    @if($convention->appelOffres->ordre_service == 1)
+                                        <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                            EN COURS D'EXECUTION
+                                        </h5>
+                                    @else
+                                        <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                            APPEL D'OFFRE
+                                        </h5>
+
+                                    @endif
+                                @else
+                                    <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                        REALISE
+                                    </h5>
+                            @endif
+                        @endif
+                    @endif
                         <!-- Tab panes -->
                         <div class="tab-content">
                             {{--tab informations generales--}}
@@ -80,6 +107,30 @@
 
                                     <h5>OBJET</h5>
                                     <hr style="color:#2d353c;margin:0">
+                                    @if($is_mobile == 1)
+                                        <div class="row">
+                                            <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <div class="form-group">
+
+                                                    <div class="controls">
+                                                        {{Form::textarea('objet_fr',$convention->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important' ,'disabled' => 'disabled'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row" style="margin-top: 8px !important;">
+                                            <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <div class="controls">
+                                                        {{Form::textarea('objet_ar',$convention->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    @else
                                     <div class="row" style="margin-top: 8px">
                                         <div class="col-lg-6">
                                             <div class="form-group">
@@ -97,6 +148,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endif
                                     <!-- /.row -->
                                     <h5>INTERVENTIONS </h5>
                                     <hr style="color:#2d353c;margin:0">
@@ -157,22 +209,24 @@
                                     <div class="row">
                                         <div class=" col-12">
                                             <div id="map" style="border: solid 1px #666666;box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);"></div>
-                                            <div class="cmodali active" style=" width: 300px;  height: 100px;left:calc(100% - 320px);top:calc(100% - 72px);z-index:1;">
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <img id="satellite_btn" cl class="baselayer_btn active" src="{{asset('images/satellite.png')}}" />
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <img id="hybrid_btn" class="baselayer_btn" src="{{asset('images/hybrid.png')}}" />
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <img id="road_btn" class="baselayer_btn" src="{{asset('images/road.png')}}" />
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <img id="none_btn" class="baselayer_btn" src="{{asset('images/none.png')}}" />
+                                            @if($is_mobile == 0)
+                                                <div class="cmodali active" style=" width: 300px;  height: 100px;left:calc(100% - 320px);top:calc(100% - 72px);z-index:1;">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <img id="satellite_btn" cl class="baselayer_btn active" src="{{asset('images/satellite.png')}}" />
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <img id="hybrid_btn" class="baselayer_btn" src="{{asset('images/hybrid.png')}}" />
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <img id="road_btn" class="baselayer_btn" src="{{asset('images/road.png')}}" />
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <img id="none_btn" class="baselayer_btn" src="{{asset('images/none.png')}}" />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                     @if($convention->is_project != 0 )
@@ -184,7 +238,9 @@
                                                     <tr style="text-align: center;">
                                                         <th>Nom</th>
                                                         <th>Upload</th>
-                                                        <th></th>
+                                                        @if($is_mobile == 0)
+                                                            <th></th>
+                                                        @endif
                                                     </tr>
                                                     <tbody id="etat_tbody">
                                                     @foreach ($etats as $item)
@@ -230,11 +286,12 @@
                                                             <td style="text-align: center">
                                                                 {{$item->date}}
                                                             </td>
-
-                                                            <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-etat" data-id="etat_{{$item->id}}" style="display: none;"><i class="fa fa-close"></i>
-                                                                    Supprimer</button>
-                                                            </td>
+                                                            @if($is_mobile == 0)
+                                                                <td style="text-align: center">
+                                                                    <button type="button" class="btn btn-danger-table delete-etat" data-id="etat_{{$item->id}}" style="display: none;"><i class="fa fa-close"></i>
+                                                                        Supprimer</button>
+                                                                </td>
+                                                            @endif
                                                         </tr>
                                                     @endforeach
                                                     <tr>
@@ -542,33 +599,35 @@
         <div class="h-p100  bg-light bg-secondary-gradient" style="padding-right: 5px">
             <div class="box bg-transparent no-border no-shadow ">
                 <div class="box-body no-padding mailbox-nav ">
-                    @include('inc.go_back_btn')
-                    @if(empty($convention->appelOffres))
-                        <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
-                            PROGRAMME
+                    @if($is_mobile == 0)
+                        @include('inc.go_back_btn')
 
-                        </h5>
+                        @if(empty($convention->appelOffres))
+                            <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                PROGRAMME
 
-                        @else
-                        @if($convention->realise == 0)
-                            @if($convention->appelOffres->ordre_service == 1)
-                                <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
-                                    EN COURS D'EXECUTION
-                                </h5>
+                            </h5>
+
+                            @else
+                            @if($convention->realise == 0)
+                                @if($convention->appelOffres->ordre_service == 1)
+                                    <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                        EN COURS D'EXECUTION
+                                    </h5>
+                                @else
+                                    <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                        APPEL D'OFFRE
+                                    </h5>
+
+                                @endif
                             @else
                                 <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
-                                    APPEL D'OFFRE
+                                    REALISE
                                 </h5>
-
                             @endif
-                        @else
-                            <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
-                                REALISE
-                            </h5>
                         @endif
+
                     @endif
-
-
 
 
                     <div class="row row-edit" style="margin-top: 8px">

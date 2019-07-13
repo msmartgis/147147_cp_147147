@@ -11,9 +11,15 @@
                     <div class="box-body">
                         <!-- Tab panes -->
                         <div class="tab-content">
+                            @if($is_mobile == 1)
+                                @include('inc.go_back_btn_mobile')
+                            @endif
                             {{--tab informations generales--}}
                             <div class="tab-pane active" id="information_generale_tab" role="tabpanel">
                                 <div class="pad">
+                                    @if($is_mobile == 1)
+                                        <h4 style="text-align: center;text-decoration: underline">INFORMATIONS GENERALES</h4>
+                                    @endif
                                     <h5>Maitre D'OUVRAGE </h5>
                                     <hr style="color:#2d353c;margin:0">
                                     <div class="row" style="margin-top: 8px">
@@ -82,23 +88,48 @@
 
                                     <h5>OBJET</h5>
                                     <hr style="color:#2d353c;margin:0">
-                                    <div class="row" style="margin-top: 8px">
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
+                                        @if($is_mobile == 1)
+                                            <div class="row">
+                                                <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                                                    <div class="form-group">
 
-                                                <div class="controls">
-                                                    {{Form::textarea('objet_fr',$convention->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+                                                        <div class="controls">
+                                                            {{Form::textarea('objet_fr',$convention->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important' ,'disabled' => 'disabled'])}}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <div class="controls">
-                                                    {{Form::textarea('objet_ar',$convention->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+
+
+                                            <div class="row" style="margin-top: 8px !important;">
+                                                <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            {{Form::textarea('objet_ar',$convention->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        @else
+                                            <div class="row" style="margin-top: 8px">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+
+                                                        <div class="controls">
+                                                            {{Form::textarea('objet_fr',$convention->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            {{Form::textarea('objet_ar',$convention->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+
                                     <!-- /.row -->
                                     <h5>INTERVENTIONS </h5>
                                     <hr style="color:#2d353c;margin:0">
@@ -129,7 +160,9 @@
                                                         <th>Nom</th>
                                                         <th>Upload</th>
                                                         <th></th>
+                                                        @if($is_mobile == 0)
                                                         <th></th>
+                                                        @endif
                                                     </tr>
                                                     <tbody id="pieces_tbody">
                                                     @foreach ($convention->piece as $item)
@@ -164,7 +197,7 @@
                                                                 @endswitch
                                                             </td>
                                                             <td style="text-align: center">
-                                                                {{$item->path}}
+                                                                {{ str_limit($item->path, 15, '...') }}
                                                             </td>
                                                             <td style="text-align: center;">
                                                                     <a href="/files/download/conventions/{{$convention->id}}/{{$item->path}}">
@@ -174,10 +207,12 @@
                                                                     </a>
 
                                                             </td>
+                                                            @if($is_mobile == 0)
                                                             <td style="text-align: center">
                                                                 <button type="button" class="btn btn-danger-table delete-piece" data-file_name="{{$item->path}}" data-file_id="{{$item->id}}"  data-directory="conventions" data-object_id="{{$convention->id}}"><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
+                                                            @endif
                                                         </tr>
                                                     @endforeach
 
@@ -206,7 +241,9 @@
                                                         <th>Nom partenaire</th>
                                                         <th>Montant(DH)</th>
                                                         <th>Pourcentage(%)</th>
+                                                        @if($is_mobile == 0)
                                                         <th></th>
+                                                        @endif
                                                     </tr>
                                                     <tbody id="partenaire_tbody">
                                                     @foreach ($convention->partenaires as $item)
@@ -221,10 +258,12 @@
                                                             <td style="text-align: center">
                                                                 {{number_format($item->pivot->montant/($convention->montant_global)*100,2)}}
                                                             </td>
+                                                            @if($is_mobile == 0)
                                                             <td style="text-align: center">
                                                                 <button type="button" class="btn btn-danger-table delete-partenaire" data-id="{{$convention->id}}_{{$item->id}}"><i class="fa fa-close"></i>
                                                                     Supprimer</button>
                                                             </td>
+                                                            @endif
                                                         </tr>
                                                     @endforeach
                                                     <tr>
@@ -249,6 +288,9 @@
                             {{--tab localisation de projet--}}
                             <div class="tab-pane " id="localisation_projet_tab" role="tabpanel">
                                 <div class="pad">
+                                    @if($is_mobile == 1)
+                                        <h4 style="text-align: center;text-decoration: underline">LOCALISATION DU PROJET</h4>
+                                    @endif
 
                                     <div class="row" style="margin-top: 8px">
                                         <div class="col-lg-12">
@@ -292,6 +334,7 @@
                                     <div class="row">
                                         <div class=" col-12">
                                             <div id="map" style="border: solid 1px #666666;box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);"></div>
+                                            @if($is_mobile == 0)
                                             <div class="cmodali active" style=" width: 300px;  height: 100px;left:calc(100% - 320px);top:calc(100% - 72px);z-index:1;">
                                                 <div class="row">
                                                     <div class="col-md-3">
@@ -308,6 +351,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            @endif
                                         </div>
 
                                     </div>
@@ -319,6 +363,9 @@
                             {{--tab observation et remarques--}}
                             <div class="tab-pane" id="observation_remarques_tab" role="tabpanel">
                                 <div class="pad">
+                                    @if($is_mobile == 1)
+                                        <h4 style="text-align: center;text-decoration: underline">OBSERVATIONS ET REMARQUES</h4>
+                                    @endif
 
                                     <div class="col-12" style="margin-top : 8px">
                                         <div class="form-group">
@@ -341,8 +388,9 @@
         <div class="h-p100  bg-light bg-secondary-gradient" style="padding-right: 5px">
             <div class="box bg-transparent no-border no-shadow ">
                 <div class="box-body no-padding mailbox-nav">
-
-                    @include('inc.go_back_btn')
+                    @if($is_mobile == 0)
+                        @include('inc.go_back_btn')
+                    @endif
 
                     <div class="row row-edit">
                         <div class="col-lg-3">
@@ -380,20 +428,23 @@
                             </div>
                         </div>
                     </div>
-
+                        @if($is_mobile == 0)
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        @endif
                     <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <h5>Edition : </h5>
-                    <hr>
-                    <button type="button" id="activate_edit_btn" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-edit" style="margin-right: 8px;"></i>Activer la modification</button>
-                    <button type="submit" class="btn  btn-secondary-edit" style="color : #2bc509" ><i class="fa fa-save" style="margin-right: 8px;" disabled></i>Enregistrer</button>
+                        @if($is_mobile == 0)
+                        <h5>Edition : </h5>
+                        <hr>
+                        <button type="button" id="activate_edit_btn" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-edit" style="margin-right: 8px;"></i>Activer la modification</button>
+                        <button type="submit" class="btn  btn-secondary-edit" style="color : #2bc509" ><i class="fa fa-save" style="margin-right: 8px;" disabled></i>Enregistrer</button>
+                        @endif
                     {!! Form::close() !!}
                     <div  style="margin-right: 8px !important;">
                         <button type="button" class="btn  btn-secondary-edit" id="supprimer_convention" data-id="{{$convention->id}}" style="color : #ff0f0f;"><i class="fa fa-trash" style="margin-right: 8px;"></i>Supprimer</button>

@@ -9,8 +9,54 @@
                     <div class="box-body">
                     <!-- Tab panes -->
                         <div class="tab-content">
+                            @if($is_mobile == 1)
+                                    @include('inc.go_back_btn_mobile')
+
+                                @if($demande->is_affecter != '1' && $demande->etat == 'sans')
+                                    <h4 class="header-state">
+                                        @switch($demande->decision)
+                                        @case("en_cours")
+                                        En cours
+                                        @break
+                                        @case("a_traiter")
+                                        A traiter
+                                        @break
+                                        @case("accord_definitif")
+                                        Accord définitif
+                                        @break
+                                        @default
+                                        @endswitch
+                                    </h4>
+                                @endif
+
+                                @if($demande->is_affecter == '1' && $demande->etat == 'sans')
+                                    <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                        AFFECTEE AUX CONVENTIONS
+                                    </h5>
+                                @endif
+
+                                @if($demande->etat != 'sans')
+                                    @if( $demande->etat == 'realisee')
+                                        <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                            REALISEE DANS D'AUTRES PROGRAMMES
+                                        </h5>
+                                        <br>
+                                    @else
+                                        <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                            PROGRAMMEE DANS D'AUTRES PROGRAMMES
+                                        </h5>
+                                        <br>
+                                    @endif
+
+                                @endif
+                            @endif
+
+
                             {{--tab informations generales--}}
                             <div class="tab-pane active" id="information_generale_tab" role="tabpanel">
+                                @if($is_mobile == 1)
+                                    <h4 style="text-align: center;text-decoration: underline">INFORMATIONS GENERALES</h4>
+                                @endif
                                 <div class="pad">
                                     <h5>PORTEUR DE PROJET</h5>
                                     <hr style="color:#2d353c;margin:0">
@@ -35,23 +81,51 @@
 
                                     <h5>OBJET</h5>
                                     <hr style="color:#2d353c;margin:0">
-                                    <div class="row" style="margin-top: 8px">
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
+                                    @if($is_mobile == 1)
+                                        <div class="row">
+                                            <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <div class="form-group">
 
-                                                <div class="controls">
-                                                    {{Form::textarea('objet_fr',$demande->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important' ,'disabled' => 'disabled'])}}
+                                                    <div class="controls">
+                                                        {{Form::textarea('objet_fr',$demande->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important' ,'disabled' => 'disabled'])}}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <div class="controls">
-                                                    {{Form::textarea('objet_ar',$demande->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+
+
+                                        <div class="row" style="margin-top: 8px !important;">
+                                            <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <div class="controls">
+                                                        {{Form::textarea('objet_ar',$demande->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+
+                                     @else
+                                        <div class="row" style="margin-top: 8px">
+                                            <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <div class="form-group">
+
+                                                    <div class="controls">
+                                                        {{Form::textarea('objet_fr',$demande->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important' ,'disabled' => 'disabled'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <div class="controls">
+                                                        {{Form::textarea('objet_ar',$demande->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
+
                                     <!-- /.row -->
                                     <h5>INTERVENTIONS </h5>
                                     <hr style="color:#2d353c;margin:0">
@@ -82,7 +156,10 @@
                                                         <th>Nom</th>
                                                         <th>Upload</th>
                                                         <th></th>
-                                                        <th></th>
+                                                        @if($is_mobile == 0)
+                                                            <th></th>
+                                                        @endif
+
                                                     </tr>
                                                     <tbody id="pieces_tbody">
                                                     @foreach ($demande->piece as $item)
@@ -117,25 +194,35 @@
                                                                 @endswitch
                                                             </td>
                                                             <td style="text-align: center">
-                                                                {{$item->path}}
+                                                                {{ str_limit($item->path, 15, '...') }}
                                                             </td>
 
 
                                                             <td style="text-align: center;">
                                                                 @if($item->path != '')
-                                                                    <a href="/files/download/demandes/{{$demande->id}}/{{$item->path}}">
-                                                                        <button type="button"  class="btn btn-secondary-table " disabled>
-                                                                            <i class="fa fa-download"></i>
-                                                                            Télécharger</button>
-                                                                    </a>
+                                                                    @if($is_mobile == 1)
+                                                                        <a href="/files/download/demandes/{{$demande->id}}/{{$item->path}}">
+                                                                            <button type="button"  class="btn btn-secondary-table " >
+                                                                                <i class="fa fa-download"></i>
+                                                                                Télécharger</button>
+                                                                        </a>
+                                                                        @else
+                                                                        <a href="/files/download/demandes/{{$demande->id}}/{{$item->path}}">
+                                                                            <button type="button"  class="btn btn-secondary-table " disabled>
+                                                                                <i class="fa fa-download"></i>
+                                                                                Télécharger</button>
+                                                                        </a>
+                                                                    @endif
+
                                                                 @endif
 
                                                             </td>
-
-                                                            <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-piece" data-file_name="{{$item->path}}" data-file_id="{{$item->id}}"  data-directory="demandes" data-object_id="{{$demande->id}}" disabled><i class="fa fa-close"></i>
-                                                                    Supprimer</button>
-                                                            </td>
+                                                            @if($is_mobile == 0)
+                                                                <td style="text-align: center">
+                                                                    <button type="button" class="btn btn-danger-table delete-piece" data-file_name="{{$item->path}}" data-file_id="{{$item->id}}"  data-directory="demandes" data-object_id="{{$demande->id}}" disabled><i class="fa fa-close"></i>
+                                                                        Supprimer</button>
+                                                                </td>
+                                                            @endif
                                                         </tr>
                                                     @endforeach
 
@@ -164,7 +251,9 @@
                                                         <th>Nom partenaire</th>
                                                         <th>Montant(DH)</th>
                                                         <th>Pourcentage(%)</th>
-                                                        <th></th>
+                                                        @if($is_mobile == 0)
+                                                            <th></th>
+                                                        @endif
                                                     </tr>
                                                     <tbody id="partenaire_tbody">
                                                     @foreach ($demande->partenaires as $item)
@@ -179,10 +268,12 @@
                                                             <td style="text-align: center">
                                                                 {{number_format($item->pivot->montant/($demande->montant_global)*100,2)}}
                                                             </td>
-                                                            <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-partenaire" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}" disabled><i class="fa fa-close"></i>
-                                                                    Supprimer</button>
-                                                            </td>
+                                                            @if($is_mobile == 0)
+                                                                <td style="text-align: center">
+                                                                    <button type="button" class="btn btn-danger-table delete-partenaire" data-demande="{{$demande->id}}" data-partenaire="{{$item->id}}" disabled><i class="fa fa-close"></i>
+                                                                        Supprimer</button>
+                                                                </td>
+                                                            @endif
                                                         </tr>
                                                     @endforeach
                                                     <tr>
@@ -211,7 +302,9 @@
                                                     <th>Source</th>
                                                     <th>Reference</th>
                                                     <th>Montant Total</th>
-                                                    <th></th>
+                                                    @if($is_mobile == 0)
+                                                        <th></th>
+                                                    @endif
                                                 </tr>
                                                 <tbody id="table_body_source">
                                                 <tr>
@@ -229,16 +322,18 @@
                                                         <td style="text-align: center">
                                                             {{number_format($item->pivot->montant,2)}}
                                                         </td>
-                                                        <td style="text-align: center">
-                                                            <button type="button" class="btn btn-danger-table delete-src" data-demande="{{$demande->id}}" data-src="{{$item->id}}" disabled><i class="fa fa-close"></i>
-                                                                Supprimer</button>
-                                                        </td>
+                                                        @if($is_mobile == 0)
+                                                            <td style="text-align: center">
+                                                                <button type="button" class="btn btn-danger-table delete-src" data-demande="{{$demande->id}}" data-src="{{$item->id}}" disabled><i class="fa fa-close"></i>
+                                                                    Supprimer</button>
+                                                            </td>
+                                                        @endif
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
                                             </table>
                                             <div class="col-12" style="text-align: center">
-                                                <a href="#" id="add_source" data-toggle="modal" data-target="#m-add-src-edit">
+                                                <a href="#" id="add_source" data-toggle="modal" data-target="#m-add-src-edit" style="display: none;">
                                                     <i class="fa fa-plus"></i>
                                                     <b>Ajouter Source</b>
                                                 </a>
@@ -251,8 +346,10 @@
 
                             {{--tab localisation de projet--}}
                             <div class="tab-pane " id="localisation_projet_tab" role="tabpanel">
+                                @if($is_mobile == 1)
+                                    <h4 style="text-align: center;text-decoration: underline">LOCALISATION DU PROJET</h4>
+                                @endif
                                 <div class="pad">
-
                                         <div class="row" style="margin-top: 8px">
                                             <div class="col-lg-12">
                                                 <div class="form-group">
@@ -294,22 +391,24 @@
                                         <div class="col-lg-12 col-md-4 col-sm-12 col-xs-12">
                                             <div id="map" style="border: solid 1px #666666;box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);"></div>
                                             {{--<button type="button" id="saveChanges">Save</button>--}}
-                                            <div class="cmodali active" style=" width: 300px;  height: 100px;left:calc(100% - 320px);top:calc(100% - 72px);z-index:99998;">
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <img id="satellite_btn" cl class="baselayer_btn active" src="{{asset('images/satellite.png')}}" />
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <img id="hybrid_btn" class="baselayer_btn" src="{{asset('images/hybrid.png')}}" />
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <img id="road_btn" class="baselayer_btn" src="{{asset('images/road.png')}}" />
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <img id="none_btn" class="baselayer_btn" src="{{asset('images/none.png')}}" />
+                                            @if($is_mobile == 0)
+                                                <div class="cmodali active" style=" width: 300px;  height: 100px;left:calc(100% - 320px);top:calc(100% - 72px);z-index:99998;">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <img id="satellite_btn" cl class="baselayer_btn active" src="{{asset('images/satellite.png')}}" />
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <img id="hybrid_btn" class="baselayer_btn" src="{{asset('images/hybrid.png')}}" />
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <img id="road_btn" class="baselayer_btn" src="{{asset('images/road.png')}}" />
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <img id="none_btn" class="baselayer_btn" src="{{asset('images/none.png')}}" />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @endif
 
                                         </div>
 
@@ -320,6 +419,9 @@
 
                             {{--tab observation et remarques--}}
                             <div class="tab-pane" id="observation_remarques_tab" role="tabpanel">
+                                @if($is_mobile == 1)
+                                    <h4 style="text-align: center;text-decoration: underline">OBSERVATIONS ET REMARQUES</h4>
+                                @endif
                                 <div class="pad">
 
                                     <div class="col-12" style="margin-top : 8px">
@@ -341,48 +443,52 @@
         </div>
     </div>
     <!-- /.col -->
-    <div class="col-lg-2" style="padding-left: 0px !important;">
+    <div class="col-lg-2"
+         @if($is_mobile == 0) style="padding-left: 0px  !important;"  @else  @endif>
         <div class="h-p100  bg-light bg-secondary-gradient" style="padding-right: 5px">
             <div class="box bg-transparent no-border no-shadow ">
                 <div class="box-body no-padding mailbox-nav ">
-                    @include('inc.go_back_btn')
+                    @if($is_mobile == 0)
+                        @include('inc.go_back_btn')
 
-                    @if($demande->is_affecter != '1' && $demande->etat == 'sans')
-                        <h4 class="header-state">
-                            @switch($demande->decision)
-                            @case("en_cours")
-                            En cours
-                            @break
-                            @case("a_traiter")
-                            A traiter
-                            @break
-                            @case("accord_definitif")
-                            Accord définitif
-                            @break
-                            @default
-                            @endswitch
-                        </h4>
-                    @endif
 
-                    @if($demande->is_affecter == '1' && $demande->etat == 'sans')
-                        <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
-                            AFFECTEE AUX CONVENTIONS
-                        </h5>
-                    @endif
-
-                    @if($demande->etat != 'sans')
-                        @if( $demande->etat == 'realisee')
-                            <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
-                                REALISEE DANS D'AUTRES PROGRAMMES
-                            </h5>
-                            <br>
-                         @else
-                            <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
-                                PROGRAMMEE DANS D'AUTRES PROGRAMMES
-                            </h5>
-                            <br>
+                        @if($demande->is_affecter != '1' && $demande->etat == 'sans')
+                            <h4 class="header-state">
+                                @switch($demande->decision)
+                                @case("en_cours")
+                                En cours
+                                @break
+                                @case("a_traiter")
+                                A traiter
+                                @break
+                                @case("accord_definitif")
+                                Accord définitif
+                                @break
+                                @default
+                                @endswitch
+                            </h4>
                         @endif
 
+                        @if($demande->is_affecter == '1' && $demande->etat == 'sans')
+                            <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                AFFECTEE AUX CONVENTIONS
+                            </h5>
+                        @endif
+
+                        @if($demande->etat != 'sans')
+                            @if( $demande->etat == 'realisee')
+                                <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                    REALISEE DANS D'AUTRES PROGRAMMES
+                                </h5>
+                                <br>
+                             @else
+                                <h5 style="text-align: center;background-color: #686868;color: #fff !important;border-radius: 2px;padding: 4px">
+                                    PROGRAMMEE DANS D'AUTRES PROGRAMMES
+                                </h5>
+                                <br>
+                            @endif
+
+                        @endif
                     @endif
                     <div class="row row-edit">
                         <div class="col-lg-3">
@@ -441,22 +547,27 @@
                     </div>
 
                     <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <h5>Edition : </h5>
-                    <hr>
-                    <button type="button" id="activate_edit_btn" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-edit" style="margin-right: 8px;"></i>Activer la modification</button>
-                    <button type="submit" class="btn  btn-secondary-edit" style="color : #2bc509" ><i class="fa fa-save" style="margin-right: 8px;" disabled></i>Enregistrer</button>
+                        @if($is_mobile == 0)
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                        @endif
+                    @if($is_mobile == 0)
+                        <h5>Edition : </h5>
+                        <hr>
+                        <button type="button" id="activate_edit_btn" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-edit" style="margin-right: 8px;"></i>Activer la modification</button>
+                        <button type="submit" class="btn  btn-secondary-edit" style="color : #2bc509" ><i class="fa fa-save" style="margin-right: 8px;" disabled></i>Enregistrer</button>
+                     @endif
                     {{--
                     {{Form::submit('Enregistrer les modifications',['class'=>'btn  btn-secondary-edit col-12','style'=>'margin-top : 8px !important'])}}
                     --}}
                     {!! Form::close() !!}
+                    @if($is_mobile == 0)
                     <div class="col-12" style="padding-left: 0">
                         @if($demande->is_affecter != 1)
                             <button type="button" class="btn  btn-secondary-edit" id="restaurer" data-id="{{$demande->id}}" style="color : #ea3a0a" @if ($demande->decision == "en_cours")
@@ -467,7 +578,7 @@
 
                     <button type="button" class="btn  btn-secondary-edit" id="supprimer_demande" data-id="{{$demande->id}}" style="color : #ff0f0f"><i class="fa fa-trash" style="margin-right: 8px;"></i>Supprimer</button>
 
-
+                    @endif
                     <h5>Décisions : </h5>
                     <hr>
                     <div class="row" style="margin-left: 4px;">

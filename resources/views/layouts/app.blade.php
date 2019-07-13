@@ -126,10 +126,9 @@
                 <span class="sr-only">Toggle navigation</span>
             </a>
 
-            <ul class="navbar-nav mr-auto mt-md-0">
-                <!-- .Megamenu -->
+            <ul class="navbar-nav mr-auto mt-md-0" >
 
-                <!-- /.Megamenu -->
+
             </ul>
 
             <div class="navbar-custom-menu">

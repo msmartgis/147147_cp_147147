@@ -6,25 +6,52 @@
                 <div class="box" style="border-top: 0;border-bottom: 0">
                     <!-- /.box-header -->
                     <div class="box-body">
+                        @if($is_mobile == 1)
+                            @include('inc.go_back_btn_mobile')
+                        @endif
                         <h5>OBJET</h5>
                         <hr style="color:#2d353c;margin:0">
-                        <div class="row" style="margin-top: 8px">
-                            <div class="col-lg-6">
-                                <div class="form-group">
+                        @if($is_mobile == 1)
+                            <div class="row">
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                                    <div class="form-group">
 
-                                    <div class="controls">
-                                        {{Form::textarea('objet_fr',$convention->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+                                        <div class="controls">
+                                            {{Form::textarea('objet_fr',$convention->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important' ,'disabled' => 'disabled'])}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <div class="controls">
-                                        {{Form::textarea('objet_ar',$convention->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+
+
+                            <div class="row" style="margin-top: 8px !important;">
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <div class="controls">
+                                            {{Form::textarea('objet_ar',$convention->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="row" style="margin-top: 8px">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+
+                                        <div class="controls">
+                                            {{Form::textarea('objet_fr',$convention->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="controls">
+                                            {{Form::textarea('objet_ar',$convention->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    @endif
                         <!-- /.row -->
                         <h5>INTERVENTIONS </h5>
                         <hr style="color:#2d353c;margin:0">
@@ -54,7 +81,9 @@
                                             <th>Nom partenaire</th>
                                             <th>Montant(DH)</th>
                                             <th>Pourcentage(%)</th>
-                                            <th></th>
+                                            @if($is_mobile == 0)
+                                                <th></th>
+                                            @endif
                                         </tr>
                                         <tbody id="partenaire_tbody">
                                         @foreach ($convention->partenaires as $item)
@@ -80,16 +109,17 @@
                                                 <td style="text-align: center">
                                                     {{number_format($item->pivot->montant/($convention->montant_global)*100,2)}}
                                                 </td>
-
-                                                <td style="text-align: center">
-                                                    <button type="button" class="btn btn-success-table add-versement"  data-id="{{$item->nom_fr}}_{{$item->id}}_{{$item->pivot->montant}}"
-                                                    @if($montant_verse/($item->pivot->montant)*100 == 100)
-                                                        disabled
-                                                    @endif
-                                                    style="display: none">
-                                                        <i class="fa fa-plus-circle"></i>
-                                                        Ajouter versement</button>
-                                                </td>
+                                                @if($is_mobile == 0)
+                                                    <td style="text-align: center">
+                                                        <button type="button" class="btn btn-success-table add-versement"  data-id="{{$item->nom_fr}}_{{$item->id}}_{{$item->pivot->montant}}"
+                                                        @if($montant_verse/($item->pivot->montant)*100 == 100)
+                                                            disabled
+                                                        @endif
+                                                        style="display: none">
+                                                            <i class="fa fa-plus-circle"></i>
+                                                            Ajouter versement</button>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                         <tr>
@@ -176,7 +206,9 @@
                                             <th>Nom document</th>
                                             <th>Pris en charge</th>
                                             <th></th>
-                                            <th></th>
+                                            @if($is_mobile == 0)
+                                                <th></th>
+                                            @endif
                                         </tr>
                                         <tbody id="versement_log_tbody">
                                         @php
@@ -226,12 +258,13 @@
                                                 @elseif($versement->path == "")
                                                     <td></td>
                                                 @endif
-
-                                                <td style="text-align: center; width : 15%">
-                                                    <button type="button" class="btn btn-danger-table delete-versement"  data-id="{{$versement->id}}" style="display: none">
-                                                        <i class="fa fa-times-circle"></i>
-                                                        Supprimer versement</button>
-                                                </td>
+                                                @if($is_mobile == 0)
+                                                    <td style="text-align: center; width : 15%">
+                                                        <button type="button" class="btn btn-danger-table delete-versement"  data-id="{{$versement->id}}" style="display: none">
+                                                            <i class="fa fa-times-circle"></i>
+                                                            Supprimer versement</button>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                         <tr>
@@ -254,7 +287,9 @@
         <div class="h-p100  bg-light bg-secondary-gradient" style="padding-right: 5px">
             <div class="box bg-transparent no-border no-shadow">
                 <div class="box-body no-padding mailbox-nav">
-                    @include('inc.go_back_btn')
+                    @if($is_mobile == 0)
+                        @include('inc.go_back_btn')
+                    @endif
 
 
                     <div class="row row-edit">
@@ -306,24 +341,27 @@
                             </div>
                         </div>
                     </div>
+                    @if($is_mobile == 0)
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        @endif
                     <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-
-                    <h5>Edition : </h5>
-                    <hr>
-                    <button type="button" id="activate_edit_btn" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-edit" style="margin-right: 8px;"></i>Activer la modification</button>
+                        @if($is_mobile == 0)
+                            <h5>Edition : </h5>
+                            <hr>
+                            <button type="button" id="activate_edit_btn" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-edit" style="margin-right: 8px;"></i>Activer la modification</button>
+                        @endif
                     <div  style="margin-right: 8px !important;">
                         <a href="/convention/{{$convention->id}}/edit">
                             <button type="button" class="btn btn-secondary-edit col-12"   style="margin-top: 8px !important"><i class="fa fa-file" style="margin-right: 4px"></i> Accéder aux détails du projet</button>

@@ -8,30 +8,61 @@
                 <div class="box" style="border-top: 0;border-bottom: 0">
                     <!-- /.box-header -->
                     <div class="box-body">
+                    @if($is_mobile == 1)
+                        @include('inc.go_back_btn_mobile')
+                    @endif
                     <!-- Tab panes -->
                         <div class="tab-content">
                             {{--tab informations generales--}}
                             <div class="tab-pane active" id="projet_tab" role="tabpanel">
                                 <div class="pad">
+                                    @if($is_mobile == 1)
+                                        <h4 style="text-align: center;text-decoration: underline">PROJETS CONCERNES</h4>
+                                    @endif
                                     <h5>OBJET </h5>
                                     <hr style="color:#2d353c;margin:0">
-                                    <div class="row" style="margin-top: 8px">
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
+                                    @if($is_mobile == 1)
+                                        <div class="row">
+                                            <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <div class="form-group">
 
-                                                <div class="controls">
-                                                    {{Form::textarea('objet_fr',$appelOffre->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled'=>'disabled'])}}
+                                                    <div class="controls">
+                                                        {{Form::textarea('objet_fr',$appelOffre->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important' ,'disabled' => 'disabled'])}}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <div class="controls">
-                                                    {{Form::textarea('objet_ar',$appelOffre->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled'=>'disabled'])}}
+
+
+                                        <div class="row" style="margin-top: 8px !important;">
+                                            <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <div class="controls">
+                                                        {{Form::textarea('objet_ar',$appelOffre->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled' => 'disabled'])}}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @else
+                                        <div class="row" style="margin-top: 8px">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+
+                                                    <div class="controls">
+                                                        {{Form::textarea('objet_fr',$appelOffre->objet_fr,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled'=>'disabled'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <div class="controls">
+                                                        {{Form::textarea('objet_ar',$appelOffre->objet_ar,['class'=>'form-control','rows'=>'2','style'=>'height: 52px !important','disabled'=>'disabled'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
 
                                     <h5>Maitre D'OUVRAGE </h5>
                                     <hr style="color:#2d353c;margin:0">
@@ -56,7 +87,7 @@
                                     <h5>COMMUNES CONCERNEES </h5>
                                     <hr style="color:#2d353c;margin:0">
                                     <div class="row">
-                                        <div class="col-12" style="margin-top : 8px">
+                                        <div class="col-12" style="@if($is_mobile == 0) margin-top : 8px @endif">
                                             <div class="form-group">
                                                 {{Form::select('interventions', $communes,$communes_concernees,
                                                 [
@@ -74,7 +105,7 @@
                                     <h5>INTERVENTIONS </h5>
                                     <hr style="color:#2d353c;margin:0">
                                     <div class="row">
-                                        <div class="col-12" style="margin-top : 8px">
+                                        <div class="col-12" style="@if($is_mobile == 0) margin-top : 8px @endif">
                                             <div class="form-group">
                                                 {{Form::select('interventions', $interventions,$interventions_ids,
                                                 [
@@ -275,7 +306,9 @@
                             {{--tab localisation de projet--}}
                             <div class="tab-pane " id="autres_info_tab" role="tabpanel">
                                 <div class="pad">
-
+                                    @if($is_mobile == 1)
+                                        <h4 style="text-align: center;text-decoration: underline">AUTRES INFORMATIONS ET OBSERVATIONS</h4>
+                                    @endif
                                     <div class="row">
                                         <div class="col-12" style="margin-top : 8px">
                                             <h5>DOSSIER DE CONSULTATION DES ENTREPRISES (DCE)</h5>
@@ -286,7 +319,9 @@
                                                         <th>Type</th>
                                                         <th>Nom</th>
                                                         <th></th>
-                                                        <th></th>
+                                                        @if($is_mobile == 0)
+                                                            <th></th>
+                                                        @endif
                                                     </tr>
                                                     <tbody id="pieces_tbody_dce">
                                                     @foreach ($appelOffre->dce as $item)
@@ -295,7 +330,7 @@
                                                                 {{strtoupper($item->document)}}
                                                             </td>
                                                             <td style="text-align: center">
-                                                                {{$item->file_name}}
+                                                                {{ str_limit($item->file_name, 15, '...') }}
                                                             </td>
 
                                                             <td style="text-align: center;">
@@ -307,11 +342,12 @@
                                                                 </a>
 
                                                             </td>
-
-                                                            <td style="text-align: center">
-                                                                <button type="button" class="btn btn-danger-table delete-piece" data-route="{!! route('dce.delete_piece')!!}" data-directory="appel_offres" data-file="{{$item->file_name}}" data-ao="{{$appelOffre->id}}" data-id="{{$item->id}}"><i class="fa fa-close"></i>
-                                                                    Supprimer</button>
-                                                            </td>
+                                                            @if($is_mobile == 0)
+                                                                <td style="text-align: center">
+                                                                    <button type="button" class="btn btn-danger-table delete-piece" data-route="{!! route('dce.delete_piece')!!}" data-directory="appel_offres" data-file="{{$item->file_name}}" data-ao="{{$appelOffre->id}}" data-id="{{$item->id}}"><i class="fa fa-close"></i>
+                                                                        Supprimer</button>
+                                                                </td>
+                                                            @endif
                                                         </tr>
                                                     @endforeach
                                                     <tr>
@@ -572,8 +608,10 @@
                     <br>
                     <h5>Edition : </h5>
                     <hr>
+                    @if($is_mobile == 0)
                     <button type="button" id="activate_edit_btn" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-edit" style="margin-right: 8px;"></i>Activer la modification</button>
                     <button type="submit" class="btn  btn-secondary-edit" style="color : #2bc509" ><i class="fa fa-save" style="margin-right: 8px;" disabled></i>Enregistrer</button>
+                    @endif
                     {!! Form::close() !!}
 
 
@@ -581,27 +619,27 @@
                     @if($appelOffre->etat == 'attribue')
                         disabled
                             @endif
-                    ><i class="fa fa-thumbs-o-up" style="margin-right: 8px;" disabled></i>Attribuer l'appel d'offre</button>
+                    ><i class="fa fa-thumbs-o-up" style="margin-right: 8px;" @if($is_mobile == 0) disabled @endif></i>Attribuer l'appel d'offre</button>
 
                     <button type="button" class="btn btn-secondary-edit" id="reporter_appel_offre_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important;color:#ff540a"
                             @if($appelOffre->etat == 'reporte')
                             disabled
                             @endif
-                    ><i class="fa fa-clock-o" style="margin-right: 8px;" disabled></i>Reporter l'appel d'offre</button>
+                    ><i class="fa fa-clock-o" style="margin-right: 8px;" @if($is_mobile == 0) disabled @endif></i>Reporter l'appel d'offre</button>
 
                     <button type="button" class="btn btn-secondary-edit" id="annuler_appel_offre_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important;color:#bc1d36"
                             @if($appelOffre->etat == 'annule')
                             disabled
                             @endif
-                    ><i class="fa fa-close" style="margin-right: 8px;" disabled></i>Annuler l'appel d'offre</button>
+                    ><i class="fa fa-close" style="margin-right: 8px;" @if($is_mobile == 0) disabled @endif></i>Annuler l'appel d'offre</button>
 
                     <button type="button"  class="btn btn-secondary-edit" id="ordre_service_btn"  data-id="{{$appelOffre->id}}" style="margin-top: 8px !important;color:#2bc509"
                             @if($appelOffre->etat == 'en_cours_execution')
                             disabled
                             @endif
-                    ><i class="fa fa-thumb-tack" style="margin-right: 8px;" disabled></i>Ordre de Service</button>
+                    ><i class="fa fa-thumb-tack" style="margin-right: 8px;" @if($is_mobile == 0) disabled @endif></i>Ordre de Service</button>
 
-                    <button type="button" class="btn btn-secondary-edit " id="supprimer_ao" data-id="{{$appelOffre->id}}" style="margin-top: 8px !important ;color:#ff0f0f"><i class="fa fa-trash" style="margin-right: 8px;" disabled></i>Supprimer</button>
+                    <button type="button" class="btn btn-secondary-edit " id="supprimer_ao" data-id="{{$appelOffre->id}}" style="margin-top: 8px !important ;color:#ff0f0f"><i class="fa fa-trash" style="margin-right: 8px;" @if($is_mobile == 0) disabled @endif></i>Supprimer</button>
 
                  </div>
                 <!-- /.box-body -->
