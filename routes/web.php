@@ -27,7 +27,8 @@ Route::group(
             'cartographie' => 'CartographieController',
             'statistics' => 'StatisticsController',
             'parametres' => 'ParametresController',
-            'profile' => 'ProfilesController'
+            'profile' => 'ProfilesController',
+            'pdf' => 'PDFController'
         ]);
         Route::get('/demande/create', 'DemandesController@create')->name('createDemande');
         Route::get('/demande', 'DemandesController@index')->name('indexDemande');
@@ -132,6 +133,9 @@ Route::group(
 
 
         Route::get('/profile/getUsersData', 'ProfilesController@getUsersData');
+
+        // PDF
+        Route::post('/pdf', 'PDFController@exportDemande')->name('pdf.export_demande_en_cours');
 
     }
 );

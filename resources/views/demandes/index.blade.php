@@ -207,6 +207,13 @@
 <script src="{{asset('js/jquery.masknumber.js')}}"></script>
 <script>
 
+    $(document).ready(function(){
+        $('#pdf_demande_export_btn').on('click',function(){
+            $('.en-cours-demande-form').attr('action', '/pdf');
+            $('.en-cours-demande-form').submit();
+        });
+    });
+
     //function for decision
     function decision_function(datatble_id, checkedelementsDemandesEC, url, method) {
         console.log(checkedelementsDemandesEC);
@@ -425,6 +432,9 @@
          }
          });
      }
+
+
+
 
 
 </script>

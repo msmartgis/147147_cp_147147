@@ -16,7 +16,7 @@
         <div class="col-lg-6 col-xl-6 col-md-6 col-12">
             <button class="btn btn-secondary dropdown-toggle pull-right" type="button" data-toggle="dropdown" style="background-color: #e83431 !important;border-color: #e83431 !important;" > <i class="fa fa-clock-o" style="margin-right : 6px"></i> Exporter</button>
             <div class="dropdown-menu">
-                <a class="dropdown-item " href="#">
+                <a class="dropdown-item" href="#" id="pdf_demande_export_btn">
                     <div ><i class="fa fa-edit"></i> PDF</div>
                 </a>
                 <a class="dropdown-item" href="#">
