@@ -2,6 +2,7 @@ $(document).ready(function () {
     var oTable_programmee = $('#demandes_datatables_programmee').DataTable({
         processing: true,
         serverSide: true,
+        pageLength: 15,
         language: {
             url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json",
             processing: "<img src='{{asset('images/logo.png')}}'>",

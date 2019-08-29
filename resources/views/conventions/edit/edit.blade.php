@@ -184,6 +184,7 @@
     $(document).ready(function () {
         $('#activate_edit_btn').on('click',function(){
             modification_active('form_convention_edit','a');
+            CKEDITOR.instances.editor1.setReadOnly(false);
         });
 
 

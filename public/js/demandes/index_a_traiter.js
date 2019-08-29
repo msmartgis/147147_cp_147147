@@ -5,7 +5,7 @@ $(document).ready(function () {
      demandeATaiterTable = $('#demandes_datatables_a_traiter').DataTable({
         processing: true,
         serverSide: true,
-         pageLength: 2,
+         pageLength: 15,
         language: {
             search: '', searchPlaceholder: 'Recherche...',
             url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json",

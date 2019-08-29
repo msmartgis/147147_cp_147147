@@ -7,8 +7,9 @@ $(".tab-wizard").steps({
         finish: "Enregistrer"
     },
     onFinished: function (event, currentIndex) {
-        $('.form-create').submit();
 
+        $('.form-create').submit();
+        $(this).$("a").removeAttr('href');
     }
 });
 

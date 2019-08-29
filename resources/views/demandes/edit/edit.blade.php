@@ -143,7 +143,6 @@
 
 </script>
 
-
 <script src="{{asset('mapping/libs/leaflet-src.js')}}"></script>
 <script src="{{asset('mapping/libs/easy-button.js')}}"></script>
 <script src="{{asset('mapping/Leaflet.draw.js')}}"></script>
@@ -196,8 +195,11 @@
 <script>
 $(document).ready(function () {
     //disable all input form
+    CKEDITOR.instances.editor1.config.readOnly = true;
     $('#activate_edit_btn').on('click',function(){
         modification_active('form_demande_edit','a');
+
+        CKEDITOR.instances.editor1.setReadOnly(false);
     });
 
     /*
@@ -375,7 +377,6 @@ $(document).ready(function () {
                             swal("Réussi!", message_reussi, "success");
                             setTimeout(location.reload.bind(location), 500);
                         }
-
                     }
                 });
             } else {
@@ -383,7 +384,6 @@ $(document).ready(function () {
             }
         });
     });
-
 
     //add source financement
     $('.form-add-src-edit').on('submit', function (e) {
@@ -499,9 +499,7 @@ $(document).ready(function () {
             message_sub_title = "Restaurer cette demande!!";
             url='{!! route('restaurer_demande')!!}';
             demande_mngmnt(demande_id,url,message_reussi,message_sub_title);
-
     });
-
 
           //supprimer demande
             $('#supprimer_demande').click(function(){               
@@ -512,7 +510,6 @@ $(document).ready(function () {
                 redirect = "/demande";
                 delete_function(demande_id,url,message_reussi,message_sub_title,redirect);
             });
-
 
         //demande_managemnt
     function demande_mngmnt(id, url, success_message, sub_title_message) {

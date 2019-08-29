@@ -247,8 +247,10 @@
 
 <script>
     $(document).ready(function () {
+        CKEDITOR.instances.editor1.config.readOnly = true;
         $('#activate_edit_btn').on('click',function(){
             modification_active('form_projet_edit','button');
+            CKEDITOR.instances.editor1.setReadOnly(false);
         });
 
 

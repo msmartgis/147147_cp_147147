@@ -3,6 +3,7 @@ $(document).ready(function () {
     demandeAffecteTable = $('#demandes_datatables_affectees').DataTable({
         processing: true,
         serverSide: true,
+        pageLength: 15,
         language: {
             url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json",
             processing: "<img src='{{asset('loader.gif')}}'>",

@@ -212,6 +212,12 @@
             $('.en-cours-demande-form').attr('action', '/pdf');
             $('.en-cours-demande-form').submit();
         });
+
+
+        $('#fiche_demande_en_cours_btn').on('click',function(){
+            $('.en-cours-demande-form').attr('action', '/ficheGenerate');
+            $('.en-cours-demande-form').submit();
+        });
     });
 
     //function for decision

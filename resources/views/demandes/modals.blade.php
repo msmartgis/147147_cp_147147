@@ -3,8 +3,8 @@
     <div class="modal center-modal fade " id="accordAndAffectModal" tabindex="-1">
         <div class="modal-dialog m-modal-dim">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="" id="modalTitleAccordAndAffect"></h3>
+                <div class="modal-header" style="background-color: lightgreen;padding: 0 !important;">
+                    <h3 class="" id="modalTitleAccordAndAffect" style="margin-left: 42%;"></h3>
                     <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -73,9 +73,9 @@
                                 </a>
                             </div>
 
-                            <button type="button" class="btn btn-warning " id="delete_source_financement">
+                            <button type="button" class="btn btn-danger-table " id="delete_source_financement">
                                 <i class="fa fa-times"></i>
-                                supprimer source de financement
+                                supprimer
                             </button>
                         </div>
                     </div>
@@ -103,9 +103,9 @@
                                     <b>Ajouter partenaire</b>
                                 </a>
                             </div>
-                            <button type="button" class="btn btn-warning " id="delete_partenaire">
+                            <button type="button" class="btn btn-danger-table " id="delete_partenaire">
                                 <i class="fa fa-times"></i>
-                                supprimer partenaire
+                                supprimer
                             </button>
                         </div>
                     </div>
@@ -113,8 +113,8 @@
                 </div>
                 <hr>
                 <div class="modal-footer modal-footer-uniform">
-                    <button type="button" class="btn btn-bold btn-pure btn-warning" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-bold btn-pure btn-success float-right">Affecter</button>
+                    <button type="button" class="btn btn-bold btn-pure btn-warning" data-dismiss="modal" style="background-color: red;border-color: red"><i class="fa fa-close" style="margin-right: 8px"></i>Annuler</button>
+                    <button type="submit" class="btn btn-bold btn-pure btn-success float-right" style="background-color: forestgreen;border-color: forestgreen"> <i class="fa fa-check" style="margin-right: 8px"></i>Affecter</button>
                 </div>
                 {!! Form::close() !!}
             </div>

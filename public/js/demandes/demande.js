@@ -58,8 +58,8 @@ $(document).ready(function () {
             </div>\
         </td>\
         <td>\
-            <div class=\"form-group\">\
-                <input type=\"file\" name="pieces_uploads[]"class=\"form-control\" />\
+            <div class=\"form-group\" style="margin-left: 15px;margin-top: 7px;">\
+                <input type=\"file\" name="pieces_uploads[]"class=\"form-control\"  style="border : none;height: calc(1.5em + .75rem + 2px) !important;"/>\
             </div>\
         </td>\
     </tr>';
@@ -99,6 +99,9 @@ $(document).ready(function () {
         $("#m-add-partenaire").modal('toggle');
         item_partenaire++;
     });
+
+
+
 });
 
 

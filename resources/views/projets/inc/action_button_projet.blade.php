@@ -13,7 +13,8 @@
             </a>
         </div>
 
-
+        <a href="{{ route('createProjet') }}" class="btn btn-secondary pull-right" style="margin-right:4px"><i class="fa fa-plus" style="margin-right: 6px"></i>Ajouter
+            un projet</a>
 
     </div>
 </div>

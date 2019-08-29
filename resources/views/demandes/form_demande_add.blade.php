@@ -264,7 +264,7 @@
                             </td>
 
                             <td>
-                                <div class="form-group" style="text-align: center">
+                                <div class="form-group" style="margin-left: 18px">
                                     {{Form::file('piece_upload',['name'=>'pieces_uploads[]'])}}
                                 </div>
                             </td>
@@ -277,15 +277,15 @@
                             <b> Ajouter Pièce</b>
                         </a>
                     </div>
-                    <button type="button" class="btn btn-warning delete-row" id="delete_elemtent_row_demande_btn"> <i class="fa fa-close"></i> Supprimer Document</button>
+                    <button type="button" class="btn delete-row btn-danger-table" id="delete_elemtent_row_demande_btn"> <i class="fa fa-close"></i> Supprimer Document</button>
                 </div>
             </div>
 
-
+            <h5>TYPES D'INTERVENTIONS</h5>
+            <hr>
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        {{Form::label('','Type d\'interventions:')}}
                         {{Form::select('inertventions', $interventions, null,
                         [
                         'data-placeholder' => 'Selectionner interventions(s)',
@@ -354,7 +354,7 @@
                             </tfoot>  -->
                         </table>
                     </div>
-                    <button type="button" class="btn btn-secondary delete-row">
+                    <button type="button" class="btn btn-danger-table delete-row">
                             <i class="fa fa-times"></i>
                             supprimer partenaire
                     </button>

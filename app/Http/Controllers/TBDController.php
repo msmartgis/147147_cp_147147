@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\AppelOffre;
 use App\Convention;
+use App\Demande;
 use App\Programme;
 use Illuminate\Http\Request;
 use DataTables;
@@ -31,6 +32,9 @@ class TBDController extends Controller
 
         $appel_offre = AppelOffre::all()->count();
 
+        $demandes_en_cours = Demande::where('decision','=','en_cours')->count();
+        $dm_accord_definitif = Demande::where('decision','=','accord_definitif')->count();
+
         $cout_total_projets_MDH =  $cout_total_projets / 1000000;
         return view('dashboard.dashboard')->with([
             'nombre_projet' => $nombre_projet,
@@ -39,6 +43,8 @@ class TBDController extends Controller
             'nbr_projet_programmes' => $nbr_projet_programmes,
             'appel_offre' => $appel_offre,
             'cout_total_projets' => $cout_total_projets_MDH,
+            'demandes_en_cours' => $demandes_en_cours,
+            'dm_accord_definitif' => $dm_accord_definitif,
             'is_mobile' => Device::Device()
         ]);
     }

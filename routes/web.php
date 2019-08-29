@@ -137,6 +137,8 @@ Route::group(
         // PDF
         Route::post('/pdf', 'PDFController@exportDemande')->name('pdf.export_demande_en_cours');
 
+        //word
+        Route::post('/ficheGenerate', 'FicheController@createWordDocx')->name('word.fiche');
     }
 );
 Route::group(

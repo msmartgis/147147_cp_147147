@@ -81,6 +81,38 @@
                 <div class="row">
                     <div class="col-xl-3 col-lg-3 col-md-6 col-12" >
                         <!-- small box -->
+                        <div class="small-box bg-info" style="background-color: #5cc368 !important;">
+                            <div class="inner" style="background-color: #f1f1f1;">
+                                <h3 style="color: #5cc368;">{{ $demandes_en_cours }}</h3>
+
+                                <p style="color: #5cc368;">Demandes en cours</p>
+                            </div>
+                            <div class="icon" >
+                                <i class="fa fa-tasks " style="color: #5cc368;"></i>
+                            </div>
+                            <a href="/projet" class="small-box-footer" style="z-index: 0;"><b>Voir les details </b> <i class="fa fa-arrow-right" ></i></a>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-12" >
+                        <!-- small box -->
+                        <div class="small-box bg-info" style="background-color: #c37415 !important;">
+                            <div class="inner" style="background-color: #f1f1f1;">
+                                <h3 style="color: #c37415;">{{ $dm_accord_definitif }}</h3>
+
+                                <p style="color: #c37415;">Demandes accord définitif</p>
+                            </div>
+                            <div class="icon" >
+                                <i class="fa fa-tasks " style="color: #c37415;"></i>
+                            </div>
+                            <a href="/projet" class="small-box-footer" style="z-index: 0;"><b>Voir les details </b> <i class="fa fa-arrow-right" ></i></a>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-12" >
+                        <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner" style="background-color: #f1f1f1;">
                                 <h3 style="color: #1a74c3;">{{$nombre_projet}}</h3>
@@ -108,6 +140,10 @@
                             <a href="/projet" class="small-box-footer" style="z-index: 0;"><b>Voir les details </b> <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
+                </div>
+
+
+                <div class="row">
 
                     <div class="col-xl-3 col-lg-3 col-md-6 col-12" >
                         <!-- small box -->
@@ -115,7 +151,7 @@
                             <div class="inner" style="background-color: #f1f1f1;">
                                 <h3 style="color: #ad13ef;">{{$appel_offre}}</h3>
 
-                                <p style="color: #ad13ef;">Appel d'offre </p>
+                                <p style="color: #22ef49;">Appel d'offre </p>
                             </div>
                             <div class="icon">
                                 <i class="fa fa-newspaper-o" style="color: #22ef49;"></i>
@@ -139,10 +175,6 @@
                             <a href="/projet" class="small-box-footer" style="z-index: 0;"><b>Voir les details </b> <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
-                </div>
-
-
-                <div class="row">
 
                     <div class="col-xl-3 col-lg-3 col-md-6 col-12" >
                         <!-- small box -->

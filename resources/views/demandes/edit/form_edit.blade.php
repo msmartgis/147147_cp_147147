@@ -200,19 +200,11 @@
 
                                                             <td style="text-align: center;">
                                                                 @if($item->path != '')
-                                                                    @if($is_mobile == 1)
                                                                         <a href="/files/download/demandes/{{$demande->id}}/{{$item->path}}">
                                                                             <button type="button"  class="btn btn-secondary-table " >
                                                                                 <i class="fa fa-download"></i>
                                                                                 Télécharger</button>
                                                                         </a>
-                                                                        @else
-                                                                        <a href="/files/download/demandes/{{$demande->id}}/{{$item->path}}">
-                                                                            <button type="button"  class="btn btn-secondary-table " disabled>
-                                                                                <i class="fa fa-download"></i>
-                                                                                Télécharger</button>
-                                                                        </a>
-                                                                    @endif
 
                                                                 @endif
 
@@ -409,9 +401,7 @@
                                                     </div>
                                                 </div>
                                             @endif
-
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -423,11 +413,9 @@
                                     <h4 style="text-align: center;text-decoration: underline">OBSERVATIONS ET REMARQUES</h4>
                                 @endif
                                 <div class="pad">
-
                                     <div class="col-12" style="margin-top : 8px">
                                         <div class="form-group">
-
-                                            {{Form::textarea('observation', $demande->observation, ['id' => 'editor1', 'class' => 'form-control', 'placeholder' => 'Body Text','disabled' => 'disabled'])}}
+                                            {{Form::textarea('observation', $demande->observation, ['id' => 'editor1', 'class' => 'form-control', 'placeholder' => 'Body Text'])}}
                                         </div>
                                     </div>
 

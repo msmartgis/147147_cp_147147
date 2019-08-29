@@ -8,7 +8,7 @@ $(document).ready(function () {
     demandesEnCoursTable = $('#demandes_datatables').DataTable({
         processing: true,
         serverSide: true,
-        pageLength: 2,
+        pageLength: 15,
         bInfo : false,
         info : false,
         bLengthChange : false,
