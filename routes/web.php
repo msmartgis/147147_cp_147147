@@ -28,7 +28,12 @@ Route::group(
             'statistics' => 'StatisticsController',
             'parametres' => 'ParametresController',
             'profile' => 'ProfilesController',
-            'pdf' => 'PDFController'
+            'pdf' => 'PDFController',
+            'user' => 'UsersController',
+            'session' => 'SessionController',
+            'porteur' => 'PorteurController',
+            'sourceFincancement' => 'SourceFinancementController'
+
         ]);
         Route::get('/demande/create', 'DemandesController@create')->name('createDemande');
         Route::get('/demande', 'DemandesController@index')->name('indexDemande');
@@ -126,6 +131,21 @@ Route::group(
         Route::get('/carto/projetsCarto', 'ProjetController@getProjetsCarto');
 
 
+        // PARAMETRES
+        Route::get('/settings/elementData/{id}', 'ParametresController@getDataElement');
+        Route::get('/settings/users', 'ParametresController@getUsers');
+        Route::get('/settings/associations', 'ParametresController@getAssoc');
+        Route::get('/settings/sources', 'ParametresController@getSource');
+        Route::get('/settings/sessions', 'ParametresController@getSession');
+        Route::post('/user/delete', 'UsersController@deleteUser')->name('user.delete');
+        Route::post('/user/update_user', 'UsersController@update_user')->name('user.update_user');
+
+        Route::post('/src/update_src', 'SourceFinancementController@update_src')->name('src.update_src');
+        Route::post('/porteur/update_assoc', 'PorteurController@update_assoc')->name('porteur.update_asoc');
+        Route::post('/session/delete', 'SessionController@deleteSession')->name('session.delete');
+        Route::post('/session/update_session', 'SessionController@update_session')->name('session.update_session');
+        Route::post('/porteur/delete_assoc', 'PorteurController@deleteAssoc')->name('porteur.delete_assoc');
+        Route::post('/source_financement/delete_src_setting', 'SourceFinancementController@deleteSrcSetting')->name('source.delete_setting');
 
 
         //profile

@@ -24,7 +24,7 @@ class PorteurController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -35,7 +35,18 @@ class PorteurController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $porteur = new Porteur();
+        $porteur->type = 'assoc';
+        $porteur->nom_porteur_fr = $request->nom_porteur_fr;
+        $porteur->nom_porteur_ar = $request->nom_porteur_ar;
+        $porteur->adresse = $request->adresse;
+        $porteur->save();
+
+
+        if($porteur)
+        {
+            return redirect('/parametres')->with('success', 'Association ajoutée avec succès');
+        }
     }
 
     /**
@@ -82,4 +93,26 @@ class PorteurController extends Controller
     {
         //
     }
+
+
+    public function update_assoc(Request $request)
+    {
+        $assoc_to_update = Porteur::find($request->id);
+        $assoc_to_update->nom_porteur_fr = $request->nom_porteur_fr;
+        $assoc_to_update->nom_porteur_ar = $request->nom_porteur_ar;
+        $assoc_to_update->adresse = $request->adresse;
+
+        $assoc_to_update->save();
+        return redirect("/parametres")->with('success', 'Modification a été éffectuer avec succès');
+    }
+
+
+    public function deleteAssoc(Request $req)
+    {
+        $assoc = Porteur::where('id','=',$req->id)->where('type','=','assoc');
+        $assoc->delete();
+        return response()->json();
+    }
+
+
 }

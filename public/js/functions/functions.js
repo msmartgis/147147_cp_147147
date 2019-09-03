@@ -2,8 +2,6 @@
 //point desservi
 
 $(document).ready(function(){
-
-
 //delete piece
     $('.delete-row').click(function () {
         removeRowFromTable("pieces_tbody");
@@ -77,10 +75,9 @@ function modification_active(form_id,buttons_to_activate){
         hideAfter: 4000,
         stack: 6
     });
-
-
-
 }
+
+
 
 
 

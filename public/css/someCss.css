@@ -657,4 +657,30 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected{
 }
 
 
+.m-header-style
+{
+    background-color: #2ecc71;
+    padding: 0 !important;
+}
+
+.m-modal-title
+{
+    margin-left: 42%;
+    color : white !important;
+}
+
+.m-btn-cancel-modal
+{
+    background-color: red !important;
+    border-color: red !important;
+}
+
+
+.m-btn-submit-modal
+{
+    background-color: forestgreen !important;
+    border-color: forestgreen !important;
+}
+
+
 

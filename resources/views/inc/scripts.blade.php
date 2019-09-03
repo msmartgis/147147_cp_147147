@@ -1,4 +1,11 @@
  <!-- jQuery 3 -->
+ <script>
+     $.ajaxSetup({
+         headers: {
+             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+     });
+ </script>
 	<script src="{{asset('vendor_components/jquery-3.3.1/jquery-3.3.1.js')}}"></script>
 
 	<!-- jQuery UI 1.11.4 -->
@@ -8,6 +15,8 @@
 	<script>
 	  $.widget.bridge('uibutton', $.ui.button);
 	</script>
+
+
 	
 <!-- popper -->
 <script src="{{asset('vendor_components/popper/dist/popper.min.js')}}"></script>
@@ -46,13 +55,7 @@
  <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
  <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
 
-{{-- <script>
-	$.ajaxSetup({
-			headers: {
-				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			}
-	});
-</script> --}}
+
 
  <script>
      var assetBaseUrl = "{{ asset('') }}";

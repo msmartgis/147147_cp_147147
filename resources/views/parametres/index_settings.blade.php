@@ -68,6 +68,11 @@
             width: 200px;
         }
 
+        .title-setting
+        {
+            color: #ff540a !important;
+        }
+
     </style>
 @endsection
 
@@ -78,84 +83,44 @@
             <div class="box ">
                 <!-- /.box-header -->
                 <div class="box-body" style="padding : 10px">
-                    <div class="vtabs col-12">
-                        <ul class="nav nav-tabs tabs-vertical" role="tablist">
-                            <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#home9" role="tab"><span><i class="fa fa-calendar" style="margin-right: 8px"></i>SESSIONS</span></a> </li>
-                            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#profile9" role="tab"><span><i class="fa fa-calendar" style="margin-right: 8px"></i>PORTEUR DE PROJET</span></a> </li>
-                            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#messages9" role="tab"><span><i class="fa fa-calendar" style="margin-right: 8px"></i>POINTS DESSERVIS</span></a> </li>
-                        </ul>
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="home9" role="tabpanel">
-                                <div class="pad">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <tr>
-                                                <th></th>
-                                                <th>N°</th>
-                                                <th>Mois</th>
-                                                <th>Date</th>
-                                                <th>Type</th>
-                                                <th>Status</th>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input type="checkbox" id="md_checkbox_15" class="chk-col-orange" checked />
-                                                    <label for="md_checkbox_15"></label>
-                                                </td>
-                                                <td>Lorem Ipsum</td>
-                                                <td><span class="text-muted"><i class="fa fa-clock-o"></i> Oct 16, 2017</span> </td>
-                                                <td>$158.00</td>
-                                                <td><span class="label label-danger">Pending</span></td>
-                                                <td><span class="label label-danger">Pending</span></td>
 
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input type="checkbox" id="md_checkbox_15" class="chk-col-orange" checked />
-                                                    <label for="md_checkbox_15"></label>
-                                                </td>
-                                                <td>Lorem Ipsum</td>
-                                                <td><span class="text-muted"><i class="fa fa-clock-o"></i> Oct 16, 2017</span> </td>
-                                                <td>$55.00</td>
-                                                <td><span class="label label-warning">Shipped</span></td>
-                                                <td><span class="label label-warning">Shipped</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input type="checkbox" id="md_checkbox_15" class="chk-col-orange" checked />
-                                                    <label for="md_checkbox_15"></label>
-                                                </td>
-                                                <td>Lorem Ipsum</td>
-                                                <td><span class="text-muted"><i class="fa fa-clock-o"></i> Oct 16, 2017</span> </td>
-                                                <td>$845.00</td>
-                                                <td><span class="label label-danger">Prossing</span></td>
-                                                <td><span class="label label-danger">Prossing</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td>Lorem Ipsum</td>
-                                                <td><span class="text-muted"><i class="fa fa-clock-o"></i> Oct 16, 2017</span> </td>
-                                                <td>$145.00</td>
-                                                <td><span class="label label-success">Paid</span></td>
-                                                <td><span class="label label-success">Paid</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td>Lorem Ipsum</td>
-                                                <td><span class="text-muted"><i class="fa fa-clock-o"></i> Oct 16, 2017</span> </td>
-                                                <td>$450.00</td>
-                                                <td><span class="label label-warning">Shipped</span></td>
-                                                <td><span class="label label-warning">Shipped</span></td>
-                                            </tr>
-                                        </table>
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="box" style="border-top: 0;border-bottom: 0">
+                                        <!-- /.box-header -->
+                                        <div class="box-body">
+                                            @include('parametres.users')
+                                            @include('parametres.associations')
+                                            @include('parametres.source_financement')
+                                            @include('parametres.sessions')
+                                            @include('parametres.modals')
+                                        </div>
+                                        <!-- /.box-body -->
                                     </div>
+                                    <!-- /.box -->
                                 </div>
                             </div>
-                            <div class="tab-pane pad" id="profile9" role="tabpanel">2</div>
-                            <div class="tab-pane pad" id="messages9" role="tabpanel">3</div>
                         </div>
+                        <!-- /.col -->
+                        <div class="col-lg-2"
+                             @if($is_mobile == 0) style="padding-left: 0px  !important;"  @else  @endif>
+                            <div class="h-p100  bg-light bg-secondary-gradient" style="padding-right: 5px">
+                                <div class="box bg-transparent no-border no-shadow ">
+                                    <div class="box-body no-padding mailbox-nav ">
+                                        <h5>Décisions : </h5>
+                                        <hr>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <!-- /. box -->
+                            </div>
+                        </div>
+                        <!-- /.col -->
                     </div>
+                    <!-- /.row -->
+
 
                 </div>
                 <!-- /.box-body -->
@@ -164,12 +129,8 @@
             <!-- /.box -->
         </div>
     </div>
-
     <!-- modals -->
-
 @endsection
-
-
 
 @push('added_scripts')
 
@@ -194,10 +155,82 @@
 <script src="{{asset('vendor_components/formatter/jquery.formatter.js')}}"></script>
 <script src="{{asset('js/formatter.js')}}"></script>
 
+<script src="{{asset('js/functions/functions.js')}}"></script>
+<script src="{{asset('js/settings/settings.js')}}"></script>
+
+
 <!-- Sweet-Alert  -->
 <script src="{{asset('vendor_components/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('vendor_components/sweetalert/jquery.sweet-alert.custom.js')}}"></script>
 
 
+<script>
 
+
+
+
+    //get data element
+    function getElementData(route,model,modalTitle)
+    {
+        //send an ajax request to the server update decision column
+        $.ajax({
+            url: route,
+            type: 'GET',
+            data: {
+                _token: '{{ csrf_token() }}',
+                model : model
+            },
+            dataType: 'HTML',
+            success: function (data) {
+                $('#modal_title_setting').text(modalTitle);
+                $('.setting-modal-body').html(data);
+                $('.settingModal').modal('show');
+
+                $('#modal_submit').click(function(){
+                    $('.'+model+'-form').submit();
+                });
+            }
+        });
+
+    }
+
+    //delete data
+    function deleteElement(route,id)
+    {
+        swal({
+            title: "Vous êtes sûr?",
+            text: "Cet élement va être supprimé définitivement",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Oui, je confirme!",
+            cancelButtonText: "Non, annuler!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                //send an ajax request to the server update decision column
+                $.ajax({
+                    url: route,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: id
+                    },
+                    dataType: 'JSON',
+                    success: function (data) {
+                         if (data.length == 0) {
+                         swal("Réussi!", "Suppression a été éfectuer avec succès", "success");
+                         setTimeout(location.reload.bind(location), 500);
+                         }
+                    }
+                });
+            } else {
+                swal("L'operation est annulée", "Aucun changement a été éffectué", "error");
+            }
+        });
+
+    }
+
+</script>
 @endpush

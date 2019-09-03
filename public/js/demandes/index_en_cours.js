@@ -25,7 +25,7 @@ $(document).ready(function () {
             type: 'GET',
             data: function (d) {
                 d.communes = $('select[name=communes]').val();
-                //d.session = $('select[name=session]').val();
+                d.session_id = $('select[name=session_id]').val();
                 d.interventions = $('select[name=interventions]').val();
                 d.partenaires = $('select[name=partenaires]').val();
                 d.localites = $('select[name=localites]').val();
@@ -46,14 +46,13 @@ $(document).ready(function () {
                 targets: 3
             }
         ],
-        columns: [{
-            data: 'checkbox',
-            name: 'checkbox',
-            orderable: false,
-            searchable: false,
-            width : '2%'
-        },
-
+            columns: [{
+                data: 'checkbox',
+                name: 'checkbox',
+                orderable: false,
+                searchable: false,
+                width : '2%'
+            },
             {
                 data: 'num_ordre',
                 name: 'demandes.num_ordre',
@@ -167,7 +166,7 @@ $(document).ready(function () {
     });
 
 
-    $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#reservation').on('change paste keyup', function (e) {
+    $('#communes_filter,#intervention_filter,#partenaires_filter,#localites_filter,#session_filter,#reservation').on('change paste keyup', function (e) {
         demandesEnCoursTable.draw();
         e.preventDefault();
     });

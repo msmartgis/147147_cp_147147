@@ -16,7 +16,7 @@ $(document).ready(function () {
             type: 'GET',
             data: function (d) {
                 d.communes = $('select[name=communes_a_traiter]').val();
-                d.session = $('select[name=session_a_traiter]').val();
+                d.session_id = $('select[name=session_id]').val();
                 d.interventions = $('select[name=interventions_a_traiter]').val();
                 d.partenaires = $('select[name=partenaires_a_traiter]').val();
                 d.localites = $('select[name=localites_a_traiter]').val();
@@ -153,7 +153,7 @@ $(document).ready(function () {
     });
 
 
-    $('#communes_filter_a_traiter,#intervention_filter_a_traiter,#partenaires_filter_a_traiter,#localites_filter_a_traiter,#reservation_a_traiter').on('change paste keyup', function (e) {
+    $('#communes_filter_a_traiter,#intervention_filter_a_traiter,#partenaires_filter_a_traiter,#localites_filter_a_traiter,#session_filter_a_traiter,#reservation_a_traiter').on('change paste keyup', function (e) {
         demandeATaiterTable.draw();
         e.preventDefault();
     });

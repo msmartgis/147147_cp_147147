@@ -78,7 +78,6 @@ $(document).ready(function () {
         //console.log(montant_partnenaire);
         var pourcent = (parseFloat(montant_partnenaire.replace(/,/g, '')) / parseFloat(montant_g.replace(/,/g, '')) ) * 100;
 
-
         var markup = '<tr>'+
             '<td style=\'text-align:center\'>'+
             '<div class=\"form-group\">'+
@@ -99,9 +98,6 @@ $(document).ready(function () {
         $("#m-add-partenaire").modal('toggle');
         item_partenaire++;
     });
-
-
-
 });
 
 

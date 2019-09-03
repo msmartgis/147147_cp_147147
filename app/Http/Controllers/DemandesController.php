@@ -343,10 +343,10 @@ class DemandesController extends BaseController
         }
 
         //filter with session
-        if ($session_id = $request->get('session')) {
+        if ($session_id = $request->get('session_id')) {
             if ($session_id == "all") {
             } else {
-                $demandes->where('mois', '=', $session_id);
+                $demandes->where('session_id', '=', $session_id);
             }
         }
 
@@ -545,10 +545,10 @@ class DemandesController extends BaseController
         }
 
         //filter with session
-        if ($session_id = $request->get('session')) {
+        if ($session_id = $request->get('session_id')) {
             if ($session_id == "all") {
             } else {
-                $demandes->where('mois', '=', $session_id);
+                $demandes->where('session_id', '=', $session_id);
             }
         }
 
@@ -672,7 +672,7 @@ class DemandesController extends BaseController
         }
 
         //filter with session
-        if ($session_id = $request->get('session')) {
+        if ($session_id = $request->get('session_id')) {
             if ($session_id == "all") {
             } else {
                 $demandes->where('session_id', '=', $session_id);
@@ -1132,6 +1132,7 @@ class DemandesController extends BaseController
         $communes = Commune::orderBy('nom_fr')->pluck('nom_fr', 'id');
         $interventions = Intervention::orderBy('nom')->pluck('nom', 'id');
         $partenaire_types = PartenaireType::all();
+        $sessions = Session::all();
         $porteur_projet = Porteur::distinct()->select('id','nom_porteur_fr')->get();
 
          //point desservis
@@ -1167,6 +1168,7 @@ class DemandesController extends BaseController
                 'porteur_projet' => $porteur_projet,
                 'categorie_points' => $categorie_points,
                 'piste_id' => $piste_id,
+                'sessions' => $sessions,
                 'is_mobile' => Device::Device()
             ]
         );
@@ -1195,6 +1197,7 @@ class DemandesController extends BaseController
         $demande = new Demande;
 
         $demande->num_ordre = $request->input('num_ordre');
+        $demande->session_id = $request->input('session_id');
         //formating date time
         $date_to_time = strtotime(str_replace("/",'-',$request->date_reception));
         $date_formatted = date('Y-m-d',$date_to_time);
@@ -1302,11 +1305,7 @@ class DemandesController extends BaseController
                 $piece->save();
                 //array_push($array_combination_piece, $piece);
             }
-
         }
-
-
-
 
         //redirecting with success message
         return redirect('/demande')->with('success', 'Demande créee avec succès');

@@ -57,7 +57,18 @@ class SourceFinancementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $src = new SourceFinancement();
+        $src->source = $request->source;
+        $src->reference = $request->reference;
+        $src->montant_credit = $request->montant_credit;
+
+        $src->save();
+
+
+        if($src)
+        {
+            return redirect('/parametres')->with('success', 'Source de fincancement ajoutée avec succès');
+        }
     }
 
     /**
@@ -103,5 +114,25 @@ class SourceFinancementController extends Controller
     public function destroy(SourceFinancement $sourceFinancement)
     {
         //
+    }
+
+
+    public function update_src(Request $request)
+    {
+        $src_to_update = SourceFinancement::find($request->id);
+        $src_to_update->source = $request->source;
+        $src_to_update->reference = $request->reference;
+        $src_to_update->montant_credit = $request->montant_credit;
+
+        $src_to_update->save();
+        return redirect("/parametres")->with('success', 'Modification a été éffectuer avec succès');
+    }
+
+
+    public function deleteSrcSetting(Request $req)
+    {
+        $src = SourceFinancement::find($req->id);
+        $src->delete();
+        return response()->json();
     }
 }

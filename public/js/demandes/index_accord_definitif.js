@@ -13,7 +13,7 @@ $(document).ready(function () {
             type: 'GET',
             data: function (d) {
                 d.communes = $('select[name=communes_filter_accord_definitif]').val();
-                d.session = $('select[name=session_filter_accord_definitif]').val();
+                d.session_id = $('select[name=session_id]').val();
                 d.interventions = $('select[name=interventions_filter_accord_definitif]').val();
                 d.partenaires = $('select[name=partenaires_filter_accord_definitif]').val();
                 d.localites = $('select[name=localites_filter_accord_definitif]').val();
@@ -133,7 +133,7 @@ $(document).ready(function () {
     } );
 
 
-    $('#communes_filter_accord_definitif,#intervention_filter_accord_definitif,#partenaires_filter_accord_definitif,#localites_filter_accord_definitif,#reservation_filter_accord_definitif').on('change paste keyup', function (e) {
+    $('#communes_filter_accord_definitif,#intervention_filter_accord_definitif,#partenaires_filter_accord_definitif,#localites_filter_accord_definitif,#reservation_filter_accord_definitif,#session_filter_accord_definitif').on('change paste keyup', function (e) {
         demandeAccordDefintifTable.draw();
         e.preventDefault();
     });

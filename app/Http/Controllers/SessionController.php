@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Session;
 use Illuminate\Http\Request;
-
+use Response;
 class SessionController extends Controller
 {
     /**
@@ -35,7 +35,21 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $session = new Session();
+        $session->mois = $request->mois;
+        $session->type = $request->type;
+
+        $date_to_time = strtotime(str_replace("/",'-',$request->date));
+        $date_formatted = date('Y-m-d',$date_to_time);
+        $session->date =  $date_formatted;
+
+        $session->save();
+
+
+        if($session)
+        {
+            return redirect('/parametres')->with('success', 'Session  ajoutée avec succès');
+        }
     }
 
     /**
@@ -81,5 +95,26 @@ class SessionController extends Controller
     public function destroy(Session $session)
     {
         //
+    }
+
+
+
+    public function update_session(Request $request)
+    {
+        $session_to_update = Session::find($request->id);
+        $session_to_update->mois = $request->mois;
+        $session_to_update->date = $request->date;
+        $session_to_update->type = $request->type;
+
+        $session_to_update->save();
+        return redirect("/parametres")->with('success', 'Modification a été éffectuer avec succès');
+    }
+
+
+    public function deleteSession(Request $req)
+    {
+        $session = Session::find($req->id);
+        $session->delete();
+        return response()->json();
     }
 }

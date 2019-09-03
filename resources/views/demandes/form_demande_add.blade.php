@@ -67,26 +67,13 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="form-group">
-                        {{Form::label('','Session:')}}
-                        {{Form::select(
-                        'size',
-                         array(
-                         '1' => 'Janvier',
-                          '2' => 'Fevrier',
-                          '3' => 'Mars',
-                          '4' => 'Avril',
-                          '5' => 'Mai',
-                          '6' => 'Juin',
-                          '7' => 'Juillet',
-                          '8' => 'Aout',
-                          '9' => 'Septembre',
-                          '10' => 'Octobre',
-                          '11' => 'Novembre',
-                          '12' => 'Decembre',
-                          ),
-                          '1',
-                        ['class'=>'form-control']
-                        )}}
+                        <label>Session : </label>
+                        <select placeholder="Session" class="form-control select2" style="width: 100%;" name="session_id">
+
+                            @foreach($sessions as $session)
+                                <option value="{{$session->id}}">{{$session->mois}} | {{$session->type}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class organisation extends Model
+class Organisation extends Model
 {
     public function users()
     {
