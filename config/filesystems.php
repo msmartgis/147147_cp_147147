@@ -56,7 +56,7 @@ return [
 
         'fiches' => [
             'driver' => 'local',
-            'root'   => storage_path('app/local/fiches/'),
+            'root'   => storage_path('app/fiches/demandes/'),
         ],
 
 

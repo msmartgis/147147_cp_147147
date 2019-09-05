@@ -20,7 +20,7 @@
                                     @if($is_mobile == 1)
                                         <h4 style="text-align: center;text-decoration: underline">INFORMATIONS GENERALES</h4>
                                     @endif
-                                    <h5>Maitre D'OUVRAGE </h5>
+                                    <h5>MAITRE D'OUVRAGE </h5>
                                     <hr style="color:#2d353c;margin:0">
                                     <div class="row" style="margin-top: 8px">
                                         <div class="col-lg-6">
@@ -292,10 +292,11 @@
                                         <h4 style="text-align: center;text-decoration: underline">LOCALISATION DU PROJET</h4>
                                     @endif
 
+                                    <h5>COMMUNES </h5>
+                                    <hr style="color:#2d353c;margin:0">
                                     <div class="row" style="margin-top: 8px">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                {{Form::label('','Communes:')}}
                                                 {{Form::select('communes', $communes, $convention->communes->pluck('id'),
                                                 [
                                                 'data-placeholder' => 'Selectionner commune(s)',
@@ -310,7 +311,7 @@
                                         </div>
                                     </div>
 
-
+                                {{--
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
@@ -327,7 +328,7 @@
                                                 )}}
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>--}}
 
                                     <h5>LOCALISATION SUR LA CARTE </h5>
                                     <hr style="color:#2d353c;margin:0">
@@ -452,7 +453,7 @@
 
                     <h5>Documents : </h5>
                     <hr>
-                    <button type="button" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-file" style="margin-right: 8px;"></i>Fiche de la demande</button>
+                    <button type="button" class="btn  btn-secondary-edit" style="color : #1118c5" ><i class="fa fa-file" style="margin-right: 8px;"></i>Fiche de la convention</button>
                     <br>
 
                 </div>

@@ -152,8 +152,8 @@
                                             <div class="table-responsive">
                                                 <table class="table table-piece">
                                                     <tr style="text-align: center;">
-                                                        <th>Type</th>
                                                         <th>Nom</th>
+                                                        <th>Etat</th>
                                                         <th>Upload</th>
                                                         <th></th>
                                                         @if($is_mobile == 0)

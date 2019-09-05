@@ -214,11 +214,24 @@
         });
 
 
-        $('#fiche_demande_en_cours_btn').on('click',function(){
-            $('.en-cours-demande-form').attr('action', '/ficheGenerate');
-            $('.en-cours-demande-form').submit();
-        });
+
     });
+
+    //function Generate Fiche
+    function getFiche(form,checkedelementsDemandesEC)
+    {
+        var ids = [];
+        if(checkedelementsDemandesEC.length > 0){
+            for(var i = 0;i < checkedelementsDemandesEC.length ; i++)
+            {
+                ids.push(checkedelementsDemandesEC[i].data('id'));
+            }
+        }
+
+         $(form).append('<input type="hidden" name="ids[]" value="'+ids+'" />');
+         $(form).submit();
+
+    }
 
     //function for decision
     function decision_function(datatble_id, checkedelementsDemandesEC, url, method) {

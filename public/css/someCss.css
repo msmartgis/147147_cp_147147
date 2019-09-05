@@ -667,6 +667,8 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected{
 {
     margin-left: 42%;
     color : white !important;
+    padding-top: 10px;
+    padding-bottom: 15px;
 }
 
 .m-btn-cancel-modal

@@ -52,8 +52,8 @@ $(document).ready(function () {
                 width: '1%'
             },
             {
-                data: 'point_desservis',
-                name: 'point_desservis.nom_fr',
+                data: 'objet_fr',
+                name: 'conventions.objet_fr',
                 orderable: true,
                 searchable: true,
                 width: '15%'

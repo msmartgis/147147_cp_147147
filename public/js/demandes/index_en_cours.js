@@ -192,6 +192,18 @@ $(document).ready(function () {
     });
 
 
+
+//fiche word
+    $("#fiche_demande_en_cours_btn").click(function () {
+        form = '.fiche-word';
+        /*$('.en-cours-demande-form').append('<input type="hidden" name="demandes_ids" value="'+checkedelementsDemandesEC+'" />');
+        $('.en-cours-demande-form').attr('action', '/ficheGenerate');
+        $('.en-cours-demande-form').submit();*/
+
+        getFiche(form,checkedelementsDemandesEC);
+    });
+
+
 //delete record from add partenaire table
     $("#delete_partenaire").click(function () {
         removeRowFromTable("table_body_partner");

@@ -197,8 +197,8 @@
                     <table class="table table-piece">
                         <tr style="text-align: center;">
                             <th></th>
-                            <th>Type</th>
                             <th>Nom</th>
+                            <th>Etat</th>
                             <th>Upload</th>
                         </tr>
                         <tbody id="piece_demande_tbody">

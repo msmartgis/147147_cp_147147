@@ -8,7 +8,7 @@ $(document).ready(function () {
         pageLength: 20,
         bInfo : false,
         info : false,
-        bLengthChange : true,
+        bLengthChange : false,
         language: {
             search: '',
             searchPlaceholder: 'Recherche...',
@@ -50,6 +50,13 @@ $(document).ready(function () {
             {
                 data: 'objet_fr',
                 name: 'conventions.objet_fr',
+                orderable: true,
+                searchable: true,
+                width : '15%'
+            },
+            {
+                data: 'longueur',
+                name: 'longueur',
                 orderable: true,
                 searchable: true,
                 width : '15%'

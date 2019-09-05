@@ -2,8 +2,8 @@
 <div class="modal fade " id="add_modal_piece">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Ajouter pièce</h4>
+            <div class="modal-header m-header-style">
+                <h4 class="modal-title m-modal-title" >Ajouter pièce</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
             </div>
@@ -48,20 +48,19 @@
                             </tbody>
                         </table>
                     </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                <button type="submit" class="btn btn-success float-right" id="add_piece_to_list">Ajouter</button>
-            </div>
-        </div>
-        </form>
 
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-bold btn-pure btn-warning m-btn-cancel-modal" data-dismiss="modal" ><i class="fa fa-close" style="margin-right: 8px"></i>Annuler</button>
+                        <button type="submit" class="btn btn-bold btn-pure btn-success float-right m-btn-submit-modal" id="add_piece_to_list"><i class="fa fa-check" style="margin-right: 8px"></i>Ajouter</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
 </div>
-
-
 
 {{-- add partenaire  --}}
 <div class="modal fade" id="m-add-partenaire-edit">
@@ -71,8 +70,8 @@
             <input type="hidden" name="montant_global" value="{{$convention->montant_global}}">
             <input name="_token" type="hidden" value="{{ csrf_token() }}" />
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Nouveau partenaire</h4>
+                <div class="modal-header m-header-style">
+                    <h4 class="modal-title m-modal-title">Nouveau partenaire</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
                 </div>
@@ -97,8 +96,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-success float-right" id="add_partenaire_to_list_edit">Ajouter à la
+                    <button type="button" class="btn btn-bold btn-pure btn-warning m-btn-cancel-modal" data-dismiss="modal" ><i class="fa fa-close" style="margin-right: 8px"></i>Annuler</button>
+                    <button type="submit" class="btn btn-bold btn-pure btn-success float-right m-btn-submit-modalt" id="add_partenaire_to_list_edit"><i class="fa fa-check" style="margin-right: 8px"></i>Ajouter à la
                         liste</button>
                 </div>
             </div>

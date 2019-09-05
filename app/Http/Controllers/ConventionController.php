@@ -70,6 +70,10 @@ class ConventionController extends Controller
                     })->implode(', ');
                 })
 
+                ->addColumn('longueur', function($conventions){
+                    return $conventions->piste->longueur;
+                })
+
                 ->addColumn('montantCP', function (Convention $convention) {
                     return $convention->partenaires->map(function ($partenaire) {
                         if ($partenaire->id == 1) {
@@ -353,11 +357,7 @@ class ConventionController extends Controller
                         return str_limit($commune->nom_fr, 15, '...');
                     })->implode(', ');
                 })
-                ->addColumn('point_desservis', function (Convention $convention) {
-                    return $convention->point_desservis->map(function ($point_desservi) {
-                        return str_limit($point_desservi->nom_fr, 15, '...');
-                    })->implode(', ');
-                })
+
                 ->addColumn('interventions', function (Convention $convention) {
                     return $convention->interventions->map(function ($intervention) {
                         return str_limit($intervention->nom, 30, '...');

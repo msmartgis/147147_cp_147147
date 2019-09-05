@@ -23,9 +23,10 @@
                     <div ><i class="fa fa-thumbs-up"></i> Excel </div>
                 </a>
             </div>
-            <a href="#" class="btn btn-secondary pull-right" id="fiche_demande_en_cours_btn" style="margin-right:4px;background-color: #ff8740;border-color: #ff8740;"><i class="fa fa-file" style="margin-right: 6px"></i>Fiche de demande</a>
-
-            <a href="{{ route('createDemande') }}" class="btn btn-secondary pull-right" style="margin-right:4px"><i class="fa fa-plus" style="margin-right: 6px"></i>Ajouter
+            {{Form::open(array('url' => 'ficheGenerate', 'method' => 'poste','class' => 'fiche-word'))  }}
+                <button type="button" class="btn btn-secondary pull-right multiple-choice-en-cours" id="fiche_demande_en_cours_btn" style="background-color: #ff540a !important;border-color: #ff540a !important;margin-right : 6px" disabled><i class="fa fa-file" style="margin-right: 6px"></i>Fiche de demande </button>
+            {{Form::close()}}
+            <a href="{{ route('createDemande') }}" class="btn btn-secondary pull-right " style="margin-right:4px"><i class="fa fa-plus" style="margin-right: 6px"></i>Ajouter
                 une demande</a>
         </div>
     </div>
@@ -55,7 +56,7 @@
                     <div ><i class="fa fa-thumbs-up"></i> Excel </div>
                 </a>
             </div>
-            <a href="#" class="btn btn-secondary " style="margin-right:4px;background-color: #ff8740;border-color: #ff8740;"><i class="fa fa-file" style="margin-right: 6px"></i>Fiche de demande</a>
+            <a href="#" class="btn btn-secondary pull-right" id="fiche_demande_en_cours_btn" style="margin-right:4px;background-color: #ff8740;border-color: #ff8740;"><i class="fa fa-file" style="margin-right: 6px"></i>Fiche de demande</a>
         </div>
 @endif
 

@@ -96,9 +96,8 @@
             </div>
         </div>
 
-        <hr style="margin:4px">
-        @include('demandes.inc.action_button_en_cours')
-        <hr  style="margin:4px">
     </div>
-
 </form>
+<hr style="margin:4px">
+@include('demandes.inc.action_button_en_cours')
+<hr  style="margin:4px">
