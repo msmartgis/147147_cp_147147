@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "bootstrap-drawer": "^1.0.6",
-        "chart.js": "^2.8.0",
+        "chart.js": "^2.9.4",
         "cleave.js": "^1.4.10",
         "font-family-system-ui": "0.0.1",
         "ui-contextmenu": "^1.18.1"
